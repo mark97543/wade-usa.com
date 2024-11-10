@@ -21,4 +21,3 @@ app.get("/",(req,res)=>{
     res.render("index.ejs", {a});
 });
 
-//TODO: Need to Add a todo list and Immegration page

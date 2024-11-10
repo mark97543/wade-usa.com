@@ -29,4 +29,15 @@ h2{
     text-align: center;
     font-size: xx-large;
 }
-  
+
+.navbar-brand{
+    font-family: "Lavishly Yours";
+    font-weight: 300;
+    font-size: xx-large;
+}
+
+.container-fluid{
+    align-content: flex-start;
+}
+
+/*TODO: Need to get menus to line up */
