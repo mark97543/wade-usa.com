@@ -13,11 +13,12 @@ app.listen(port, ()=>{
 
 });
 
-
-
 //Opening website//
 app.get("/",(req,res)=>{
     var a = timeUntil(2025, 2, 16, 9, 0); //Loading time until into variable
     res.render("index.ejs", {a});
 });
 
+app.get("/wedding", (req,res)=>{
+    res.render("weddingToDo.ejs");
+});
