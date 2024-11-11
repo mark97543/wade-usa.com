@@ -4,7 +4,7 @@ import {timeUntil} from "./functions/countdown.js";
 
 // Setting up Server //
 const app = express();
-const port = 8000; 
+const port = 3000; //Need to change to port 8000 before uploading to git 
 
 app.use(express.static('./public'));
 
@@ -15,8 +15,8 @@ app.listen(port, ()=>{
 
 // To do list Items
 let items = [
-    {id: 1, title:"Item 1"},
-    {id: 2, title: "Item 2"},
+    {id: 1, title:"Item 1", note:"Note 1"},
+    {id: 2, title: "Item 2", note: "Note 2"},
 ];
 
 //Opening website//
@@ -27,4 +27,8 @@ app.get("/",(req,res)=>{
 
 app.get("/wedding", (req,res)=>{
     res.render("weddingToDo.ejs",{listItem:items});
+});
+
+app.post("/delete", (res,req)=>{ //Delete a quary item TODO:Add Query Functionality
+    console.log("Hit");
 });
