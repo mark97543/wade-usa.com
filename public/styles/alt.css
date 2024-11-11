@@ -40,4 +40,9 @@ h2{
     align-content: flex-start;
 }
 
-/*TODO: Need to get menus to line up */
+.table{
+    width:50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
+}
