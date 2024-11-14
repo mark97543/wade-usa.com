@@ -1,52 +1,87 @@
-<!DOCTYPE html>
-
-<html>
-  <head>
-    <title>Amazing Mr. Wade</title>
-
-    <link rel="stylesheet" href="https://bootswatch.com/5/darkly/bootstrap.css"> <!--Boostrap Styling-->
-    <!--This is Code for Fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap" rel="stylesheet">
-    <!--_______________________-->
-    <link rel="stylesheet" href="/styles/alt.css"> <!--Modification to Styling-->
-  </head>
   <body>
     <header>
         <%- include("header/header.ejs") %>
     </header>
 
     <!-- Our Dynamic Table-->
-    <table class="table table-dark">
+    <table class="table table-hover" id="heading">
+      <h1>
+        Wedding to do
+      </h1>
+    </table>
+
+    <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col"> </th>
-          <th scope="col">Item</th>
-          <th scope="col">Note</th>
+          <th class="col1" scope="col">Delete</th>
+          <th class="col2" scope="col">Item</th>
+          <th class="col3" scope="col">Note</th>
+          <th class="col4" scope="col">Edit</th>
         </tr>
       </thead>
       <tbody>
-        <% for(let item of listItem){%> 
-          <tr class="table">
-            
-            <!--TODO: Need to add Edit-->
-            <th> 
-              <div>
-                <form action="/delete" method="post">
-                  <input class="form-check-input" type="checkbox" value="" onchange="this.form.submit()" id=<%=item.id%>>
-                </form>
-              </div>
+        <% for(let item of listItem){%>
+          <tr class="table-secondary">
+            <th scope="row">
+              <form action="/delete" method="post">
+                <input type="checkbox" onchange="this,form.submit()" name="deleteItemID" value="<%=item.id%>">
+              </form>
             </th>
-            <td><%=item.title %></th>
-            <td><%= item.note %></td>
+          <td>
+            <p id="title<%=item.id%>" class="row1">
+              <%=item.title %>
+              <form>
+                <input id="input_title<%=item.id%>" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off" autofocus="true" hidden="true" />
+              </form>
+            </p>
+            
+          </td>
+          <td>
+            <p id="note<%=item.id%>" style="text-indent: 20px;" class="row2">
+              <%=item.note %>
+              <form>
+                <input id="input_note<%=item.id%>" type="text" name="updatedItemTitle" value="<%= item.note %>" autocomplete="off" autofocus="true" hidden="true" />
+              </form>
+            </p>
+          </td>
+          <td>
+            <form class="edit" action="/edit" method="post">
+              <input type="hidden" name="updatedItemId" value="<%= item.id%>">
+              <button id="done<%=item.id%>" class="edit" type="submit" hidden><img class="icon" src="/images/icons8-check-48.png" alt="tick image"></button>
+            </form>
+            <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')"><img class="icon" src="/images/icons8-pencil-32.png" alt="pencil image"></button>
+          </td>
           </tr>
         <% } %>
+        
       </tbody>
+    </table>
+
+
+
+
+
+
+      <form class="item" action="/add" method="post">
+        <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDo" id="inputDefault"/>
+        <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDO" id="inputDefault"/>
+        <button class="add" type="submit" name="list" value="Wedding to do" >+</button>
+      </form>
+
+
     </div>
+
+
 
   </body>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</html>
-
+  <script>
+    function handler(id) {
+      document.getElementById("title" + id).setAttribute("hidden", true)
+      document.getElementById("note" + id).setAttribute("hidden", true)
+      document.getElementById("edit" + id).setAttribute("hidden", true)
+      document.getElementById("done" + id).removeAttribute("hidden")
+      document.getElementById("input_title" + id).removeAttribute("hidden")
+      document.getElementById("input_note" + id).removeAttribute("hidden")
+    }
+  </script>

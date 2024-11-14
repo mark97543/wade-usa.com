@@ -15,7 +15,7 @@ app.listen(port, ()=>{
 
 // To do list Items
 let items = [
-    {id: 1, title:"Item 1", note:"Note 1"},
+    {id: 1, title:"Item 1111111", note:"Note 1"},
     {id: 2, title: "Item 2", note: "Note 2"},
 ];
 
@@ -30,5 +30,9 @@ app.get("/wedding", (req,res)=>{
 });
 
 app.post("/delete", (res,req)=>{ //Delete a quary item TODO:Add Query Functionality
-    console.log("Hit");
+    console.log("Delete");
+});
+
+app.post("/edit", (res,req)=>{ //Delete a quary item TODO:Add Query Functionality
+    console.log("edit");
 });

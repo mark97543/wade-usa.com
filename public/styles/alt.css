@@ -39,10 +39,11 @@ h2{
 .container-fluid{
     align-content: flex-start;
 }
+/* This is for Wedding to do */
 
-.table{
-    width:50%;
+
+.table, .table-hover{
+    width: 600px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 1%;
 }
