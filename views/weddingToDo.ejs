@@ -53,24 +53,26 @@
           </td>
           </tr>
         <% } %>
-        
+        <tr class="table-dark">
+          <th scope="row"> </th>
+          <td>
+            <form>
+              <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDo" id="inputDefault"/>
+            </form>
+          </td>
+          <td>
+            <form>
+              <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDO" id="inputDefault"/>
+            </form>
+          </td>
+          <td> 
+            <form class="item" action="/add" method="post">
+              <button class="add" type="submit" name="list" value="Wedding to do" >+</button>
+            </form>
+          </td>
+        </tr>
       </tbody>
     </table>
-
-
-
-
-
-
-      <form class="item" action="/add" method="post">
-        <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDo" id="inputDefault"/>
-        <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDO" id="inputDefault"/>
-        <button class="add" type="submit" name="list" value="Wedding to do" >+</button>
-      </form>
-
-
-    </div>
-
 
 
   </body>
