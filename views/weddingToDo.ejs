@@ -4,6 +4,7 @@
     </header>
 
     <!-- Our Dynamic Table-->
+ 
     <table class="table table-hover" id="heading">
       <h1>
         Wedding to do
@@ -53,29 +54,41 @@
           </td>
           </tr>
         <% } %>
+
+        <form class="item" action="/add" method="post" enctype="application/x-www-form-urlencoded">
+
         <tr class="table-dark">
           <th scope="row"> </th>
           <td>
-            <form>
-              <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDo" id="inputDefault"/>
-            </form>
+           
+              <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control" id="inputDefault"/>
+            
           </td>
           <td>
-            <form>
-              <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" class="form-control toDO" id="inputDefault"/>
-            </form>
+            
+              <input type="text" name="newNote" placeholder="New Note" autocomplete="off" autofocus="true" class="form-control" id="inputDefault"/>
+            
           </td>
           <td> 
-            <form class="item" action="/add" method="post">
+            
               <button class="add" type="submit" name="list" value="Wedding to do" ><img class="icon plus" src="/images/plus-circle.svg" alt="plus image"></button>
-            </form>
+            
           </td>
         </tr>
+        </form>
       </tbody>
     </table>
+  
+
+
 
 
   </body>
+
+
+
+
+
 
   <script>
     function handler(id) {

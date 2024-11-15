@@ -1,21 +1,29 @@
 import express from "express";
-import bodyParser from "body-parser";
 import {timeUntil} from "./functions/countdown.js";
+import bodyParser from "body-parser";
+
 
 // Setting up Server //
+
+
+
 const app = express();
 const port = 3000; //Need to change to port 8000 before uploading to git 
 
+
+app.use(express.json());// support json encoded bodies
+app.use(express.urlencoded({extended: true}));// support encoded bodies
+
 app.use(express.static('./public'));
+
 
 app.listen(port, ()=>{
     console.log(`Server is running on port: ${port}`);
-
 });
 
 // To do list Items
 let items = [
-    {id: 1, title:"Item 1111111", note:"Note 1"},
+    {id: 1, title:"Item 1", note:"Note 1"},
     {id: 2, title: "Item 2", note: "Note 2"},
 ];
 
@@ -25,14 +33,13 @@ app.get("/",(req,res)=>{
     res.render("index.ejs", {a});
 });
 
+//Wedding Todo items//
 app.get("/wedding", (req,res)=>{
     res.render("weddingToDo.ejs",{listItem:items});
 });
 
-app.post("/delete", (res,req)=>{ //Delete a quary item TODO:Add Query Functionality
-    console.log("Delete");
-});
 
-app.post("/edit", (res,req)=>{ //Delete a quary item TODO:Add Query Functionality
-    console.log("edit");
+app.post("/add", (res,req)=>{ //Delete a quary item TODO:Add Query Functionality
+    const itemNew = res.body;
+    console.log(itemNew);
 });
