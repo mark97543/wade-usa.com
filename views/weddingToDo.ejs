@@ -13,10 +13,10 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th class="col1" scope="col">Delete</th>
-          <th class="col2" scope="col">Item</th>
-          <th class="col3" scope="col">Note</th>
-          <th class="col4" scope="col">Edit</th>
+          <th scope="col"></th>
+          <th scope="col">Item</th>
+          <th scope="col">Note</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +28,7 @@
               </form>
             </th>
           <td>
-            <p id="title<%=item.id%>" class="row1">
+            <p id="title<%=item.id%>" >
               <%=item.title %>
               <form>
                 <input id="input_title<%=item.id%>" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off" autofocus="true" hidden="true" />
@@ -37,7 +37,7 @@
             
           </td>
           <td>
-            <p id="note<%=item.id%>" style="text-indent: 20px;" class="row2">
+            <p id="note<%=item.id%>">
               <%=item.note %>
               <form>
                 <input id="input_note<%=item.id%>" type="text" name="updatedItemTitle" value="<%= item.note %>" autocomplete="off" autofocus="true" hidden="true" />
@@ -47,9 +47,9 @@
           <td>
             <form class="edit" action="/edit" method="post">
               <input type="hidden" name="updatedItemId" value="<%= item.id%>">
-              <button id="done<%=item.id%>" class="edit" type="submit" hidden><img class="icon" src="/images/icons8-check-48.png" alt="tick image"></button>
+              <button id="done<%=item.id%>" class="edit" type="submit" hidden><img class="icon" src="/images/check_icon.png" alt="tick image"></button>
             </form>
-            <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')"><img class="icon" src="/images/icons8-pencil-32.png" alt="pencil image"></button>
+            <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')"><img class="icon" src="/images/pencil_icon.png" alt="pencil image"></button>
           </td>
           </tr>
         <% } %>
@@ -67,7 +67,7 @@
           </td>
           <td> 
             <form class="item" action="/add" method="post">
-              <button class="add" type="submit" name="list" value="Wedding to do" >+</button>
+              <button class="add" type="submit" name="list" value="Wedding to do" ><img class="icon plus" src="/images/plus-circle.svg" alt="plus image"></button>
             </form>
           </td>
         </tr>
