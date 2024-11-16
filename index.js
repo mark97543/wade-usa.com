@@ -21,9 +21,9 @@ app.listen(port, ()=>{
 // Set up Database
 const db = new pg.Client({
     user:"postgres",
-    host:"localhost", //Changed From Local host to 209.97.157.230for deplayment
-    database: "wedding",
-    password:"5739",
+    host:"137.184.227.133", //Changed From Local host to 209.97.157.230for deplayment
+    database: "maw",
+    password:"7998",
     port: 5432,
 });
 db.connect();
@@ -31,7 +31,7 @@ db.connect();
 
 //Opening website//
 app.get("/",(req,res)=>{
-    var a = timeUntil(2025, 2, 16, 9, 0); //Loading time until into variable Need to adjust to user time. 
+    var a = timeUntil(2025, 2, 16, 9, 0); //Loading time until into variable Need to adjust to user time. Also days seem to be messed up 
     res.render("index.ejs", {a});
 });
 
@@ -39,6 +39,7 @@ app.get("/",(req,res)=>{
 app.get("/wedding", async (req,res)=>{
     var result = await db.query("SELECT * FROM public.weddingtodo ORDER BY id ASC");
     var items = result.rows;
+    
     res.render("weddingToDo.ejs",{listItem:items});   
 });
 
