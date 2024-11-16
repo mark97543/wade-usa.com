@@ -59,9 +59,14 @@ app.post("/delete", async (res, req)=>{
     req.render("weddingToDo.ejs",{listItem:items}); 
 });
 
-app.post("/edit", (res, req)=>{
+app.post("/edit", async (res, req)=>{
     var itemNumber = Number(res.body.updatedItemId)
-    var position= items.map(e=>e.id).indexOf(itemNumber);
-    items[position]={id:itemNumber, title: res.body.updatedItemTitle, note: res.body.updatedItemNote};
+    //var position= items.map(e=>e.id).indexOf(itemNumber);
+    //items[position]={id:itemNumber, title: res.body.updatedItemTitle, note: res.body.updatedItemNote};
+    
+    db.query("UPDATE weddingtodo SET title = ($1), note=($2) WHERE id=($3)",[res.body.updatedItemTitle, res.body.updatedItemNote, itemNumber]);
+    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    var items = result.rows;
+    
     req.render("weddingToDo.ejs",{listItem:items}); 
 });
