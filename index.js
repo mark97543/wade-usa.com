@@ -37,15 +37,15 @@ app.get("/",(req,res)=>{
 
 //Wedding Todo items//
 app.get("/wedding", async (req,res)=>{
-    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    var result = await db.query("SELECT * FROM public.weddingtodo ORDER BY id ASC");
     var items = result.rows;
     res.render("weddingToDo.ejs",{listItem:items});   
 });
 
 
 app.post("/add", async (res,req)=>{ 
-    db.query("INSERT INTO weddingtodo (title, note) VALUES ($1, $2)",[res.body.newItem, res.body.newNote])
-    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    db.query("INSERT INTO public.weddingtodo (title, note) VALUES ($1, $2)",[res.body.newItem, res.body.newNote])
+    var result = await db.query("SELECT * FROM public.weddingtodo ORDER BY id ASC");
     var items = result.rows;
     
     req.render("weddingToDo.ejs",{listItem:items});   
@@ -54,8 +54,8 @@ app.post("/add", async (res,req)=>{
 app.post("/delete", async (res, req)=>{
     var itemNumber = Number(res.body.deleteItemID);
     //items = items.filter(id => id.id !== itemNumber);
-    db.query("DELETE FROM weddingtodo WHERE id=($1)",[itemNumber])
-    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    db.query("DELETE FROM public.weddingtodo WHERE id=($1)",[itemNumber])
+    var result = await db.query("SELECT * FROM public.weddingtodo ORDER BY id ASC");
     var items = result.rows;
     req.render("weddingToDo.ejs",{listItem:items});   
 });
@@ -65,8 +65,8 @@ app.post("/edit", async (res, req)=>{
     //var position= items.map(e=>e.id).indexOf(itemNumber);
     //items[position]={id:itemNumber, title: res.body.updatedItemTitle, note: res.body.updatedItemNote};
     
-    db.query("UPDATE weddingtodo SET title = ($1), note=($2) WHERE id=($3)",[res.body.updatedItemTitle, res.body.updatedItemNote, itemNumber]);
-    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    db.query("UPDATE public.weddingtodo SET title = ($1), note=($2) WHERE id=($3)",[res.body.updatedItemTitle, res.body.updatedItemNote, itemNumber]);
+    var result = await db.query("SELECT * FROM public.weddingtodo ORDER BY id ASC");
     var items = result.rows;
     
     req.render("weddingToDo.ejs",{listItem:items});   
