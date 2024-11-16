@@ -46,9 +46,9 @@ app.get("/wedding", async (req,res)=>{
 app.post("/add", async (res,req)=>{ 
     db.query("INSERT INTO weddingtodo (title, note) VALUES ($1, $2)",[res.body.newItem, res.body.newNote])
     var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
-    items = result.rows;
+    var items = result.rows;
     
-    req.redirect("/wedding");
+    req.render("weddingToDo.ejs",{listItem:items});   
 });
 
 app.post("/delete", async (res, req)=>{
@@ -56,8 +56,8 @@ app.post("/delete", async (res, req)=>{
     //items = items.filter(id => id.id !== itemNumber);
     db.query("DELETE FROM weddingtodo WHERE id=($1)",[itemNumber])
     var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
-    items = result.rows;
-    req.redirect("/wedding");
+    var items = result.rows;
+    req.render("weddingToDo.ejs",{listItem:items});   
 });
 
 app.post("/edit", async (res, req)=>{
@@ -67,7 +67,7 @@ app.post("/edit", async (res, req)=>{
     
     db.query("UPDATE weddingtodo SET title = ($1), note=($2) WHERE id=($3)",[res.body.updatedItemTitle, res.body.updatedItemNote, itemNumber]);
     var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
-    items = result.rows;
+    var items = result.rows;
     
-    req.redirect("/wedding");
+    req.render("weddingToDo.ejs",{listItem:items});   
 });
