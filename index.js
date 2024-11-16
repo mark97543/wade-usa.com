@@ -21,7 +21,7 @@ app.listen(port, ()=>{
 // Set up Database
 const db = new pg.Client({
     user:"postgres",
-    host:"localhost",
+    host:"10.108.0.2", //Changed From Local host to 10.108.0.2 for deplayment
     database: "wedding",
     password:"5739",
     port: 5432,
