@@ -5,7 +5,7 @@ import pg from "pg";
 
 // Setting up Server //
 const app = express();
-const port = 8000; //Need to change to port 8000 before uploading to git 
+const port = 3000; //Need to change to port 8000 before uploading to git 
 
 
 app.use(express.json());// support json encoded bodies
@@ -21,7 +21,7 @@ app.listen(port, ()=>{
 // Set up Database
 const db = new pg.Client({
     user:"postgres",
-    host:"137.184.227.133", //Changed From Local host to 209.97.157.230for deplayment
+    host:"137.184.227.133", //Location of database droplet
     database: "maw",
     password:"7998",
     port: 5432,
@@ -31,7 +31,7 @@ db.connect();
 
 //Opening website//
 app.get("/",(req,res)=>{
-    var a = timeUntil(2025, 2, 16, 9, 0); //Loading time until into variable Need to adjust to user time. Also days seem to be messed up 
+    var a = timeUntil(2025, 1, 16, 9, 0); //Loading time until into variable Need to adjust to user time. Also days seem to be messed up 
     res.render("index.ejs", {a});
 });
 
