@@ -48,7 +48,7 @@ app.post("/add", async (res,req)=>{
     var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
     var items = result.rows;
     
-    req.redirect("/wedding");
+    req.render("weddingToDo.ejs",{listItem:items});  
 });
 
 app.post("/delete", async (res, req)=>{
@@ -57,7 +57,7 @@ app.post("/delete", async (res, req)=>{
     db.query("DELETE FROM weddingtodo WHERE id=($1)",[itemNumber])
     var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
     var items = result.rows;
-    req.redirect("/wedding");
+    req.render("weddingToDo.ejs",{listItem:items});  
 });
 
 app.post("/edit", async (res, req)=>{
@@ -69,5 +69,5 @@ app.post("/edit", async (res, req)=>{
     var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
     var items = result.rows;
     
-    req.redirect("/wedding");
+    req.render("weddingToDo.ejs",{listItem:items});  
 });
