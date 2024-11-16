@@ -61,3 +61,14 @@ h2{
     height: 25px; /* Icon colors R0, G134, B254*/
 }
 
+.delete_row{
+    max-width: 25px;
+}
+
+.title_row{
+    max-width: 200px;
+}
+
+.note_row{
+    max-width: 350px;
+}

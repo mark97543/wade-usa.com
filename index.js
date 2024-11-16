@@ -1,12 +1,9 @@
 import express from "express";
 import {timeUntil} from "./functions/countdown.js";
-import bodyParser from "body-parser";
+import pg from "pg";
 
 
 // Setting up Server //
-
-
-
 const app = express();
 const port = 3000; //Need to change to port 8000 before uploading to git 
 
@@ -21,25 +18,50 @@ app.listen(port, ()=>{
     console.log(`Server is running on port: ${port}`);
 });
 
-// To do list Items
-let items = [
-    {id: 1, title:"Item 1", note:"Note 1"},
-    {id: 2, title: "Item 2", note: "Note 2"},
-];
+// Set up Database
+const db = new pg.Client({
+    user:"postgres",
+    host:"localhost",
+    database: "wedding",
+    password:"5739",
+    port: 5432,
+});
+db.connect();
+
 
 //Opening website//
 app.get("/",(req,res)=>{
-    var a = timeUntil(2025, 2, 16, 9, 0); //Loading time until into variable
+    var a = timeUntil(2025, 2, 16, 9, 0); //Loading time until into variable Need to adjust to user time. 
     res.render("index.ejs", {a});
 });
 
 //Wedding Todo items//
-app.get("/wedding", (req,res)=>{
-    res.render("weddingToDo.ejs",{listItem:items});
+app.get("/wedding", async (req,res)=>{
+    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    var items = result.rows;
+    res.render("weddingToDo.ejs",{listItem:items});   
 });
 
 
-app.post("/add", (res,req)=>{ //Delete a quary item TODO:Add Query Functionality
-    const itemNew = res.body;
-    console.log(itemNew);
+app.post("/add", async (res,req)=>{ 
+    db.query("INSERT INTO weddingtodo (title, note) VALUES ($1, $2)",[res.body.newItem, res.body.newNote])
+    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    var items = result.rows;
+    req.render("weddingToDo.ejs",{listItem:items}); //TODO: need to add functionality to not allow blank Items. 
+});
+
+app.post("/delete", async (res, req)=>{
+    var itemNumber = Number(res.body.deleteItemID);
+    //items = items.filter(id => id.id !== itemNumber);
+    db.query("DELETE FROM weddingtodo WHERE id=($1)",[itemNumber])
+    var result = await db.query("SELECT * FROM weddingtodo ORDER BY id ASC");
+    var items = result.rows;
+    req.render("weddingToDo.ejs",{listItem:items}); 
+});
+
+app.post("/edit", (res, req)=>{
+    var itemNumber = Number(res.body.updatedItemId)
+    var position= items.map(e=>e.id).indexOf(itemNumber);
+    items[position]={id:itemNumber, title: res.body.updatedItemTitle, note: res.body.updatedItemNote};
+    req.render("weddingToDo.ejs",{listItem:items}); 
 });
