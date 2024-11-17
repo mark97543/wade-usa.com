@@ -5,7 +5,7 @@ import pg from "pg";
 
 // Setting up Server //
 const app = express();
-const port = 8000; //Need to change to port 8000 before uploading to git 
+const port = 3000; //Need to change to port 8000 before uploading to git 
 
 
 app.use(express.json());// support json encoded bodies
@@ -71,4 +71,10 @@ app.post("/edit", async (res, req)=>{
     var items = result.rows;
     
     req.render("weddingToDo.ejs",{listItem:items});   
+});
+
+// Travel Plans Site
+
+app.get("/travelplans", (res, req)=>{
+    req.render("travelplans.ejs")
 });

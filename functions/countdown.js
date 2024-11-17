@@ -21,8 +21,6 @@ export function timeUntil(a, b, c, d, e){
     var days = Math.floor(miliseconds / oneDay );
     var hours = Math.floor((miliseconds - (days * oneDay))/oneHour);
     var minutes = Math.floor((miliseconds - (days*oneDay + hours*oneHour))/oneMinute);
-    console.log(now);
-    console.log(deadline);
     return {
         day : days,
         hour : hours,

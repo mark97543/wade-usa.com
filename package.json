@@ -20,5 +20,8 @@
     "pg": "^8.13.1",
     "popper.js": "^1.16.1",
     "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "ws": "3.3.2"
   }
 }

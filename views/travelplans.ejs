@@ -1,0 +1,89 @@
+<style>
+    .accordian{
+        width: auto;
+        justify-self: center;
+        
+        }
+    .accordian-body{
+        display: block;
+        justify-items: center;
+        margin: Auto;
+
+    
+    }
+    .table{
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .times{
+        width: 5rem;
+        text-align: center;
+    }
+    .item{
+        width: 10rem;
+    }
+    .note{
+        width: 20rem;
+    }
+    .bkk{
+        width: 6rem;
+        text-align: center;
+    }
+
+</style>
+
+<body>
+    <header>
+        <%- include("header/header.ejs") %>
+    </header>
+
+    
+    <div class="accordian">
+        <!--Accordian 1-->
+        <div class="accordian-item" style="border: 2px solid white; border-radius: 5px;" >
+            <h2 class="accordian-header" id="headingOne" >
+                <button class="accordian-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="width: 100%;">
+                    Wensday Febuary 5, 2025
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordian-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordianExample">
+                <div class="accordian-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="times">Start</th>
+                                <th scope="col" class="times">End</th>
+                                <th scope="col" class="item" >Item</th>
+                                <th scope="col" class="note" >Note</th>
+                                <th scope="col" class="bkk">BKK<sup>GMT+7</sup></th>
+                            </tr>
+                        </thead>
+                        <tr class="table-primary">
+                            <th scope="row" class="times">05:30 GMT-7</th>
+                            <td class="times">16:00 GMT-7</td>
+                            <td class="item">Work From Home</td>
+                            <td class="note">Already Notified Work</td>
+                            <td class="bkk"> 19:30 <br>TO<br> 06:00 <sup>+1</sup></td>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th scope="row" class="times">18:57 GMT-7</th>
+                            <td class="times">20:15 GMT-7</td>
+                            <td class="item">Flight IDA => SLC</td>
+                            <td>Idaho Falls, Idaho => Salt Lake City, Utah <br>Flight DL3895, Seat 12B, 1h 18m</td>
+                            <td class="bkk"> 08:57 <sup>+1</sup>  <br>TO<br> 10:15 <sup>+1</sup> </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--Accordian 2-->
+
+    </div>
+
+    
+    
+
+    <%- include("header/footer.ejs") %>
