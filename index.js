@@ -1,6 +1,7 @@
 import express from "express";
 import {timeUntil} from "./functions/countdown.js";
 import pg from "pg";
+import moment from "moment";// Modules Needed in Code //Used in Travel Plans to format time and Date (Need npm install moment)
 
 
 // Setting up Server //
@@ -75,6 +76,19 @@ app.post("/edit", async (res, req)=>{
 
 // Travel Plans Site
 
-app.get("/travelplans", (res, req)=>{
-    req.render("travelplans.ejs")
+app.get("/travelplans", async(res, req)=>{
+    var travelDates =['2/5/25', '2/6/25', '2/7/25', '2/8/25', '2/9/25', '2/10/25', '2/11/25', '2/12/25', '2/13/25', '2/14/25', '2/15/25', '2/16/25', '2/17/25', '2/18/25','2/19/25', '2/20/25', '2/21/25', '2/22/25']; //need to make this automatic in future
+    var dateData = [];
+    var day
+
+    for(let i=0; i<travelDates.length;i++){
+        var date = travelDates[i]
+        var result = await db.query("SELECT * FROM public.travelplans WHERE startdate=($1) ORDER BY starttime ASC",[date]); 
+        day = "day"+i
+        dateData[i]=result.rows;
+    }
+    
+    //console.log(dateData)
+
+    req.render("travelplans.ejs", {dateData});
 });
