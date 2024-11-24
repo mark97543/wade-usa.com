@@ -6,7 +6,7 @@ import pg from "pg";
 
 // Setting up Server //
 const app = express();
-const port = 8000; //Need to change to port 8000 before uploading to git 
+const port = 3000; //Need to change to port 8000 before uploading to git 
 
 
 app.use(express.json());// support json encoded bodies
