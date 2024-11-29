@@ -123,12 +123,39 @@
             <li>How all day I just wonder what you are doing</li>
             <li>How everything I eat i wonder if you would like it.</li>
             <li>I love you for you!</li>
-
-
         </ol>
+
+
+        <!--Love Notes Section-->
+        
+        <script>
+            
+            var phrase = ["ผมรักคุณ", "ผมชอบคุณตั้งแต่ครั้งแรกที่เราเจอกัน", "ผมคิดถึงคุณตลอดเวลา", "ไม่มีวันไหนที่ผมไม่คิดถึงคุณ", "คุณทำให้ผมมีความสุข",  "ผมโชคดีจริงๆที่ได้เป็นสามีคุณ", "คุณมีความหมายต่อผมมาก", "ผมอยากอยู่กับคุณตลอดไป", "คุณทำให้ชีวิตผมมีความหมาย",  "ผมจะรักคุณตลอดไป", "แต่งงานกับผมนะครับ",  "ผมอยากไปอยู่ตรงนั้นข้างๆคุณ", "คุณคิดถึงผมเท่าที่ผมคิดถึงคุณรึเปล่า", "ผมอยากพบคุณ", "ผมอวังว่าคุณจะอยู่ที่นี่กัผมอ",  "เจอกันในฝันนะ", "ณทำให้ผมมีความสุข","อดทนหน่อยนะ เราจะสู้ไปด้วยกัน", "ถึงตัวเราจะห่างกันแต่ใจผมอยู่กับคุณตลอดเวลา", "ไม่มีวันไหนที่ผมไม่คิดถึงคุณ", "ระยะทางทำให้เรารักกันมากขึ้น"]
+            window.onload = function (){
+                var len = phrase.length;
+                var index = Math.floor(Math.random()*(len+1));
+                const divElement = document.getElementById("alertText999");
+                const newParagraph = document.createElement("p");
+                newParagraph.textContent = phrase[index];
+                divElement.appendChild(newParagraph);
+            }
+        </script>
+
+        <div class="alert alert-dismissible alert-secondary show" style="position: fixed; bottom: 0; width: 400px; min-height: 200px;" id="alertText999">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <h1> Hello Fa, </h1>
+            
+        </div>
+
+
+
     </div>
+
+
+    
  
-  <%- include("header/footer.ejs") %>
+    <%- include("header/footer.ejs") %>
+
   </html>
 
 
