@@ -1,5 +1,5 @@
 import express from "express";
-import {timeUntil} from "./functions/countdown.js";
+import {timeUntil} from "./public/functions/countdown.js";
 import pg from "pg";
 
 
