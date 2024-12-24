@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap');
+
+#homemaindiv{
+    display: grid;
+    justify-self: center;
+    margin-top: 30px;
+    justify-items: center;
+}
+
+.homeh1fancy{
+    text-transform: none;
+    font-family: "Lavishly Yours", cursive;
+    font-size: xxx-large;
+    color: silver;
+    font-weight: 100;
+    
+}
+
+.homeh2fancy{
+    font-family: "Lavishly Yours", cursive;
+    font-size: x-large;
+    color: silver;
+    text-transform: none;
+    font-weight: 100;
+}
+
+.homenormal{
+    color: silver;
+    font-size: medium;
+}
+
+.homeline{
+    border: none;
+    border-top: 3px solid silver;
+    width: 60%; /* Adjust the width of the line */
+    margin: 20px auto; /* Center the line with top and bottom margin */
+}

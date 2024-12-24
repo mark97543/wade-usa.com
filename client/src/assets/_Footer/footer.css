@@ -1,0 +1,9 @@
+#footerdiv{
+    display: flex;
+    justify-self: center;
+}
+
+#footerImage{
+    width: 300px;
+    height: 300px;
+}

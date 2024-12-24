@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap');
+
+#navbarheader{
+    padding-bottom: 10px;
+    padding-top: 10px;
+    background-color: black !important;
+}
+
+#logoforheader{
+    font-family: "Lavishly Yours", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: xx-large;
+}
