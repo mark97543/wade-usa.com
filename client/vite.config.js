@@ -6,9 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': { // This is the path that will be proxied
-        target: 'http://localhost:5000', // Your backend server URL
+        target: 'http://localhost:8000', // Your backend server URL 
         changeOrigin: true, // Required for CORS issues
-        rewrite: (path) => path.replace(/^\/api/, ''), // Optional: remove the /api prefix
       },
       // You can add more proxy configurations here for other paths
     },

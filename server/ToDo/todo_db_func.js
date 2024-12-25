@@ -8,7 +8,7 @@ const toDoIniital = async (db, app)=>{
         try {
             const todos = await getAllTodos(db);
             console.log("Sending from GET:", todos); // Comment Out for Production
-            res.json(todos);
+            return res.json(todos);
         } catch (error) {
             console.error("Error fetching todos:", error);
             res.status(500).json({ error: error.message }); // Send error message

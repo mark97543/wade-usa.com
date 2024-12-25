@@ -4,6 +4,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // Bootstrap JS
 import './todo.css'
 import ToDoHero from './ToDoHero/ToDoHero';
 import { fetchTodos } from './ToDoHero/ToDo_db_func';
+import axios from "axios";
 
 export const ToDoContext = createContext(null);
 
@@ -11,14 +12,10 @@ const ToDo = () => {
 
     const [todos, setToDos]=useState(null)
     const [loadingToDo, setLoadingToDo]=useState(true)
-
-    //Initial Loading Items
-
+ 
     useEffect(() => { //Use this to only allow loading of data one time
         if(loadingToDo){
-            console.log("Loading")
             fetchTodos(setToDos)
-            console.log(todos)
             setLoadingToDo(false)
         }
         
@@ -30,7 +27,7 @@ const ToDo = () => {
 
     return (
         <div>
-        <ToDoContext.Provider value ={{setToDos}}>
+        <ToDoContext.Provider value ={{todos}}>
             <ToDoHero />
         </ToDoContext.Provider>
         </div>
