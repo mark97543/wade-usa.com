@@ -35,3 +35,9 @@
     width: 60%; /* Adjust the width of the line */
     margin: 20px auto; /* Center the line with top and bottom margin */
 }
+
+.homeh3div{
+    justify-items: center;
+    margin: 10px auto;
+    max-width: 95%;
+}
