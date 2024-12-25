@@ -1,9 +1,28 @@
-#footerdiv{
+#footerdiv {
     display: flex;
-    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    height: fit-content; /* Set a height for the footer to ensure it fills the viewport */
 }
-
-#footerImage{
+  
+#footersheild {
     width: 300px;
     height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    background-color: rgb(219, 203, 109)
+}
+  
+#footerImage {
+    max-width: 130%;
+    max-height: 130%;
+    object-fit: contain; /* Try 'contain' first, then adjust if needed */
+    object-position: center center; /* Ensure center alignment */
+    transform: translateY(5px) translateX(4px);
+    display: block;
+    filter: contrast(130%);
 }

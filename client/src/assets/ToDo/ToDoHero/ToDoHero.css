@@ -1,0 +1,57 @@
+
+
+.todoherobox{
+    border: 1px solid silver;
+    width: 325px;
+    height: 110px;
+    display: grid;
+    justify-self: center;
+    border-radius: 25px;
+    grid-template-columns: auto auto;
+    align-items: center;
+    padding-right: 15px;
+}
+
+.todoherotitle{
+    text-transform: none;
+    color: silver;
+    padding-left: 15px;
+    font-size: xx-large;
+ 
+}
+
+.todobanner{
+    background-color: silver !important;
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    justify-items: center;
+
+
+}
+
+.todobanner>h2{
+    font-size: 30px;
+}
+
+#heroh2_1{
+    margin-bottom: 0;
+    position: relative; /* Position the '10's absolutely within the .todobanner */
+    top: 10px; /* Center vertically */
+    left: -20px; /* Center horizontally */
+}
+
+#heroh2_2{
+    margin-bottom: 0;
+    position: relative; /* Position the '10's absolutely within the .todobanner */
+    top: -10px; /* Center vertically */
+    left: 0; /* Center horizontally */
+    transform: rotate(30deg);
+}
+
+#heroh2_3{
+    margin-bottom: 0;
+    position: relative; /* Position the '10's absolutely within the .todobanner */
+    top: -30px; /* Center vertically */
+    left: 20px; /* Center horizontally */
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext }from 'react'
 import 'bootswatch/dist/lux/bootstrap.min.css'; //theme
+import 'bootstrap/dist/js/bootstrap.bundle.min'; // Bootstrap JS 
 import './App.css'
 import Countdown from './countdown';
 import Greeting from '../OpeningModal/opening_modal';

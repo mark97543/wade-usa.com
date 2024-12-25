@@ -1,3 +1,8 @@
+import React, { useState, useEffect, createContext }from 'react'
+import 'bootswatch/dist/lux/bootstrap.min.css'; // Bootswatch CSS (must be before your custom CSS)
+import 'bootstrap/dist/js/bootstrap.bundle.min'; // Bootstrap JS 
+
+
 const App = () => {
   return (
     <div>
