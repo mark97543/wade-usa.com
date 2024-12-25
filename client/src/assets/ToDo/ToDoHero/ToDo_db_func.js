@@ -4,8 +4,8 @@ import React, { useState, useEffect, createContext }from 'react'
 
 const fetchTodos = async (setToDos) => {
     try {
-        const response = await axios.get('/api/todos');
-        //console.log("Response from API:", response.data)
+        const response = await axios.get('/todos');
+        console.log("Response from API:", response.data)
         setToDos(response.data);
     } catch (error) {
         console.error('Error fetching todos:', error);

@@ -18,6 +18,7 @@ const ToDo = () => {
         if(loadingToDo){
             console.log("Loading")
             fetchTodos(setToDos)
+            console.log(todos)
             setLoadingToDo(false)
         }
         
