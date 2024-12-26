@@ -5,6 +5,7 @@ import './todo.css'
 import ToDoHero from './ToDoHero/ToDoHero';
 import { fetchTodos } from './ToDoHero/ToDo_db_func';
 import ToDoAdd from './ToDoAdd/todoadd.jsx';
+import ToDoData from './ToDoData/tododata.jsx';
 
 export const ToDoContext = createContext(null);
 
@@ -30,6 +31,7 @@ const ToDo = () => {
         <ToDoContext.Provider value ={{todos, setLoadingToDo}}>
             <ToDoHero />
             <ToDoAdd />
+            <ToDoData />
         </ToDoContext.Provider>
         </div>
     )

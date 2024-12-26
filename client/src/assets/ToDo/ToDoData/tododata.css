@@ -1,0 +1,37 @@
+
+  
+#tododisplay{
+    border: 1px solid silver;
+    width: 350px;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+
+.todocheckbox{
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.tododatainput {
+    margin-right: 10px;
+    color: silver; /* Set black color by default */
+}
+
+#todoeffect input:focus {
+    background-color: silver;
+    color: black;
+}
+
+#tododeletebutton{
+    margin-left: 5px;
+    font-size: small;
+    width: 30px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
