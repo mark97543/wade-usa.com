@@ -3,6 +3,7 @@ import 'bootswatch/dist/lux/bootstrap.min.css'; // Bootswatch CSS (must be befor
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Bootstrap JS 
 import './tododata.css'
 import { ToDoContext } from '../todo';
+import { updateToDoComplete, deleteToDo } from './tododata_dbfunc';
 
 const ToDoData = () => {
     const {todos, setToDos}=useContext(ToDoContext)
@@ -16,16 +17,45 @@ const ToDoData = () => {
     }
 
     const handleCheckboxChange = (id) => {
-        setToDos((prevTodos) =>
-            prevTodos.map((todo) =>
-                todo.id === id ? { ...todo, completed: !todo.completed } : todo
-            )
-        );
+        const currentTodo = todos.find(todo => todo.id === id)
+        const newtoggle = !currentTodo.completed
+        currentTodo.completed = newtoggle
+        updateToDoComplete(currentTodo)
     };
 
-    console.log(todos)
+    const deleteClick = (id)=>{
+        deleteToDo(id)
+    }
+
+    const editData= (id)=>{
+        const deleteButton = 'tododeletebutton-'+id
+        const saveButton = 'todosavebutton-'+id
+        document.getElementById(deleteButton).hidden = true;
+        document.getElementById(saveButton).hidden = false;
+    }
+
+    const saveButton = (id)=>{
+        const deleteButton = 'tododeletebutton-'+id
+        const saveButton = 'todosavebutton-'+id
+        document.getElementById(deleteButton).hidden = false;
+        document.getElementById(saveButton).hidden = true;
+        savingEdit(id)
+    }
+
+    const savingEdit = (id)=>{       
+        const deleteButton = 'tododeletebutton-'+id
+        const saveButton = 'todosavebutton-'+id
+        const input = 'todoinput-'+id
+        document.getElementById(deleteButton).hidden = false;
+        document.getElementById(saveButton).hidden = true;
+        const currentTodo = todos.find(todo =>todo.id === id)
+        const newItem = document.getElementById(input).value
+        currentTodo.item = newItem
+        updateToDoComplete(currentTodo)
+    }
+
     return (
-        <div>
+        <div id="todohomediv">
             <ul>
                 {todos.map((todo, index)=>(
                     <li id='tododisplay' key={todo.id}>
@@ -41,10 +71,17 @@ const ToDoData = () => {
                             className="form-control tododatainput"
                             placeholder="Default input"
                             defaultValue={todo.item} 
+                            maxLength='33'
+                            onFocus={()=>editData(todo.id)}
+                            onBlur={()=>savingEdit(todo.id)}
+                            id={`todoinput-${todo.id}`}
                         />
                     </div>
-                    <button type="button" className="btn btn-info" id='tododeletebutton'>
+                    <button hidden={false} type="button" className="btn btn-info tododeletebutton" id={`tododeletebutton-${todo.id}`} onClick={()=>deleteClick(todo.id)}>
                         ❌
+                    </button>
+                    <button hidden={true} type="button" className="btn btn-info tododeletebutton" id={`todosavebutton-${todo.id}`} onClick={()=>saveButton(todo.id)}>
+                        ✅
                     </button>
                 </li>
                 ))}

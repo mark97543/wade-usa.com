@@ -1,15 +1,21 @@
 
 .todoadddiv {
-    width: 350px;
+    width: 400px;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
+    border: 1px solid silver;
+    padding: 10px;
+    border-radius: 25px;
 }
 
 #todoaddinput{
     background-color: silver;
     margin-right: 2px;
+    width: 100%;
+    margin-left: 10px;
+    text-align: center;
 }
 
 #todoaddbutton{

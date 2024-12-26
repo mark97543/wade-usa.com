@@ -15,20 +15,19 @@ const ToDo = () => {
     const [loadingToDo, setLoadingToDo]=useState(true)
  
     useEffect(() => { //Use this to only allow loading of data one time
-        if(loadingToDo){
-            fetchTodos(setToDos)
-            setLoadingToDo(false)
-        }
-        
-    }), [loadingToDo];
+        fetchTodos(setToDos)
+    }), [];
 
-    const reload = ()=>{
-        setLoadingToDo(true)
+    const refresh = ()=>{
+
+        fetchTodos(setToDos)
+
     }
+
 
     return (
         <div>
-        <ToDoContext.Provider value ={{todos, setLoadingToDo}}>
+        <ToDoContext.Provider value ={{todos, refresh, setToDos}}>
             <ToDoHero />
             <ToDoAdd />
             <ToDoData />

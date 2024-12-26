@@ -12,7 +12,6 @@ const ToDoAdd = () => {
     
     const onaddbutton = ()=>{
         addTodo(addInputValue)
-        setLoadingToDo(true)
         setAddInputValue('')
     }
   
@@ -33,6 +32,7 @@ const ToDoAdd = () => {
             value={addInputValue}
             onChange={(e)=>setAddInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
+            maxLength="33"
         />
         <button 
             type="button" 

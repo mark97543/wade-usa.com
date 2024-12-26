@@ -17,7 +17,7 @@ const toDoIniital = async (db, app)=>{
 
     const getAllTodos = async (db) => {
         try {
-            const result = await db.query("SELECT id, item, completed FROM todo")
+            const result = await db.query("SELECT id, item, completed FROM todo ORDER BY completed ASC, id ASC")
             //console.log("getAllToDos Successfully Ran With Data: ", result.rows) //comment out for production
             return result.rows
         } catch (error) {
@@ -41,4 +41,34 @@ const addTodo = async (db, app) =>{
 
 }
 
-export {toDoIniital, addTodo};
+const completeToDoUpdate = async (db, app) =>{
+
+    app.post('/api/updatetodo', async (req, res)=>{
+        try{
+            const newItem = req.body
+            console.log(newItem)
+            await db.query("UPDATE todo SET completed =$1, item = $2 WHERE id=$3", [newItem.completed, newItem.item, newItem.id])
+        }catch(error){
+            console.error("Failed to change state of Todo", error)
+        }
+    })
+
+}
+
+
+const deleteToDo = async (db, app) =>{
+
+    app.post('/api/deletetodo', async (req, res)=>{
+        try{
+            const newItem = req.body
+            //console.log(newItem)
+            await db.query("DELETE FROM todo WHERE id=$1", [newItem.id])
+        }catch(error){
+            console.error("Failed to change state of Todo", error)
+        }
+    })
+
+}
+
+
+export {toDoIniital, addTodo, completeToDoUpdate, deleteToDo};

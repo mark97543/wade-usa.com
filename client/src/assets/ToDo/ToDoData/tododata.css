@@ -2,7 +2,7 @@
   
 #tododisplay{
     border: 1px solid silver;
-    width: 350px;
+    width: 400px;
     margin: 0 auto;
     margin-top: 20px;
     border-radius: 25px;
@@ -10,16 +10,21 @@
     flex-direction: row;
     align-items: center;
     padding: 10px;
+   
 }
 
 .todocheckbox{
     margin-left: 5px;
-    margin-right: 10px;
+    margin-right: 5px;
+    height: 20px;
+    width: 20px;
 }
 
 .tododatainput {
-    margin-right: 10px;
+    margin-right: 5px;
     color: silver; /* Set black color by default */
+    width: 320px;
+  
 }
 
 #todoeffect input:focus {
@@ -27,13 +32,14 @@
     color: black;
 }
 
-#tododeletebutton{
+.tododeletebutton{
     margin-left: 5px;
-    font-size: small;
-    width: 30px;
+    font-size: large;
+    width: 40px;
     padding: 0;
     background-color: transparent;
     border: none;
+    margin: 0 auto;
 }
 
 #itemContainer{
@@ -44,4 +50,10 @@
     text-decoration: line-through;
     text-decoration-thickness: 2px;
     text-decoration-color: gold;
+}
+
+#todohomediv > ul{
+    margin-left: 0;
+    padding: 0;
+    
 }
