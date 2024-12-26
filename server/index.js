@@ -3,7 +3,7 @@ import express from 'express'; // Note the import syntax
 import cors from 'cors'; // Important for handling CORS
 import pg from "pg"; //Import PG tools to Connect to DB
 import dbChecker from './connect_to_db/db_connect.js'; //Database functions to check for db abd add if needed. 
-import { toDoIniital } from './ToDo/todo_db_func.js';
+import { toDoIniital, addTodo } from './ToDo/todo_db_func.js';
 
 const app = express();
 const port = process.env.PORT || 5000; // Use environment variable or default to 5000
@@ -51,6 +51,7 @@ app.use(express.json()); // Enable parsing JSON request bodies
 //ToDo Functions
 
 toDoIniital(db, app)
+addTodo(db, app)
 
 /* -------------------------------- Listener -------------------------------- */
 

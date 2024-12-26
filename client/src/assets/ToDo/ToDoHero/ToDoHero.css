@@ -2,14 +2,15 @@
 
 .todoherobox{
     border: 1px solid silver;
-    width: 325px;
+    width: 350px;
     height: 110px;
     display: grid;
     justify-self: center;
     border-radius: 25px;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto 100px;
     align-items: center;
-    padding-right: 15px;
+    padding-right: 0px;
+    margin-top: 20px;
 }
 
 .todoherotitle{
@@ -26,8 +27,6 @@
     width: 90px;
     border-radius: 50%;
     justify-items: center;
-
-
 }
 
 .todobanner>h2{

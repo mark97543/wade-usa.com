@@ -1,9 +1,12 @@
-import React, { useState, useEffect, createContext }from 'react'
+import React, { useState, useEffect, createContext, useContext }from 'react'
 import 'bootswatch/dist/lux/bootstrap.min.css'; // Bootswatch CSS (must be before your custom CSS)
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Bootstrap JS 
 
 
 const App = () => {
+  const {todos}=useContext(ToDoContext)
+
+
   return (
     <div>
       <h1>Hello, Blank Project!</h1>
