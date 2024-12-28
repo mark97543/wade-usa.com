@@ -29,4 +29,16 @@ const addtrip = async (db, app) =>{
 
 }
 
-export {tpUnique, addtrip};
+const deleteTrip = async(db, app)=>{
+    app.post('/api/deletetrip', async(req, res)=>{
+        try{
+            const item = req.body
+            //console.log(item)
+            await db.query("DELETE FROM travel WHERE tripname = $1", [item.tripname])
+        }catch(error){
+            console.error("Failed to update the DB on SERVER end: ", error)
+        }
+    })
+}
+
+export {tpUnique, addtrip, deleteTrip};

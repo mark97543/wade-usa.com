@@ -4,7 +4,7 @@ import cors from 'cors'; // Important for handling CORS
 import pg from "pg"; //Import PG tools to Connect to DB
 import dbChecker from './connect_to_db/db_connect.js'; //Database functions to check for db abd add if needed. 
 import { toDoIniital, addTodo, completeToDoUpdate, deleteToDo } from './ToDo/todo_db_func.js';
-import { tpUnique, addtrip } from './TravelPlannerDB/TP_DB_Func.js';
+import { tpUnique, addtrip, deleteTrip } from './TravelPlannerDB/TP_DB_Func.js';
 
 const app = express();
 const port = process.env.PORT || 5000; // Use environment variable or default to 5000
@@ -60,6 +60,7 @@ deleteToDo(db, app)
 
 tpUnique(db, app)
 addtrip(db, app)
+deleteTrip(db, app)
 
 /* -------------------------------- Listener -------------------------------- */
 
