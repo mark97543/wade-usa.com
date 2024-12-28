@@ -6,7 +6,7 @@ const Footer = () => {
     return(
         <div id='footerdiv'>
             <div id='footersheild'>
-            <img src='../img/NewLogo.png' alt="our patch" id="footerImage"></img>
+            <img src='../img/newlogo.jpeg' alt="our patch" id="footerImage"></img>
             </div>
         </div>
     );

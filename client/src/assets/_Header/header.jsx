@@ -19,6 +19,9 @@ const Header = () => {
                   <li className="nav-item">
                     <a className="nav-link active" aira-current='page' href="/todo">To Do's</a>
                   </li>
+                  <li className='nav-item'>
+                    <a className='nav-link active' aria-current='page' href='/travelplanner'>Travel Planner</a>
+                  </li>
                 </ul>
               </div>
             </div>

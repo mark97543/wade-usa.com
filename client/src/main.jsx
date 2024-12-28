@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './assets/_Header/header.jsx';
 import Footer from './assets/_Footer/footer.jsx';
 import ToDo from './assets/ToDo/todo.jsx';
+import TravelPlanner from './assets/travelplanner/travelplanner.jsx';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Routes>{/* Use Routes */}
           <Route path='/' element={<App />} /> {/* Define the route for the home page */}
           <Route path='/todo' element={<ToDo/>} />
+          <Route path='/travelplanner' element={<TravelPlanner/>}></Route>
         </Routes>
       </Router>
       <Footer/>

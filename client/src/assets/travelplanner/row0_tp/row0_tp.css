@@ -1,0 +1,49 @@
+
+#row0TPMainDiv{
+    border: 1px solid silver;
+    margin: 0 auto;
+    width: 250px;
+    padding: 15px;
+    border-radius: 25px;
+}
+
+#row0select{
+    color: silver;
+    --bs-form-select-bg-img: url();
+    text-align: center;
+}
+
+#row0_deleteButton{
+    width: 100%;
+    margin-top: 10px;
+}
+
+#row0deleteselector{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
+#row0deleteselector > button{
+    width: 100%;
+    margin: 2px;
+}
+
+#addtripentry{
+    background-color: silver;
+}
+
+#additemdiv{
+    margin-top: 10px;
+}
+
+.addbuttons{
+    width: 100%;
+}
+
+#addbuttondiv{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    gap: 5px;
+}

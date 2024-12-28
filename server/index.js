@@ -4,6 +4,7 @@ import cors from 'cors'; // Important for handling CORS
 import pg from "pg"; //Import PG tools to Connect to DB
 import dbChecker from './connect_to_db/db_connect.js'; //Database functions to check for db abd add if needed. 
 import { toDoIniital, addTodo, completeToDoUpdate, deleteToDo } from './ToDo/todo_db_func.js';
+import { tpUnique, addtrip } from './TravelPlannerDB/TP_DB_Func.js';
 
 const app = express();
 const port = process.env.PORT || 5000; // Use environment variable or default to 5000
@@ -11,11 +12,11 @@ const port = process.env.PORT || 5000; // Use environment variable or default to
 /* ------------------------- Connecting to Database ------------------------- */
 
 // const db = new pg.Client({ //For Development only
-//   host: process.env.PGHOST,
-//   user: process.env.PGUSER,
-//   password: process.env.PGPASSWORD,
-//   database: process.env.PGDATABASE,
-//   port: process.env.PGPORT,
+//   host: 8000,
+//   host: "137.184.227.133",
+//   database: "maw",
+//   password: "7998",
+//   port: 5432,
 // });
 
 
@@ -54,6 +55,11 @@ toDoIniital(db, app)
 addTodo(db, app)
 completeToDoUpdate(db, app)
 deleteToDo(db, app)
+
+//Travel Planner Functions
+
+tpUnique(db, app)
+addtrip(db, app)
 
 /* -------------------------------- Listener -------------------------------- */
 
