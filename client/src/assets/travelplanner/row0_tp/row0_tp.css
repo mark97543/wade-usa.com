@@ -1,49 +1,78 @@
-
-#row0TPMainDiv{
+#row0container{
     border: 1px solid silver;
-    margin: 0 auto;
-    width: 250px;
-    padding: 15px;
     border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
 }
 
 #row0select{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    background-color: inherit;
     color: silver;
-    --bs-form-select-bg-img: url();
-    text-align: center;
+    border: 1px solid inherit;
+    font-size: large;
+    border-radius: 25px;
 }
 
-#row0_deleteButton{
-    width: 100%;
-    margin-top: 10px;
+#row0select:focus {
+    outline: none;
+    border-color: #007bff; /* Example focus color */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Example focus shadow */
+  }
+
+#row0_delete {
+    border-radius: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom:10px ;
+    background-color: #1f9bcf;
 }
 
-#row0deleteselector{
+#delete_div{
     display: flex;
     flex-direction: row;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    padding-right: 10px;
+}
+
+#row0_delete_2{
+    border-radius: 15px;
+    margin-right: 5px;
+    background-color: #d9534f;
+    width: 50%;
+}
+
+#row0_cancel{
+    width: 50%;
+    border-radius: 15px;
+    background-color: #1f9bcf;
+}
+
+#addinput{
+    background-color: inherit;
+    border:none;
+    color: silver;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#addtrip{
+    margin: 10px;
     margin-top: 5px;
-}
-
-#row0deleteselector > button{
-    width: 100%;
-    margin: 2px;
-}
-
-#addtripentry{
-    background-color: silver;
-}
-
-#additemdiv{
-    margin-top: 10px;
-}
-
-.addbuttons{
-    width: 100%;
-}
-
-#addbuttondiv{
     display: flex;
-    flex-direction: row;
-    margin-top: 5px;
-    gap: 5px;
+    flex-direction: column;
+}
+#addsavetrip{
+    width: 100%;
+    border-radius: 15px;
+    background-color: #1f9bcf;
 }

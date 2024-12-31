@@ -1,7 +1,5 @@
 [
-    ["Thailand 2/5/25", "tripname", "Thailand 2/5/25"],
-    ["Trip 2", "tripname", "Trip 2"],
-    ["Thailand 2/5/25", "startdate", "2/5/25"],
-    ["Trip 2", "startdate", "10/5/2026"]
+    ["Thailand 2/5/25", "2/5/25", "2/30/25"],
+    ["Trip 2", "10/1/26", "11/1/26"]
 
 ]
