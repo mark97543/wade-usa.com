@@ -7,7 +7,7 @@ import { deleteTrip, addTrip } from '../travelplanner_dbfunc';
 
 const Row0_TP = () => {
     
-    const {tpData, setSelectedTrip, selectedTrip}=useContext(TPContext)
+    const {tpData, setSelectedTrip, selectedTrip, setLoadedTrip}=useContext(TPContext)
     const [deleteVis, setDeleteVis]=useState(false) //Visibility of the delete buttons
     const [addVis, setAddVis]=useState(true)//Visibility of AddButtons
     const [delDis, setDelDis]=useState(false)//Disables Delete Button
@@ -36,6 +36,7 @@ const Row0_TP = () => {
         if(e==="new"){
             setAddVis(false)
             setDelDis(true)
+            setLoadedTrip({id:'', tripname:'', startdate:'', enddate:''})
         }else{
             setAddVis(true)
             setDelDis(false)
