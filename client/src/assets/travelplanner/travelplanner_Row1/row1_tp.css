@@ -1,20 +1,88 @@
 
 #r1_tpdiv{
     border: 1px solid silver;
-    min-width: 95%;
+    min-width: 90%;
     justify-self: center;
     border-radius: 25px;
     margin-top: 30px;
+    display: flex;
+    flex-direction: row;
 }
 
 #r1c1_tp{
     display: flex;
     flex-direction: column;
     color: silver;
-    margin-left: 15px;
-    width: 30%;
+    margin-left: 20px;
+    width: 50%;
+    border-right: 1px solid silver;
 }
 
 .r1labels_tp{
     font-size: small;
+}
+
+#dest_input{
+    background: inherit;
+    color: silver;
+    border: none;
+}
+
+#r1c2_tp{
+    display: flex;
+    flex-direction: column;
+    color: silver;
+    margin-left: 10px;
+    width: 25%;
+    border-right: 1px solid silver;
+}
+
+#r1c3_tp{
+    display: flex;
+    flex-direction: column;
+    color: silver;
+    margin-left: 10px;
+    width: 25%;
+}
+
+#r1c4_tp{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
+#row1_tp{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    width: 95%;
+}
+
+#r1_edit_button_tp{
+    background-color: green;
+    border-radius: 15px;
+    width: 20%;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+#r1_save_button_tp{
+    background-color: #1f9bcf;
+    width: 10%;
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+#r1_cancel_button_tp{
+    background-color: red;
+    width: 10%;
+    border-radius: 15px;
+}
+
+.r1_edit_inputs{
+    background: gray;
+    color: yellow;
+    border: none;
+    border: 15px;
 }

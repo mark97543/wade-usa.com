@@ -29,4 +29,8 @@ const addTrip = async(item)=>{
     }
 }
 
-export {getAllTP, deleteTrip, addTrip}
+const updateTrip = async(data)=>{
+    console.log("made it here")
+}
+
+export {getAllTP, deleteTrip, addTrip, updateTrip}
