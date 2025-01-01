@@ -54,9 +54,9 @@ const Row0_TP = () => {
         const newID = await addTrip(addEntry) 
         setAddVis(true)
         setDelDis(false)
-        console.log(newID)
+        //console.log(newID)
         setSelectedTrip(newID)
-        console.log(selectedTrip)
+        //console.log(selectedTrip)
         setAddEntry("")
     }
     

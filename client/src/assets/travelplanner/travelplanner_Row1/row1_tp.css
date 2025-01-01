@@ -14,7 +14,7 @@
     flex-direction: column;
     color: silver;
     margin-left: 20px;
-    width: 50%;
+    width: 40%;
     border-right: 1px solid silver;
 }
 
@@ -33,7 +33,7 @@
     flex-direction: column;
     color: silver;
     margin-left: 10px;
-    width: 25%;
+    width: 30%;
     border-right: 1px solid silver;
 }
 
@@ -42,13 +42,14 @@
     flex-direction: column;
     color: silver;
     margin-left: 10px;
-    width: 25%;
+    width: 30%;
 }
 
 #r1c4_tp{
     display: flex;
     flex-direction: row;
     margin-top: 5px;
+
 }
 
 #row1_tp{
@@ -56,6 +57,7 @@
     flex-direction: column;
     justify-self: center;
     width: 95%;
+    max-width: 800px;
 }
 
 #r1_edit_button_tp{
@@ -68,7 +70,7 @@
 
 #r1_save_button_tp{
     background-color: #1f9bcf;
-    width: 10%;
+    width: 20%;
     border-radius: 15px;
     margin-left: auto;
     margin-right: 10px;
@@ -76,7 +78,7 @@
 
 #r1_cancel_button_tp{
     background-color: red;
-    width: 10%;
+    width: 20%;
     border-radius: 15px;
 }
 
@@ -85,4 +87,6 @@
     color: yellow;
     border: none;
     border: 15px;
+    margin-right: 20px;
+    width: 100%;
 }
