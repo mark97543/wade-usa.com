@@ -24,7 +24,7 @@ const TravelPlanner = () => {
 
     return (
         <div>
-            <TPContext.Provider value ={{tpData, setSelectedTrip, selectedTrip}}>
+            <TPContext.Provider value ={{tpData, setSelectedTrip, selectedTrip, setTPData}}>
                 <Row0_TP />
                 <Row1_TP />
 

@@ -6,12 +6,12 @@ import { TPContext } from '../travelplanner';
 import { updateTrip } from '../travelplanner_dbfunc';
 
 const Row1_TP = () => {
-    const {tpData, selectedTrip}=useContext(TPContext)
+    const {tpData, selectedTrip, setTPData}=useContext(TPContext)
     const [hideRow, setHideRow]=useState(false)//Hide entire row based on no trip selected. 
     const [editSelect, setEditSelect]=useState(false)//Save Function visability (Inputs work off thie as well)
     const [destInput, setDestInput]=useState("")//Setting the desitination input value
     const [sdInput, setSDInput]=useState("") // Startdate Input data
-    const [edInput, setEDInput]=useState("")
+    const [edInput, setEDInput]=useState("")//Edit Items for end date
 
 
     const loadedTrip = tpData && Array.isArray(tpData) && selectedTrip ? tpData.find((trip) => trip.id === selectedTrip) : null; //Searches for loaded trip info
@@ -22,9 +22,10 @@ const Row1_TP = () => {
         }else{
             setHideRow(false)
         }
-        setDestInput(loadedTrip?.tripname || "No trip Selected")
+        setDestInput(loadedTrip?.tripname)
         setSDInput(loadedTrip?.startdate)
         setEDInput(loadedTrip?.enddate)
+        console.log(selectedTrip)
     }, [selectedTrip]) 
 
     const cancelEdit = ()=>{
@@ -34,7 +35,16 @@ const Row1_TP = () => {
     }
 
     const saveEdit=()=>{
-        console.log("hit")
+        const data = {
+            id:selectedTrip,
+            tripname:destInput,
+            startdate:sdInput,
+            enddate:edInput
+        }
+        const newID=selectedTrip
+        updateTrip(data)
+        setSelectedTrip(newID)
+        
     }
 
     return (
@@ -62,7 +72,11 @@ const Row1_TP = () => {
             </div>
 
             <div id='r1c4_tp'>
-                    <button id='r1_edit_button_tp' hidden={editSelect} onClick={()=>setEditSelect(!editSelect)}>Edit</button>
+                    <button id='r1_edit_button_tp' hidden={editSelect} onClick={()=>{setEditSelect(!editSelect);
+                                setDestInput(loadedTrip?.tripname)
+                                setSDInput(loadedTrip?.startdate)
+                                setEDInput(loadedTrip?.enddate)
+                    }}>Edit</button>
                     <button id='r1_save_button_tp'hidden={!editSelect} onClick={()=>{setEditSelect(!editSelect), saveEdit()}}>Save</button> {/* Need to Execute a save command here. 2). Need to set the values of the labels here as well */}
                     <button id='r1_cancel_button_tp'hidden={!editSelect} onClick={()=>{setEditSelect(!editSelect); cancelEdit()}}>Cancel</button>
             </div>

@@ -30,7 +30,11 @@ const addTrip = async(item)=>{
 }
 
 const updateTrip = async(data)=>{
-    console.log("made it here")
+    try{
+        await axios.post('/api/updatetrip',data)
+    }catch(error){
+        console.error('Error wit the updateTrip on the client side: ', error)
+    }
 }
 
 export {getAllTP, deleteTrip, addTrip, updateTrip}

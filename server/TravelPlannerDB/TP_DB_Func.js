@@ -39,4 +39,16 @@ const addTrip = (db, app)=>{
     })
 }
 
-export {TPData, DeleteTrip, addTrip}
+const UpdateTrip = (db, app)=>{
+    app.post('/api/updatetrip', async(req, res)=>{
+        try{
+            const input = req.body
+            //console.log(input)
+            await db.query('UPDATE public.travel SET tripname = $1, startdate = $2, enddate = $3 WHERE id = $4',[input.tripname, input.startdate, input.enddate, input.id])
+        }catch(error){
+            console.error('Error with UpdateTrip in the Server Side: ', error)
+        }
+    })
+}
+
+export {TPData, DeleteTrip, addTrip, UpdateTrip}
