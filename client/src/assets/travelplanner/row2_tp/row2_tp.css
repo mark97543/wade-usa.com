@@ -2,12 +2,18 @@
     border: 1px solid silver;
     width: 90%;
     max-width: 800px;
+    min-width: 800px;
     margin-top: 20px;
     justify-self: center;
     border-radius: 25px;
     overflow: hidden; /* Add overflow hidden to parent*/
     display: flex;
     flex-direction: column;
+
+}
+
+#r2_bottom{
+    background: gray;
 }
 
 #dep_flight_label{
@@ -23,11 +29,12 @@
 #row2_table_div{
     display: flex;
     flex-direction: row;
-    border-bottom: 2px solid silver;
+    border-bottom: 1px solid silver;
 }
 
 .r2_basic_label{
     color: silver; 
+
 }
 
 .r2_date_div{
@@ -36,10 +43,10 @@
     flex-direction: row;
     justify-content: center;
     border-right: 1px solid silver;
-    border-bottom: 1px solid silver;
+
 }
 
-#r2_date_input{
+#r2_date_input, #r2_origin_label, #r2_airline_label ,#r2_flight_label, #r2_dest_label, #r2_depart_label, #r2_land_label, #r2_note_label{
     width: 100%;
     margin-left: 5px;
     margin-right: 5px;
@@ -49,3 +56,54 @@
     text-align: center;
 }
 
+.r2_origin_div, .r2_dest_div{
+    display: flex;
+    flex-direction: row;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-right: 1px solid silver;
+    width: 7%;
+    justify-content: center;
+
+}
+
+.r2_dest_div{
+    border-left: 2px solid silver;
+}
+
+#r2_data_div{
+    display: flex;
+    flex-direction: row;
+}
+
+.r2_airline_div, .r2_flight_div{
+    display: flex;
+    flex-direction: row;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-right: 1px solid silver;
+    width: 9%;
+    justify-content: center;
+}
+
+.r2_flight_div{
+    width: 10%;
+}
+
+.r2_depart_div, .r2_land_div{
+    display: flex;
+    flex-direction: row;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-right: 1px solid silver;
+    width: 12%;
+    justify-content: center;
+}
+
+.r2_note_div{
+    display: flex;
+    flex-direction: row;
+    padding-left: 2px;
+    padding-right: 2px;
+    justify-content: left;
+}

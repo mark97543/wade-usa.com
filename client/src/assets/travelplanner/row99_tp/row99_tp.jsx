@@ -5,30 +5,39 @@ import './row99_tp.css'
 import { TPContext } from '../travelplanner';
 
 const Row99_tp = () => {
-    const {selectedTrip}=useContext(TPContext)
+    const {selectedTrip, depFlight, depFlightChkd, setDepFlightChkd }=useContext(TPContext)
     const [r99Vis, setR99Vis]=useState(true)
+    //const [depFlightChkd, setDepFlightChkd]=useState(false)
 
-    useEffect(()=>{ //Makes this row invisible when the "Select a trip" or "Add new Trip" is selected.
-        if(selectedTrip==="" || selectedTrip==="new"){
+    useEffect(()=>{ 
+        if(selectedTrip==="" || selectedTrip==="new"){//Makes this row invisible when the "Select a trip" or "Add new Trip" is selected.
             setR99Vis(true)
         }else{
             setR99Vis(false)
         }
-        //console.log(selectedTrip)
-    }, [selectedTrip]) //need to put in here when we save our data. 
+ 
+        try{//Checks if Departing Trip Should be Checked
+            if(depFlight.length > 0){
+                setDepFlightChkd(true)
+            }else{
+                setDepFlightChkd(false)
+            }
+        }catch(error){
+            setDepFlightChkd(false)
+        }
+
+
+    }, [selectedTrip, depFlight]) //need to put in here when we save our data. 
+
 
 
     return (
         <div id='row99_div' hidden={r99Vis}>
-            <select id='select_r99'>
-                <option>Select Item To Add</option>
-                <option>Activities</option>
-                <option>Car Rental</option>
-                <option>Departing Flights</option>
-                <option>Hotels</option>
-                <option>Returning Flight</option>
-            </select>
-            <button id='r99_edit_button'>Add Item</button>
+            <label id='r99_top'>Hide/Show Items</label>
+            <div>
+                <input type='checkbox' checked={depFlightChkd} onChange={(e)=>{setDepFlightChkd(!depFlightChkd)}} id='dep_flight'></input>
+                <label for="dep_flight" id='chbx_1'>Departing Flights</label>
+            </div>
         </div>
     )
 }

@@ -1,19 +1,23 @@
 
 #row99_div{
     display: flex;
+    flex-direction: column;
     justify-self: center;
-    width: 20%;
+    width: fit-content;
     margin-top: 20px;
+    border: 1px solid silver;
+    border-radius: 25px;
+    padding: 10px;
 }
 
-#r99_edit_button{
-    width: 30%;
-    border-radius: 15px;
-    background-color: #1f9bcf;
-}
-
-#select_r99{
-    border-radius: 15px;
-    background: inherit;
+#chbx_1{
     color: silver;
+    margin-left: 5px
+    
+}
+
+#r99_top{
+    color: silver;
+    text-align: center;
+    text-decoration: underline;
 }

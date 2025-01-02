@@ -15,7 +15,8 @@ const TravelPlanner = () => {
     
     const [tpData, setTPData] = useState(); //This is all the trip values in entirety
     const [selectedTrip, setSelectedTrip]=useState('')//Curently selected trip (this is the ID only)
-    const [depFlight, setDepFlight]=useState('')
+    const [depFlight, setDepFlight]=useState([])
+    const [depFlightChkd, setDepFlightChkd]=useState(false)//Row 99 Selection
  
 
     useEffect(()=>{
@@ -28,12 +29,13 @@ const TravelPlanner = () => {
           };
           fetchData(); // Execute the async function
     }, [selectedTrip]) //need to put in here when we save our data. 
-   console.log(depFlight)
+   
+    //console.log(depFlight)
     //console.log(selectedTrip)
 
     return (
         <div>
-            <TPContext.Provider value ={{tpData, setSelectedTrip, selectedTrip, setTPData}}>
+            <TPContext.Provider value ={{tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd}}>
                 <Row0_TP />
                 <Row1_TP />
                 <Row2_tp />
