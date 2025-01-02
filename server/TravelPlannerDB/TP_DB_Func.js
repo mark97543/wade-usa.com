@@ -51,4 +51,17 @@ const UpdateTrip = (db, app)=>{
     })
 }
 
-export {TPData, DeleteTrip, addTrip, UpdateTrip}
+const TravelInfo = (db, app)=>{
+    app.post('/api/travelinfo', async(req,res)=>{
+        try{
+            const input = req.body
+            const data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1`,[input.trip])
+            //console.log(data.rows)
+            return res.send(data)
+        }catch(error){
+            console.error('Error with the TravelInfo function on the server side: ', error)
+        }
+    })
+}
+
+export {TPData, DeleteTrip, addTrip, UpdateTrip, TravelInfo}

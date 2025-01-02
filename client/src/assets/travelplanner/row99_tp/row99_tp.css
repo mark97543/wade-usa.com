@@ -1,0 +1,19 @@
+
+#row99_div{
+    display: flex;
+    justify-self: center;
+    width: 20%;
+    margin-top: 20px;
+}
+
+#r99_edit_button{
+    width: 30%;
+    border-radius: 15px;
+    background-color: #1f9bcf;
+}
+
+#select_r99{
+    border-radius: 15px;
+    background: inherit;
+    color: silver;
+}

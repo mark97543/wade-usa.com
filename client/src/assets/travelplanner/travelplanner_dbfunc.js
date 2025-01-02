@@ -37,4 +37,17 @@ const updateTrip = async(data)=>{
     }
 }
 
-export {getAllTP, deleteTrip, addTrip, updateTrip}
+const TravelInfo = async(trip, table) =>{ //Generic Quary return all items in a table with the trip ID of selected trip. 
+    if(trip!="" && trip!='new'){
+        const data = {trip: trip, table:table}
+        try{
+            const response = await axios.post('/api/travelinfo', data)
+            //console.log(response.data.rows)
+            return response.data.rows
+        }catch(error){
+            console.error('Error with TravelInfo Function on the client side: ', error)
+        }
+    }
+}
+
+export {getAllTP, deleteTrip, addTrip, updateTrip, TravelInfo}

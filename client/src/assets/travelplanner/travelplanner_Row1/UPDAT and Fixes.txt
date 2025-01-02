@@ -1,0 +1,1 @@
+1). Need to make it so when you edit a input you automatically select it all (This may not be desireble)

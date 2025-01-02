@@ -1,0 +1,51 @@
+#r2_out_div{
+    border: 1px solid silver;
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
+    justify-self: center;
+    border-radius: 25px;
+    overflow: hidden; /* Add overflow hidden to parent*/
+    display: flex;
+    flex-direction: column;
+}
+
+#dep_flight_label{
+    color: black;
+    margin-left: 15px;
+}
+
+#dep_flight_div{
+    background-color: gray;
+    overflow: hidden;
+}
+
+#row2_table_div{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid silver;
+}
+
+.r2_basic_label{
+    color: silver; 
+}
+
+.r2_date_div{
+    width: 11%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-right: 1px solid silver;
+    border-bottom: 1px solid silver;
+}
+
+#r2_date_input{
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+    background: inherit;
+    color: silver;
+    border: none;
+    text-align: center;
+}
+
