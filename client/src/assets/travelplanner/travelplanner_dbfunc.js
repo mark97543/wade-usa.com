@@ -50,4 +50,13 @@ const TravelInfo = async(trip, table) =>{ //Generic Quary return all items in a 
     }
 }
 
-export {getAllTP, deleteTrip, addTrip, updateTrip, TravelInfo}
+const AddFlight = async (data, table)=>{
+    const send = {data:data, table:table}
+    try{
+        await axios.post('/api/addflight', send)
+    }catch(error){
+        console.error('Error with Add Flight function on the Client Side')
+    }
+}
+
+export {getAllTP, deleteTrip, addTrip, updateTrip, TravelInfo, AddFlight}

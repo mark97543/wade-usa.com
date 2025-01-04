@@ -9,11 +9,12 @@
     overflow: hidden; /* Add overflow hidden to parent*/
     display: flex;
     flex-direction: column;
-
 }
 
 #r2_bottom{
     background: gray;
+    display: flex;
+    flex-direction: row;
 }
 
 #dep_flight_label{
@@ -30,6 +31,7 @@
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid silver;
+    
 }
 
 .r2_basic_label{
@@ -38,11 +40,12 @@
 }
 
 .r2_date_div{
-    width: 11%;
+    width: 12%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     border-right: 1px solid silver;
+    align-items: center;
 
 }
 
@@ -56,6 +59,12 @@
     text-align: center;
 }
 
+#r2_note_label, #r2_textarea{
+    text-align: left;
+    font-family: "Courier New", Courier, monospace;  /* Cross-platform compatibility */
+    word-wrap: break-word;
+}
+
 .r2_origin_div, .r2_dest_div{
     display: flex;
     flex-direction: row;
@@ -64,16 +73,19 @@
     border-right: 1px solid silver;
     width: 7%;
     justify-content: center;
+    align-items: center;
 
 }
 
 .r2_dest_div{
     border-left: 2px solid silver;
+    align-items: center;
 }
 
 #r2_data_div{
     display: flex;
     flex-direction: row;
+    
 }
 
 .r2_airline_div, .r2_flight_div{
@@ -82,12 +94,14 @@
     padding-left: 2px;
     padding-right: 2px;
     border-right: 1px solid silver;
-    width: 9%;
+    width: 12%;
     justify-content: center;
+    align-items: center;
 }
 
 .r2_flight_div{
     width: 10%;
+    align-items: center;
 }
 
 .r2_depart_div, .r2_land_div{
@@ -96,8 +110,9 @@
     padding-left: 2px;
     padding-right: 2px;
     border-right: 1px solid silver;
-    width: 12%;
+    width: 10%;
     justify-content: center;
+    align-items: center;
 }
 
 .r2_note_div{
@@ -106,4 +121,64 @@
     padding-left: 2px;
     padding-right: 2px;
     justify-content: left;
+    width: 32%; 
+    font-size: small;  
+    align-items: center;
+    
+}
+
+#r2_out2_div{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
+
+#r2_add_button{
+    width: 20%;
+    margin-top: 5px;
+    border-radius: 15px;
+    background-color: rgb(0, 128, 0);
+}
+
+#r2_save_button{
+    width: 10%;
+    margin-top: 5px;
+    border-radius: 15px;
+    background-color: rgb(31, 155, 207);
+}
+
+#r2_cancel_button{
+    width: 10%;
+    margin-top: 5px;
+    border-radius: 15px;
+    background-color: rgb(255, 0, 0);
+}
+
+#r2_button_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+
+.r2_add_input{
+    width: 100%;
+    background-color: white;
+    border: none;
+    text-align: center;
+}
+
+
+
+input[type="time"]::-webkit-calendar-picker-indicator{
+    opacity: 0; /* Adjust the value as needed (0 - transparent, 1 - opaque) */
+}
+input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  opacity: 1;
+}
+
+
+/* Firefox - Different pseudo-elements */
+input[type="time"] {
+    opacity: 1;
 }

@@ -36,7 +36,7 @@ const Row99_tp = () => {
             <label id='r99_top'>Hide/Show Items</label>
             <div>
                 <input type='checkbox' checked={depFlightChkd} onChange={(e)=>{setDepFlightChkd(!depFlightChkd)}} id='dep_flight'></input>
-                <label for="dep_flight" id='chbx_1'>Departing Flights</label>
+                <label htmlFor="dep_flight" id='chbx_1'>Departing Flights</label>
             </div>
         </div>
     )

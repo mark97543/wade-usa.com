@@ -34,7 +34,7 @@ const TravelPlanner = () => {
     //console.log(selectedTrip)
 
     return (
-        <div>
+        <div >
             <TPContext.Provider value ={{tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd}}>
                 <Row0_TP />
                 <Row1_TP />

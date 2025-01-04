@@ -64,4 +64,16 @@ const TravelInfo = (db, app)=>{
     })
 }
 
-export {TPData, DeleteTrip, addTrip, UpdateTrip, TravelInfo}
+const newFlight = (db, app)=>{
+    app.post('/api/addflight', async (req, res)=>{
+        try{
+            const input = req.body
+
+            await db.query(`INSERT INTO public.${input.table} (trip_id, date, origin, airline, flight, depart, dest, land, note) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 )`, [input.data.trip_id, input.data.date, input.data.origin, input.data.airline, input.data.flight, input.data.depart, input.data.dest, input.data.land, input.data.note] )
+        }catch(error){
+            console.error('Error with newFlight function on the server side: ', error)
+        }
+    })
+}
+
+export {TPData, DeleteTrip, addTrip, UpdateTrip, TravelInfo, newFlight}
