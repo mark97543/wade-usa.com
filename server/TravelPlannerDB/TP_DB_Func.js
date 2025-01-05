@@ -55,7 +55,7 @@ const TravelInfo = (db, app)=>{
     app.post('/api/travelinfo', async(req,res)=>{
         try{
             const input = req.body
-            const data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1`,[input.trip])
+            const data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY date ASC, depart ASC`,[input.trip]) //Meed to make this so it sorts by date then by time
             //console.log(data.rows)
             return res.send(data)
         }catch(error){
@@ -76,4 +76,53 @@ const newFlight = (db, app)=>{
     })
 }
 
-export {TPData, DeleteTrip, addTrip, UpdateTrip, TravelInfo, newFlight}
+const Edit_Flight = (db, app)=>{
+    app.post('/api/editflight', async(req,res)=>{
+        const input = req.body
+        try{
+            console.log(input)    
+            await db.query( 
+                `UPDATE public.${input.table} 
+                SET trip_id = $1, 
+                    date = $2, 
+                    origin = $3, 
+                    airline = $4, 
+                    flight = $5, 
+                    depart = $6, 
+                    dest = $7, 
+                    land = $8, 
+                    note = $9 
+                WHERE id = $10`,
+               [
+                 input.data.trip_id,
+                 input.data.date,
+                 input.data.origin,
+                 input.data.airline,
+                 input.data.flight,
+                 input.data.depart,
+                 input.data.dest,
+                 input.data.land,
+                 input.data.note,
+                 input.data.id, // $10 corresponds to the id
+               ])
+
+
+            //Need to add query here
+        }catch(error){
+            console.error('Error With Edit_Flight function on the server Sude: ', error)
+        }
+    })
+}
+
+const DeleteFlight = async(db, app)=>{
+    app.post('/api/deleteflight', async (req, res)=>{
+        const input = req.body
+        try{
+            await db.query(`DELETE FROM public.${input.table} WHERE id=$1`, [input.id])
+        }catch(error){
+            console.error('Error with DeleteFlight function on the server side: ', error)
+        }
+    })
+}
+
+export {TPData, DeleteTrip, addTrip, UpdateTrip, TravelInfo, newFlight, Edit_Flight, DeleteFlight}

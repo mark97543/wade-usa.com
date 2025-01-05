@@ -21,3 +21,13 @@
     text-align: center;
     text-decoration: underline;
 }
+
+.note_text{
+    color: silver;
+}
+
+#note_div{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}

@@ -40,7 +40,7 @@
 }
 
 .r2_date_div{
-    width: 12%;
+    width: 96px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -51,8 +51,8 @@
 
 #r2_date_input, #r2_origin_label, #r2_airline_label ,#r2_flight_label, #r2_dest_label, #r2_depart_label, #r2_land_label, #r2_note_label{
     width: 100%;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 0;
+    margin-right:0;
     background: inherit;
     color: silver;
     border: none;
@@ -71,7 +71,7 @@
     padding-left: 2px;
     padding-right: 2px;
     border-right: 1px solid silver;
-    width: 7%;
+    width: 56px;
     justify-content: center;
     align-items: center;
 
@@ -94,13 +94,13 @@
     padding-left: 2px;
     padding-right: 2px;
     border-right: 1px solid silver;
-    width: 12%;
+    width: 96px;
     justify-content: center;
     align-items: center;
 }
 
 .r2_flight_div{
-    width: 10%;
+    width: 80px;
     align-items: center;
 }
 
@@ -110,7 +110,7 @@
     padding-left: 2px;
     padding-right: 2px;
     border-right: 1px solid silver;
-    width: 10%;
+    width: 80px;
     justify-content: center;
     align-items: center;
 }
@@ -121,7 +121,7 @@
     padding-left: 2px;
     padding-right: 2px;
     justify-content: left;
-    width: 32%; 
+    width: 250px; 
     font-size: small;  
     align-items: center;
     
@@ -170,15 +170,47 @@
 
 
 
-input[type="time"]::-webkit-calendar-picker-indicator{
-    opacity: 0; /* Adjust the value as needed (0 - transparent, 1 - opaque) */
+/* input[type="time"]::-webkit-calendar-picker-indicator{
+    opacity: 0; 
 }
 input[type="time"]::-webkit-datetime-edit-fields-wrapper {
   opacity: 1;
 }
 
 
-/* Firefox - Different pseudo-elements */
+
 input[type="time"] {
     opacity: 1;
+} */
+
+#r2_array_wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+#row2_editor{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: 10px;
+    width: 35%
+}
+
+#row2_saver{
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgb(0, 128, 0);
+}
+
+#row2_cancel{
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgb(31, 155, 207);
+}
+
+#row2_delete{
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgb(217, 83, 79);
 }

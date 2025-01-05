@@ -28,14 +28,14 @@ const TravelPlanner = () => {
             }
           };
           fetchData(); // Execute the async function
-    }, [selectedTrip]) //need to put in here when we save our data. 
+    }, [selectedTrip, depFlight]) //need to put in here when we save our data. 
    
     //console.log(depFlight)
     //console.log(selectedTrip)
 
     return (
         <div >
-            <TPContext.Provider value ={{tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd}}>
+            <TPContext.Provider value ={{tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd, setDepFlight}}>
                 <Row0_TP />
                 <Row1_TP />
                 <Row2_tp />

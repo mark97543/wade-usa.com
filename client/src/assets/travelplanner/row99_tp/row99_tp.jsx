@@ -15,9 +15,9 @@ const Row99_tp = () => {
         }else{
             setR99Vis(false)
         }
- 
+
         try{//Checks if Departing Trip Should be Checked
-            if(depFlight.length > 0){
+            if(depFlight.length > 0 || depFlightChkd===true){
                 setDepFlightChkd(true)
             }else{
                 setDepFlightChkd(false)
@@ -27,9 +27,8 @@ const Row99_tp = () => {
         }
 
 
-    }, [selectedTrip, depFlight]) //need to put in here when we save our data. 
-
-
+    }, [ depFlight]) //need to put in here when we save our data. 
+ 
 
     return (
         <div id='row99_div' hidden={r99Vis}>
@@ -37,6 +36,10 @@ const Row99_tp = () => {
             <div>
                 <input type='checkbox' checked={depFlightChkd} onChange={(e)=>{setDepFlightChkd(!depFlightChkd)}} id='dep_flight'></input>
                 <label htmlFor="dep_flight" id='chbx_1'>Departing Flights</label>
+            </div>
+            <div id='note_div'>
+                <label className='note_text'>Note 1: For The sorting make sure all your time formats are the same</label>
+                <label className='note_text'>Note 2: To Edit the Item Double Click on it. </label>
             </div>
         </div>
     )

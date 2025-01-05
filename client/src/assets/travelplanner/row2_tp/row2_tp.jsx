@@ -4,11 +4,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // Bootstrap JS
 import './row2_tp.css'
 import { TPContext } from '../travelplanner';
 import { format } from 'date-fns';
-import { AddFlight } from '../travelplanner_dbfunc';
+import { AddFlight, EditFlight, DeleteFlight } from '../travelplanner_dbfunc';
 
 
 const Row2_tp = () => {
-    const {depFlight, depFlightChkd, selectedTrip, setSelectedTrip}=useContext(TPContext)
+    const {depFlight, depFlightChkd, selectedTrip, setDepFlight}=useContext(TPContext)
     const [hide, setHide]=useState(true)//Hide whole area
     const [addItem, setAddItem]=useState(false)//add items hidden
     const [newDate, setNewDate]=useState("")//New Date Entry
@@ -19,8 +19,9 @@ const Row2_tp = () => {
     const [newDest, setNewDest]=useState("")
     const [newLand, setNewLand]=useState("")
     const [newNote, setNewNote]=useState("")
-
- 
+    const [editItem, setEditItem]=useState(true)
+    const [rowID, setRowID]=useState("") //Curently Edited Row
+    
 
     useEffect(()=>{
         try{
@@ -38,12 +39,23 @@ const Row2_tp = () => {
     },[depFlight, depFlightChkd])
 
     const handleTimeChange = (e, setter) => {
-        let value = e.target.value.replace(/[^0-9]/g, ''); // Allow only numbers
-        if (value.length > 2) {
-            value = value.slice(0, 2) + ':' + value.slice(2, 4);
-        }
-        setter(value);
+        let inputValue = e.target.value;
+    
+        // 1. Clean the input (allow colon deletion)
+        let numericValue = inputValue.replace(/[^0-9:]/g, '');  
+    
+        setter(numericValue);
     };
+
+
+    const dateBlur = ()=>{
+        const a = new Date (newDate)
+        const mm = String(a.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const dd = String(a.getDate()).padStart(2, '0');
+        const yy = String(a.getFullYear()).slice(-2);
+        //console.log(`${mm}/${dd}/${yy}`);
+        setNewDate(`${mm}/${dd}/${yy}`)
+    }
 
     const NewItem = ()=>{
         if(newDate===""){
@@ -64,7 +76,7 @@ const Row2_tp = () => {
 
         AddFlight(newData, "departingflights")
         //Need to Push to DB here. 
-
+        setDepFlight("")//Clears And Forces A
 
         setAddItem(!addItem)
         setNewDate("")
@@ -72,6 +84,77 @@ const Row2_tp = () => {
         setNewAirline("")
         setNewFlight("")
         setNewDepart("")
+        setNewDest("")
+        setNewLand("")
+        setNewNote("")
+    }
+
+    const editor = (row)=>{
+        //console.log(row)
+        setRowID(row.id)
+        setEditItem(false)
+
+        setNewDate(row.date)
+        setNewOrigin(row.origin)
+        setNewAirline(row.airline)
+        setNewFlight(row.flight)
+        setNewDepart(row.depart)
+        setNewDest(row.dest)
+        setNewLand(row.land)
+        setNewNote(row.note)
+    }
+
+    const editorCancel = ()=>{
+        setEditItem(true)
+        setNewDate("")
+        setNewOrigin("")
+        setNewAirline("")
+        setNewFlight("")
+        setNewDepart("")
+        setNewDest("")
+        setNewLand("")
+        setNewNote("")
+    }
+
+    const SaveRow = ()=>{
+        //console.log(rowID)
+
+        const newData = {
+            id:rowID,
+            trip_id:selectedTrip,
+            date:newDate,
+            origin:newOrigin,
+            airline:newAirline,
+            flight:newFlight,
+            depart:newDepart,
+            dest:newDest,
+            land:newLand,
+            note:newNote
+        }
+
+        EditFlight(newData, 'departingflights')
+
+        setEditItem(true)
+        setRowID("")
+        setNewDate("")
+        setNewOrigin("")
+        setNewAirline("")
+        setNewFlight("")
+        setNewDepart("")
+        setNewDest("")
+        setNewLand("")
+        setNewNote("")
+      
+    }
+
+    const deleteItem = ()=>{
+        DeleteFlight(rowID, 'departingflights')
+        setEditItem(true)
+        setRowID("")
+        setNewDate("")
+        setNewOrigin("")
+        setNewAirline("")
+        setNewFlight("")
         setNewDepart("")
         setNewDest("")
         setNewLand("")
@@ -111,10 +194,11 @@ const Row2_tp = () => {
                     </div>
 
                 </div>
-
                 {Array.isArray(depFlight) && depFlight.map((flight,index)=>(
+                   
                     <div 
                         id='r2_data_div' 
+                        onDoubleClick={()=>editor(flight)}
                         key={index}
                         style={{ backgroundColor: index % 2 === 0 ? 'rgb(77,77,77)' : 'inherit' }}
                     >
@@ -146,45 +230,62 @@ const Row2_tp = () => {
                         <div className='r2_land_div'>
                             <label id='r2_land_label'>{flight.land.substring(0,5)}</label>
                         </div>
+
                         <div className='r2_note_div'>
                             <label id='r2_note_label'>{flight.note}</label>
                         </div>
 
                     </div>
+
+          
                 ))}
                 <div id='r2_bottom' >
                     
-                    <div className='r2_date_div' hidden={!addItem}>
-                        <input value={newDate} onChange={(e)=>setNewDate(e.target.value)} className='r2_add_input' type='date' placeholder='New'></input>
+                    <div className='r2_date_div' hidden={!addItem && editItem}>
+                        <input value={newDate} onChange={(e)=>setNewDate(e.target.value)} onBlur={()=>dateBlur()} maxLength='10' className='r2_add_input' type='text' placeholder='MM/DD/YY'></input>
                     </div>
-                    <div className='r2_origin_div' hidden={!addItem}>
+                    <div className='r2_origin_div' hidden={!addItem&& editItem}>
                         <input maxLength='3' value={newOrigin} onChange={(e)=>setNewOrigin(e.target.value.toUpperCase())} className='r2_add_input' type='text' placeholder='New'></input>
                     </div>
-                    <div className='r2_airline_div'hidden={!addItem} >
+                    <div className='r2_airline_div'hidden={!addItem&& editItem} >
                         <input maxLength='7' value={newAirline} onChange={(e)=>setNewAirline(e.target.value.toUpperCase())} className='r2_add_input' type='text' placeholder='New'></input>
                     </div>
-                    <div className='r2_flight_div' hidden={!addItem}>
+                    <div className='r2_flight_div' hidden={!addItem&& editItem}>
                         <input maxLength='7' value={newFlight} onChange={(e)=>setNewFlight(e.target.value.toUpperCase())} className='r2_add_input' type='text' placeholder='New'></input>
                     </div>
-                    <div className='r2_depart_div' hidden={!addItem}>
-                        <input maxLength='5'  value={newDepart} onChange={(e)=>handleTimeChange(e, setNewDepart)} className='r2_add_input' type='text' placeholder='HH:MM'></input>
+                    <div className='r2_depart_div' hidden={!addItem&& editItem}>
+                       <input maxLength='5'  value={newDepart} onChange={(e)=>handleTimeChange(e, setNewDepart)} className='r2_add_input' type='text' placeholder='HH:MM'></input> 
                     </div>
-                    <div className='r2_dest_div'hidden={!addItem}>
+                    <div className='r2_dest_div'hidden={!addItem&& editItem}>
                         <input maxLength='3' value={newDest} onChange={(e)=>setNewDest(e.target.value.toUpperCase())} className='r2_add_input' type='text' placeholder='New'></input>
                     </div>
-                    <div className='r2_land_div' hidden={!addItem}>
-                        <input maxLength='5'  value={newLand} onChange={(e)=>handleTimeChange(e, setNewLand)} className='r2_add_input' type='text' placeholder='HH:MM'></input>
+                    <div className='r2_land_div' hidden={!addItem&& editItem}>
+                        <input maxLength='5'  value={newLand} onChange={(e)=>setNewLand(e.target.value)} className='r2_add_input' type='text' placeholder='HH:MM'></input>
                     </div>
-                    <div className='r2_note_div'hidden={!addItem}>
+                    <div className='r2_note_div'hidden={!addItem&& editItem}>
                         <textarea maxLength='80' rows='3' value={newNote} onChange={(e)=>setNewNote(e.target.value)} id='r2_textarea' className='r2_add_input' type='text' placeholder='New'></textarea>
                     </div>
 
                 </div>
             </div>
             <div id='r2_button_div'>
-                <button id='r2_add_button' hidden={addItem} onClick={()=>setAddItem(!addItem)}>Add Item</button>
-                <button id='r2_save_button' hidden={!addItem} onClick={()=>NewItem()}>Save</button>
-                <button id='r2_cancel_button' hidden={!addItem} onClick={()=>setAddItem(!addItem)}>Cancel</button>
+                <button id='r2_add_button' hidden={addItem || !editItem} onClick={()=>setAddItem(!addItem)}>Add Item</button>
+                <button id='r2_save_button' hidden={!addItem || !editItem} onClick={()=>NewItem()}>Save</button>
+                <button id='r2_cancel_button' hidden={!addItem|| !editItem} onClick={()=>{setAddItem(!addItem);
+                            setNewDate("")
+                            setNewOrigin("")
+                            setNewAirline("")
+                            setNewFlight("")
+                            setNewDepart("")
+                            setNewDest("")
+                            setNewLand("")
+                            setNewNote("")
+                }}>Cancel</button>
+            </div>
+            <div id='row2_editor'>
+                <button hidden={editItem} id='row2_saver' onClick={()=>SaveRow()}>Save</button> {/* Need to Build */}
+                <button hidden={editItem} id='row2_cancel' onClick={()=>editorCancel()} >Cancel</button>
+                <button hidden={editItem} id='row2_delete' onClick={()=>deleteItem()}>Delete</button>{/* Need to Build */}
             </div>
         </div>
     )

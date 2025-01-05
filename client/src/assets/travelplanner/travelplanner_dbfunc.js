@@ -59,4 +59,22 @@ const AddFlight = async (data, table)=>{
     }
 }
 
-export {getAllTP, deleteTrip, addTrip, updateTrip, TravelInfo, AddFlight}
+const EditFlight = async (data, table)=>{
+    const send = {data:data, table:table}
+    try{
+        await axios.post('/api/editflight', send)
+    }catch(error){
+        console.error('Error with EditFlight on the Client Side: ', error)
+    }
+}
+
+const DeleteFlight = async(id, table)=>{
+    const send = {id:id, table:table}
+    try{
+        await axios.post('/api/deleteflight', send)
+    }catch(error){
+        console.error('Error wirh DeleteFlight Function on the client side: ', error)
+    }
+}
+
+export {getAllTP, deleteTrip, addTrip, updateTrip, TravelInfo, AddFlight, EditFlight,DeleteFlight}
