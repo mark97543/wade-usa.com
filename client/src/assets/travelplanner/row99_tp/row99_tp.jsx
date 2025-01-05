@@ -27,7 +27,7 @@ const Row99_tp = () => {
         }
 
 
-    }, [ depFlight]) //need to put in here when we save our data. 
+    }, []) //need to put in here when we save our data. 
  
 
     return (

@@ -55,8 +55,13 @@ const TravelInfo = (db, app)=>{
     app.post('/api/travelinfo', async(req,res)=>{
         try{
             const input = req.body
-            const data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY date ASC, depart ASC`,[input.trip]) //Meed to make this so it sorts by date then by time
-            //console.log(data.rows)
+            if(input.table === 'departingflights'){
+                var data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY date ASC, depart ASC`,[input.trip]) //Meed to make this so it sorts by date then by time
+            }else if(input.table==='hotels'){
+                var data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY checkin ASC`,[input.trip]) 
+            }else{
+                var data = ""
+            }
             return res.send(data)
         }catch(error){
             console.error('Error with the TravelInfo function on the server side: ', error)

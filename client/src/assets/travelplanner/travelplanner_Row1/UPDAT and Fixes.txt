@@ -1,3 +1,4 @@
 1). The Departing FLights Times do not autoformat. Need to fix this on future update so this comes out properly
     - This might be more Effficent if we split the entry to the times 
-2). In the Departing Flights Should make more external functions to make code simpler
+2). In the Departing Flights Should make more external functions to make code simpler 
+3). Row 99 Should Check to Auto Hide or not. Right now there is no triger as to wheather hide row or not. 

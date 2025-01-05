@@ -17,6 +17,7 @@ const TravelPlanner = () => {
     const [selectedTrip, setSelectedTrip]=useState('')//Curently selected trip (this is the ID only)
     const [depFlight, setDepFlight]=useState([])
     const [depFlightChkd, setDepFlightChkd]=useState(false)//Row 99 Selection
+    const [hotels, setHotels]=useState("")//Hotel Data
  
 
     useEffect(()=>{
@@ -24,13 +25,15 @@ const TravelPlanner = () => {
             await getAllTP(setTPData); // Wait for getAllTP to complete
             if (selectedTrip) {
                 const flightData = await TravelInfo(selectedTrip, "departingflights"); // Wait for TravelInfo to complete
+                //const hotelData = await TravelInfo(selectedTrip,"hotels");//Pulls in Hotel Data
                 setDepFlight(flightData);
+                //setHotels(hotelData)
             }
           };
           fetchData(); // Execute the async function
     }, [selectedTrip, depFlight]) //need to put in here when we save our data. 
    
-    //console.log(depFlight)
+    //console.log(hotels)
     //console.log(selectedTrip)
 
     return (
