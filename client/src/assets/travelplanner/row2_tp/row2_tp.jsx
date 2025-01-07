@@ -18,7 +18,7 @@ const Row2_tp = () => {
     const [newDepart, setNewDepart]=useState("")
     const [newDest, setNewDest]=useState("")
     const [newLand, setNewLand]=useState("")
-    const [newNote, setNewNote]=useState("")
+    //const [newNote, setNewNote]=useState("")
     const [editItem, setEditItem]=useState(true)
     const [rowID, setRowID]=useState("") //Curently Edited Row
     
@@ -71,7 +71,7 @@ const Row2_tp = () => {
             depart:newDepart,
             dest:newDest,
             land:newLand,
-            note:newNote
+            //note:newNote
         }
 
         AddFlight(newData, "departingflights")
@@ -86,7 +86,7 @@ const Row2_tp = () => {
         setNewDepart("")
         setNewDest("")
         setNewLand("")
-        setNewNote("")
+        //setNewNote("")
     }
 
     const editor = (row)=>{
@@ -101,7 +101,7 @@ const Row2_tp = () => {
         setNewDepart(row.depart)
         setNewDest(row.dest)
         setNewLand(row.land)
-        setNewNote(row.note)
+        //setNewNote(row.note)
     }
 
     const editorCancel = ()=>{
@@ -113,7 +113,7 @@ const Row2_tp = () => {
         setNewDepart("")
         setNewDest("")
         setNewLand("")
-        setNewNote("")
+        //setNewNote("")
     }
 
     const SaveRow = ()=>{
@@ -129,7 +129,7 @@ const Row2_tp = () => {
             depart:newDepart,
             dest:newDest,
             land:newLand,
-            note:newNote
+            //note:newNote
         }
 
         EditFlight(newData, 'departingflights')
@@ -143,7 +143,7 @@ const Row2_tp = () => {
         setNewDepart("")
         setNewDest("")
         setNewLand("")
-        setNewNote("")
+        //setNewNote("")
       
     }
 
@@ -158,7 +158,7 @@ const Row2_tp = () => {
         setNewDepart("")
         setNewDest("")
         setNewLand("")
-        setNewNote("")
+        //setNewNote("")
     }
 
     return (
@@ -189,9 +189,9 @@ const Row2_tp = () => {
                     <div className='r2_land_div'>
                         <label className='r2_basic_label'>Land</label>
                     </div>
-                    <div className='r2_note_div'>
+                    {/* <div className='r2_note_div'>
                         <label className='r2_basic_label'>Note</label>
-                    </div>
+                    </div> */}
 
                 </div>
                 {Array.isArray(depFlight) && depFlight.map((flight,index)=>(
@@ -231,10 +231,9 @@ const Row2_tp = () => {
                             <label id='r2_land_label'>{flight.land.substring(0,5)}</label>
                         </div>
 
-                        <div className='r2_note_div'>
+                        {/* <div className='r2_note_div'>
                             <label id='r2_note_label'>{flight.note}</label>
-                        </div>
-
+                        </div> */}
                     </div>
 
           
@@ -262,9 +261,9 @@ const Row2_tp = () => {
                     <div className='r2_land_div' hidden={!addItem&& editItem}>
                         <input maxLength='5'  value={newLand} onChange={(e)=>setNewLand(e.target.value)} className='r2_add_input' type='text' placeholder='HH:MM'></input>
                     </div>
-                    <div className='r2_note_div'hidden={!addItem&& editItem}>
+                    {/* <div className='r2_note_div'hidden={!addItem&& editItem}>
                         <textarea maxLength='80' rows='3' value={newNote} onChange={(e)=>setNewNote(e.target.value)} id='r2_textarea' className='r2_add_input' type='text' placeholder='New'></textarea>
-                    </div>
+                    </div> */}
 
                 </div>
             </div>
@@ -279,13 +278,13 @@ const Row2_tp = () => {
                             setNewDepart("")
                             setNewDest("")
                             setNewLand("")
-                            setNewNote("")
+                            //setNewNote("")
                 }}>Cancel</button>
             </div>
             <div id='row2_editor'>
-                <button hidden={editItem} id='row2_saver' onClick={()=>SaveRow()}>Save</button> {/* Need to Build */}
+                <button hidden={editItem} id='row2_saver' onClick={()=>SaveRow()}>Save</button> 
                 <button hidden={editItem} id='row2_cancel' onClick={()=>editorCancel()} >Cancel</button>
-                <button hidden={editItem} id='row2_delete' onClick={()=>deleteItem()}>Delete</button>{/* Need to Build */}
+                <button hidden={editItem} id='row2_delete' onClick={()=>deleteItem()}>Delete</button>
             </div>
         </div>
     )

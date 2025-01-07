@@ -73,8 +73,11 @@ const newFlight = (db, app)=>{
     app.post('/api/addflight', async (req, res)=>{
         try{
             const input = req.body
-
-            await db.query(`INSERT INTO public.${input.table} (trip_id, date, origin, airline, flight, depart, dest, land, note) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 )`, [input.data.trip_id, input.data.date, input.data.origin, input.data.airline, input.data.flight, input.data.depart, input.data.dest, input.data.land, input.data.note] )
+            if(input.table==="departingflights"){
+                await db.query(`INSERT INTO public.${input.table} (trip_id, date, origin, airline, flight, depart, dest, land) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )`, [input.data.trip_id, input.data.date, input.data.origin, input.data.airline, input.data.flight, input.data.depart, input.data.dest, input.data.land] )
+            }else if(input.table==='hotels'){
+                await db.query(`INSERT INTO public.${input.table} (trip_id, checkin, name, address, number, checkout) VALUES ($1, $2, $3, $4, $5, $6)`, [input.data.trip_id, input.data.checkin, input.data.name, input.data.address, input.data.number, input.data.checkout] )
+            }
         }catch(error){
             console.error('Error with newFlight function on the server side: ', error)
         }
@@ -85,34 +88,52 @@ const Edit_Flight = (db, app)=>{
     app.post('/api/editflight', async(req,res)=>{
         const input = req.body
         try{
-            console.log(input)    
-            await db.query( 
-                `UPDATE public.${input.table} 
-                SET trip_id = $1, 
-                    date = $2, 
-                    origin = $3, 
-                    airline = $4, 
-                    flight = $5, 
-                    depart = $6, 
-                    dest = $7, 
-                    land = $8, 
-                    note = $9 
-                WHERE id = $10`,
-               [
-                 input.data.trip_id,
-                 input.data.date,
-                 input.data.origin,
-                 input.data.airline,
-                 input.data.flight,
-                 input.data.depart,
-                 input.data.dest,
-                 input.data.land,
-                 input.data.note,
-                 input.data.id, // $10 corresponds to the id
-               ])
+            //console.log(input)  
+            if(input.table==='departingflights'){  
+                await db.query( 
+                    `UPDATE public.${input.table} 
+                    SET trip_id = $1, 
+                        date = $2, 
+                        origin = $3, 
+                        airline = $4, 
+                        flight = $5, 
+                        depart = $6, 
+                        dest = $7, 
+                        land = $8 
+                    WHERE id = $9`,
+                [
+                    input.data.trip_id,
+                    input.data.date,
+                    input.data.origin,
+                    input.data.airline,
+                    input.data.flight,
+                    input.data.depart,
+                    input.data.dest,
+                    input.data.land,
+                    input.data.id // $9 corresponds to the id
+                ])
+            }else if(input.table ==='hotels'){
+                await db.query( 
+                    `UPDATE public.${input.table} 
+                    SET trip_id = $1, 
+                        checkin = $2, 
+                        name = $3, 
+                        address = $4, 
+                        number = $5, 
+                        checkout = $6 
+                    WHERE id = $7`,
+                [
+                    input.data.trip_id,
+                    input.data.checkin,
+                    input.data.name,
+                    input.data.address,
+                    input.data.number,
+                    input.data.checkout,
+                    input.data.id // $7 corresponds to the id
+                ])
+            }
 
 
-            //Need to add query here
         }catch(error){
             console.error('Error With Edit_Flight function on the server Sude: ', error)
         }
