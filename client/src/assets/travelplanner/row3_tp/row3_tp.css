@@ -1,0 +1,90 @@
+#r3_outside_div{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid silver;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: inherit;
+}
+
+#hotel_title{
+    display: flex;
+    flex-direction: row;
+    background-color: gray;
+    width: 100%;
+
+}
+
+#hotel_title_label{
+    color: black;
+    margin-left: 15px;
+
+}
+
+#row3_checkin, #row3_name, #row3_addr, #row3_num, #row3_co{
+    color: silver;
+}
+
+.row3_date{
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-right: 1px solid silver;
+    align-items: center;
+}
+
+#row3_title_divs{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid silver;
+}
+
+.row3_hotel_name{
+    width: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-right: 1px solid silver;
+    align-items: center;
+}
+
+.row3_address{
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-right: 1px solid silver;
+    align-items: center;
+}
+
+.row3_number{
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-right: 1px solid silver;
+    align-items: center;
+}
+
+.row3_checkout{
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-right: 1px solid silver;
+    align-items: center;
+}
+
+.row3_note{
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-right: 1px solid silver;
+    align-items: center;
+}
