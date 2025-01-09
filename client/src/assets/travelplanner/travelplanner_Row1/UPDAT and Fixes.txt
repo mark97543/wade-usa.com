@@ -1,6 +1,4 @@
-1). The Departing FLights Times do not autoformat. Need to fix this on future update so this comes out properly
-    - This might be more Effficent if we split the entry to the times 
-2). In the Departing Flights Should make more external functions to make code simpler 
+1/2). All Dates and Times need a Autoformatter (this should be built in the genral functions area)
 3). Row 99 Should Check to Auto Hide or not. Right now there is no triger as to wheather hide row or not. 
 4). Departing Flights need to add a flight duration column (Or just leav this blank. )
 5). dateBlur function sets 020205 to 01/01/05; Need to investigate this and fix it. Not a breaker just annoying

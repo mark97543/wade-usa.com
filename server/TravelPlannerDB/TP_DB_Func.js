@@ -83,6 +83,8 @@ const newFlight = (db, app)=>{
                 await db.query(`INSERT INTO public.${input.table} (trip_id, checkin, name, address, number, checkout) VALUES ($1, $2, $3, $4, $5, $6)`, [input.data.trip_id, input.data.checkin, input.data.name, input.data.address, input.data.number, input.data.checkout] )
             }else if(input.table==='rc'){
                 await db.query(`INSERT INTO public.${input.table} (trip_id, pu, putime, company, location, return, returntime) VALUES ($1, $2, $3, $4, $5, $6, $7)`, [input.data.trip_id,input.data.pu,input.data.putime,input.data.company,input.data.location,input.data.return,input.data.returntime ])
+            }else if(input.table==="activities"){
+                await db.query(`INSERT INTO public.${input.table} (trip_id, date, time, event, details) VALUES ($1, $2, $3, $4, $5)`,[input.data.trip_id, input.data.date, input.data.time, input.data.event, input.data.details])
             }
         }catch(error){
             console.error('Error with newFlight function on the server side: ', error)
@@ -158,8 +160,24 @@ const Edit_Flight = (db, app)=>{
                     input.data.returntime, 
                     input.data.id // $8 corresponds to the id
                 ])
+            }else if(input.table ==="activities"){
+                await db.query( 
+                    `UPDATE public.${input.table} 
+                    SET trip_id = $1, 
+                        date = $2, 
+                        time = $3, 
+                        event = $4, 
+                        details = $5
+                    WHERE id = $6`,
+                [
+                    input.data.trip_id,
+                    input.data.date,
+                    input.data.time,
+                    input.data.event,
+                    input.data.details,
+                    input.data.id // $8 corresponds to the id
+                ])
             }
-
 
         }catch(error){
             console.error('Error With Edit_Flight function on the server Sude: ', error)

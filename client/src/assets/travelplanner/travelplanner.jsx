@@ -16,7 +16,7 @@ export const TPContext = createContext(null);
 
 const TravelPlanner = () => {
     
-    const [tpData, setTPData] = useState(); //This is all the trip values in entirety
+    const [tpData, setTPData] = useState(""); //This is all the trip values in entirety
     const [selectedTrip, setSelectedTrip]=useState('')//Curently selected trip (this is the ID only)
     const [depFlight, setDepFlight]=useState([])
     const [depFlightChkd, setDepFlightChkd]=useState(true)//Row 99 Selection Departing Flights

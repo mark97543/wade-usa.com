@@ -54,6 +54,8 @@ const Row99_tp = () => {
             <div id='note_div'>
                 <label className='note_text'>Note 1: For The sorting make sure all your time formats are the same</label>
                 <label className='note_text'>Note 2: To Edit the Item Double Click on it. </label>
+                <label className='note_text'>Note 3: Do not put sensative information like Confirmation numbers in this until a login is created </label>
+                <label className='note_text'>Note 4: Make sure Single digit in months or days are preceded with a 0 ie. "02/02/25" </label>
             </div>
         </div>
     )
