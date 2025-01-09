@@ -59,6 +59,10 @@ const TravelInfo = (db, app)=>{
                 var data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY date ASC, depart ASC`,[input.trip]) //Meed to make this so it sorts by date then by time
             }else if(input.table==='hotels'){
                 var data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY checkin ASC`,[input.trip]) 
+            }else if(input.table ==='rc'){
+                var data =await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY pu ASC`,[input.trip]) 
+            }else if(input.table==='activities'){
+                var data =await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY date ASC, time ASC`,[input.trip]) 
             }else{
                 var data = ""
             }
@@ -77,6 +81,8 @@ const newFlight = (db, app)=>{
                 await db.query(`INSERT INTO public.${input.table} (trip_id, date, origin, airline, flight, depart, dest, land) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )`, [input.data.trip_id, input.data.date, input.data.origin, input.data.airline, input.data.flight, input.data.depart, input.data.dest, input.data.land] )
             }else if(input.table==='hotels'){
                 await db.query(`INSERT INTO public.${input.table} (trip_id, checkin, name, address, number, checkout) VALUES ($1, $2, $3, $4, $5, $6)`, [input.data.trip_id, input.data.checkin, input.data.name, input.data.address, input.data.number, input.data.checkout] )
+            }else if(input.table==='rc'){
+                await db.query(`INSERT INTO public.${input.table} (trip_id, pu, putime, company, location, return, returntime) VALUES ($1, $2, $3, $4, $5, $6, $7)`, [input.data.trip_id,input.data.pu,input.data.putime,input.data.company,input.data.location,input.data.return,input.data.returntime ])
             }
         }catch(error){
             console.error('Error with newFlight function on the server side: ', error)
@@ -130,6 +136,27 @@ const Edit_Flight = (db, app)=>{
                     input.data.number,
                     input.data.checkout,
                     input.data.id // $7 corresponds to the id
+                ])
+            }else if (input.table==='rc'){
+                await db.query( 
+                    `UPDATE public.${input.table} 
+                    SET trip_id = $1, 
+                        pu = $2, 
+                        putime = $3, 
+                        company = $4, 
+                        location = $5, 
+                        return = $6,
+                        returntime = $7 
+                    WHERE id = $8`,
+                [
+                    input.data.trip_id,
+                    input.data.pu,
+                    input.data.putime,
+                    input.data.company,
+                    input.data.location,
+                    input.data.return,
+                    input.data.returntime, 
+                    input.data.id // $8 corresponds to the id
                 ])
             }
 

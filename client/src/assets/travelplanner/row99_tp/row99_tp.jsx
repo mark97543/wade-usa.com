@@ -5,7 +5,7 @@ import './row99_tp.css'
 import { TPContext } from '../travelplanner';
 
 const Row99_tp = () => {
-    const {selectedTrip, depFlight, depFlightChkd, setDepFlightChkd, hotelsChkd, setHotelsChkd }=useContext(TPContext)
+    const {actchkd, setActChkd, selectedTrip, depFlight, depFlightChkd, setDepFlightChkd, hotelsChkd, setHotelsChkd, rCChkd, setRCChkd}=useContext(TPContext)
     const [r99Vis, setR99Vis]=useState(true)
     //const [depFlightChkd, setDepFlightChkd]=useState(false)
 
@@ -14,10 +14,14 @@ const Row99_tp = () => {
             setR99Vis(true)
             setDepFlightChkd(false)
             setHotelsChkd(false)
+            setRCChkd(false)
+            setActChkd(false)
         }else{
             setR99Vis(false)
             setDepFlightChkd(true)
             setHotelsChkd(true)
+            setRCChkd(true)
+            setActChkd(true)
         }
 
         // try{//Checks if Departing Trip Should be Checked
@@ -38,10 +42,14 @@ const Row99_tp = () => {
         <div id='row99_div' hidden={r99Vis}>
             <label id='r99_top'>Hide/Show Items</label>
             <div>
-                <input type='checkbox' checked={depFlightChkd} onChange={(e)=>{setDepFlightChkd(!depFlightChkd)}} id='dep_flight'></input>
-                <label htmlFor="dep_flight" id='chbx_1'>Departing Flights</label>
-                <input type='checkbox' checked={hotelsChkd} onChange={(e)=>{setHotelsChkd(!hotelsChkd)}} id='hotels'></input>
-                <label htmlFor="hotels" id='chbx_1'>Hotels</label>
+                <input type='checkbox' checked={depFlightChkd} onChange={(e)=>{setDepFlightChkd(!depFlightChkd)}} className='dep_flight'></input>
+                <label htmlFor="dep_flight" className='chbx_1'>Departing Flights</label>
+                <input type='checkbox' checked={hotelsChkd} onChange={(e)=>{setHotelsChkd(!hotelsChkd)}} className='hotels'></input>
+                <label htmlFor="hotels" className='chbx_1'>Hotels</label>
+                <input type='checkbox' checked={rCChkd} onChange={(e)=>{setRCChkd(!rCChkd)}} className='rc'></input>
+                <label htmlFor="rc" className='chbx_1'>Rental Cars</label>
+                <input type='checkbox' checked={actchkd} onChange={(e)=>{setActChkd(!actchkd)}} className='act'></input>
+                <label htmlFor="act" className='chbx_1'>Activities</label>
             </div>
             <div id='note_div'>
                 <label className='note_text'>Note 1: For The sorting make sure all your time formats are the same</label>

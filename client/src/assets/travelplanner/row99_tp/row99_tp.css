@@ -10,7 +10,7 @@
     padding: 10px;
 }
 
-#chbx_1{
+.chbx_1{
     color: silver;
     margin-left: 5px
     
@@ -32,6 +32,12 @@
     margin-top: 20px;
 }
 
-#hotels{
+.hotels{
+    margin-left: 10px;
+}
+.rc{
+    margin-left: 10px;
+}
+.act{
     margin-left: 10px;
 }

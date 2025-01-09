@@ -168,7 +168,13 @@ const Row_3 = () => {
             <div id='r3_button_div'>
                 <button id='r3_add_button' hidden={addItemVis || !editItem} onClick={()=>setAddItemVis(!addItemVis)}>Add Item</button>
                 <button id='r3_save_button' hidden={!addItemVis || !editItem} onClick={()=>addHotel()}>Save</button> 
-                <button id='r3_cancel_button'hidden={!addItemVis || !editItem} onClick={()=>setAddItemVis(!addItemVis)}>Cancel</button>
+                <button id='r3_cancel_button'hidden={!addItemVis || !editItem} onClick={()=>{setAddItemVis(!addItemVis)
+                            setNewCheckIn("")
+                            setNewHotel("")
+                            setNewAddress("")
+                            setNewNumber("")
+                            setNewCheckOut("")
+                }}>Cancel</button>
             </div>
             <div id='row2_editor'>
                 <button hidden={editItem} id='row2_saver' onClick={()=>SaveRow()} >Save</button> 
