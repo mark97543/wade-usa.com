@@ -41,3 +41,7 @@
 .act{
     margin-left: 10px;
 }
+
+.dep_flight, .arr_flight{
+    margin-left: 5px;
+}

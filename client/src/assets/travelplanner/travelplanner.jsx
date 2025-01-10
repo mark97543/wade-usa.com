@@ -7,6 +7,7 @@ import Row2_tp from './row2_tp/row2_tp.jsx';
 import Row_3 from './row3_tp/row3_tp.jsx';
 import Row4 from './row4_tp/row4_tp.jsx';
 import Row5 from './row5_tp/row5_tp.jsx';
+import Row6_tp from './row6_tp/row6_tp.jsx';
 import Row99_tp from './row99_tp/row99_tp.jsx';
 
 import { getAllTP, TravelInfo } from './travelplanner_dbfunc.js';
@@ -26,6 +27,8 @@ const TravelPlanner = () => {
     const [rCars, setRCars]=useState("")//Rental Car Data
     const [actchkd, setActChkd]=useState(true)
     const [activities, setActivities]=useState("")
+    const [arrFlightChkd, setArrFlightChkd]=useState(true)
+    const [returnFlight, setReturnFlight]=useState("")
  
 
     useEffect(()=>{
@@ -36,6 +39,8 @@ const TravelPlanner = () => {
                 const hotelData = await TravelInfo(selectedTrip,"hotels");//Pulls in Hotel Data
                 const rentalCarData = await TravelInfo(selectedTrip, "rc")//Pulls in Rental Car Data
                 const activityItems = await TravelInfo(selectedTrip, "activities")//Pulls in activity data
+                const arrivals = await TravelInfo(selectedTrip, "arrivingflights")
+                setReturnFlight(arrivals)
                 setDepFlight(flightData);
                 setHotels(hotelData)
                 setRCars(rentalCarData)
@@ -43,20 +48,21 @@ const TravelPlanner = () => {
             }
           };
           fetchData(); // Execute the async function
-    }, [selectedTrip, depFlight, hotels, rCars, activities]) //need to put in here when we save our data. 
+    }, [selectedTrip, depFlight, hotels, rCars, activities, returnFlight]) //need to put in here when we save our data. 
    
     //console.log(activities)
     //console.log(selectedTrip)
 
     return (
         <div >
-            <TPContext.Provider value ={{activities, actchkd, setActChkd, rCars, rCChkd, setRCChkd, tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd, setDepFlight, hotelsChkd, setHotelsChkd, hotels}}>
+            <TPContext.Provider value ={{returnFlight,setReturnFlight ,arrFlightChkd, setArrFlightChkd, activities, actchkd, setActChkd, rCars, rCChkd, setRCChkd, tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd, setDepFlight, hotelsChkd, setHotelsChkd, hotels}}>
                 <Row0_TP />
                 <Row1_TP />
                 <Row2_tp />
                 <Row_3 />
                 <Row4/>
                 <Row5/>
+                <Row6_tp/>
                 <Row99_tp />
             </TPContext.Provider>
         </div>

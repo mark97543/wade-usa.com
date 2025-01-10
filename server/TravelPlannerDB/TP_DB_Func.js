@@ -55,7 +55,7 @@ const TravelInfo = (db, app)=>{
     app.post('/api/travelinfo', async(req,res)=>{
         try{
             const input = req.body
-            if(input.table === 'departingflights'){
+            if(input.table === 'departingflights' || input.table === 'arrivingflights'){
                 var data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY date ASC, depart ASC`,[input.trip]) //Meed to make this so it sorts by date then by time
             }else if(input.table==='hotels'){
                 var data = await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY checkin ASC`,[input.trip]) 
@@ -77,7 +77,7 @@ const newFlight = (db, app)=>{
     app.post('/api/addflight', async (req, res)=>{
         try{
             const input = req.body
-            if(input.table==="departingflights"){
+            if(input.table==="departingflights" || input.table==="arrivingflights"){
                 await db.query(`INSERT INTO public.${input.table} (trip_id, date, origin, airline, flight, depart, dest, land) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )`, [input.data.trip_id, input.data.date, input.data.origin, input.data.airline, input.data.flight, input.data.depart, input.data.dest, input.data.land] )
             }else if(input.table==='hotels'){
                 await db.query(`INSERT INTO public.${input.table} (trip_id, checkin, name, address, number, checkout) VALUES ($1, $2, $3, $4, $5, $6)`, [input.data.trip_id, input.data.checkin, input.data.name, input.data.address, input.data.number, input.data.checkout] )
@@ -97,7 +97,7 @@ const Edit_Flight = (db, app)=>{
         const input = req.body
         try{
             //console.log(input)  
-            if(input.table==='departingflights'){  
+            if(input.table==='departingflights' || input.table==="arrivingflights"){  
                 await db.query( 
                     `UPDATE public.${input.table} 
                     SET trip_id = $1, 
