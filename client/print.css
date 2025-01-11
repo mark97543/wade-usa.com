@@ -1,0 +1,71 @@
+
+
+@media print{
+
+    /* ----------- This is for the print to CSS for the Travel PLanner ---------- */
+    #row0container{
+        display: none !important;
+    }
+    .navbar{
+        display: none !important;
+    }
+    #r1c4_tp{
+        display: none !important;
+    }
+    #r2_button_div{
+        display: none !important;
+    }
+    #r3_button_div{
+        display: none !important;
+    }
+
+    #r4_button_div{
+        display: none !important;
+    }
+    #r5_button_div{
+        display: none !important;
+    }
+    #r7_button_div{
+        display: none !important;
+    }
+    #row99_div{
+        display: none !important;
+    }
+    #travelplanner_body{
+        margin-left: 0.25in;
+        margin-right: 0.25in;
+        margin-top: 0.5in;
+        margin-bottom: 0.5in;
+    }
+    #footerdiv{
+        margin-top: 0.5in;
+        margin-bottom: 0.5in;
+    }
+    #r2_out2_div.dontsplit{
+        page-break-inside: avoid;
+    }
+    #r2_out2_div.dontsplit div{
+        page-break-inside: avoid;
+    }
+    #r4_outside_div.dontsplit{
+        page-break-inside: avoid;
+    }
+    #r5_out2_div.dontsplit{
+        page-break-inside: avoid;
+    }
+    #r2_out2_div{
+        page-break-inside: avoid;
+    }
+    #r7_out2_div{
+        page-break-inside: avoid;
+    }
+    label{
+        color: black !important;
+    }
+    *{
+        border-color: black !important;
+    }
+    #row3_title_divs{
+        border-bottom: 1px solid black;
+    }
+}
