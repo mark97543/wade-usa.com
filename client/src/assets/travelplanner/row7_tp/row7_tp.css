@@ -1,0 +1,85 @@
+#r7_out_div{
+    border: 1px solid silver;
+    width: 90%;
+    max-width: 800px;
+    min-width: 800px;
+    margin-top: 20px;
+    justify-self: center;
+    border-radius: 25px;
+    overflow: hidden; /* Add overflow hidden to parent*/
+    display: flex;
+    flex-direction: column;
+}
+
+#r7_out_div{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid silver;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: inherit;
+}
+
+#row7_title{
+    display: flex;
+    flex-direction: row;
+    background-color: gray;
+    width: 100%;
+
+}
+
+#row7_title_label{
+    color: black;
+    margin-left: 15px;
+
+}
+
+.row7_title_divs{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid silver;
+}
+
+.row7_title_divs2{
+    display: flex;
+    flex-direction: row;
+}
+
+.row7_titles{
+    color: silver;
+}
+
+.row7_notenumber{
+    width: 30px;
+    border-right: 1px solid silver;
+    margin-left: 15px;
+    text-align: center;
+}
+
+.row7_note{
+    margin-left: 10px;
+    width: 100%;
+}
+
+.row7_notes{
+    width: 98%;
+}
+
+.row7_notesin{
+    width: 100%;
+    color: black;
+}
+
+#r7_button_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 10px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}

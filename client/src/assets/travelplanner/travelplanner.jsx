@@ -8,9 +8,11 @@ import Row_3 from './row3_tp/row3_tp.jsx';
 import Row4 from './row4_tp/row4_tp.jsx';
 import Row5 from './row5_tp/row5_tp.jsx';
 import Row6_tp from './row6_tp/row6_tp.jsx';
+import Row7 from './row7_tp/row7_tp.jsx';
 import Row99_tp from './row99_tp/row99_tp.jsx';
 
 import { getAllTP, TravelInfo } from './travelplanner_dbfunc.js';
+
 
 export const TPContext = createContext(null);
 
@@ -29,6 +31,8 @@ const TravelPlanner = () => {
     const [activities, setActivities]=useState("")
     const [arrFlightChkd, setArrFlightChkd]=useState(true)
     const [returnFlight, setReturnFlight]=useState("")
+    const [notesCK, setNotesCK]=useState(true)
+    const [notes, setNotes]=useState("")
  
 
     useEffect(()=>{
@@ -40,22 +44,24 @@ const TravelPlanner = () => {
                 const rentalCarData = await TravelInfo(selectedTrip, "rc")//Pulls in Rental Car Data
                 const activityItems = await TravelInfo(selectedTrip, "activities")//Pulls in activity data
                 const arrivals = await TravelInfo(selectedTrip, "arrivingflights")
+                const noteData = await TravelInfo(selectedTrip, "notes")
                 setReturnFlight(arrivals)
                 setDepFlight(flightData);
                 setHotels(hotelData)
                 setRCars(rentalCarData)
                 setActivities(activityItems)
+                setNotes(noteData)
             }
           };
           fetchData(); // Execute the async function
-    }, [selectedTrip, depFlight, hotels, rCars, activities, returnFlight]) //need to put in here when we save our data. 
+    }, [selectedTrip, depFlight, hotels, rCars, activities, returnFlight, notes]) //need to put in here when we save our data. 
    
-    //console.log(activities)
+    //console.log(notes)
     //console.log(selectedTrip)
 
     return (
         <div >
-            <TPContext.Provider value ={{returnFlight,setReturnFlight ,arrFlightChkd, setArrFlightChkd, activities, actchkd, setActChkd, rCars, rCChkd, setRCChkd, tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd, setDepFlight, hotelsChkd, setHotelsChkd, hotels}}>
+            <TPContext.Provider value ={{notes, setNotes, notesCK, setNotesCK, returnFlight,setReturnFlight ,arrFlightChkd, setArrFlightChkd, activities, actchkd, setActChkd, rCars, rCChkd, setRCChkd, tpData, setSelectedTrip, selectedTrip, setTPData, depFlight, depFlightChkd, setDepFlightChkd, setDepFlight, hotelsChkd, setHotelsChkd, hotels}}>
                 <Row0_TP />
                 <Row1_TP />
                 <Row2_tp />
@@ -63,6 +69,7 @@ const TravelPlanner = () => {
                 <Row4/>
                 <Row5/>
                 <Row6_tp/>
+                <Row7/>
                 <Row99_tp />
             </TPContext.Provider>
         </div>

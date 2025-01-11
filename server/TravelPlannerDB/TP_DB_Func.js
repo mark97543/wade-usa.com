@@ -18,6 +18,12 @@ const DeleteTrip = async(db, app)=>{
         try {
             //console.log(req.body.id)
             await db.query("DELETE FROM public.travel WHERE id=$1", [req.body.id])
+            await db.query("DELETE FROM public.departingflights WHERE trip_id=$1", [req.body.id])
+            await db.query("DELETE FROM public.arrivingflights WHERE trip_id=$1", [req.body.id])
+            await db.query("DELETE FROM public.hotels WHERE trip_id=$1", [req.body.id])
+            await db.query("DELETE FROM public.rc WHERE trip_id=$1", [req.body.id])
+            await db.query("DELETE FROM public.activities WHERE trip_id=$1", [req.body.id])
+            await db.query("DELETE FROM public.notes WHERE trip_id=$1", [req.body.id])
         } catch (error) {
             console.error("Error with DeleteTrip Function server side:", error);
             res.status(500).json({ error: error.message }); // Send error message
@@ -63,6 +69,8 @@ const TravelInfo = (db, app)=>{
                 var data =await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY pu ASC`,[input.trip]) 
             }else if(input.table==='activities'){
                 var data =await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1 ORDER BY date ASC, time ASC`,[input.trip]) 
+            }else if(input.table==='notes'){
+                var data =await db.query(`SELECT * FROM ${input.table} WHERE trip_id = $1`,[input.trip])
             }else{
                 var data = ""
             }
@@ -85,6 +93,8 @@ const newFlight = (db, app)=>{
                 await db.query(`INSERT INTO public.${input.table} (trip_id, pu, putime, company, location, return, returntime) VALUES ($1, $2, $3, $4, $5, $6, $7)`, [input.data.trip_id,input.data.pu,input.data.putime,input.data.company,input.data.location,input.data.return,input.data.returntime ])
             }else if(input.table==="activities"){
                 await db.query(`INSERT INTO public.${input.table} (trip_id, date, time, event, details) VALUES ($1, $2, $3, $4, $5)`,[input.data.trip_id, input.data.date, input.data.time, input.data.event, input.data.details])
+            }else if(input.table==="notes"){
+                await db.query(`INSERT INTO public.${input.table} (trip_id, note) VALUES ($1, $2)`,[input.data.trip_id, input.data.note])
             }
         }catch(error){
             console.error('Error with newFlight function on the server side: ', error)
@@ -176,6 +186,17 @@ const Edit_Flight = (db, app)=>{
                     input.data.event,
                     input.data.details,
                     input.data.id // $8 corresponds to the id
+                ])
+            }else if(input.table ==="notes"){
+                await db.query( 
+                    `UPDATE public.${input.table} 
+                    SET trip_id = $1, 
+                        note = $2
+                    WHERE id = $3`,
+                [
+                    input.data.trip_id,
+                    input.data.note,
+                    input.data.id // $3 corresponds to the id
                 ])
             }
 

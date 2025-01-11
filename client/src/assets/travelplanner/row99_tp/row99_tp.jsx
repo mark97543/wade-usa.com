@@ -5,7 +5,7 @@ import './row99_tp.css'
 import { TPContext } from '../travelplanner';
 
 const Row99_tp = () => {
-    const {arrFlightChkd, setArrFlightChkd,actchkd, setActChkd, selectedTrip, depFlight, depFlightChkd, setDepFlightChkd, hotelsChkd, setHotelsChkd, rCChkd, setRCChkd}=useContext(TPContext)
+    const {notesCK, setNotesCK, arrFlightChkd, setArrFlightChkd,actchkd, setActChkd, selectedTrip, depFlight, depFlightChkd, setDepFlightChkd, hotelsChkd, setHotelsChkd, rCChkd, setRCChkd}=useContext(TPContext)
     const [r99Vis, setR99Vis]=useState(true)
     //const [depFlightChkd, setDepFlightChkd]=useState(false)
 
@@ -17,6 +17,7 @@ const Row99_tp = () => {
             setRCChkd(false)
             setActChkd(false)
             setArrFlightChkd(false)
+            setNotesCK(false)
         }else{
             setR99Vis(false)
             setDepFlightChkd(true)
@@ -24,6 +25,7 @@ const Row99_tp = () => {
             setRCChkd(true)
             setActChkd(true)
             setArrFlightChkd(true)
+            setNotesCK(true)
         }
 
         // try{//Checks if Departing Trip Should be Checked
@@ -54,6 +56,8 @@ const Row99_tp = () => {
                 <label htmlFor="act" className='chbx_1'>Activities</label>
                 <input type='checkbox' checked={arrFlightChkd} onChange={(e)=>{setArrFlightChkd(!arrFlightChkd)}} className='arr_flight'></input>
                 <label htmlFor="arr_flight" className='chbx_1'>Returning Flights</label>
+                <input type='checkbox' checked={notesCK} onChange={(e)=>{setNotesCK(!notesCK)}} className='notes'></input>
+                <label htmlFor="notes" className='chbx_1'>Notes</label>
             </div>
             <div id='note_div'>
                 <label className='note_text'>Note 1: For The sorting make sure all your time formats are the same</label>
