@@ -11,7 +11,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <script src="%PUBLIC_URL%/config.js"></script> {/* Correct placement */}
+            <script src="/config.js"></script> 
         </Head>
         <body>
           <Main />
