@@ -1,38 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; // Import necessary components
+import axios from 'axios';
 
 
 const MapComponent = () => {
-  const [googleMapsApiKey, setGoogleMapsApiKey] = useState(null);// Use useState to store the Google Maps API key. Initially set to null.
+  const [apiKey, setApiKey] = useState(null); // Store the API key
+  const [error, setError] = useState(null);
+  const mapRef = useRef(null);
 
-  // useEffect hook to handle loading the API key when the component mounts.
+
   useEffect(() => {
-    console.log('Checking for API key...'); // Log a message to the console to show the effect is running.
-    const interval = setInterval(() => { // Set up an interval to poll for the API key.
-        if (window.env && window.env.googleMapsApiKey) {// Check if window.env and window.env.googleMapsApiKey are defined.
-            setGoogleMapsApiKey(window.env.googleMapsApiKey);// If the API key is available, set it in the component's state.
-            clearInterval(interval); // Clear the interval to stop polling.
-            console.log('API key is available:', window.env.googleMapsApiKey);
-        }
-    }, 200);// Check every 200ms
-    return () => clearInterval(interval);  // Clean up the interval when the component unmounts to avoid memory leaks.
-}, []);// The empty dependency array means this effect runs only once on mount.
+    const fetchApiKey = async () => {
+      try {
+        const response = await axios.get('/api/google-maps'); // Assuming your API returns the key
+        setApiKey(response.data.apiKey); // Store the API key directly
+      } catch (error) {
+        console.error('Error fetching API key:', error);
+        setError('Failed to load map. Please check your connection.');
+      }
+    };
 
-  if (!googleMapsApiKey) {  // Conditionally render the map only when the API key is available.
-    return <div>Loading map...</div>; 
+    fetchApiKey();
+  }, []);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!apiKey) {
+    return <div>Loading map...</div>;
   }
 
   return (
-    <LoadScript googleMapsApiKey={googleMapsApiKey}>
+    <div id='map_container'>
+      <LoadScript googleMapsApiKey={apiKey}>
         <GoogleMap
-          mapContainerStyle={{ height: '100vh', width: '100%' }} // Make map full viewport height
-          center={{ lat: 37.7749, lng: -122.4194 }} // Set default center
-          zoom={10} // Set default zoom
-        />
-    </LoadScript>
-  )
-
+          mapContainerStyle={{ height: '100vh', width: '100%' }}
+          center={{ lat: 44.068203, lng: -114.742043 }}
+          zoom={6}
+        >
+        </GoogleMap>
+      </LoadScript>
+    </div>
+  );
 };
 
-export default MapComponent; // Only export once
-
+export default MapComponent;

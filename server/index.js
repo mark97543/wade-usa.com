@@ -5,37 +5,21 @@ import pg from "pg"; //Import PG tools to Connect to DB
 import dbChecker from './connect_to_db/db_connect.js'; //Database functions to check for db abd add if needed. 
 import { toDoIniital, addTodo, completeToDoUpdate, deleteToDo } from './ToDo/todo_db_func.js';
 import { TPData, DeleteTrip,  addTrip, UpdateTrip, TravelInfo, newFlight, Edit_Flight, DeleteFlight } from './TravelPlannerDB/TP_DB_Func.js';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
-import path from 'path';
-import dotenv from 'dotenv'; // Import dotenv
-
-/* -------------------------- Loading Config FIles -------------------------- */
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, './.env.local') }); // Load .env EARLY
 
-const configFile = path.resolve(__dirname, './public/config.js');
+/* -------------------------- Loading Config Files -------------------------- */
 
-const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
-const configContent = `
 
-window.env = window.env || {};
-window.env.googleMapsApiKey = '${googleMapsApiKey}';
-`;
 
-fs.writeFileSync(configFile, configContent);
-
-console.log('Config file generated successfully!');
 
 /* -------------------------------------------------------------------------- */
 
 const app = express();
 const port = process.env.PORT || 5000; // Use environment variable or default to 5000
+
 
 /* ------------------------- Connecting to Database ------------------------- */
 
@@ -66,7 +50,7 @@ async function connectToDb() {
   }
 }
 
-connectToDb();
+
 
 
 /* ------------------------------- Middleware ------------------------------- */
@@ -93,6 +77,16 @@ TravelInfo(db, app)
 newFlight(db, app)
 Edit_Flight(db, app)
 DeleteFlight(db, app)
+
+//Maps Functions
+
+app.get('/api/google-maps', (req, res) => {
+  res.json({ apiKey: process.env.MAPS_API });
+});
+
+
+//checking DB's
+connectToDb();
 /* -------------------------------- Listener -------------------------------- */
 
 app.listen(port, () => {

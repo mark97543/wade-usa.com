@@ -1,0 +1,9 @@
+{
+    "watch": ["./*.js", "./connect_to_db/*.js", "./ToDo/*.js", "./TravelPlannerDB/*.js", "./scripts/*.js"],
+    "ext": "js, json",
+    "ignore": [
+      "public/*", 
+      ".git",
+      "node_modules"
+    ]
+  }
