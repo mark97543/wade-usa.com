@@ -21,10 +21,10 @@ const port = process.env.PORT || 5000; // Use environment variable or default to
 
 
 const db = new pg.Client({ //Uncomment for Deployment
-  user: "postgres",
-  host: "137.184.227.133",
-  database: "maw",
-  password: "7998",
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password:process.env.PGPASSWORD,
   port: 5432,
 });
 
