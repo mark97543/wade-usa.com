@@ -1,0 +1,6 @@
+#left_bar_container {
+    width: 300px; /* Adjust width as needed */
+    background-color: #f0f0f0; /* Optional background color */
+    padding: 10px;
+    height: 100vh;
+}

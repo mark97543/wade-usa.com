@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; // Import necessary components
 import axios from 'axios';
+import './map.css';
 
 
 const MapComponent = () => {
@@ -35,7 +36,7 @@ const MapComponent = () => {
     <div id='map_container'>
       <LoadScript googleMapsApiKey={apiKey}>
         <GoogleMap
-          mapContainerStyle={{ height: '100vh', width: '100%' }}
+          mapContainerStyle={{ height: '100%', width: '100%' }}
           center={{ lat: 44.068203, lng: -114.742043 }}
           zoom={6}
         >
