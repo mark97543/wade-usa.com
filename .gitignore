@@ -1,0 +1,13 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+client/.env.*
+
+# Build output (client)
+client/dist/
+
+# IDE/Editor specific files (optional, add as needed)
+.DS_Store
+*.swp
