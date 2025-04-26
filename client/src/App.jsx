@@ -1,3 +1,5 @@
+// /home/mark/Documents/wade-usa.com/client/src/App.jsx
+
 import { useState } from 'react'
 import './App.css'
 import Header from './components/header/header'
