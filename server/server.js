@@ -16,16 +16,26 @@ app.use(express.json()); // Parse JSON request bodies
 // API Routes
 app.use('/api', apiRoutes);
 
-// Test the database connection
+//#region Test the database connection
 db.connect()
   .then(client => {
     console.log('Connected to PostgreSQL database!');
     client.release(); // Release client
-  })
+    })
   .catch(err => {
     console.error('Error connecting to the database:', err);
-  });
+});
+//#endregion
 
+
+
+
+
+
+
+
+//#region Server Boot
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+//#endregion
