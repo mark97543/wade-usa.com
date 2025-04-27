@@ -14,7 +14,7 @@ const Header =()=>{
         const htmlElement = document.documentElement; // Get the root <html> element
         if (htmlElement) {
         setCurrentTheme(htmlElement.dataset.bsTheme);
-        console.log("Current page theme:", htmlElement.dataset.bsTheme); // Optional: Log the theme
+        //console.log("Current page theme:", htmlElement.dataset.bsTheme); // Optional: Log the theme
         }
         if(currentTheme==="light"){
             setHideDark(false)
@@ -41,13 +41,17 @@ const Header =()=>{
         
         <nav className="navbar navbar-expand-lg bg-primary" id="app-header" data-bs-theme="dark">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">Navbar</a>
+                <a className="navbar-brand" href="#">M&S Wade</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
-            <form className="d-flex">
-                <button type="button" class="btn btn-light" hidden={hideLight} onClick={()=>handleThemeChange("light")}>Light</button>
-                <button type="button" class="btn btn-dark" hidden={hideDark} onClick={()=>handleThemeChange("dark")}>Dark</button>
-
-            </form>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <form className="d-flex">
+                        <button type="button" className="btn btn-light" hidden={hideLight} onClick={()=>handleThemeChange("light")}>Light</button>
+                        <button type="button" className="btn btn-dark" hidden={hideDark} onClick={()=>handleThemeChange("dark")}>Dark</button>
+                </form>
+            </div>
         </nav>
         
     )

@@ -1,0 +1,70 @@
+/* --------------------------- Universal Styleing --------------------------- */
+.login-box{
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    aspect-ratio: 32/9;
+    margin-top: 10%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    overflow:hidden;
+    
+}
+
+.login-video{
+    width: 450px
+
+}
+
+.login-form{
+    width: 450px
+}
+
+.login-form > *{
+    margin-left: 20px;
+    margin-top: 5px !important;
+    margin-right: 20px;
+    width: 350px;
+    margin-bottom: 0px;
+}
+
+.login-disclaimer{
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    justify-items: center;
+}
+
+.login-disclaimer, h6{
+    font-size: x-small;
+    font-style: italic;
+}
+
+/* -------------------- data-theme="dark" attribute Items ------------------- */
+[data-bs-theme="dark"] .login-box {
+    /* Same variable overrides as above */
+    background-color: rgb(68, 68, 68);
+
+}
+
+/* ------------------- data-theme="light" attribute Items ------------------- */
+[data-bs-theme="light"] .login-box {
+    /* Same variable overrides as above */
+    background-color: #dee6ee;
+    border: 1px solid black;
+}
+
+/* ----------------------------- Mobile screens ----------------------------- */
+
+@media (max-width:900px) {
+
+
+    .login-box{
+        height: 507px;
+        width: 400px;
+        aspect-ratio: 9/11;
+        flex-direction: column;
+    }
+
+}
