@@ -9,14 +9,29 @@ import apiRoutes from './config/api.js'; // Import API routes. .js extension!
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware
+/* ------------------------------- Middleware ------------------------------- */
+//#region
 app.use(cors()); // Enable CORS for all origins (for development)
 app.use(express.json()); // Parse JSON request bodies
 
-// API Routes
+//#endregion
+
+
+
+
+
+/* ------------------------------- API Routes ------------------------------- */
+//#region
 app.use('/api', apiRoutes);
 
-//#region Test the database connection
+//#endregion
+
+
+
+
+
+/* ----------------------- Test the database connection ---------------------- */
+//#region 
 db.connect()
   .then(client => {
     console.log('Connected to PostgreSQL database!');
@@ -31,10 +46,8 @@ db.connect()
 
 
 
-
-
-
-//#region Server Boot
+/* ------------------------------- Server Boot ------------------------------ */
+//#region 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
