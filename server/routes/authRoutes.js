@@ -149,4 +149,63 @@ router.post('/register', async (req,res)=>{
 
 
 
+/* ---- GET /api/auth/status-Checl Authentication Status and Verify Token --- */
+//#region
+
+router.get('/status', async (req, res)=>{
+    //Get the token from the auhtorization header
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]//get the token string after "bearer"
+    //if no token is provided, the user is not authenticated
+    if(token==null){
+        return res.status(401).json({message: 'Authentication token required'})
+    }
+
+    try{
+        //1.Verify the tokens signature expiration
+        const decodedPayload = jwt.verify(token, jwtSecret)
+        // If verification is successful, decodedPayload contains the original payload ({ user: { id, email, ... } })
+
+        // 2. Use user ID from the token payload to fetch the latest user data from the database
+        // This ensures the user still exists, is approved, and we have current info
+        const userId = decodedPayload.user.id// Assuming user ID is stored in payload.user.id
+
+        const result = await db.query('SELECT id, email, is_approved FROM users WHERE id = $1', [userId]);
+        const user = result.rows[0];
+
+        //3. Check if the user was found and is approve
+        if(!user || !user.is_approved){
+            // If user not found or not approved, the token is effectively invalid for access
+            // Note: In a real app, you might differentiate 'user not found' vs 'not approved' if needed,
+            // but sending 401 is standard if the user can't log in/is inactive.
+            console.log(`User status check failed for ID ${userId}: found=${!!user}, approved=${user?.is_approved}`);
+            return res.status(401).json({ message: 'User not found or not approved' });
+        }
+
+        //4. If token is valid And user is active in db, send success response with latest user data
+        res.status(200).json({
+            message: 'Authenticated',
+            isAuthenticated: true, // Explicitly indicate authentication status
+            user: { // Send back the latest user data (exclude sensitive fields)
+                id: user.id,
+                email: user.email
+                // Include any other fields fetched from DB like user.role
+            }
+        });
+    }catch (error) {
+        // This catch handles errors from jwt.verify (invalid signature, expired token)
+        // and any errors from the database query
+        console.error('Token verification or status check error:', error.message); // Log specific error message
+        // Send 401 for auth-related errors like invalid/expired token
+        res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+})
+
+//#endregion
+
+
+
+
+
 export default router; 

@@ -12,6 +12,13 @@
     
 }
 
+.login-message{
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    justify-items: center;
+}
+
 .login-video{
     width: 450px
 
@@ -34,6 +41,11 @@
     margin-right: auto;
     margin-left: auto;
     justify-items: center;
+}
+
+.login-message-p{
+    color: red !important;
+    font-size: x-large;
 }
 
 .login-disclaimer, h6{

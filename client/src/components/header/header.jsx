@@ -42,11 +42,11 @@ const Header =()=>{
         <nav className="navbar navbar-expand-lg bg-primary" id="app-header" data-bs-theme="dark">
             <div className="container-fluid">
                 <a className="navbar-brand" href="#">M&S Wade</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
             </div>
-            <div class="collapse navbar-collapse" id="navbarColor01">
+            <div className="collapse navbar-collapse" id="navbarColor01">
                 <form className="d-flex">
                         <button type="button" className="btn btn-light" hidden={hideLight} onClick={()=>handleThemeChange("light")}>Light</button>
                         <button type="button" className="btn btn-dark" hidden={hideDark} onClick={()=>handleThemeChange("dark")}>Dark</button>

@@ -3,9 +3,13 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx'; // Ensure correct path
 
+
 // Page and Component Imports
 import Header from './components/header/header.jsx'; // Assuming header is .jsx or .js
 import Login from './pages/login/login.jsx';     // Assuming login is .jsx or .js
+import Dashboard from './pages/dashbaord/dash.jsx';
+import Page404 from './pages/404 page/404NotFound.jsx';
+
 // Import other pages like HomePage, DashboardPage etc. when you create them
 
 function App() {
@@ -15,9 +19,11 @@ function App() {
       <Routes>
         {/* -------------------------- {Unprotected Routes} -------------------------- */}
         <Route path="/" element={<Login />} /> {/* Or redirect to /login or show a HomePage */}
-
+        <Route path='/*' element={<Page404/>}/>
 
         {/* ---------------------------- Protected Routes ---------------------------- */}
+
+        <Route path="/dashboard" element={<Dashboard />} />
 
       </Routes>
     </>
