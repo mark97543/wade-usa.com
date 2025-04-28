@@ -1,20 +1,22 @@
 // /server/routes/authRoutes.js
 
 import express from 'express';
-
-//import databse
-import db from '../config/db.js'
-
-//Import bcrypt for password hashing and comparison
-import bcrypt from 'bcrypt'
-
+import db from '../config/db.js'//import databse
+import bcrypt from 'bcrypt'//Import bcrypt for password hashing and comparison
+import jwt from 'jsonwebtoken' //Import for web token
 
 const router = express.Router();
+const jwtSecret = process.env.JWT_SECRET; //Access token from .env
+
+//Check to see if secret is loaded 
+if (!jwtSecret){
+    console.error('Fatal ERROR: JWT_SECRET is not defined: aithRoutes.js')
+}
 
 
 /* -------------------------- Post /api/auth/login -------------------------- */
 //#region
-router,post('/login', async(req,res)=>{
+router.post('/login', async(req,res)=>{
     //Extract Data from request body
     const {email, password}=req.body;
 
@@ -42,18 +44,37 @@ router,post('/login', async(req,res)=>{
             //If passwords dont match, send a 401 unautherized user
             return res.status(401).json({message: 'Invalid Credentials'})
         }
-        
+
         //Check for Admin Approval
         if (!user.is_approved) {
             // If passwords match but user is not approved
             return res.status(401).json({ message: 'Your account is pending administrator approval.' });
         }
 
-        //3. if credentials are valid
-        //Implement session management token here later. 
-        //For now Send Resonse witht the basic user info
+        /* --------------------------- generate new token --------------------------- */
+
+        // Define the payload for the token. Only include non-sensitive info.
+        const payload = {
+            user: {
+                id: user.id,
+                email: user.email
+                // Add other non-sensitive info needed for authentication/authorization checks later
+                // e.g., role: user.role
+            }
+        };
+        
+
+        const token = jwt.sign(
+            payload,
+            jwtSecret, //use secret key from enviremental variable. 
+            {expiresIn:'1h'} //Options: Sets expiretion time
+        )
+
+        //3. if credentials are valid Return response
+
         res.status(200).json({
             message: 'Login Successful',
+            token: token, //Includes generated token in the response
             user:{
                 id:user.id,
                 email: user.email
@@ -61,9 +82,6 @@ router,post('/login', async(req,res)=>{
             }
         })
 
-        //temp debgging
-        console.log(`User Found: ${user.email}. Ready for password comparison`)
-        res.status(501).json({message: 'Password verification not implemented yet'}) //501 not implemented
     }catch(error){
         //if any erro occurs during db query
         console.error("/login authRoutes.js: Database query error during login: ", error);
