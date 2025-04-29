@@ -1,13 +1,28 @@
 // /client/src/pages/404 page/404NotFound.jsx
 
 import React from "react";
-
+import './404NotFound.css'
 
 const Page404 = ()=>{
 
     return(
         <>
-            <h1>Error: 404 Page not found</h1>
+            <div className="error-text-404">
+                <h1>Error: 404 Page not found</h1>
+            </div>
+            <div className="P404-video">
+                    <video
+                        width="100%" // Example: Make it responsive width
+                        preload="metadata" // Helps load dimensions/duration quickly
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    >
+                        <source src='https://01-spaces.sfo3.cdn.digitaloceanspaces.com/404-page/Angry_Cat_Video_Ready.mp4' type="video/mp4" />
+                        Your browser does not support the video tag. Please update your browser.
+                    </video>
+            </div>
         
         </>
     )

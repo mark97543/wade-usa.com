@@ -9,6 +9,7 @@ import Header from './components/header/header.jsx'; // Assuming header is .jsx 
 import Login from './pages/login/login.jsx';     // Assuming login is .jsx or .js
 import Dashboard from './pages/dashbaord/dash.jsx';
 import Page404 from './pages/404 page/404NotFound.jsx';
+import HomePage from './pages/home/home.jsx';
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
 
@@ -18,7 +19,8 @@ function App() {
       <Header />
       <Routes>
         {/* -------------------------- {Unprotected Routes} -------------------------- */}
-        <Route path="/" element={<Login />} /> {/* Or redirect to /login or show a HomePage */}
+        <Route path='/' element={<HomePage/>}/>
+        <Route path="/login" element={<Login />} /> {/* Or redirect to /login or show a HomePage */}
         <Route path='/*' element={<Page404/>}/>
 
         {/* ---------------------------- Protected Routes ---------------------------- */}
