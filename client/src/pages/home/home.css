@@ -1,0 +1,19 @@
+.home-car-div{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 50px;
+    justify-self: center;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.home-car-div , .carousel-slider{
+    max-width: 60%;
+}
+
+.carousel-root{
+    justify-items: center;
+}
+

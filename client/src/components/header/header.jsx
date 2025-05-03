@@ -51,6 +51,7 @@ const Header =()=>{
                         <button type="button" className="btn btn-light" hidden={hideLight} onClick={()=>handleThemeChange("light")}>Light</button>
                         <button type="button" className="btn btn-dark" hidden={hideDark} onClick={()=>handleThemeChange("dark")}>Dark</button>
                 </form>
+                <a className='header-login' href="/login">Login</a> {/*TODO:  Need this to turn into log off once a token is created*/}
             </div>
         </nav>
         
