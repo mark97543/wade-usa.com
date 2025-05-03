@@ -98,6 +98,7 @@ router.post('/login', async(req,res)=>{
 /* ---------- Post /api/auth/register route for uscer registration ---------- */
 //#region
 router.post('/register', async (req,res)=>{
+    //console.log("Hit on Register")
     //extract new users email and password from the request body
     const{email, password}=req.body
 
@@ -126,6 +127,9 @@ router.post('/register', async (req,res)=>{
         )
 
         //The Returning clause gives us the newly created user's data
+
+        // Extract the newly created user data from the query result
+        const createdUser = newUser.rows[0];
 
         //4. Send the success resonse (201) created
         res.status(201).json({

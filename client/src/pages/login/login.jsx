@@ -3,6 +3,7 @@
 import React, {useState} from "react";
 import './login.css'
 import {useAuth} from '../../context/AuthContext.jsx'
+import { useNavigate } from "react-router-dom";
 
 
 //Use the envirenmental variable provided by vite
@@ -16,6 +17,7 @@ const Login = ()=>{
     const [password, setPassword] = useState('')
     const [message, setMessage]=useState('')
     const [isLoading, setIsLoading]= useState(false)
+    const navigate = useNavigate();
 
     const {login} =useAuth();
 

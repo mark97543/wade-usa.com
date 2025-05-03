@@ -1,0 +1,72 @@
+.Registration-Box{
+    display: flexbox;
+    flex-direction: column;
+    width: 80%;
+    min-width: 400px;
+    justify-self: center;
+    margin-top: 50px;
+}
+
+.Reg-video{
+    width: 80%;
+    min-width: 400px;
+    justify-self: center;
+    max-width: 700px;
+}
+
+.Reg-video > *{
+    border-radius: 10px;
+}
+
+.Reg-intro{
+    justify-self: center;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.Reg-Form-Div{
+    width: 400px;
+    justify-self: center;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.Reg-form{
+    width: 100%;
+    justify-self: center;
+    display: flexbox;
+    flex-direction: column;
+}
+
+.Reg-Form-Div > *{
+    width: 90%;
+    justify-self: center;
+}
+
+.Reg-Form-Div label {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.Reg-Form-Div button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    min-width: 100%;
+    
+}
+
+
+
+/* -------------------- data-theme="dark" attribute Items ------------------- */
+[data-bs-theme="dark"] .Reg-Form-Div {
+    /* Same variable overrides as above */
+    background-color: rgb(68, 68, 68);
+
+}
+
+/* ------------------- data-theme="light" attribute Items ------------------- */
+[data-bs-theme="light"] .Reg-Form-Div{
+    /* Same variable overrides as above */
+    background-color: #dee6ee;
+    border: 1px solid black;
+}

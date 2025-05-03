@@ -10,6 +10,8 @@ import Login from './pages/login/login.jsx';     // Assuming login is .jsx or .j
 import Dashboard from './pages/dashbaord/dash.jsx';
 import Page404 from './pages/404 page/404NotFound.jsx';
 import HomePage from './pages/home/home.jsx';
+import Register from './pages/register/reg.jsx';
+import RegSuccess from './pages/register/req_suc.jsx';
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
 
@@ -22,6 +24,8 @@ function App() {
         <Route path='/' element={<HomePage/>}/>
         <Route path="/login" element={<Login />} /> {/* Or redirect to /login or show a HomePage */}
         <Route path='/*' element={<Page404/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/register/success' element={<RegSuccess />} />
 
         {/* ---------------------------- Protected Routes ---------------------------- */}
 
