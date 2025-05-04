@@ -19,7 +19,7 @@ const Header =()=>{
     }
 
     const handleLogout = () => {
-        console.log("Header: handleLogout called (will only call context logout)...");
+        //console.log("Header: handleLogout called (will only call context logout)...");
         logout(); // Call context logout - it handles state/storage
     };
 

@@ -71,8 +71,8 @@ const Login = ()=>{
                 //successful login
                 
                 setMessage(`Success: ${data.message}`)//display success message
-                console.log(`Login Successful: `, data.user)
-                console.log(`Recived Token: `, data.token)
+                //console.log(`Login Successful: `, data.user)
+                //console.log(`Recived Token: `, data.token)
 
 
                 login(data.token, data.user); // Call the login function provided by useAuth()

@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     // 4. Check for token and user in storage on initial load
     // This useEffect runs only once when the provider mounts
     useEffect(()=>{
-      console.log("Auth Provider: Checking authentication status on mount...");
+      //console.log("Auth Provider: Checking authentication status on mount...");
 
       const checkAuth = async ()=>{
         setIsLoading(true) //start loading
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
         if(!storedToken){
           // If no token is found in storage, user is not authenticated
-          console.log("Auth Provider: No token found in storage.");
+          //console.log("Auth Provider: No token found in storage.");
           setIsAuthenticated(false);
           setUser(null);
           setToken(null);
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
           if(response.ok){
             //backend successfully verified token
             const data = await response.json()
-            console.log("Auth Provider: Backend verification successful.");
+            //console.log("Auth Provider: Backend verification successful.");
             // Update state based on backend response
             setIsAuthenticated(data.isAuthenticated); // Should be true
             setUser(data.user);                     // Load user data from backend response
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
 
           }else{
             // Backend verification failed (e.g., 401 Invalid/Expired Token, 404 User Not Found)
-            console.log("Auth Provider: Backend verification failed.", response.status);
+            //console.log("Auth Provider: Backend verification failed.", response.status);
             // Log the user out if the token is invalid or rejected by the backend
             // This clears the invalid token from storage
             // We define logout inside this effect or ensure it's stable if defined outside
@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
                   setToken(null);
                   setUser(null);
                   setIsAuthenticated(false);
-                  console.log("Auth Provider: Cleared invalid authentication state.");
+                  //console.log("Auth Provider: Cleared invalid authentication state.");
                   // Optional: Redirect to login page on failed verification of stored token
                   // navigate('/login');
             };
@@ -128,7 +128,7 @@ export const AuthProvider = ({ children }) => {
     //5. Implement the login function
     //It recives the token and user data fetched by the component
     const login = (newToken, userData)=>{
-      console.log("Auth Provider: Receiving login data...");
+      //console.log("Auth Provider: Receiving login data...");
       // Store the new token and user data in local storage
       localStorage.setItem('token', newToken);
       localStorage.setItem('user', JSON.stringify(userData)); // Store user data as string
@@ -138,7 +138,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData)
       setIsAuthenticated(true)
 
-      console.log("Auth Provider: State updated, user logged in")
+      //console.log("Auth Provider: State updated, user logged in")
 
         // Optional: Redirect the user after login directly from here
         // if (navigate) { navigate('/dashboard'); } // Example redirect
@@ -147,13 +147,13 @@ export const AuthProvider = ({ children }) => {
     // 6. Implement the logout function
     // Called from any component that needs to log the user out
     const logout = useCallback(async () => {
-      console.log('Auth Provider: logging out (state/storage only)...'); // Log for this version
+      //console.log('Auth Provider: logging out (state/storage only)...'); // Log for this version
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setToken(null);
       setUser(null);
       setIsAuthenticated(false);
-      console.log('Auth Provider: State reset completed.'); // Log for this version
+      //console.log('Auth Provider: State reset completed.'); // Log for this version
     }, []); // NO dependencies needed now
   
     // 7. The value provided to consuming components via useAuth()
