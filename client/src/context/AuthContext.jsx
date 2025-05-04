@@ -1,6 +1,6 @@
 // /client/src/context/AuthContext.js
 
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; // If using React Router for redirects
 
 //Use the envirenmental variable provided by vite
@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true); // Track loading state
     const [user, setUser] = useState(null); // Optional: Store user info if needed later
     const [token, setToken] = useState(null)
+    const navigate = useNavigate()
 
     // If redirecting within the provider's login/logout (less common)
     // const navigate = useNavigate();
@@ -145,22 +146,15 @@ export const AuthProvider = ({ children }) => {
   
     // 6. Implement the logout function
     // Called from any component that needs to log the user out
-    const logout = async () => {
-      console.log('Auth Provider: logging out ...')
-      //remove token and user data from local storage
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-
-      //rest the providers state
-      setToken(null)
-      setUser(null)
-      setIsAuthenticated(false)
-
-      console.log('Auth Provider: State reset, user logged out.')
-
-        // Optional: Redirect the user to the login page after logout
-        // if (navigate) { navigate('/login'); } // Example redirect
-    };
+    const logout = useCallback(async () => {
+      console.log('Auth Provider: logging out (state/storage only)...'); // Log for this version
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setToken(null);
+      setUser(null);
+      setIsAuthenticated(false);
+      console.log('Auth Provider: State reset completed.'); // Log for this version
+    }, []); // NO dependencies needed now
   
     // 7. The value provided to consuming components via useAuth()
     const contextValue = {

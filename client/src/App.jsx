@@ -13,6 +13,7 @@ import HomePage from './pages/home/home.jsx';
 import Register from './pages/register/reg.jsx';
 import RegSuccess from './pages/register/req_suc.jsx';
 
+
 // Import other pages like HomePage, DashboardPage etc. when you create them
 
 function App() {
@@ -23,13 +24,17 @@ function App() {
         {/* -------------------------- {Unprotected Routes} -------------------------- */}
         <Route path='/' element={<HomePage/>}/>
         <Route path="/login" element={<Login />} /> {/* Or redirect to /login or show a HomePage */}
-        <Route path='/*' element={<Page404/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/register/success' element={<RegSuccess />} />
 
+        
         {/* ---------------------------- Protected Routes ---------------------------- */}
 
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
+
+        {/* ---------------------------- All Others ---------------------------- */}
+
+        <Route path='/*' element={<Page404/>}/>
 
       </Routes>
     </>
