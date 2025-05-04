@@ -6,6 +6,7 @@ import cors from 'cors';
 import db from './config/db.js'; // Import the database connection.  .js extension!
 import apiRoutes from './config/api.js'; // Import API routes. .js extension!
 import authRoutes from './routes/authRoutes.js'
+import weatherRoutes from './routes/weatherRoutes.js'
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -25,7 +26,7 @@ app.use(express.json()); // Parse JSON request bodies
 //#region
 app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes)
-
+app.use('/api/weather', weatherRoutes)
 //#endregion
 
 
