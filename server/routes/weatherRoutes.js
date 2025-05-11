@@ -117,7 +117,7 @@ router.get('/', async (req, res) => {
                     condition: period.shortForecast || "N/A",
                     icon: period.icon || null,
                 };
-            }).slice(0, 6); // Limit to first 6 hours
+            }).slice(0, 12); // This is number of hours to shoew in the hourly forecast
         }
         console.log("Processed Hourly Forecast:", hourlyForecast);
 

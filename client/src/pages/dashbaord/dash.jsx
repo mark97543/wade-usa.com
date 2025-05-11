@@ -10,10 +10,9 @@ const Dashboard = () =>{
 
 
     return(
-        <div>
-            <div className="dash-weather-widget">
-                <Weather/>
-            </div>
+        <div className="dash-box">
+            <Weather/>
+        
             
 
 

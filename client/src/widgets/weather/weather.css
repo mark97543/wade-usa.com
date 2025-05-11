@@ -1,0 +1,139 @@
+.Weather-Box{
+    margin-top: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 400px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.weather-header{
+    background-color: black;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+
+}
+
+.weather-forecast{
+    background-color: antiquewhite;
+}
+
+.weather-header .hourly{
+    grid-column:span 2;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.weather-header .location{
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size: large;
+}
+
+.weather-header .icon{
+    text-align: center;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: large;
+}
+
+.weather-header .temp{
+    font-size: xx-large;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-weight: bolder;
+}
+
+.weather-header .forecast{
+    margin-right: 20px;
+    text-align: center;
+    font-size: large;
+}
+
+.wind{
+    display: flex;
+    flex-direction: row;
+}
+.humidity, .sunrise, .sunset{
+    display: flex;
+    flex-direction: row;
+}
+
+.hourly-forecast{
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    height: 100%;
+    padding: 10px;
+  
+}
+
+.hour{
+    padding: 10px;
+    min-width: 80px;
+    text-align: center;
+}
+
+.day-details{
+    min-width: 90px;
+}
+
+.weather-forecast{
+    color: black;
+}
+
+.weather-date{
+    font-size: small;
+    margin-top: 10px;
+    color: gray;
+    margin-left: 10px;
+}
+
+.weather-day{
+    margin-left: 10px;
+    margin-top: 0px;
+    min-width: 100px;
+
+}
+.grid-item-day{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.weather-weekday{
+    font-size: large;
+    margin-left: 10px;
+}
+
+.weather-fc{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+.weather-fc .weather-icon{
+    text-align: center;
+    font-size: xx-large;
+}
+
+.weather-fc .weather-temp-high{
+    font-size: xx-large;
+    margin-left: 10px;
+}
+
+.weather-fc .weather-temp-low{
+    font-size: x-large;
+    margin-left: 10px;
+    color: gray;
+}
