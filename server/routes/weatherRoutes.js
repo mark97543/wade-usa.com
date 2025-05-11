@@ -111,11 +111,20 @@ router.get('/', async (req, res) => {
                 const tempValue = period.temperature;
                 const tempUnit = period.temperatureUnit;
                 const tempF = (tempUnit === 'F') ? Math.round(tempValue) : celsiusToFahrenheit(tempValue);
+                const windSpeedStr = period.windSpeed || "N/A"; 
+                // Extract probability of precipitation (rain chance)
+                // This is often an object like: { "unitCode": "wmoUnit:percent", "value": 30 } or null
+                const probabilityOfPrecipitation = period.probabilityOfPrecipitation?.value;
+                const pop = (probabilityOfPrecipitation === null || probabilityOfPrecipitation === undefined) 
+                            ? 0 // Default to 0% if null or undefined, or you could use "N/A"
+                            : probabilityOfPrecipitation;
                 return {
                     time: formattedTime,
                     tempF: tempF,
                     condition: period.shortForecast || "N/A",
                     icon: period.icon || null,
+                    windSpeed: windSpeedStr,
+                    pop: pop,
                 };
             }).slice(0, 12); // This is number of hours to shoew in the hourly forecast
         }
@@ -142,6 +151,9 @@ router.get('/', async (req, res) => {
                 const startTimeDate = parseISO(period.startTime); // Parse the ISO string
                 const zonedStartTime = toZonedTime(startTimeDate, timezone); // Pass the Date object
                 const formattedDate = format(zonedStartTime, 'MMM d');
+                const popValue = period.probabilityOfPrecipitation?.value;
+                const currentPeriodPop = (popValue === null || popValue === undefined) ? 0 : popValue;
+                const currentPeriodWindSpeed = period.windSpeed || "N/A";
                 return {
                     number: period.number, name: period.name, dateShort: formattedDate,
                     isDaytime: period.isDaytime, tempF: tempF, condition: period.shortForecast || "N/A",
@@ -149,7 +161,9 @@ router.get('/', async (req, res) => {
                     dateShort: formattedDate,
                     // Store original startTime string if needed for debugging?
                     // startTimeString: period.startTime, // Optional
-                    startTime: period.startTime // Keep original string if needed by consolidation loop below? Or pass zonedStartTime? Let's pass string for now.
+                    startTime: period.startTime, // Keep original string if needed by consolidation loop below? Or pass zonedStartTime? Let's pass string for now.
+                    pop: currentPeriodPop,
+                    windSpeed: currentPeriodWindSpeed
                 };
             });
             console.log("Mapped processedDaily Length:", processedDaily.length);
@@ -186,6 +200,8 @@ router.get('/', async (req, res) => {
                                     lowF: nightPeriod.tempF,
                                     icon: dayPeriod.icon,
                                     condition: dayPeriod.condition,
+                                    pop:dayPeriod.pop,
+                                    windSpeed: dayPeriod.windSpeed
                                 });
                                 console.log(`  Pushed data for index ${i}. Array length now: ${consolidatedDailyForecast.length}`);
                             }
