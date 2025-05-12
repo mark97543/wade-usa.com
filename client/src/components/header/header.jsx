@@ -60,9 +60,26 @@ const Header =()=>{
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-            </div>
-            <div className="collapse navbar-collapse" id="navbarColor01">
+
+
+                {/* Main Linkd */}
+                {isAuthenticated ? (
+                    <div className="collapse navbar-collapse" id="navbarColor01">
+                        <ul className="navbar-nav me-auto">
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Calculaters</a>
+                                <div className="dropdown-menu">
+                                    <a className="dropdown-item" href="/unitconverter">Unit Converter</a>
+                                    <a className="dropdown-item" href="#">Another action</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                ):(<div className="collapse navbar-collapse log-in" id="navbarColor01"></div>)}
+
                 
+            </div>
+            <div className="collapse navbar-collapse log-in" id="navbarColor01">
                 {/* <form className="d-flex">
                         <button type="button" className="btn btn-light" hidden={hideLight} onClick={()=>handleThemeChange("light")}>Light</button>
                         <button type="button" className="btn btn-dark" hidden={hideDark} onClick={()=>handleThemeChange("dark")}>Dark</button>

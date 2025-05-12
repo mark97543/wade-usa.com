@@ -1,0 +1,75 @@
+.Unit_Converter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}   
+
+.Unit_Converter_Box{
+    display: flex;
+    width: 400px;
+    height: 270px;
+    background-color: black;
+    border-radius: 15px;
+    flex-direction: column;
+    border: 1px solid black;
+    z-index: 0;
+}
+
+.Unit_Converter_Title{
+
+    text-align: center;
+    width: 100%;
+    padding-top: 5px;
+}
+
+.unit_con_tabs{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 10px;
+}
+
+.unit_con_tabs > {
+    padding-left: 0;
+}
+
+/* Style the individual list items (li) */
+.unit_con_tabs .nav-item {
+margin-right: 0; /* Remove default right margin */
+}
+
+.Length_Top{
+    font-weight: 900;
+}
+
+.Length_Box{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+#to_input, #From_input{
+    width: 90%;
+    justify-self: center;
+    margin-top: 0px;
+}
+
+#from_select, #to_select{
+    width: 90%;
+    justify-self: center;
+    margin-top: 10px;
+}
+
+.nav-link{
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.Unit_Converter_Img{
+    min-width: 400px;
+    max-width: 700px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 20px;
+}

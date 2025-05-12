@@ -12,6 +12,7 @@ import Page404 from './pages/404 page/404NotFound.jsx';
 import HomePage from './pages/home/home.jsx';
 import Register from './pages/register/reg.jsx';
 import RegSuccess from './pages/register/req_suc.jsx';
+import UnitConverter from './widgets/unitConverter/unitConverter.jsx';
 
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
@@ -31,6 +32,7 @@ function App() {
         {/* ---------------------------- Protected Routes ---------------------------- */}
 
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
+        <Route path="/unitconverter" element={<ProtectedRoute><UnitConverter /></ProtectedRoute>}/>
 
         {/* ---------------------------- All Others ---------------------------- */}
 

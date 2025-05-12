@@ -1,8 +1,14 @@
 
 #app-header{
     padding: 10px;
+    width: 100%;
 }
 
 .header-login{
     margin-left: 20px;
+}
+
+.collapse .navbar-collapse .log-in{
+    margin-left: auto;
+    margin-right: 20px;
 }
