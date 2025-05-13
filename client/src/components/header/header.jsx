@@ -51,6 +51,7 @@ const Header =()=>{
     // };
     //#endregion
 
+
     return(
         
         <nav className="navbar navbar-expand-lg bg-primary" id="app-header" data-bs-theme="dark">
@@ -66,8 +67,11 @@ const Header =()=>{
                 {isAuthenticated ? (
                     <div className="collapse navbar-collapse" id="navbarColor01">
                         <ul className="navbar-nav me-auto">
+                            <li className="nav-item">
+                                <a className="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+                            </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Calculaters</a>
+                                <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Calculators</a>
                                 <div className="dropdown-menu">
                                     <a className="dropdown-item" href="/unitconverter">Unit Converter</a>
                                     <a className="dropdown-item" href="#">Another action</a>
