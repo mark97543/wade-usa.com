@@ -1,0 +1,89 @@
+.currency-converter{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+.currency-converter-calculator{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: rgb(70, 76, 77);
+}
+
+.currency-converter-graph{
+    width: 400px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-left: 20px;
+    background-color: rgb(70, 76, 77);
+}
+
+.CC{
+    margin-top: 20px!important;
+    margin-bottom: 0px!important;
+}
+
+.currency-converter-col_2{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.currency-converter-col_1{
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.currency-converter-col_3{
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.currency-converter-title{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.CC_Reverse{
+    font-size: xx-large;
+    
+}
+
+.CC_Reverse:hover{
+    cursor: pointer;
+}
+
+.input-group-text{
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.CC_Reverse_Button{
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+
+}
+
+.CC_Reverse_Button:hover{
+    background-color: transparent;
+}
+
+@media screen and (max-width: 900px) {
+    .currency-converter{
+        flex-direction: column;
+    }
+
+    .currency-converter-graph{
+        margin-left: 0px;
+        margin-top: 20px;
+    }
+}

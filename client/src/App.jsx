@@ -13,6 +13,7 @@ import HomePage from './pages/home/home.jsx';
 import Register from './pages/register/reg.jsx';
 import RegSuccess from './pages/register/req_suc.jsx';
 import UnitConverter from './widgets/unitConverter/unitConverter.jsx';
+import CurrencyConverter from './widgets/curency_Converter/curency_converter.jsx'; 
 
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
@@ -33,6 +34,7 @@ function App() {
 
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/unitconverter" element={<ProtectedRoute><UnitConverter /></ProtectedRoute>}/>
+        <Route path="/currencyconverter" element={<ProtectedRoute><CurrencyConverter /></ProtectedRoute>}/>
 
         {/* ---------------------------- All Others ---------------------------- */}
 
