@@ -423,6 +423,19 @@ const CurrencyConverter = () => {
                     </div>
                 </div>
             </div>
+            <div className="currency-converter-footer">
+                    <video
+                            width="100%" // Example: Make it responsive width
+                            preload="metadata" // Helps load dimensions/duration quickly
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                        >
+                            <source src='https://01-spaces.sfo3.cdn.digitaloceanspaces.com/curency_converter/Video_Link_Generated_Successfully.mp4' type="video/mp4" />
+                            Your browser does not support the video tag. Please update your browser.
+                        </video>
+            </div>
         </>
 
     )
