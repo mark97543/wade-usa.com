@@ -17,11 +17,14 @@
 }
 
 .currency-converter-graph{
-    width: 400px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-left: 20px;
-    background-color: rgb(70, 76, 77);
+}
+
+.currency-converter-period-selector{
+    margin-top: 10px;
 }
 
 .CC{
@@ -87,3 +90,4 @@
         margin-top: 20px;
     }
 }
+
