@@ -3,6 +3,7 @@
     margin-right: auto;
     margin-left: auto;
     width: 400px;
+    height: fit-content;
     border: 1px solid black;
     border-radius: 10px;
     display: flex;
