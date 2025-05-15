@@ -23,7 +23,6 @@ const Dashboard = () =>{
                 <Analog_Clock location_Name="Local"/>
                 <Analog_Clock timezone='America/Boise' location_Name="Ammon"/>
                 <Analog_Clock timezone='Asia/Jakarta' location_Name="Bangkok"/>
-
             </div>
             
 
