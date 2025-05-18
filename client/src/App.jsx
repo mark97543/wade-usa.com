@@ -2,6 +2,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx'; // Ensure correct path
+import React, {useEffect} from 'react';
 
 
 // Page and Component Imports
