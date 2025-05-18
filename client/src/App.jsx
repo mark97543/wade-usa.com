@@ -19,6 +19,15 @@ import CurrencyConverter from './widgets/curency_Converter/curency_converter.jsx
 // Import other pages like HomePage, DashboardPage etc. when you create them
 
 function App() {
+
+  // Testing for url issue
+  useEffect(() => {
+    alert(`VITE_API_BASE_URL is: "${import.meta.env.VITE_API_BASE_URL}"`);
+    console.log("VITE_API_BASE_URL from deployed code:", import.meta.env.VITE_API_BASE_URL);
+  }, []);
+
+
+
   return (
     <> {/* Use Fragment or a main div if needed */}
       <Header />
