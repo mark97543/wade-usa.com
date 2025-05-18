@@ -14,6 +14,55 @@ const Countdown = () =>{
     const [addItem, setAddItem]=useState(true)
     const [addTitle, setAddTitle]=useState('')
     const [addDate, setAddDate]=useState('')
+    const [timer, setTimer]=useState('')
+
+    //Countdown Mechanics
+    useEffect(()=>{
+        
+        const countDownCalc = ()=>{
+            const now = new Date()
+
+            setCountdown(prevCountDownItems=>
+                prevCountDownItems.map(item=>{
+                    //May need logic here if dont want negative items
+                    const ecd = new Date(item.date)
+                    let timeTill = ecd - now
+                    
+                    //If Count Down is Ended this will cancel and go to next
+                    if (timeTill <= 0) {
+                        // Countdown has finished for this item
+                        return {
+                            ...item,
+                            timeLeft: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+                        };
+                    }
+
+                    const d = Math.floor(timeTill /(1000*60*60*24))
+                    const h = Math.floor((timeTill % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((timeTill%(1000*60*60))/(1000*60))
+                    const s = Math.floor((timeTill % (1000 * 60)) / 1000);
+                    //console.log(`Formatted Countdown: ${d}d : ${h}h : ${m}m : ${s}s`);
+                    return{
+                        ...item, //Keep all existing items
+                        timeLeft: {days: d, hours: h, minutes: m, seconds: s}
+                    }
+
+            }))
+           
+        }
+        
+        //Ste up interval
+        // setInterval calls actionToRepeat every 1000 milliseconds (1 second)
+        // It returns an interval ID which we need to clear it later.
+        const intervalId = setInterval(countDownCalc, 1000)
+
+        //cleanup function
+        // It runs when the component is about to unmount.
+        // It's crucial for preventing memory leaks by clearing the interval.0
+        return ()=>{
+            clearInterval(intervalId)//Clear interval useing its ID
+        }
+    }, [])
  
     //Pull countdowns from database
     const pullCountdowns = async()=>{
@@ -25,8 +74,7 @@ const Countdown = () =>{
                 },
             })
             const data = await response.json() //parse the JSON response from the backend
-            const data2 = data.map(item=>({...item, id: parseInt(item.id, 10), isEditing:false}))
-            //console.log("Data With isEditing included: ", data2);
+            const data2 = data.map(item=>({...item, id: parseInt(item.id, 10), isEditing:false, timeLeft:{days:0, hours: 0, minutes: 0, seconds:0}}))
             setCountdown(data2)
 
         }catch(error){
@@ -45,10 +93,14 @@ const Countdown = () =>{
                 },
                 body: JSON.stringify(newItem)
             })
+            const data = await response.json() //parse the JSON response from the backend
+            const data2 = data.map(item=>({...item, id: parseInt(item.id, 10), isEditing:false, timeLeft:{days:0, hours: 0, minutes: 0, seconds:0}}))
+            setCountdown(data2)
        }catch(error){
             console.error('Error with add on the client side: ', error)
        }
     }
+
 
     //Fetch Data from Server
     useEffect(()=>{
@@ -106,6 +158,24 @@ const Countdown = () =>{
         )
     }
 
+    //This allows the date to be edited and checks f condition is set for it to be edited
+    const editDate =(e)=>{
+        const itemId = parseInt(e.target.id)
+        const newDate = e.target.value
+
+            setCountdown(prevItems =>
+                prevItems.map(item =>{
+                    if(item.id === itemId){
+                        return {...item, date:newDate}
+                    }else{
+                        return item
+                    }
+
+                })
+            )
+        
+    }
+
     //Function to set add new Item mode
     const addItemMode = ()=>{
         setAddItem(!addItem)
@@ -147,9 +217,9 @@ const Countdown = () =>{
 
        addCountdown(newItem)
        
-        setCountdown(prevItems =>{
-                return [...prevItems, newItem]
-        })
+        // setCountdown(prevItems =>{
+        //         return [...prevItems, newItem]
+        // })
 
         //Clears Boxes
         setAddTitle('')
@@ -160,11 +230,52 @@ const Countdown = () =>{
     }
 
     //This will Delete a countdown
-    const deleteCountDownItem = (id)=>{
-        const idToDelete = parseInt(id, 10)
-        setCountdown(precItems=>
-            precItems.filter(item => item.id !== idToDelete)
-        )
+    const deleteCountDownItem = async(id)=>{
+        id = parseInt(id, 10)
+        const idToDelete = {id}
+
+        try{
+            const response = await fetch(`${API_LOGIN_URL}/delete`,{
+                method:"POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept':'application/json',
+                },
+                body: JSON.stringify(idToDelete)
+            })
+            const data = await response.json() //parse the JSON response from the backend
+            const data2 = data.map(item=>({...item, id: parseInt(item.id, 10), isEditing:false, timeLeft:{days:0, hours: 0, minutes: 0, seconds:0}}))
+            setCountdown(data2)
+
+        }catch(error){
+            console.error('Error with deleteCountdown function in countdown.js: ', error)
+        }
+
+
+        // setCountdown(precItems=>
+        //     precItems.filter(item => item.id !== idToDelete)
+        // )
+    }
+
+    //This will Save Edits
+    const saveEdits = async(id, title, date)=>{
+        const send = {id, title, date}
+        
+        try{
+            const response = await fetch(`${API_LOGIN_URL}/edit`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Accept':'application/json',
+                },
+                body:JSON.stringify(send)
+            })
+            const data = await response.json() //parse the JSON response from the backend
+            const data2 = data.map(item=>({...item, id: parseInt(item.id, 10), isEditing:false, timeLeft:{days:0, hours: 0, minutes: 0, seconds:0}}))
+            setCountdown(data2)
+        }catch(error){
+            console.error('Error with saveEdits function in countDonw.js: ', error)
+        }
     }
 
     return(
@@ -193,6 +304,7 @@ const Countdown = () =>{
                             type="datetime-local"
                             value={item.date}
                             readOnly={!item.isEditing}
+                            onChange={(e)=>{editDate(e)}}
                             onDoubleClick={(e)=>editMode(e.target.id)}
                         ></input>
                         <label className="form-label mt-4 countdown-timer-label" hidden={item.isEditing} htmlFor="countdown-timer">ECD:</label>
@@ -200,12 +312,12 @@ const Countdown = () =>{
                             className={`form-control countdown-timer ${!item.isEditing ? 'countdown-timer-spanAll':''}`}
                             id={item.id}
                             type="text"
-                            value={"Need to set timer here"}
                             readOnly={true}
+                            value={`${item.timeLeft.days} D:${item.timeLeft.hours} H:${item.timeLeft.minutes} M:${item.timeLeft.seconds} S`}
                             hidden={item.isEditing}
                         ></input>
-
-                        <button className="btn btn-success countdown-editSave" hidden={!item.isEditing}>💾</button>
+                        {/*console.log(item.timeLeft)*/}
+                        <button className="btn btn-success countdown-editSave" hidden={!item.isEditing} onClick={()=>saveEdits(item.id, item.title, item.date)}>💾</button>
                         <button id={item.id} className="btn btn-danger countdown-cancelEdit" onClick={()=>cancelEditMode(item.id)} hidden={!item.isEditing}>❌</button>
                         <button className="btn btn-danger countdown-delete" hidden={!item.isEditing} onClick={()=>deleteCountDownItem(item.id)}>Delete</button>
                         
@@ -234,11 +346,6 @@ export default Countdown;
 
 
 //TODO's:
-//2. Need to link database (add (Complete), Edit, Delete, save)
-//3. Need functionality for save (can do prior to linking database)
-//4. Need to make function to insert the new data and find next item number on the list for unique number
 //6. Need to set up actual countdown functions (Ticker may be with a use effect on a MS timer)
-//8. Need Delete Function
 
 
-//TODO: When adding a new Item react does not refresh the data and creat new widget. We will have to edit the state in the functiom to have it update in real time. 
