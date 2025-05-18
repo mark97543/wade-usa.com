@@ -5,7 +5,7 @@ import './coundown.css'
 
 //Use the envirenmental variable provided by vite
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Will be 'http://localhost:5000/api' in dev, '/api' in prod
-const API_LOGIN_URL = `${API_BASE_URL}/countdown/`; // The '/auth/login' part is consistent
+const API_COUNTDOWN_URL = `${API_BASE_URL}/countdown/`; // The '/auth/login' part is consistent
 
 
 const Countdown = () =>{
@@ -67,7 +67,7 @@ const Countdown = () =>{
     //Pull countdowns from database
     const pullCountdowns = async()=>{
         try{
-            const response = await fetch(API_LOGIN_URL, {
+            const response = await fetch(API_COUNTDOWN_URL, {
                 method: 'GET',
                 headers: {
                     'Accept':'application/json',
@@ -85,7 +85,7 @@ const Countdown = () =>{
     //Function to Add new countdown to DB
     const addCountdown = async (newItem)=>{
         try{
-            const response = await fetch(`${API_LOGIN_URL}/add`,{
+            const response = await fetch(`${API_COUNTDOWN_URL}/add`,{
                 method:"POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -235,7 +235,7 @@ const Countdown = () =>{
         const idToDelete = {id}
 
         try{
-            const response = await fetch(`${API_LOGIN_URL}/delete`,{
+            const response = await fetch(`${API_COUNTDOWN_URL}/delete`,{
                 method:"POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ const Countdown = () =>{
         const send = {id, title, date}
         
         try{
-            const response = await fetch(`${API_LOGIN_URL}/edit`,{
+            const response = await fetch(`${API_COUNTDOWN_URL}/edit`,{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json',
