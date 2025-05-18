@@ -10,8 +10,28 @@
     flex-direction: row;
 }
 
+.dash-top-row{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    
+}
+
+/* Styles for components outside of this module */
+
+/* .countdown-box{
+    margin-left: 20px !important;
+}
+
+.Weather-Box{
+    margin-right: 20px !important;
+} */
+
+
+/* ____________________________________________ */
+
 @media screen and (max-width: 800px) {
-    .dash-box{
+    .dash-top-row{
         flex-direction: column;
         width: 100%;
     }

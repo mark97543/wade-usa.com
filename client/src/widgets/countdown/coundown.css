@@ -1,0 +1,174 @@
+.countdown-box{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: black;
+    height: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 30px;
+    padding: 10px;
+}
+
+.countdown-addItem{
+    display: grid;
+    grid-template-columns: auto 35px 35px;
+    margin-top: 10px;
+    grid-template-rows: auto auto;
+    background-color: rgb(44, 62, 80);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.countdown-addButton{
+    grid-column-start: 2;
+    grid-row: 1 / span 2;
+    margin-left: 10px;
+    height: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width:30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0px;
+    background-color: inherit;
+    border: none;
+}
+
+.countdown-addButton-Cancel{
+    grid-column-start: 3;
+    grid-row: 1 / span 2;
+    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0px;
+    width: 30px;
+    height: 30px;
+    background-color: inherit;
+    border: none;
+}
+
+.countdown-new-itemTitle{
+    margin-bottom: 10px;
+}
+
+.countdown-clocks{
+    display: grid;
+    margin-top: 5px;
+
+}
+
+.countdown-instructions{
+    font-size: small;
+    font-style: italic;
+}
+
+.countdown-instructions1{
+    grid-column-start: 1;
+    grid-row: 1;
+    margin: 0px;
+}
+
+.countdown-instructions2{
+    grid-column-start: 1;
+    grid-row: 2;
+    margin: 0px;
+}
+
+.countdown-clocks{
+    display: grid;
+    grid-template-columns: 50px 210px 35px 35px;
+    grid-template-rows: auto auto auto;
+    background-color: rgb(44, 62, 80);
+    padding: 10px;
+    border-radius: 15px;
+    gap: 10px;
+}
+
+.countdown-editSave{
+    grid-column-start: 3;
+    grid-row: 1 ;
+    padding: 0px;
+    height: 35px;
+    width: 35px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: inherit;
+    border: none;
+}
+
+.countdown-editSave.hidden{
+    display: none;
+}
+
+.countdown-cancelEdit{
+    grid-column-start: 4;
+    grid-row: 1;
+    padding: 0px;
+    height: 35px;
+    width: 35px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: inherit;
+    border: none;
+}
+
+.countdown-cancelEdit.hidden{
+    display: none;
+}
+
+.countdown-delete{
+    grid-column: 3/ span 2;
+    grid-row: 2;
+}
+
+.countdown-title{
+    grid-column-start: 2;
+    grid-row: 1;
+}
+
+.countdown-date{
+    grid-column-start: 2;
+    grid-row: 2;
+}
+
+.countdown-title-spanAll{
+    grid-column: 2 / span 3;
+}
+
+.countdown-date-spanAll{
+    grid-column: 2 / span 3;
+}
+
+.countdown-timer {
+    grid-column: 2 / span 3;
+    grid-row: 3;
+}
+
+.countdown-timer.hidden{
+    display: none;
+}
+
+.countdown-event-label{
+    grid-column: 1;
+    grid-row: 1;
+
+}
+
+.countdown-timer-label{
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.countdown-date-label{
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.countdown-event-label, .countdown-date-label, .countdown-timer-label{
+    margin: 0px !important;
+    text-align: center !important;
+    align-self: center;
+}
