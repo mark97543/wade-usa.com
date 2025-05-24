@@ -1,0 +1,45 @@
+.main-travel-blog{
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+}
+
+.main-travel-blog > nav{
+    margin-top: 20px;
+}
+
+
+
+.travel-blog-summary-container{
+    border: 1px solid white;
+    width:400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    background-color:  rgb(44, 62, 80);
+}
+
+.travel-blog-summary-inner-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.travel-blog-initialimage{
+    height: 100%;
+    max-width: 40%;
+    margin-top: auto;
+    margin-bottom: auto;
+    border-radius: 15px;
+    margin-right: 10px;
+}
+
+/* This is for the post page */
+
+.post-container{
+    margin-left: 20px;
+    margin-top: 30px;
+}

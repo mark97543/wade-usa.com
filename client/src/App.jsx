@@ -15,6 +15,8 @@ import Register from './pages/register/reg.jsx';
 import RegSuccess from './pages/register/req_suc.jsx';
 import UnitConverter from './widgets/unitConverter/unitConverter.jsx';
 import CurrencyConverter from './widgets/curency_Converter/curency_converter.jsx'; 
+import BlogPage from './pages/blog/travel_blog.jsx';
+import BlogPostPage from './pages/blog/blogpostpage.jsx';
 
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
@@ -38,6 +40,8 @@ function App() {
         <Route path="/login" element={<Login />} /> {/* Or redirect to /login or show a HomePage */}
         <Route path='/register' element={<Register/>}/>
         <Route path='/register/success' element={<RegSuccess />} />
+        <Route path='/blog' element={<BlogPage/>}/>
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
 
         
         {/* ---------------------------- Protected Routes ---------------------------- */}

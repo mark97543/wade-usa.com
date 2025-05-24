@@ -61,6 +61,7 @@ const Header =()=>{
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
+                
 
 
                 {/* Main Linkd */}
@@ -77,9 +78,19 @@ const Header =()=>{
                                     <a className="dropdown-item" href="/currencyconverter">Currency Converter</a>
                                 </div>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link active" href="/blog">Travel Blog</a>
+                            </li>
                         </ul>
+                        <button type="button" className="btn btn-light" onClick={handleLogout}>Logout</button>
                     </div>
-                ):(<div className="collapse navbar-collapse log-in" id="navbarColor01"></div>)}
+                ):(<div className="collapse navbar-collapse log-in" id="navbarColor01">
+                    <ul className="navbar-nav me-auto">
+                         <li className="nav-item">
+                            <a className="nav-link active" href="/blog">Travel Blog</a>
+                         </li>
+                    </ul>
+                </div>)}
 
                 
             </div>
@@ -89,7 +100,7 @@ const Header =()=>{
                         <button type="button" className="btn btn-dark" hidden={hideDark} onClick={()=>handleThemeChange("dark")}>Dark</button>
                 </form> */}
                 {isAuthenticated ? (
-                    <button type="button" className="btn btn-light" onClick={handleLogout}>Logout</button>
+                    <></>
                 ):(
                     <button type="button" className="btn btn-light" onClick={goToLogin}> Login</button>
                 )}

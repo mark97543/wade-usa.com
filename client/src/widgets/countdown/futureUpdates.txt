@@ -1,0 +1,2 @@
+1. Add sorting by day
+2. Turn Color when less than a week Yellow THen red for day
