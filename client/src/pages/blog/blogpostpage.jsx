@@ -7,6 +7,9 @@ import Table_Dep_Flights from './Tables/Table_Dep_Flights';
 import Table_Ret_Flights from './Tables/Table_Ret_Flights';
 import Table_Rentals from './Tables/Table_Rentals';
 import Table_Hotels from './Tables/Table_Hotels';
+import Table_Events from './Tables/Table_Events';
+
+
 
 
 function BlogPostPage() {
@@ -21,6 +24,7 @@ function BlogPostPage() {
     const FLIGHTS_RELATIONAL_FIELD_NAME = 'flights_in_trip'; 
     const RENTAL_CARS = 'travel_car_rental'
     const HOTELS = 'travel_hotels'
+    const EVENTS = 'travel_events'
 
     useEffect(()=>{
         async function fetchPost() {
@@ -39,7 +43,9 @@ function BlogPostPage() {
                             `${FLIGHTS_RELATIONAL_FIELD_NAME}.*`, // Use the defined constant
                             `${RENTAL_CARS}.*`,
                             `${HOTELS}.*`,
-                            
+                            `${EVENTS}.*`,
+                            'banner',
+                            'banner.id',
                         ],
                         filter:{
                             slug:{_eq:slug}
@@ -56,10 +62,9 @@ function BlogPostPage() {
             }
         }
         fetchPost()
-
         
     },[slug, COLLECTION_NAME])
-
+   
     useEffect(()=>{ //This will format the Itin table and only display the header if data exists. 
 
         let tester = 0;
@@ -81,6 +86,12 @@ function BlogPostPage() {
         }
 
         if(!post[0].travel_car_rental || !Array.isArray(post[0].travel_car_rental) || post[0].travel_car_rental.length===0){
+            tester ++
+        }else{
+            tester = -100;
+        }
+
+        if(!post[0].travel_events || !Array.isArray(post[0].travel_events) || post[0].travel_events.length===0){
             tester ++
         }else{
             tester = -100;
@@ -115,10 +126,15 @@ function BlogPostPage() {
         return { __html: htmlString || '' }; // Ensure htmlString is not null/undefined
     };
 
-
-
+    const imageUrl = post?.[0]?.banner?.id
+    ? `${directusClient.url}assets/${post[0].banner.id}`
+    : 'https://placehold.co/800x200/e0e0e0/757575?text=No+Image';
+    
     return(
         <div className='post-container'>
+            <div className='travel-banner'>
+                <img src={imageUrl}  />
+            </div>
             <h1>{post[0].title}</h1>
             <div>{post[0].trip_summary}</div>
             <div className='post-travel-blog-entire' dangerouslySetInnerHTML={createMarkup(post[0].travel_blog)} />
@@ -126,6 +142,7 @@ function BlogPostPage() {
             <Table_Dep_Flights flights={post[0].flights_in_trip}/>
             <Table_Rentals rentals={post[0].travel_car_rental}/>
             <Table_Hotels hotels={post[0].travel_hotels}/>
+            <Table_Events events={post[0].travel_events} />
             <Table_Ret_Flights flights={post[0].flights_in_trip}/>
         </div>
     )

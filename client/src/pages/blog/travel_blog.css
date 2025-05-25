@@ -46,6 +46,15 @@
     margin-right: auto;
 }
 
+.travel-banner{
+    width: 100%;
+}
+
+.travel-banner > img{
+    width: 100%;
+    border-radius: 15px;
+}
+
 .post-travel-blog-entire{
     margin-top: 30px;
 }
@@ -63,7 +72,7 @@
     overflow-x: auto;
 }
 
-.dep-table, .rental-table, .hotels-table{
+.dep-table, .rental-table, .hotels-table, .events-table{
     width: 100%;
     margin: 10px auto;
     border-collapse: separate; /* Change to separate for table-level radius */
@@ -71,34 +80,34 @@
     font-size: small;
 }
 
-.dep-table-wrapper th,.dep-table-wrapper td, .rental-table th, .rental-table td, .hotels-table th, .hotels-table td{
+.dep-table-wrapper th,.dep-table-wrapper td, .rental-table th, .rental-table td, .hotels-table th, .hotels-table td, .events-table th, .events-table td{
     border: 1px solid #dddddd;
     text-align: center;
 }
 
-.dep-table-wrapper th,  .rental-table th, .hotels-table th{
+.dep-table-wrapper th,  .rental-table th, .hotels-table th, .events-table th{
     background-color: rgb(44, 62, 80);
 }
 
-.dep-table-wrapper tr:nth-child(even),  .rental-table tr:nth-child(even), .hotels-table tr:nth-child(even){
+.dep-table-wrapper tr:nth-child(even),  .rental-table tr:nth-child(even), .hotels-table tr:nth-child(even), .events-table tr:nth-child(even){
     background: black;
 }
 
-.dep-table-wrapper th:nth-child(6), .rental-table th:nth-child(4), .hotels-table th:nth-child(4) {
+.dep-table-wrapper th:nth-child(6), .rental-table th:nth-child(4), .hotels-table th:nth-child(4), .events-table th:nth-child(4) {
     border-top-right-radius: 15px;
 }
 
 
 
-.dep-table-wrapper th:first-child, .rental-table th:first-child, .hotels-table th:first-child{
+.dep-table-wrapper th:first-child, .rental-table th:first-child, .hotels-table th:first-child, .events-table th:first-child{
     border-top-left-radius: 15px;
 }
 
-.dep-table-wrapper tbody tr:last-child td:first-child, .rental-table tbody tr:last-child td:first-child, .hotels-table tbody tr:last-child td:first-child{
+.dep-table-wrapper tbody tr:last-child td:first-child, .rental-table tbody tr:last-child td:first-child, .hotels-table tbody tr:last-child td:first-child, .events-table tbody tr:last-child td:first-child{
     border-bottom-left-radius: 15px;
 }
 
-.dep-table-wrapper tbody tr:last-child td:last-child, .rental-table tbody tr:last-child td:last-child, .hotels-table tbody tr:last-child td:last-child{
+.dep-table-wrapper tbody tr:last-child td:last-child, .rental-table tbody tr:last-child td:last-child, .hotels-table tbody tr:last-child td:last-child, .events-table tr:last-child td:last-child{
     border-bottom-right-radius: 15px;
 }
 
@@ -160,4 +169,18 @@
     min-width: 250px;
 }
 
+.events-table tr td:first-child{
+    min-width: 130px;
+}
 
+.events-table tr td:nth-child(2){
+    min-width: 150px;
+}
+
+.events-table tr td:nth-child(3){
+    min-width: 240px;
+}
+
+.events-table tr td:nth-child(4){
+    min-width: 240px;
+}
