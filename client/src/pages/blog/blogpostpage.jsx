@@ -6,6 +6,7 @@ import { readItems } from '@directus/sdk';
 import Table_Dep_Flights from './Tables/Table_Dep_Flights';
 import Table_Ret_Flights from './Tables/Table_Ret_Flights';
 import Table_Rentals from './Tables/Table_Rentals';
+import Table_Hotels from './Tables/Table_Hotels';
 
 
 function BlogPostPage() {
@@ -19,6 +20,7 @@ function BlogPostPage() {
       // The name of the O2M field on your 'travel' collection that links to 'flights'.
     const FLIGHTS_RELATIONAL_FIELD_NAME = 'flights_in_trip'; 
     const RENTAL_CARS = 'travel_car_rental'
+    const HOTELS = 'travel_hotels'
 
     useEffect(()=>{
         async function fetchPost() {
@@ -36,6 +38,7 @@ function BlogPostPage() {
                             'travel_blog',
                             `${FLIGHTS_RELATIONAL_FIELD_NAME}.*`, // Use the defined constant
                             `${RENTAL_CARS}.*`,
+                            `${HOTELS}.*`,
                             
                         ],
                         filter:{
@@ -66,6 +69,12 @@ function BlogPostPage() {
         }
 
         if (!post[0].flights_in_trip || !Array.isArray(post[0].flights_in_trip) || post[0].flights_in_trip.length === 0) {
+            tester ++
+        }else{
+            tester = -100;
+        }
+
+        if (!post[0].travel_hotels || !Array.isArray(post[0].travel_hotels) || post[0].travel_hotels.length === 0) {
             tester ++
         }else{
             tester = -100;
@@ -116,6 +125,7 @@ function BlogPostPage() {
             <h1 hidden={hideTable}>Trip Itinerary</h1>
             <Table_Dep_Flights flights={post[0].flights_in_trip}/>
             <Table_Rentals rentals={post[0].travel_car_rental}/>
+            <Table_Hotels hotels={post[0].travel_hotels}/>
             <Table_Ret_Flights flights={post[0].flights_in_trip}/>
         </div>
     )

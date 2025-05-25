@@ -1,8 +1,10 @@
 //client/src/pages/blog/Tables/Table_Rentals.jsx
 
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 
 function Table_Rentals({rentals}) {
+
+    const [rent, setRent]=useState([])
     
       // Helper function to format the date and time string
     const formatFullDateTime = (dateString) => {
@@ -32,6 +34,36 @@ function Table_Rentals({rentals}) {
         </>
         );
     };
+
+      // If rentals is not provided, is not an array, or is an empty array, render nothing.
+    if (!rentals || !Array.isArray(rentals) || rentals.length === 0) {
+        return null; // Or you could return a <p>No flight information available.</p> if preferred
+    }
+
+    const processedRentals = useMemo(()=>{
+    if(!rentals || !Array.isArray(rentals) ||rentals.length ===0 ){
+        return[]; //return an empty array with no valid flights
+    }
+
+    // 2. Sorting Logic
+    // Create a new sorted array to avoid mutating the prop directly
+    const sortedRentals = [...rentals].sort((a,b)=>{
+        // Need to be a valid date string or timestamp
+        const dateA = new Date(a.pickup).getTime()
+        const dateB = new Date(b.pickup).getTime()
+
+        if(isNaN(dateA) && isNaN(dateB)) return 0;
+        if (isNaN(dateA)) return 1; // Put NaNs (invalid dates) at the end
+        if (isNaN(dateB)) return -1;
+
+        return dateA - dateB; // For ascending order (earliest first)
+
+    })
+    //console.log("Sorted flights:", sortedFlights);
+    setRent(sortedRentals)
+
+    }, [rentals])
+
     
     return (
         <div className='rental-table-wrapper'>
@@ -46,7 +78,7 @@ function Table_Rentals({rentals}) {
                     </tr>
                 </thead>
                 <tbody>
-                    {rentals.map((item)=>{
+                    {rent.map((item)=>{
                         return(
                             <tr key={item.id}>
                                 <td>{formatFullDateTime(item.pickup)}<br></br>{formatFullDateTime(item.dropoff)}</td>
