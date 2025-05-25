@@ -40,6 +40,107 @@
 /* This is for the post page */
 
 .post-container{
-    margin-left: 20px;
+    padding: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-travel-blog-entire{
     margin-top: 30px;
 }
+
+.post-travel-blog-entire img {
+    border-radius: 15px;   
+    width: 90% !important; /* Or width: 100% !important; depending on desired effect */
+    height: auto !important;
+    max-width: 600px !important;
+}
+
+/* For Tables */
+
+.dep-table-wrapper, .rental-table-wrapper{
+    overflow-x: auto;
+}
+
+.dep-table, .rental-table{
+    width: 100%;
+    margin: 10px auto;
+    border-collapse: separate; /* Change to separate for table-level radius */
+    border-spacing: 0; /* Control spacing if using separate */
+    font-size: small;
+}
+
+.dep-table-wrapper th,.dep-table-wrapper td, .rental-table th, .rental-table td{
+    border: 1px solid #dddddd;
+    text-align: center;
+}
+
+.dep-table-wrapper th,  .rental-table th{
+    background-color: rgb(44, 62, 80);
+}
+
+.dep-table-wrapper tr:nth-child(even),  .rental-table tr:nth-child(even){
+    background: black;
+}
+
+.dep-table-wrapper th:nth-child(6), .rental-table th:nth-child(4) {
+    border-top-right-radius: 15px;
+}
+
+
+
+.dep-table-wrapper th:first-child, .rental-table th:first-child{
+    border-top-left-radius: 15px;
+}
+
+.dep-table-wrapper tbody tr:last-child td:first-child, .rental-table tbody tr:last-child td:first-child{
+    border-bottom-left-radius: 15px;
+}
+
+.dep-table-wrapper tbody tr:last-child td:last-child, .rental-table tbody tr:last-child td:last-child{
+    border-bottom-right-radius: 15px;
+}
+
+.dep-table-wrapper th:nth-child(4), .dep-table-wrapper td:nth-child(4){
+    border-left: 3px solid #dddddd;
+}
+
+.dep-table-wrapper tr th:first-child, .dep-table-wrapper tr td:nth-child(4){ /*Arrival Width */
+    min-width: 60px;
+    height: 60px;
+}
+
+.dep-table-wrapper tr th:nth-child(2){ /* Ariline and Flight Width*/
+    min-width: 60px;
+    height: 60px;
+}
+
+.dep-table-wrapper tr th:nth-child(3), .dep-table-wrapper tr td:nth-child(5){ /*From and to Blocks */
+    min-width: 120px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dep-table-wrapper tr th:nth-child(6){ /* Notes */
+    min-width: 250px;
+}
+
+
+.rental-table tr td:first-child{
+    min-width: 130px;
+    min-height: 60px;
+}
+
+.rental-table tr td:nth-child(2){
+    min-width: 70px;
+}
+
+.rental-table tr td:nth-child(3){
+    min-width: 270px;
+}
+
+.rental-table tr td:nth-child(4){
+    min-width: 270px;
+}
+
