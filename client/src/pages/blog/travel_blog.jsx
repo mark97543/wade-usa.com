@@ -97,6 +97,20 @@ function BlogPage() {
                 )
             })}
             <Pageination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}/>
+       
+            <div className="travel-blog-video-container">
+                <video
+                    width="100%" // Example: Make it responsive width
+                    preload="metadata" // Helps load dimensions/duration quickly
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                >
+                    <source src='https://01-spaces.sfo3.cdn.digitaloceanspaces.com/travel_blog/travel.mp4' type="video/mp4" />
+                    Your browser does not support the video tag. Please update your browser.
+                </video>
+            </div>
         </div>
     )
 }

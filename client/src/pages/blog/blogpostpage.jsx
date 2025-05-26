@@ -8,6 +8,7 @@ import Table_Ret_Flights from './Tables/Table_Ret_Flights';
 import Table_Rentals from './Tables/Table_Rentals';
 import Table_Hotels from './Tables/Table_Hotels';
 import Table_Events from './Tables/Table_Events';
+import './pages_templates/posting_templates.css'; // Adjust path if your CSS is elsewhere
 
 
 

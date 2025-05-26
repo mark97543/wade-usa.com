@@ -1,0 +1,27 @@
+    .blog-post-wrapper { /* This class is used to wrap the content of the blog post */
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .blog-post-img-single-row{ /* This class is used to display a single image in a row */
+        display: block;
+        width: 95% !important;
+        height: auto;
+        border-radius: 15px;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .blog-post-two-by-photo{ /* This class is used to display two images side by side */
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+    }
+    .blog-post-two-by-photo > img{ /* This class is used to style images in the two-by-photo layout */
+        max-width: 48% !important;
+        height: auto;
+        border-radius: 15px;
+
+    }
