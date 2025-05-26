@@ -127,7 +127,7 @@ function BlogPostPage() {
     };
 
     const imageUrl = post?.[0]?.banner?.id
-    ? `${directusClient.url}assets/${post[0].banner.id}`
+    ? `${directusClient.url}/assets/${post[0].banner.id}`
     : 'https://placehold.co/800x200/e0e0e0/757575?text=No+Image';
     
     return(

@@ -79,7 +79,7 @@ function BlogPage() {
             {currentPost.map((item)=>{
                 // Construct image URL safely, checking if intro_image and its id exist
                 const imageUrl = item.intro_image && item.intro_image.id
-                    ? `${directusClient.url}assets/${item.intro_image.id}?width=300&quality=80&format=webp` // Added format=webp for optimization
+                    ? `${directusClient.url}/assets/${item.intro_image.id}?width=300&quality=80&format=webp` // Added format=webp for optimization
                     : 'https://placehold.co/300x200/e0e0e0/757575?text=No+Image'; // Fallback if no image
 
                 return(
