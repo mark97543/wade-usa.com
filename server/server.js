@@ -25,7 +25,7 @@ app.use(express.json()); // Parse JSON request bodies
 
 /* ------------------------------- API Routes ------------------------------- */
 //#region
-app.use('/api', apiRoutes);
+//app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes)
 app.use('/api/weather', weatherRoutes)
 app.use('/api/countdown', countdownRoutes)
