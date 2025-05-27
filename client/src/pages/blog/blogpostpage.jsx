@@ -9,6 +9,7 @@ import Table_Rentals from './Tables/Table_Rentals';
 import Table_Hotels from './Tables/Table_Hotels';
 import Table_Events from './Tables/Table_Events';
 import './pages_templates/posting_templates.css'; // Adjust path if your CSS is elsewhere
+import Table_Budget from './Tables/Table_Budget';
 
 
 
@@ -26,6 +27,7 @@ function BlogPostPage() {
     const RENTAL_CARS = 'travel_car_rental'
     const HOTELS = 'travel_hotels'
     const EVENTS = 'travel_events'
+    const BUDGET = 'travel_budget'
 
     useEffect(()=>{
         async function fetchPost() {
@@ -47,6 +49,7 @@ function BlogPostPage() {
                             `${EVENTS}.*`,
                             'banner',
                             'banner.id',
+                            `${BUDGET}.*`
                         ],
                         filter:{
                             slug:{_eq:slug}
@@ -145,6 +148,7 @@ function BlogPostPage() {
             <Table_Hotels hotels={post[0].travel_hotels}/>
             <Table_Events events={post[0].travel_events} />
             <Table_Ret_Flights flights={post[0].flights_in_trip}/>
+            <Table_Budget budget={post[0].travel_budget}/>
         </div>
     )
 

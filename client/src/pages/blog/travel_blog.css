@@ -86,7 +86,7 @@
 
 /* For Tables */
 
-.dep-table-wrapper, .rental-table-wrapper, .hotels-table-wrapper{
+.dep-table-wrapper, .rental-table-wrapper, .hotels-table-wrapper, .travel-blog-budget-table-container{
     overflow-x: auto;
 }
 
@@ -201,4 +201,68 @@
 
 .events-table tr td:nth-child(4){
     min-width: 240px;
+}
+
+
+/* For the Budget Table */
+.travel-blog-budget-table {
+    width: 100%;
+    margin: 10px auto;
+    border-collapse: separate; /* Change to separate for table-level radius */
+    border-spacing: 0; /* Control spacing if using separate */
+}
+.travel-blog-budget-table th, .travel-blog-budget-table td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    font-size: small;
+}
+.travel-blog-budget-table th {
+    background-color: rgb(44, 62, 80);
+}
+.travel-blog-budget-table tr:nth-child(even) {
+    background: black;
+}
+.travel-blog-budget-table tfoot tr td {
+    background-color: rgb(44, 62, 80) !important;
+}
+.travel-blog-budget-table tfoot tr td:first-child{
+    text-align: right;
+    font-weight: bold;
+    padding-right: 10px;
+    border-right: none;
+} 
+
+.travel-blog-budget-table tfoot tr td:nth-child(2){
+    font-style: italic;
+    border-left: none;
+} 
+
+.travel-blog-budget-table tr th:first-child{
+    border-top-left-radius: 15px;
+}
+
+.travel-blog-budget-table tr th:last-child{
+    border-top-right-radius: 15px;
+}
+
+.travel-blog-budget-table tfoot tr:nth-child(2) td:first-child{
+    border-bottom-left-radius: 15px;
+}
+
+.travel-blog-budget-table tfoot tr:nth-child(2) td:last-child{
+    border-bottom-right-radius: 15px;
+}
+
+.travel-blog-budget-table th:first-child{
+    min-width: 175px;
+}
+
+.travel-blog-budget-table th:nth-child(2){
+    min-width: 450px;
+}
+.travel-blog-budget-table th:nth-child(3){
+    min-width: 50px;
+}
+.travel-blog-budget-table th:nth-child(4){
+    min-width: 80px;
 }

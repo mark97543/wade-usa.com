@@ -25,3 +25,7 @@
         border-radius: 15px;
 
     }
+
+    .travel-blog-budget-table p{ /* This class is used to style paragraphs in the travel blog budget table */
+        margin-bottom: 0px !important;
+    }
