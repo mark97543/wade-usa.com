@@ -12,8 +12,12 @@ function Moving_USA_Blog() {
 
   return (
     <div className='MTU_WRAPPER'>
-        <Sidebar_MTU/>
-      <h1>Future Moving to USA Blog</h1>
+      <Sidebar_MTU/>
+      <div>
+        <h1>Hello Fa!</h1>
+        <p> Congradulations on moving to the USA. There are many things here that are different. These Blogs are here to help you transition to moving to the USA and hopefully eliminate some confusion.</p>
+
+      </div>
     </div>
   )
 }

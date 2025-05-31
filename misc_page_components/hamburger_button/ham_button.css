@@ -4,8 +4,10 @@
     padding: 5px;
     border-radius: 5px;
     background-color: rgba(0, 0, 0, .15);
-    padding-bottom: 0;
-    padding-top: 0;
+    width: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
 }
 
 .hb_bar1, .hb_bar2, .hb_bar3{

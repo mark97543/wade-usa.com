@@ -14,10 +14,12 @@ function Sidebar_MTU() {
 
   return (
     <aside className={`mtu_sidebar ${collapsed ? 'collapsed':'' } `}>
-        <Ham_button onButtonClick={toggleSidebar} status={collapsed}/>
-        {!collapsed && (
-            <h1>Open</h1>
-        )}
+        <div className='mtu_sidbar_row1'>
+            {!collapsed && (
+                <input className="form-control form-control-lg" type="text" placeholder="search" id="inputLarge"/>
+            )}
+            <Ham_button onButtonClick={toggleSidebar} status={collapsed}/>
+        </div>
     </aside>
   )
 }

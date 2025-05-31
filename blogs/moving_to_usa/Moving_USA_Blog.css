@@ -7,5 +7,23 @@
 
 .mtu_sidebar{
     background-color: rgb(44, 62, 80);
-    height: 100%;
+    width: 300px;
+    min-width: 300px;
 }
+
+.mtu_sidebar.collapsed {
+    width: 40px;
+    min-width: 40px;
+    padding-left: 0;    
+    padding-right: 0;  
+    overflow: hidden;   /* This is important to hide the content as it shrinks */
+}
+
+.mtu_sidbar_row1{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+
