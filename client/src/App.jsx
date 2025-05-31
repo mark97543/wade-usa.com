@@ -17,6 +17,7 @@ import UnitConverter from './widgets/unitConverter/unitConverter.jsx';
 import CurrencyConverter from './widgets/curency_Converter/curency_converter.jsx'; 
 import BlogPage from './pages/blog/travel_blog.jsx';
 import BlogPostPage from './pages/blog/blogpostpage.jsx';
+import Moving_USA_Blog from '../../blogs/moving_to_usa/Moving_USA_Blog.jsx';
 
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
@@ -49,6 +50,8 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/unitconverter" element={<ProtectedRoute><UnitConverter /></ProtectedRoute>}/>
         <Route path="/currencyconverter" element={<ProtectedRoute><CurrencyConverter /></ProtectedRoute>}/>
+        <Route path='/movingtousa' element={<ProtectedRoute><Moving_USA_Blog/></ProtectedRoute>} />
+        
 
         {/* ---------------------------- All Others ---------------------------- */}
 

@@ -78,9 +78,14 @@ const Header =()=>{
                                     <a className="dropdown-item" href="/currencyconverter">Currency Converter</a>
                                 </div>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link active" href="/blog">Travel Blog</a>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Blogs</a>
+                                <div className="dropdown-menu">
+                                    <a className="dropdown-item" href="movingtousa">Moving to USA</a>
+                                    <a className="dropdown-item" href="/blog">Travel Blog</a>
+                                </div>
                             </li>
+
                         </ul>
                         <button type="button" className="btn btn-light" onClick={handleLogout}>Logout</button>
                     </div>
