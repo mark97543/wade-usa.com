@@ -1,0 +1,34 @@
+.hb_container{
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, .15);
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.hb_bar1, .hb_bar2, .hb_bar3{
+    --bar-width:30px;
+    --bar-height:2px;
+    --bar-vertical-margin: 6px; 
+    width: var(--bar-width);
+    height: var(--bar-height);
+    background-color: white;
+    margin: var(--bar-vertical-margin) 0; 
+    transition: 0.4s;
+    border-radius: calc(var(--bar-width)*.5);
+}
+
+.hb_container.change .hb_bar1 { 
+  /* More specific selector: targets .hb_bar1 only when .hb_container also has .change */
+  transform: translate(0, calc(var(--bar-height) + var(--bar-vertical-margin))) rotate(-45deg);
+}
+
+.hb_container.change .hb_bar2 {
+  opacity: 0;
+}
+
+.hb_container.change .hb_bar3 {
+  transform: translate(0, calc(-1 * (var(--bar-height) + var(--bar-vertical-margin)))) rotate(45deg);
+}

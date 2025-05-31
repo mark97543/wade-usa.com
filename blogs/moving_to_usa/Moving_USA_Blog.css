@@ -1,4 +1,11 @@
 .MTU_WRAPPER{
     display: flex;
     flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.mtu_sidebar{
+    background-color: rgb(44, 62, 80);
+    height: 100%;
 }

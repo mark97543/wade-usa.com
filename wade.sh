@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#  V-5/31/25 : Initial Version
+
+# ----- Set the title for THIS terminal window -----
+printf "\033]0;WadeUSA Dev\007" # <--- SETS THE TITLE
+
 
 # ----- Constants -----
 PROJECT_DIR="/home/mark/Documents/wade-usa.com"

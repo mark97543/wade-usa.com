@@ -33,7 +33,7 @@ function App() {
 
 
   return (
-    <> {/* Use Fragment or a main div if needed */}
+    <div className='app_root'> {/* Use Fragment or a main div if needed */}
       <Header />
       <Routes>
         {/* -------------------------- {Unprotected Routes} -------------------------- */}
@@ -58,7 +58,7 @@ function App() {
         <Route path='/*' element={<Page404/>}/>
 
       </Routes>
-    </>
+    </div>
   );
 }
 
