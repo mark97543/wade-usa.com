@@ -1,19 +1,23 @@
 #!/bin/bash
 
 #  V-5/31/25 : Initial Version
+# V-6/1/25 : Added Kitty Terminal with seperate dev view with tabs
 
 # ----- Set the title for THIS terminal window -----
 printf "\033]0;WadeUSA Dev\007" # <--- SETS THE TITLE
 
 
 # ----- Constants -----
+DEV_WINDOW="Local DEV"
 PROJECT_DIR="/home/mark/Documents/wade-usa.com"
-HTOP_WINDOW_TITLE="System Moniter"
+HTOP_WINDOW_TITLE="Local System Moniter"
 SERVER_FILE="/home/mark/Documents/wade-usa.com/server"
-SERVER_WINDOW="SERVER"
+SERVER_WINDOW="Local SERVER"
 CLIENT_FILE="/home/mark/Documents/wade-usa.com/client"
-CLIENT_WINDOW="Client"
-
+CLIENT_WINDOW="Local Client"
+DEV_URL="http://localhost:5174/"
+DB_URL="https://wade-usa.com/directus/admin/"
+CLIENT_DEPLOY="Deploying Client"
 
 
 # region ----- Functions -----
@@ -34,19 +38,28 @@ clear_screen() {
   clear
 }
 
+deploy_client (){
+  kitty -o allow_remote_control=yes --listen-on unix:/tmp/kitty_window_CDeploy --title "$CLIENT_DEPLOY" 
+
+}
+
 open_dev () {
-  #Open Htop
-  echo "Launching htop in a new Terminal ..."
-  gnome-terminal --title="$HTOP_WINDOW_TITLE" -- bash -c "htop; exec bash" & #& Runs it in background
-  sleep 1
 
-  echo "Launching Dev Server ... "
-  gnome-terminal --title="$SERVER_WINDOW" -- bash -c "cd \"$SERVER_FILE\" && nodemon run server.js; exec bash" & # Added quotes and exec bash
-  sleep 1
 
-  echo "Launching Vite Dev"
-  gnome-terminal --title="$CLIENT_WINDOW" -- bash -c "cd \"$CLIENT_FILE\" && npm run dev; exec bash" &
+  kitty -o allow_remote_control=yes --listen-on unix:/tmp/kitty_window_Dev --title "$DEV_WINDOW" &
+  sleep 0.5
+  kitty @ --to unix:/tmp/kitty_window_Dev launch --type=tab --tab-title="$HTOP_WINDOW_TITLE" htop 
+  sleep 0.5
+  kitty @ --to unix:/tmp/kitty_window_Dev launch --type=tab --tab-title="$SERVER_WINDOW" --cwd "$SERVER_FILE" bash -c "nodemon run server.js; exec bash"
+  sleep 0.5
+  kitty @ --to unix:/tmp/kitty_window_Dev launch --type=tab --tab-title="$CLIENT_WINDOW" --cwd "$CLIENT_FILE" bash -c "npm run dev; exec bash"
+  sleep 0.5
+  kitty @ --to unix:/tmp/kitty_window_Dev close-tab --match "index:0"
   sleep 1
+  google-chrome "$DEV_URL"
+  google-chrome "$DB_URL"
+  google-chrome "https://gemini.google.com/"
+
 
 }
 
@@ -120,6 +133,7 @@ while true; do
   echo "1. Open Project In VS Code"
   echo "2. Start Full Development Environment"
   echo "3. Commit Changes"
+  echo "4. Deploy Client Side Only" 
   echo "c. Clear Screen"
   echo "q. Quit"
   echo "-----------------------------------"
@@ -142,6 +156,10 @@ while true; do
     git_add_commit_push
     ;;
 
+    4)
+    deploy_client
+    ;;
+
     c | C)
     clear_screen
     ;;
@@ -158,6 +176,8 @@ done
 
 
 
-
+#Dependencies
+# sudo apt update
+# sudo apt install tmux
 
 
