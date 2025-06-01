@@ -81,7 +81,7 @@ const Header =()=>{
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Blogs</a>
                                 <div className="dropdown-menu">
-                                    <a className="dropdown-item" href="movingtousa">Moving to USA</a>
+                                    <a className="dropdown-item" href="/movingtousa">Moving to USA</a>
                                     <a className="dropdown-item" href="/blog">Travel Blog</a>
                                 </div>
                             </li>
