@@ -19,6 +19,14 @@ DEV_URL="http://localhost:5174/"
 DB_URL="https://wade-usa.com/directus/admin/"
 CLIENT_DEPLOY="Deploying Client"
 
+# Define the sequence of commands to run on the remote server
+REMOTE_MAINTENANCE_CMDS="echo '--- Starting Droplet Maintenance ---'; \
+echo '--- Updating package lists ---'; \
+sudo apt update && \
+echo '--- Upgrading packages (-y for non-interactive) ---'; \
+sudo apt upgrade -y && \
+echo '--- System updated and upgraded. Rebooting server now! ---'; \
+sudo reboot"
 
 # region ----- Functions -----
 open_VS () {
@@ -38,10 +46,6 @@ clear_screen() {
   clear
 }
 
-deploy_client (){
-  kitty -o allow_remote_control=yes --listen-on unix:/tmp/kitty_window_CDeploy --title "$CLIENT_DEPLOY" 
-
-}
 
 open_dev () {
 
@@ -133,7 +137,6 @@ while true; do
   echo "1. Open Project In VS Code"
   echo "2. Start Full Development Environment"
   echo "3. Commit Changes"
-  echo "4. Deploy Client Side Only" 
   echo "c. Clear Screen"
   echo "q. Quit"
   echo "-----------------------------------"
@@ -154,10 +157,6 @@ while true; do
 
     3)
     git_add_commit_push
-    ;;
-
-    4)
-    deploy_client
     ;;
 
     c | C)
