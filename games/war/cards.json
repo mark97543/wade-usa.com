@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "suit": "Clubs",
+    "value": "2",
+    "rank": 2,
+    "imageFileName": "card_clubs_02.png"
+  },
+  {
+    "id": 2,
+    "suit": "Clubs",
+    "value": "3",
+    "rank": 3,
+    "imageFileName": "card_clubs_03.png"
+  },
+  {
+    "id": 3,
+    "suit": "Clubs",
+    "value": "4",
+    "rank": 4,
+    "imageFileName": "card_clubs_04.png"
+  },
+  {
+    "id": 4,
+    "suit": "Clubs",
+    "value": "5",
+    "rank": 5,
+    "imageFileName": "card_clubs_05.png"
+  },
+  {
+    "id": 5,
+    "suit": "Clubs",
+    "value": "6",
+    "rank": 6,
+    "imageFileName": "card_clubs_06.png"
+  },
+  {
+    "id": 6,
+    "suit": "Clubs",
+    "value": "7",
+    "rank": 7,
+    "imageFileName": "card_clubs_07.png"
+  },
+  {
+    "id": 7,
+    "suit": "Clubs",
+    "value": "8",
+    "rank": 8,
+    "imageFileName": "card_clubs_08.png"
+  },
+  {
+    "id": 8,
+    "suit": "Clubs",
+    "value": "9",
+    "rank": 9,
+    "imageFileName": "card_clubs_09.png"
+  },
+  {
+    "id": 9,
+    "suit": "Clubs",
+    "value": "10",
+    "rank": 10,
+    "imageFileName": "card_clubs_10.png"
+  },
+  {
+    "id": 10,
+    "suit": "Clubs",
+    "value": "Jack",
+    "rank": 11,
+    "imageFileName": "card_clubs_J.png"
+  },
+  {
+    "id": 11,
+    "suit": "Clubs",
+    "value": "Queen",
+    "rank": 12,
+    "imageFileName": "card_clubs_Q.png"
+  },
+  {
+    "id": 12,
+    "suit": "Clubs",
+    "value": "King",
+    "rank": 13,
+    "imageFileName": "card_clubs_K.png"
+  },
+  {
+    "id": 13,
+    "suit": "Clubs",
+    "value": "Ace",
+    "rank": 14,
+    "imageFileName": "card_clubs_A.png"
+  },
+  {
+    "id": 14,
+    "suit": "Diamonds",
+    "value": "2",
+    "rank": 2,
+    "imageFileName": "card_diamonds_02.png"
+  },
+  {
+    "id": 15,
+    "suit": "Diamonds",
+    "value": "3",
+    "rank": 3,
+    "imageFileName": "card_diamonds_03.png"
+  },
+  {
+    "id": 16,
+    "suit": "Diamonds",
+    "value": "4",
+    "rank": 4,
+    "imageFileName": "card_diamonds_04.png"
+  },
+  {
+    "id": 17,
+    "suit": "Diamonds",
+    "value": "5",
+    "rank": 5,
+    "imageFileName": "card_diamonds_05.png"
+  },
+  {
+    "id": 18,
+    "suit": "Diamonds",
+    "value": "6",
+    "rank": 6,
+    "imageFileName": "card_diamonds_06.png"
+  },
+  {
+    "id": 19,
+    "suit": "Diamonds",
+    "value": "7",
+    "rank": 7,
+    "imageFileName": "card_diamonds_07.png"
+  },
+  {
+    "id": 20,
+    "suit": "Diamonds",
+    "value": "8",
+    "rank": 8,
+    "imageFileName": "card_diamonds_08.png"
+  },
+  {
+    "id": 21,
+    "suit": "Diamonds",
+    "value": "9",
+    "rank": 9,
+    "imageFileName": "card_diamonds_09.png"
+  },
+  {
+    "id": 22,
+    "suit": "Diamonds",
+    "value": "10",
+    "rank": 10,
+    "imageFileName": "card_diamonds_10.png"
+  },
+  {
+    "id": 23,
+    "suit": "Diamonds",
+    "value": "Jack",
+    "rank": 11,
+    "imageFileName": "card_diamonds_J.png"
+  },
+  {
+    "id": 24,
+    "suit": "Diamonds",
+    "value": "Queen",
+    "rank": 12,
+    "imageFileName": "card_diamonds_Q.png"
+  },
+  {
+    "id": 25,
+    "suit": "Diamonds",
+    "value": "King",
+    "rank": 13,
+    "imageFileName": "card_diamonds_K.png"
+  },
+  {
+    "id": 26,
+    "suit": "Diamonds",
+    "value": "Ace",
+    "rank": 14,
+    "imageFileName": "card_diamonds_A.png"
+  },
+  {
+    "id": 27,
+    "suit": "Hearts",
+    "value": "2",
+    "rank": 2,
+    "imageFileName": "card_hearts_02.png"
+  },
+  {
+    "id": 28,
+    "suit": "Hearts",
+    "value": "3",
+    "rank": 3,
+    "imageFileName": "card_hearts_03.png"
+  },
+  {
+    "id": 29,
+    "suit": "Hearts",
+    "value": "4",
+    "rank": 4,
+    "imageFileName": "card_hearts_04.png"
+  },
+  {
+    "id": 30,
+    "suit": "Hearts",
+    "value": "5",
+    "rank": 5,
+    "imageFileName": "card_hearts_05.png"
+  },
+  {
+    "id": 31,
+    "suit": "Hearts",
+    "value": "6",
+    "rank": 6,
+    "imageFileName": "card_hearts_06.png"
+  },
+  {
+    "id": 32,
+    "suit": "Hearts",
+    "value": "7",
+    "rank": 7,
+    "imageFileName": "card_hearts_07.png"
+  },
+  {
+    "id": 33,
+    "suit": "Hearts",
+    "value": "8",
+    "rank": 8,
+    "imageFileName": "card_hearts_08.png"
+  },
+  {
+    "id": 34,
+    "suit": "Hearts",
+    "value": "9",
+    "rank": 9,
+    "imageFileName": "card_hearts_09.png"
+  },
+  {
+    "id": 35,
+    "suit": "Hearts",
+    "value": "10",
+    "rank": 10,
+    "imageFileName": "card_hearts_10.png"
+  },
+  {
+    "id": 36,
+    "suit": "Hearts",
+    "value": "Jack",
+    "rank": 11,
+    "imageFileName": "card_hearts_J.png"
+  },
+  {
+    "id": 37,
+    "suit": "Hearts",
+    "value": "Queen",
+    "rank": 12,
+    "imageFileName": "card_hearts_Q.png"
+  },
+  {
+    "id": 38,
+    "suit": "Hearts",
+    "value": "King",
+    "rank": 13,
+    "imageFileName": "card_hearts_K.png"
+  },
+  {
+    "id": 39,
+    "suit": "Hearts",
+    "value": "Ace",
+    "rank": 14,
+    "imageFileName": "card_hearts_A.png"
+  },
+  {
+    "id": 40,
+    "suit": "Spades",
+    "value": "2",
+    "rank": 2,
+    "imageFileName": "card_spades_02.png"
+  },
+  {
+    "id": 41,
+    "suit": "Spades",
+    "value": "3",
+    "rank": 3,
+    "imageFileName": "card_spades_03.png"
+  },
+  {
+    "id": 42,
+    "suit": "Spades",
+    "value": "4",
+    "rank": 4,
+    "imageFileName": "card_spades_04.png"
+  },
+  {
+    "id": 43,
+    "suit": "Spades",
+    "value": "5",
+    "rank": 5,
+    "imageFileName": "card_spades_05.png"
+  },
+  {
+    "id": 44,
+    "suit": "Spades",
+    "value": "6",
+    "rank": 6,
+    "imageFileName": "card_spades_06.png"
+  },
+  {
+    "id": 45,
+    "suit": "Spades",
+    "value": "7",
+    "rank": 7,
+    "imageFileName": "card_spades_07.png"
+  },
+  {
+    "id": 46,
+    "suit": "Spades",
+    "value": "8",
+    "rank": 8,
+    "imageFileName": "card_spades_08.png"
+  },
+  {
+    "id": 47,
+    "suit": "Spades",
+    "value": "9",
+    "rank": 9,
+    "imageFileName": "card_spades_09.png"
+  },
+  {
+    "id": 48,
+    "suit": "Spades",
+    "value": "10",
+    "rank": 10,
+    "imageFileName": "card_spades_10.png"
+  },
+  {
+    "id": 49,
+    "suit": "Spades",
+    "value": "Jack",
+    "rank": 11,
+    "imageFileName": "card_spades_J.png"
+  },
+  {
+    "id": 50,
+    "suit": "Spades",
+    "value": "Queen",
+    "rank": 12,
+    "imageFileName": "card_spades_Q.png"
+  },
+  {
+    "id": 51,
+    "suit": "Spades",
+    "value": "King",
+    "rank": 13,
+    "imageFileName": "card_spades_K.png"
+  },
+  {
+    "id": 52,
+    "suit": "Spades",
+    "value": "Ace",
+    "rank": 14,
+    "imageFileName": "card_spades_A.png"
+  }
+]

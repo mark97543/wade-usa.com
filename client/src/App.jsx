@@ -19,6 +19,7 @@ import BlogPage from './pages/blog/travel_blog.jsx';
 import BlogPostPage from './pages/blog/blogpostpage.jsx';
 import Moving_USA_Blog from '../../blogs/moving_to_usa/Moving_USA_Blog.jsx';
 import MTU_Post_page from '../../blogs/moving_to_usa/MTU_Post_page.jsx';
+import War from '../../games/war/War.jsx';
 
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
@@ -44,6 +45,7 @@ function App() {
         <Route path='/register/success' element={<RegSuccess />} />
         <Route path='/blog' element={<BlogPage/>}/>
         <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route path='/games/war' element={<War/>}/>
 
         
         {/* ---------------------------- Protected Routes ---------------------------- */}

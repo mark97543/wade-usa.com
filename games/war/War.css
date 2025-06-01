@@ -1,0 +1,32 @@
+.war_Canvas{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.war_Canvas > div{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+
+.war_control{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+.card-slot{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.card-image{
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
