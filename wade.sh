@@ -60,9 +60,11 @@ open_dev () {
   sleep 0.5
   kitty @ --to unix:/tmp/kitty_window_Dev close-tab --match "index:0"
   sleep 1
-  google-chrome "$DEV_URL"
-  google-chrome "$DB_URL"
-  google-chrome "https://gemini.google.com/"
+  # google-chrome "$DEV_URL"
+  # sleep 1
+  # google-chrome "$DB_URL"
+  # sleep 1
+  # google-chrome "https://gemini.google.com/"
 
 
 }

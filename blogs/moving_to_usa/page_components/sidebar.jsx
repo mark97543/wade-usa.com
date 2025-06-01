@@ -4,17 +4,32 @@ import React, {useState, useEffect} from 'react'
 import Ham_button from '../../../misc_page_components/hamburger_button/ham_button'
 import '../Moving_USA_Blog.css'
 import Sidbar_blogs from './Sidbar_blogs'
+import db_pull from './db_pull'
 
 
-function Sidebar_MTU({posts}) {
+function Sidebar_MTU() {
     const [collapsed, setCollapsed]=useState(true)
-    const [search, setSearch]=useState(posts)
+    const [search, setSearch]=useState()
     const [searchTerm, setSearchTerm]=useState()
 
     const toggleSidebar = () =>{
         setCollapsed(!collapsed)
 
     }
+
+    //Directus Pull
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const COLLECTION_NAME = 'moving_usa_blog'
+
+    useEffect(()=>{
+        db_pull(setLoading, COLLECTION_NAME, setPosts, setError)
+    },[COLLECTION_NAME])
+
+
+
 
     useEffect(() => {
         if (!searchTerm) {

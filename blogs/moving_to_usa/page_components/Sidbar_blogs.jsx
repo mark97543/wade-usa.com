@@ -3,16 +3,14 @@ import Pageination from '../../../client/src/components/pagination/pageination';
 import { Link } from 'react-router-dom';
 
 
-const ITEMS_PER_PAGE =10;//How many Items are allowed per page
+const ITEMS_PER_PAGE =5;//How many Items are allowed per page
 
 
 function Sidbar_blogs({posts}) {
 
     const [currentPage, setCurrentPage]=useState(1)
-    const [postsPerPage]=useState(ITEMS_PER_PAGE)
-    
+    const [postsPerPage]=useState(ITEMS_PER_PAGE)   
  
-
     //Get Current Posts
     const indexOfLastPost =currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;

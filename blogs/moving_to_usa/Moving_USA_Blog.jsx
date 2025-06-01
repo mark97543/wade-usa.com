@@ -3,8 +3,8 @@
 import React, {useEffect, useRef, useState} from 'react'
 import './Moving_USA_Blog.css'
 import Sidebar_MTU from './page_components/sidebar'
-import directusClient from '../../client/src/lib/directus';
-import { readItems } from '@directus/sdk';
+
+import db_pull from './page_components/db_pull';
 
 
 
@@ -17,37 +17,7 @@ function Moving_USA_Blog() {
   const COLLECTION_NAME = 'moving_usa_blog'
 
   useEffect(()=>{
-      async function fetchPosts(){
-          setLoading(true)
-          try{
-              const fetchedPosts = await directusClient.request(
-                  readItems(COLLECTION_NAME, {
-                      feilds:[
-                          'title',
-                          'slug',
-                          'status',
-                          'update',
-                          'summary',
-                          'id',
-                          'content',
-                      ],
-                      filter:{
-                          status:{_eq:'deploy'}
-                      },
-                      sort:['title']
-                  })
-              )
-              setPosts(fetchedPosts)
-              setError(null)
-          }catch(err){
-              console.error(`Failed to fetch items from ${COLLECTION_NAME}:`, err);
-              setError(`Failed to load items. Please try again later. Error: ${err.message}`);
-          }finally{
-              setLoading(false)
-          }
-      }
-      fetchPosts();
-      
+    db_pull(setLoading, COLLECTION_NAME, setPosts, setError)
   },[COLLECTION_NAME])
 
   if (loading) {
@@ -65,7 +35,7 @@ function Moving_USA_Blog() {
 
   return (
     <div className='MTU_WRAPPER'>
-      <Sidebar_MTU posts={posts}/>
+      <Sidebar_MTU/>
       <div className='mtu_cont_container'>
         <h1>Hello Fa!</h1>
         <h4> Congradulations on moving to the USA. There are many things here that are different. These Blogs are here to help you transition to moving to the USA and hopefully eliminate some confusion.</h4>
