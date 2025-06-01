@@ -1,0 +1,58 @@
+/* Topic 1: Money */
+
+.bill_display{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.bill_display > img{
+    width: 350px;
+    height: auto;
+}
+
+.coin_display{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.coin_display >img{
+    width: 200px;
+}
+
+.topic_1_ani{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 400px;
+}
+
+.topic_1_ani > * {
+    width: auto;
+    height: auto;
+    border-radius: 15px;
+}
+
+
+@media (max-width: 840px) {
+    .bill_display{
+        flex-direction: column;
+    }
+
+    .coin_display{
+        flex-direction: column;
+    }
+
+    .coin_display > img{
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+

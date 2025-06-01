@@ -18,6 +18,7 @@ import CurrencyConverter from './widgets/curency_Converter/curency_converter.jsx
 import BlogPage from './pages/blog/travel_blog.jsx';
 import BlogPostPage from './pages/blog/blogpostpage.jsx';
 import Moving_USA_Blog from '../../blogs/moving_to_usa/Moving_USA_Blog.jsx';
+import MTU_Post_page from '../../blogs/moving_to_usa/MTU_Post_page.jsx';
 
 
 // Import other pages like HomePage, DashboardPage etc. when you create them
@@ -51,6 +52,7 @@ function App() {
         <Route path="/unitconverter" element={<ProtectedRoute><UnitConverter /></ProtectedRoute>}/>
         <Route path="/currencyconverter" element={<ProtectedRoute><CurrencyConverter /></ProtectedRoute>}/>
         <Route path='/movingtousa' element={<ProtectedRoute><Moving_USA_Blog/></ProtectedRoute>} />
+        <Route path='/movingtousa/:slug' element={<ProtectedRoute><MTU_Post_page/></ProtectedRoute>}/>
         
 
         {/* ---------------------------- All Others ---------------------------- */}

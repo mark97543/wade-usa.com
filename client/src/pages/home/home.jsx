@@ -15,7 +15,7 @@ const HomePage = ()=>{
             <div className="login-link">
                 <h1 >Welcome</h1>
             </div>
-            <div className="P404-video">
+            <div className="Home_video">
                     <video
                         width="100%" // Example: Make it responsive width
                         preload="metadata" // Helps load dimensions/duration quickly

@@ -1,28 +1,95 @@
+:root{
+    --sidebar-width:40px;
+    --sidebar-width-expanded:300px;
+}
+
+
 .MTU_WRAPPER{
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
+.mtu_cont_container, .mtu_content_display{
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - var(--sidebar-width));
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    z-index: 0;
+    overflow: scroll;
+}
+
+
 .mtu_sidebar{
+    z-index: 10;
+    position: relative;
     background-color: rgb(44, 62, 80);
     width: 300px;
     min-width: 300px;
+    padding: 10px;
 }
 
 .mtu_sidebar.collapsed {
-    width: 40px;
-    min-width: 40px;
+    min-width:var(--sidebar-width);
+    width: var(--sidebar-width);
     padding-left: 0;    
     padding-right: 0;  
     overflow: hidden;   /* This is important to hide the content as it shrinks */
+
 }
 
 .mtu_sidbar_row1{
     display: flex;
     flex-direction: row;
     width: 100%;
+}
+
+.mtu_sidbar_blogs_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+    max-height: 150px;
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.mtu_sidbar_blogs_container p{
+    margin: 0;
+    padding: 0;
+}
+
+.mtu-blog-video-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.mtu-blog-video-container > *{
+    border-radius: 15px;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.mtu_sidebar_div{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.mtu_posts_page{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 
