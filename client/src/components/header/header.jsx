@@ -101,13 +101,14 @@ const Header =()=>{
                          <li className="nav-item">
                             <a className="nav-link active" href="/blog">Travel Blog</a>
                          </li>
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Games</a>
+                            <div className="dropdown-menu">
+                                <a className="dropdown-item" href="/games/war">War</a>
+                            </div>
+                        </li>
                     </ul>
-                    <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Games</a>
-                        <div className="dropdown-menu">
-                            <a className="dropdown-item" href="/games/war">War</a>
-                        </div>
-                    </li>
+
                 </div>)}
 
                 
