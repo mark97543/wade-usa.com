@@ -85,16 +85,29 @@ const Header =()=>{
                                     <a className="dropdown-item" href="/blog">Travel Blog</a>
                                 </div>
                             </li>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Games</a>
+                                <div className="dropdown-menu">
+                                    <a className="dropdown-item" href="/games/war">War</a>
+                                </div>
+                            </li>
 
                         </ul>
                         <button type="button" className="btn btn-light" onClick={handleLogout}>Logout</button>
                     </div>
-                ):(<div className="collapse navbar-collapse log-in" id="navbarColor01">
+                ):(
+                <div className="collapse navbar-collapse log-in" id="navbarColor01">
                     <ul className="navbar-nav me-auto">
                          <li className="nav-item">
                             <a className="nav-link active" href="/blog">Travel Blog</a>
                          </li>
                     </ul>
+                    <li className="nav-item dropdown">
+                        <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Games</a>
+                        <div className="dropdown-menu">
+                            <a className="dropdown-item" href="/games/war">War</a>
+                        </div>
+                    </li>
                 </div>)}
 
                 
