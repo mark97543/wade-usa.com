@@ -1,0 +1,29 @@
+# Node.js node_modules/ 
+.env npm-debug.log 
+yarn-debug.log 
+yarn-error.log 
+.pnpm-store/ 
+.vscode/ 
+# Build artifacts 
+build/ 
+dist/ 
+out/ 
+.next/ 
+# If you ever use Next.js with React # Docker 
+*.log 
+*.sqlite 
+.docker/ 
+docker-compose.override.yml 
+# If you use overrides for local specific configs 
+# DigitalOcean Specific (if any local configs are created) 
+.do/ 
+# OS generated files 
+.DS_Store 
+Thumbs.db 
+# Strapi specific (common ignore for Strapi projects) 
+.cache/ 
+exports/ 
+plugins/ 
+public/uploads/ 
+# Unless you explicitly want to commit uploads (usually not recommended for prod)
+
