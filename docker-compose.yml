@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:16-alpine # Using a lightweight Alpine-based PostgreSQL 16 image
+    container_name: wade_usa_postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: wade_usa_db # The name of your database
+      POSTGRES_USER: wade_user # Your database username
+      POSTGRES_PASSWORD: YF3bJ7M5 # Your actual strong database password
+    ports:
+      - "5433:5432" # Maps host port 5433 to container port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistent storage for your database data
+
+  directus_app:
+    image: directus/directus:latest # Using the latest stable Directus image
+    container_name: wade_usa_directus_app
+    restart: always
+    environment:
+      DB_CLIENT: pg # Specifies PostgreSQL as the database client
+      DB_HOST: postgres_db # This is the service name of your PostgreSQL container
+      DB_PORT: 5432 # Internal port of the PostgreSQL container
+      DB_DATABASE: wade_usa_db # Matches the POSTGRES_DB name
+      DB_USER: wade_user # Matches the POSTGRES_USER
+      DB_PASSWORD: YF3bJ7M5 # Your actual strong database password
+      ADMIN_EMAIL: wade.mark.a@gmail.com # Initial admin user email
+      ADMIN_PASSWORD: YF3bJ7M5 # Temporary admin password, change on first login
+      KEY: sdfnqwopeqpjddknwiunfb # Your actual strong, random secret key
+      SECRET: smfbgjebsocnwicbwcnoqowicbiwbeubwocbooiwbdch # Your actual strong, random secret
+      PUBLIC_URL: http://localhost:8055 # The URL Directus will use for its API (local dev)
+    ports:
+      - "8055:8055" # Directus's default port, mapping host port 8055 to container port 8055
+    volumes:
+      - directus_data:/directus/database # For Directus's internal database (e.g., config, schemas, users)
+      - directus_uploads:/directus/uploads # For actual uploaded files
+    depends_on:
+      - postgres_db # Ensures postgres_db starts before directus_app
+
+  nginx_proxy: # <-- NEW NGINX SERVICE
+    image: nginx:alpine # Using a lightweight Alpine-based Nginx image
+    container_name: wade_usa_nginx_proxy
+    restart: always
+    ports:
+      - "80:80"   # HTTP traffic
+      - "443:443" # HTTPS traffic (will be configured later with Certbot)
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Mounts custom Nginx config
+      # You'll add more volumes here for SSL certs and static files later
+    depends_on:
+      - directus_app # Ensures Nginx starts after Directus
+
+volumes:
+  postgres_data:
+  directus_data: # Define the named volume for Directus's internal data
+  directus_uploads: # Define the named volume for Directus's uploaded files
