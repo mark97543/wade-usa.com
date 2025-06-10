@@ -1,6 +1,9 @@
 import React from 'react'
 import './Forbidden.css'
 
+const video = 'bed51087-7dda-4ffa-9311-9591dda3005a.mp4'
+
+
 function Forbbiden() {
   return (
     <div className='forbidden_wrapper'>
@@ -13,7 +16,7 @@ function Forbbiden() {
                 muted
                 playsInline
             >
-                <source src='https://api.wade-usa.com/uploads/forbbiden_783796ff3c.mp4' type="video/mp4" /> {/*TODO: Replace with your video URL*/}
+                <source src={`https://api.wade-usa.com/assets/${video}`} type="video/mp4" />
                 Your browser does not support the video tag. Please update your browser.
             </video>
         </div>

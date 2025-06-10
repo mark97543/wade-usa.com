@@ -3,6 +3,8 @@
 import React from "react";
 import './404NotFound.css'
 
+const video = '14f68d75-714c-4f8d-9e43-e56fc1c7b4ba.mp4'; 
+
 const Page404 = ()=>{
 
     return(
@@ -19,7 +21,7 @@ const Page404 = ()=>{
                         muted
                         playsInline
                     >
-                        <source src='https://api.wade-usa.com/uploads/404_video_c5dda85aa5.mp4' type="video/mp4" /> {/*TODO: Need to Update Video Link*/}
+                       <source src={`https://api.wade-usa.com/assets/${video}`} type="video/mp4" /> 
                         Your browser does not support the video tag. Please update your browser.
                     </video>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import './Home.css'
 
+const video = 'bd361151-bb44-46d2-8cfd-5e60a33cf146.mp4'
 
 function Home() {
   return (
@@ -15,7 +16,7 @@ function Home() {
                 muted
                 playsInline
             >
-                <source src='https://api.wade-usa.com/uploads/Home_Video_d991a2d9bf.mp4' type="video/mp4" /> {/* TODO: Need to Update Video Link*/}
+                <source src={`https://api.wade-usa.com/assets/${video}`} type="video/mp4" />
                 Your browser does not support the video tag. Please update your browser.
             </video>
         </div>

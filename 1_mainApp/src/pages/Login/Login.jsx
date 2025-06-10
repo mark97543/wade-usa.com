@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 // Removed testDirectusClient as it was for the temporary test
 // The main directus client is provided via AuthContext
+const video = '34dbe784-e111-4c5a-af46-a9fc951ad1a1.mp4'
 
 
 function Login() {
@@ -26,15 +27,15 @@ function Login() {
         setError(null); // Reset error state
         
         // Simulate login for now
-        console.log("Attempting to log in with:", email, password);
+        //console.log("Attempting to log in with:", email, password);
         const success = await login(email, password); 
         if (success) {
-            console.log("Simulated login successful!");
+            //console.log("Simulated login successful!");
             navigate('/docker'); // <--Redirect to a protected page on success
         } else {
             setError('Invalid email or password'); // Set error message for display
-            console.log("Simulated login failed!");
-            setLoading(false); 
+            //console.log("Simulated login failed!");
+            setLoading(false);
         }
     };
 
@@ -50,7 +51,7 @@ function Login() {
                 muted
                 playsInline
             >
-                <source src='https://api.wade-usa.com/uploads/Login_Video_b01f36a100.mp4' type="video/mp4" /> {/* TODO: Need to Update Video Link*/}
+                <source src={`https://api.wade-usa.com/assets/${video}`} type="video/mp4" />
                 Your browser does not support the video tag. Please update your browser.
             </video>
         </div>
