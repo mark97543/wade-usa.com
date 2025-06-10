@@ -10,6 +10,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, '../_components'),
+      '@contexts': path.resolve(__dirname, '../0_Contexts'),
     }
   },
 })
