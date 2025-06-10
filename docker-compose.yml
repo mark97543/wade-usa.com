@@ -1,69 +1,78 @@
-version: '3.8'
+version: '3.8' # This attribute is obsolete but can remain.
 
 services:
   postgres_db:
-    image: postgres:16-alpine
+    image: postgres:16-alpine # Using a lightweight Alpine-based PostgreSQL 16 image
     container_name: wade_usa_postgres_db
     restart: always
     environment:
-      POSTGRES_DB: wade_usa_db
-      POSTGRES_USER: wade_user
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: wade_usa_db # The name of your database
+      POSTGRES_USER: wade_user # Your database username
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # Pulled from .env
     ports:
-      - "5433:5432"
+      - "5433:5432" # Maps host port 5433 to container port 5432
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data # Persistent storage for your database data
     networks:
       - my_custom_network
 
   directus_app:
-    image: directus/directus:latest
+    image: directus/directus:latest # Using a specific stable Directus version
     container_name: wade_usa_directus_app
     restart: always
     environment:
-      DB_CLIENT: pg
-      DB_HOST: postgres_db
-      DB_PORT: 5432
-      DB_DATABASE: wade_usa_db
-      DB_USER: wade_user
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      ADMIN_EMAIL: wade.mark.a@gmail.com
-      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD}
-      KEY: ${DIRECTUS_KEY}
-      SECRET: ${DIRECTUS_SECRET}
-      PUBLIC_URL: http://localhost:8055 # Still localhost for local dev
-      CORS_ENABLED: "true" # <-- ADD THIS LINE (explicitly enable CORS)
-      CORS_ORIGIN: https://wade-usa.com,https://www.wade-usa.com,http://localhost:5173 # <-- ADD THIS LINE
+      DB_CLIENT: pg # Specifies PostgreSQL as the database client
+      DB_HOST: postgres_db # This is the service name of your PostgreSQL container
+      DB_PORT: 5432 # Internal port of the PostgreSQL container
+      DB_DATABASE: wade_usa_db # Matches the POSTGRES_DB name
+      DB_USER: wade_user # Matches the POSTGRES_USER
+      DB_PASSWORD: ${POSTGRES_PASSWORD} # Pulled from .env
+      ADMIN_EMAIL: wade.mark.a@gmail.com # Initial admin user email
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD} # Pulled from .env
+      KEY: ${DIRECTUS_KEY} # Pulled from .env
+      SECRET: ${DIRECTUS_SECRET} # Pulled from .env
+      PUBLIC_URL: https://wade-usa.com # IMPORTANT: Production URL for Directus API
+      STORAGE_LOCATIONS: ${STORAGE_LOCATIONS} # Pulled from .env (should be 'local')
+      STORAGE_DEFAULT_DRIVER: ${STORAGE_DEFAULT_DRIVER} # Pulled from .env (should be 'local')
+      STORAGE_LOCAL_ROOT: ${STORAGE_LOCAL_ROOT} # Pulled from .env (should be '/directus_uploads_data')
+      CORS_ENABLED: "true" # Explicitly enable CORS
+      CORS_ORIGIN: https://wade-usa.com,https://www.wade-usa.com,http://localhost:5173 # Allowed origins
+      # If you were using S3, you would list S3_ variables here too, e.g.:
+      # S3_KEY: ${S3_KEY}
+      # ...
     ports:
-      - "8055:8055"
+      - "8055:8055" # Directus's default port, mapping host port 8055 to container port 8055
     volumes:
-      - directus_data:/directus/database
-      - directus_uploads:/directus/uploads
+      - directus_data:/directus/database # For Directus's internal database
+      - /mnt/volume_sfo3_01:/directus_uploads_data # <-- Mount your DigitalOcean Volume to the container path
+      # Custom config mounts (if you used them and they are needed for this Directus version):
+      # - ./directus/config/extensions.js:/directus/config/extensions.js:ro
+      # - ./directus/config/storage.js:/directus/config/storage.js:ro
     depends_on:
-      - postgres_db
+      - postgres_db # Ensures postgres_db starts before directus_app
     networks:
       - my_custom_network
 
   nginx_proxy:
-    image: nginx:alpine
+    image: nginx:alpine # Using a lightweight Alpine-based Nginx image
     container_name: wade_usa_nginx_proxy
     restart: always
-    ports: # RESTORE PORTS
-      - "80:80"
-      - "443:443"
+    ports:
+      - "80:80"   # HTTP traffic
+      - "443:443" # HTTPS traffic
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - /var/www/certbot:/var/www/certbot:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Mounts custom Nginx config
+      - /var/www/certbot:/var/www/certbot:ro # For Certbot challenges
+      - /etc/letsencrypt:/etc/letsencrypt:ro # Mounts SSL certificates
     depends_on:
-      - directus_app
-    networks: # RESTORE NETWORKS
+      - directus_app # Ensures Nginx starts after Directus
+    networks:
       - my_custom_network
 
-volumes:
+volumes: # <-- This block must be at the top-level indentation, same as 'services'
   postgres_data:
   directus_data:
-  directus_uploads:
 
-networks:
+networks: # <-- CRITICAL: This block must be at the top-level indentation, same as 'services' and 'volumes'
   my_custom_network:
+    # driver: bridge # Optional, 'bridge' is the default and can be omitted
