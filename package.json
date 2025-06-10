@@ -1,0 +1,27 @@
+{
+  "name": "wade-usa.com",
+  "version": "1.0.0",
+  "description": "This repository hosts the code for wade-usa.com, my personal website. This site will showcase various applications I learn and build, and will also feature a travel blog.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mark97543/wade-usa.com.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "1_mainApp",
+    "0_Contexts"
+  ],
+  "bugs": {
+    "url": "https://github.com/mark97543/wade-usa.com/issues"
+  },
+  "homepage": "https://github.com/mark97543/wade-usa.com#readme",
+  "dependencies": {
+    "@directus/sdk": "^19.1.0"
+  }
+}

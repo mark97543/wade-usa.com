@@ -32,6 +32,8 @@ services:
       KEY: ${DIRECTUS_KEY}
       SECRET: ${DIRECTUS_SECRET}
       PUBLIC_URL: http://localhost:8055 # Still localhost for local dev
+      CORS_ENABLED: "true" # <-- ADD THIS LINE (explicitly enable CORS)
+      CORS_ORIGIN: https://wade-usa.com,https://www.wade-usa.com,http://localhost:5173 # <-- ADD THIS LINE
     ports:
       - "8055:8055"
     volumes:

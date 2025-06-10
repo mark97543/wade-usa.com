@@ -22,7 +22,7 @@ const Header = () => {
     navigate('/login'); // Redirect to the login page after logout
   }
 
-  console.log("Is Authenticated:", isAuthenticated); // Debugging log to check authentication state
+  //console.log("Is Authenticated:", isAuthenticated); // Debugging log to check authentication state
 
 
   return (
