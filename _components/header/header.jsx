@@ -19,7 +19,7 @@ const Header = () => {
 
   const handleLogoutButtonClick = () => {
     logout(); // Call the logout function from AuthContext
-    navigate('/login'); // Redirect to the login page after logout
+    navigate('/goodbye'); // Redirect to the goodbye page after logout
   }
 
   //console.log("Is Authenticated:", isAuthenticated); // Debugging log to check authentication state

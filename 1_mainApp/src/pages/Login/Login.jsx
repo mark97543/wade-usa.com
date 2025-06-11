@@ -41,7 +41,7 @@ function Login() {
 
 
   return (
-    <div>
+    <div className='login_page_wrapper'>
         <div className="login_video">
             <video
                 width="100%" // Example: Make it responsive width
@@ -67,8 +67,7 @@ function Login() {
         </form>
 
         <div className='login_Register'>
-            {/* TODO: Link to registration page */}
-            <p>Use email: `testuser@example.com` and password: `password` for simulated login.</p>
+            <a href='/register'>Don't have an account? Register here</a>
         </div>
 
     </div>
