@@ -1,0 +1,17 @@
+
+.logout_button, .login_button{
+    width: 100px;
+    height:44px;
+    border-radius: 22px;
+}
+
+.header_welcome_message{
+    margin-right: 10px;
+}
+
+.login_buttons_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}

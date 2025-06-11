@@ -1,0 +1,34 @@
+.header-nav ul{
+    display: flex; /* Displays links horizontally on large screens */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.header-nav ul li {
+  margin-left: 2rem;
+}
+
+/* Default: Hide hamburger button on large screens */
+.header-ham-button {
+  display: none;
+}
+
+/* Media query: Show hamburger button on small screens */
+@media (max-width: 768px) {
+  .header-ham-button {
+    display: flex; /* Or whatever display type makes it look right (block, inline-flex, etc.) */
+    /* You might also want to add positioning, like margin-left: auto; to push it right */
+  }
+
+  /* And hide the regular navigation on small screens */
+  .header-nav {
+    display: none;
+    /* ... other mobile nav styles ... */
+  }
+
+  /* Show the navigation when the menu is open (via JS class from Header.jsx) */
+  .header-nav.menu-open {
+    display: flex; /* Show mobile menu */
+  }
+}
