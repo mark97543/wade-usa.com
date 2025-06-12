@@ -21,7 +21,10 @@ const Header = () => {
            <a href='/'>M+S </a> {/* TODO: Logo link, can be updated to point to the homepage or docker page when logged in. */}
       </div>
 
-      <Ham /> {/* Hamburger menu component for mobile navigation */}
+      <div className='header-ham-div'>
+        <Ham /> {/* Hamburger menu component for mobile navigation */}
+      </div>
+      
 
  
     </header>

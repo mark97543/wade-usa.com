@@ -3,6 +3,7 @@
 .ham_menu{
   margin-right: 20px;
   position: relative;
+  width: 100%;
 }
 
 .bar1, .bar2, .bar3 {
@@ -35,20 +36,22 @@
 /* Nav Menu Items*/
 
 .ham_menu_items {
-  display: flex; 
-  margin-right: -20px;
+  display: grid; 
+  grid-template-columns: 1fr auto;
+  width: 100%;
 }
 
 
 .ham_menu_items > ul {
   list-style: none;
   margin: 0;
+  margin-left: 10px;
   padding: 0;
   display: flex;
   flex-direction: row;
   gap: 10px;
   align-items: center;
-  flex-grow: 1;
+  grid-column: 1/2;
 }
 
 .ham_menu_items > ul > li {
@@ -58,11 +61,23 @@
   margin-left: 0px ;
 }
 
-.ham_menu_items > ul > li:not(:last-child) {
-  margin-right: auto; /* This pushes the subsequent items (including the last one) to the right */
+.ham-login-buttons{
+  grid-column: 2/3;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: auto;
+  margin-right: -10px;
+  
 }
 
+
 @media (max-width: 800px) {
+
+  .ham_menu{
+    width: auto;
+  }
+
   .ham_container {
     display: inline; /* Show on small screens */
 
@@ -90,7 +105,19 @@
 
   .ham_menu_items > ul {
     flex-direction: column;
+    width: 100%;
+    padding: 1rem 0;
+    margin: 0;
+    list-style: none;
   }
+
+  .ham_menu_items > ul > li {
+    margin: 0;
+    padding: 0.5rem 0;
+    width: 100%;
+    text-align: left; /* <-- Ensure text is left-aligned */
+  }
+
 
   .ham_menu_items.open{
     display: flex; /* Show menu items when open */
@@ -98,7 +125,7 @@
     position: absolute;
     top: 100%;
     right: 0; /* <-- Aligns its right edge with the right edge of .ham_menu */
-    width: 250px; /* <-- Set a width for the pop-up box (adjust as needed) */
+    width: 350px; /* <-- Set a width for the pop-up box (adjust as needed) */
     background-color: #444; /* Example background color for the box */
     box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Adds a shadow for depth */
     z-index: 100; /* Ensures it appears above other content */
@@ -111,6 +138,16 @@
     transform: translateX(0) translateY(0); /* Move to final position (lower left from start) */
     pointer-events: auto; /* Allow interaction when visible */
   }
+
+  /* Styles for .ham-login-buttons within the open menu */
+  .ham_menu_items .ham-login-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end; /* Keeps LoginButtons to the right within its space */
+    padding: 1rem 0;
+  }
+
+
 }
 
 

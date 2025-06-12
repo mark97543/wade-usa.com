@@ -42,8 +42,9 @@ function Ham() {
           <li><a href="/register" onClick={() => handleNavLinkClick('/register')}>Register</a></li>
           <li><a href="/profile" onClick={() => handleNavLinkClick('/profile')}>Profile</a></li>
           <li><a href="/settings" onClick={() => handleNavLinkClick('/settings')}>Settings</a></li>
-          <li className='ham-login-buttons' onClick={()=>setIsOpen(false)}><LoginButtons /></li>
+          
         </ul>
+        <div className='ham-login-buttons' onClick={()=>setIsOpen(false)}><LoginButtons /></div>
       </nav>
     </div>
   )

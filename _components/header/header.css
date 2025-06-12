@@ -48,6 +48,21 @@
 
 }
 
+.header-ham-div{
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+    justify-content: left;
+}
+
+@media (max-width: 800px) {
+    .header-ham-div{
+        justify-content: right;
+    }
+
+
+}
+
 
 
 

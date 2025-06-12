@@ -12,6 +12,8 @@
 .login_buttons_container{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-items: end;
+    width: 100%;
+    flex-grow: 1;
     gap: 5px;
 }
