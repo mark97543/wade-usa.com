@@ -15,7 +15,8 @@
   "license": "ISC",
   "workspaces": [
     "1_mainApp",
-    "0_Contexts"
+    "0_Contexts",
+    "2_travel"
   ],
   "bugs": {
     "url": "https://github.com/mark97543/wade-usa.com/issues"

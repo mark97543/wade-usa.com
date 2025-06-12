@@ -30,6 +30,7 @@ This process assumes you've made your changes locally and pushed them to your Gi
     ```
     ssh your_username@159.223.207.34
     cd ~/wade-usa.com
+     git reset --hard origin/main ### Pull Fresh Build
     git pull origin main # Replace 'main' with your branch name if different
     ```
     
@@ -38,33 +39,33 @@ This process assumes you've made your changes locally and pushed them to your Gi
 4.  **Rebuild Affected Docker Images on the Droplet:**
     
     - If you changed any code in `1_mainApp` (React frontend), `_components`, `0_Contexts`, or the `1_mainApp/Dockerfile` itself, you need to rebuild the `wade-usa-main-app` image.
-        
+      
     - Navigate to your monorepo root on the Droplet:Bash
-        
+      
         ```
         cd ~/wade-usa.com
         ```
         
     - Rebuild the `mainapp` image:Bash
-        
+      
         ```
         sudo docker build --no-cache -f 1_mainApp/Dockerfile -t wade-usa-main-app:latest .
         ```
         
     - If you updated Directus files directly (which is less common if you manage Directus via its UI), you might need to rebuild the `directus_app` image, but generally, Directus updates are handled differently (e.g., pulling a new image version). For most content/config changes via Directus UI, a rebuild isn't needed.
-        
+    
 5.  **Restart Docker Compose Services on the Droplet:**
     
     - To apply the changes from your new Docker images or any updated `docker-compose.yml` or `nginx/nginx.conf` files, restart your services.
-        
+      
     - Navigate to your monorepo root on the Droplet:Bash
-        
+      
         ```
         cd ~/wade-usa.com
         ```
         
     - Stop and remove existing containers, then bring them back up detached:Bash
-        
+      
         ```
         sudo docker compose down
         sudo docker compose up -d
@@ -76,9 +77,9 @@ This process assumes you've made your changes locally and pushed them to your Gi
 6.  **Verify the Update:**
     
     - Open your web browser and navigate to `https://wade-usa.com` to confirm your changes are live.
-        
+      
     - If any issues arise, check the logs of the relevant containers:Bash
-        
+      
         ```
         sudo docker compose ps
         sudo docker compose logs [service_name] # e.g., mainapp, nginx_proxy, directus_app

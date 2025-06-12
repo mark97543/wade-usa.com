@@ -1,0 +1,41 @@
+# Stage 1: Build the React application
+FROM node:20-alpine AS build
+
+# Set the working directory to the monorepo root inside the container's build stage.
+WORKDIR /app
+
+# Copy relevant package.json files from monorepo structure.
+COPY package.json ./
+COPY 2_travel/package.json ./2_travel/
+COPY _components/package.json ./_components/
+# This line was removed: # COPY 0_Contexts/package.json ./0_Contexts/
+
+# Install dependencies for all workspaces from the monorepo root.
+RUN npm install
+
+# Copy the entire 1_mainApp folder (including its src and public folders).
+COPY 2_travel/ ./2_travel/
+
+# Copy the _components folder.
+COPY _components/ ./_components/
+
+# Copy the 0_Contexts folder.
+COPY 0_Contexts/ ./0_Contexts/
+
+# Change working directory to the 1_mainApp for the build command.
+WORKDIR /app/2_travel
+RUN npm run build
+
+# Stage 2: Serve the React application with Nginx
+FROM nginx:alpine
+
+# Copy the build output from the 'build' stage.
+COPY --from=build /app/2_travel/dist /usr/share/nginx/html
+
+# --- CRITICAL FIX HERE: Copy the correct Nginx config for this specific app ---
+# This copies the minimalist nginx.conf from your 1_mainApp directory
+COPY 2_travel/nginx.conf /etc/nginx/conf.d/default.conf
+# --- END CRITICAL FIX ---
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
