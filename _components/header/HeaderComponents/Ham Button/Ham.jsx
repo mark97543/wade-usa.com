@@ -1,11 +1,17 @@
 import React, {useState} from 'react'
 import './Ham.css' // Assuming you have a CSS file for styling the Ham component
 import LoginButtons from '../LoginButtons/LoginButtons';
+import { useAuth } from '@contexts/AuthContext'; // Importing AuthContext to use authentication state
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 
 
 function Ham() {
 
   const [isOpen, setIsOpen] = useState(false); // State to manage the open/close state of the hamburger menu
+
+  const navigate = useNavigate(); // Initialize useNavigate
+  const { isAuthenticated, logout, user } = useAuth(); // Get authentication state from AuthContext
 
   const hamFunction = (x) => {
       //x.classList.toggle("change");
@@ -34,14 +40,14 @@ function Ham() {
       <nav className={`ham_menu_items ${isOpen ? 'open' : ''}`}>
         {/* Navigation items for the hamburger menu */}
         <ul>
-          <li><a href="/" onClick={() => handleNavLinkClick('/')}>Home</a></li>
-          <li><a href="/about" onClick={() => handleNavLinkClick('/about')}>About</a></li>
-          <li><a href="/services" onClick={() => handleNavLinkClick('/services')}>Services</a></li>
-          <li><a href="/contact" onClick={() => handleNavLinkClick('/contact')}>Contact</a></li>
-          <li><a href="/login" onClick={() => handleNavLinkClick('/login')}>Login</a></li>
-          <li><a href="/register" onClick={() => handleNavLinkClick('/register')}>Register</a></li>
-          <li><a href="/profile" onClick={() => handleNavLinkClick('/profile')}>Profile</a></li>
-          <li><a href="/settings" onClick={() => handleNavLinkClick('/settings')}>Settings</a></li>
+          {isAuthenticated ? (
+            <>
+              {/*Place Secret Sites Here */}
+            </>
+          ):(
+            <>
+            </>
+          )}
           
         </ul>
         <div className='ham-login-buttons' onClick={()=>setIsOpen(false)}><LoginButtons /></div>

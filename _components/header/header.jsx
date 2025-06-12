@@ -18,7 +18,11 @@ const Header = () => {
   return (
     <header className='header_container'>
       <div className='header_logo'>
-           <a href='/'>M+S </a> {/* TODO: Logo link, can be updated to point to the homepage or docker page when logged in. */}
+        {isAuthenticated ? (
+          <a href='/docker'>M+S</a>
+        ):(
+          <a href='/'>M+S </a> 
+        )}
       </div>
 
       <div className='header-ham-div'>
