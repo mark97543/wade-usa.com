@@ -64,6 +64,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Mounts custom Nginx config
       - /var/www/certbot:/var/www/certbot:ro # For Certbot challenges
       - /etc/letsencrypt:/etc/letsencrypt:ro # Mounts SSL certificates
+      - ./1_mainApp/dist:/usr/share/nginx/html:ro
     depends_on:
       - directus_app # Ensures Nginx starts after Directus
     networks:

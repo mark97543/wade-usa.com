@@ -31,8 +31,7 @@ export default defineConfig({
       '@components': path.resolve(__dirname, '../_components'),
       '@contexts': path.resolve(__dirname, '../0_Contexts'),
       // ADD THIS NEW ALIAS FOR REACT-ROUTER-DOM
-      'react-router-dom': path.resolve(__dirname, '../node_modules/react-router-dom/index.js'), // <-- NEW ALIAS
-      // If the above doesn't work, try other common paths:
+      'react-router-dom': path.resolve(__dirname, '../node_modules/react-router-dom/dist/index.js'), // <-- CORRECTED ALIAS      // If the above doesn't work, try other common paths:
       // 'react-router-dom': path.resolve(__dirname, '../node_modules/react-router-dom/dist/main.js'),
       // 'react-router-dom': path.resolve(__dirname, '../node_modules/react-router-dom/dist/index.js'),
     },
