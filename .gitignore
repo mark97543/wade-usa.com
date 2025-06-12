@@ -7,7 +7,7 @@ yarn-error.log
 .vscode/ 
 # Build artifacts 
 build/ 
-dist/ 
+#dist/ 
 out/ 
 .next/ 
 # If you ever use Next.js with React # Docker 
