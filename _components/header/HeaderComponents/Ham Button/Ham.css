@@ -1,0 +1,116 @@
+/* Ham Button Styles */
+
+.ham_menu{
+  margin-right: 20px;
+  position: relative;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 5px;
+  background-color: var(--color-accent-primary);
+  margin: 6px 0;
+  transition: 0.4s;
+}
+
+.change .bar1 {
+  transform: translate(0, 11px) rotate(-45deg);
+}
+
+.change .bar2 {opacity: 0;}
+
+.change .bar3 {
+  transform: translate(0, -11px) rotate(45deg);
+}
+
+.ham_container{
+  display: none; /* Hide by default */
+  cursor: pointer;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  padding: 0.5rem;
+}
+
+/* Nav Menu Items*/
+
+.ham_menu_items {
+  display: flex; 
+  margin-right: -20px;
+}
+
+
+.ham_menu_items > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.ham_menu_items > ul > li {
+  padding: 5px;
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+  margin-left: 0px ;
+}
+
+.ham_menu_items > ul > li:not(:last-child) {
+  margin-right: auto; /* This pushes the subsequent items (including the last one) to the right */
+}
+
+@media (max-width: 800px) {
+  .ham_container {
+    display: inline; /* Show on small screens */
+
+  }
+
+  .ham_menu_items{
+    display: none; /* Hide menu items by default */
+    position: absolute;
+    top: 100%;
+    right: 0; /* Align to the right of .ham_menu */
+    width: 250px; /* Define a fixed width for the mobile menu */
+    flex-direction: column;
+    background-color: #444;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 100; /* Ensure it's above other content */
+    padding: 1rem;
+    border-radius: 5px;
+
+        /* --- CRITICAL FOR ANIMATION: Initial (hidden) state --- */
+    opacity: 0; /* Start invisible */
+    transform: translateX(100%) translateY(-100%); /* Start off-screen (upper right) */
+    transition: opacity 0.75s ease-out, transform 0.75s ease-out; /* Smooth transition */
+    pointer-events: none; /* Prevents interaction when hidden */
+  }
+
+  .ham_menu_items > ul {
+    flex-direction: column;
+  }
+
+  .ham_menu_items.open{
+    display: flex; /* Show menu items when open */
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0; /* <-- Aligns its right edge with the right edge of .ham_menu */
+    width: 250px; /* <-- Set a width for the pop-up box (adjust as needed) */
+    background-color: #444; /* Example background color for the box */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Adds a shadow for depth */
+    z-index: 100; /* Ensures it appears above other content */
+    padding: 1rem; /* Padding inside the box */
+    border-radius: 15px; /* Optional: rounded corners */
+    /* Add any other styling for the open menu here */
+
+        /* --- CRITICAL FOR ANIMATION: Final (visible) state --- */
+    opacity: 1; /* Fully visible */
+    transform: translateX(0) translateY(0); /* Move to final position (lower left from start) */
+    pointer-events: auto; /* Allow interaction when visible */
+  }
+}
+
+
