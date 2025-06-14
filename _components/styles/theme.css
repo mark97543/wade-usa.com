@@ -176,7 +176,7 @@ h6 { font-size: var(--font-size-base); }
 
 /* Links */
 a {
-    color: var(--color-accent-primary);
+    color: var(--color-text-headings);
     text-decoration: none;
     transition: color 0.2s ease;
 }

@@ -3,6 +3,7 @@ import './Ham.css' // Assuming you have a CSS file for styling the Ham component
 import LoginButtons from '../LoginButtons/LoginButtons';
 import { useAuth } from '@contexts/AuthContext'; // Importing AuthContext to use authentication state
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { MainTravelLink } from '../../HelperFunctions';
 
 
 
@@ -19,13 +20,13 @@ function Ham() {
       setIsOpen(!isOpen); // Toggle the open state when the hamburger icon is clicked
   }
 
-  //Toggle on item click
-  const handleNavLinkClick = (path) => {
-    navigate(path); // Navigate to the specified path
-    setIsOpen(false); // Close the menu
-    // The hamFunction will handle removing the "change" class from the bars
-  }
-  
+  // //Toggle on item click
+  // const handleNavLinkClick = (path) => {
+  //   navigate(path); // Navigate to the specified path
+  //   setIsOpen(false); // Close the menu
+  //   // The hamFunction will handle removing the "change" class from the bars
+  // }
+
 
   return (
     <div className='ham_menu'>
@@ -46,6 +47,7 @@ function Ham() {
             </>
           ):(
             <>
+              <MainTravelLink />             
             </>
           )}
           

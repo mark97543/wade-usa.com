@@ -2,8 +2,8 @@ import React from 'react';
 import './header.css'; // <-- Added CSS import here!
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useAuth } from '@contexts/AuthContext'; // Importing AuthContext to use authentication state
-import LoginButtons from './HeaderComponents/LoginButtons/LoginButtons';
 import Ham from './HeaderComponents/Ham Button/Ham';
+import { getLogoLinkHref } from './HelperFunctions';
 
 
 
@@ -13,16 +13,13 @@ const Header = () => {
   const navigate = useNavigate(); // Initialize useNavigate
   const { isAuthenticated, logout, user } = useAuth(); // Get authentication state from AuthContext
 
+  const logoLink = getLogoLinkHref(isAuthenticated)
 
 
   return (
     <header className='header_container'>
       <div className='header_logo'>
-        {isAuthenticated ? (
-          <a href='/docker'>M+S</a>
-        ):(
-          <a href='/'>M+S </a> 
-        )}
+        <a href={logoLink}>M+S</a>
       </div>
 
       <div className='header-ham-div'>
