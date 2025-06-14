@@ -58,7 +58,7 @@ function Login() {
 
         <form className='form_box' onSubmit={handleSubmit}>
             <h3>Welcome Back</h3>
-            <p>{error}</p> {/*TODO: Format This Display error message if any */}
+            <p>{error}</p> 
             <label htmlFor='login_input'>Email</label>
             <input id='login_input' type='email' onChange={(e) => setEmail(e.target.value)} value={email} required disabled={loading}></input>
             <label htmlFor='login_password'>Password</label>

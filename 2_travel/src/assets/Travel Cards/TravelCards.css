@@ -1,0 +1,54 @@
+.travelcard_shell{
+    --travel-card-width:400px;
+    --travel-card-pic-aspect:3/2;
+    
+    width: var(--travel-card-width);
+    height: 402px;
+    border-radius: var(--border-radius-lg);
+    border: var(--border-width-base) solid var(--border-color-base);
+}
+
+.travelcard_pictue{
+    /* border: 3px solid red; Only for building */
+    width: var(--travel-card-width);
+    aspect-ratio: var(--travel-card-pic-aspect);
+    display: flex;
+    padding-right: 2px;
+
+}
+
+.travelcard_pictue img{
+    width: calc(100%);
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-top-left-radius: var(--border-radius-lg);  
+    border-top-right-radius: var(--border-radius-lg);
+}
+
+.travelcard_text{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.travelcard_text :first-child{
+    text-align: center;
+    font-size: large;
+    font-weight: 600;
+    padding: 0px;
+    margin: 0px;
+}
+
+.travelcard_text :nth-child(2){
+    font-size: small;
+    font-style: italic;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.travelcard_text :nth-child(3){
+    font-size: medium;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}

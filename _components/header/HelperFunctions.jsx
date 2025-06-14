@@ -37,10 +37,13 @@ export const MainTravelLink = () => {
         <Dropdown title="Travel"> {/* The title of your dropdown */}
             {/* These are the items that will appear when the dropdown is open */}
             <a className="travel_list_dropdown_item" href={isTravelApp ? '/' : 'https://travel.wade-usa.com/'}>
-                Travel Planner 
+                Trips Planned
             </a>
             <a className="travel_list_dropdown_item">
-                My Roadbooks (NTB)
+                Past Trips
+            </a>
+            <a className="travel_list_dropdown_item">
+                Old Trips
             </a>
         </Dropdown>
     );
