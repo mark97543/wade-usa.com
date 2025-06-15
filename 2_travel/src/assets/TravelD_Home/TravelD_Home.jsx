@@ -1,55 +1,85 @@
-import React, {useState, useEffect} from 'react'
-import './TravelD_Home.css'
-import TravelCards from '../Travel Cards/TravelCards'
-import Pagination from '@components/Paginnation/Pagination'
+import React, { useState, useEffect } from 'react';
+import './TravelD_Home.css';
+import TravelCards from '../Travel Cards/TravelCards';
+import Pagination from '@components/Paginnation/Pagination';
 import axios from 'axios';
 
+/// Setting up Directus Connection
+const DIRECTUS_BASE_URL = import.meta.env.VITE_DIRECTUS_API_URL; 
 
-const Data =[
-  {id: 1, link: 'google.com', image:"", summary: 'summary1', created: '06/14/25', auther:'Mark Wade', traveled: '06/14/25', status: 'taken', trip_title: 'My First Journey'},
-  {id: 2, link: 'example.com/2', image:"", summary: 'Adventure in the Mountains', created: '03/01/24', auther:'Mark Wade', traveled: '02/28/24', status: 'taken', trip_title: 'Mountain Peaks Adventure'},
-  {id: 3, link: 'example.com/3', image:"", summary: 'City Break in Paris', created: '09/10/23', auther:'Mark Wade', traveled: '09/05/23', status: 'archive', trip_title: 'Parisian Charm'},
-  {id: 4, link: 'example.com/4', image:"", summary: 'Beach Escape', created: '11/20/24', auther:'Mark Wade', traveled: '11/18/24', status: 'planning', trip_title: 'Sunny Shores Getaway'},
-  {id: 5, link: 'example.com/5', image:"", summary: 'Desert Expedition', created: '01/05/25', auther:'Mark Wade', traveled: '01/02/25', status: 'taken', trip_title: 'Desert Sands Trek'},
-  {id: 6, link: 'example.com/6', image:"", summary: 'Forest Hiking', created: '07/18/23', auther:'Mark Wade', traveled: '07/15/23', status: 'archive', trip_title: 'Emerald Forest Hike'},
-  {id: 7, link: 'example.com/7', image:"", summary: 'Cultural Tour', created: '04/22/24', auther:'Mark Wade', traveled: '04/20/24', status: 'hidden', trip_title: 'Ancient Wonders Tour'},
-  {id: 8, link: 'example.com/8', image:"", summary: 'Island Hopping', created: '12/01/24', auther:'Mark Wade', traveled: '11/29/24', status: 'planning', trip_title: 'Tropical Island Journey'},
-  {id: 9, link: 'example.com/9', image:"", summary: 'Snowy Mountains', created: '02/14/25', auther:'Mark Wade', traveled: '02/10/25', status: 'hidden', trip_title: 'Winter Mountain Escape'},
-  {id: 10, link: 'example.com/10', image:"", summary: 'Riverside Camping', created: '08/03/23', auther:'Mark Wade', traveled: '08/01/23', status: 'archive', trip_title: 'Riverside Retreat'},
-  {id: 11, link: 'example.com/11', image:"", summary: 'Historical Sites', created: '05/09/24', auther:'Mark Wade', traveled: '05/07/24', status: 'planning', trip_title: 'Journey Through History'},
-  {id: 12, link: 'example.com/12', image:"", summary: 'Adventure Cycling', created: '10/25/23', auther:'Mark Wade', traveled: '10/20/23', status: 'taken', trip_title: 'Cross-Country Cycle'}
-]
+const directusApi = axios.create({
+    baseURL: DIRECTUS_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true, // If your Directus uses HTTP-only cookies for refresh tokens
+});
 
-// This I going to be all the Trips planned 
 function TravelD_Home() {
-  const [posts, setPosts]=useState(Data)
+  // State for raw data from API after initial fetch (or static data if no API)
+  const [initialPosts, setInitialPosts] = useState([]); 
+  // States for loading and error during API fetch
+  const [loading, setLoading] = useState(true); // <-- DECLARED loading state
+  const [error, setError] = useState(null);     // <-- DECLARED error state
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(9);
+  const [postsPerPage] = useState(9); 
+
   const [searchTerm, setSearchTerm] = useState(''); 
+  // State for posts after applying initial status filter and sorting
+  const [statusFilteredAndSortedPosts, setStatusFilteredAndSortedPosts] = useState([]);
+  // State for posts after applying search filter (final list for display)
   const [displayPosts, setDisplayPosts] = useState([]); 
 
-  //Initial filtering by 'planning' status and sorting by creation date (runs once on mount)
+
+  // Effect 1: Fetch data from Directus and apply initial status filter/sort
   useEffect(() => {
-    let processedData = [...Data]; // Start with a fresh copy of original Data
+    const fetchAndProcessTrips = async () => {
+      try {
+        setLoading(true); // Set loading to true when starting fetch
+        setError(null);   // Clear any previous errors
 
-    // 1. Filter by 'planning' status
-    const pageFilter = 'planning'; // You can make this a prop or state if user can change filters
-    processedData = processedData.filter(post => post.status === pageFilter);
+        const response = await directusApi.get('/items/travel_lvl1_list', { // Assuming your collection is 'travel_lvl1_list'
+            params: {
+                fields: 'id,trip_title,summary,image,date_created,auther,traveled,status',
+            },
+        });
+        
+        let fetchedData = response.data.data || []; 
+        // console.log("Full Axios Response Object:", response); // Log the full response object as requested
+        // console.log("Fetched Data Array (response.data.data):", fetchedData); // Log the actual data array
 
-    // 2. Sort by 'created' date (newest first)
-    processedData.sort((a, b) => {
-      const dateA = new Date(a.created);
-      const dateB = new Date(b.created);
-      return dateB - dateA; // For newest first
-    });
+        // 1. Apply initial 'planning' status filter
+        const pageFilter = 'planning'; // This is hardcoded for 'planning' trips
+        let processedData = fetchedData.filter(post => post.status === pageFilter);
 
-    setPosts(processedData); // Update 'posts' state with the initially filtered and sorted data
-    setCurrentPage(1); // Reset page on initial load
-  }, []);
+        // 2. Sort by 'created' date (newest first)
+        processedData.sort((a, b) => {
+          const dateA = new Date(a.created);
+          const dateB = new Date(b.created);
+          return dateB - dateA; // For newest first
+        });
 
-  //Apply search filtering whenever searchTerm changes or 'posts' (the base filtered/sorted data) changes
+        setInitialPosts(fetchedData); // Store the raw fetched data (or static if fallback)
+        setStatusFilteredAndSortedPosts(processedData); // Store initially filtered/sorted data
+        
+      } catch (err) {
+        console.error('Error fetching trips from Directus:', err);
+        setError('Failed to load trips. Please try again later.');
+      } finally {
+        setLoading(false); // Set loading to false once fetch/process is done
+        setCurrentPage(1); // Always reset page on initial load or data change
+      }
+    };
+
+    fetchAndProcessTrips();
+  }, []); // Empty dependency array: runs only once on mount
+
+
+  // Effect 2: Apply search filtering whenever searchTerm changes or 'statusFilteredAndSortedPosts' changes
   useEffect(() => {
-    let currentFiltered = [...posts]; // Start with the data already filtered by status and sorted
+    // --- Use statusFilteredAndSortedPosts as the base for filtering ---
+    let currentFiltered = [...statusFilteredAndSortedPosts]; 
 
     // Apply search filter if searchTerm is not empty
     if (searchTerm) {
@@ -62,43 +92,60 @@ function TravelD_Home() {
     }
 
     setDisplayPosts(currentFiltered); // Set the final list of posts to be displayed
-    setCurrentPage(1); // Reset to the first page whenever filters/sorts change
-  }, [searchTerm, posts]); 
+    setCurrentPage(1); // Reset to the first page whenever search term changes
+  }, [searchTerm, statusFilteredAndSortedPosts]); // Rerun this effect when searchTerm or the base list changes
 
-  // Get current posts
+
+  // Get current posts for pagination from the final 'displayPosts'
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = displayPosts.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Change page
+
+  // Change page handler for Pagination component
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
 
   return (
     <div className='traveld_home_wrapper'>
+      {/* Search Bar */}
       <input
         type="text"
         placeholder="Search trips by title or summary..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="traveld_searchbar" // Add a class for styling
+        className="traveld_searchbar" // Ensure this class exists in TravelD_Home.css
       />
-      <div className='travel_card_wrapper'>
-        {currentPosts.map((data)=>(
-          <TravelCards key={data.id} data={data} />
-        ))}
-      </div>
-      <div className='travelhome_paginnation'>
-        <Pagination
-          postsPerPage={postsPerPage}
-          totalPosts={displayPosts.length}
-          paginate={paginate}
-        />
-      </div>
+
+      {/* Loading and Error UI */}
+      {loading && <div>Loading planning trips...</div>}
+      {error && <div style={{ color: 'red', textAlign: 'center', marginTop: '20px' }}>{error}</div>}
+      
+      {/* Display posts only when not loading, no error, and there are posts */}
+      {!loading && !error && displayPosts.length === 0 && (
+        <div>No matching trips found.</div>
+      )}
+
+      {!loading && !error && displayPosts.length > 0 && (
+        <>
+          <div className='travel_card_wrapper'>
+            {/* Map over currentPosts (which are paginated from displayPosts) */}
+            {currentPosts.map((data) => (
+              <TravelCards key={data.id} data={data} />
+            ))}
+          </div>
+
+          <div className='travelhome_paginnation'>
+            <Pagination
+              postsPerPage={postsPerPage}
+              totalPosts={displayPosts.length}
+              paginate={paginate}
+            />
+          </div>
+        </>
+      )}
     </div>
-  )
+  );
 }
 
-
-
-export default TravelD_Home
+export default TravelD_Home;
