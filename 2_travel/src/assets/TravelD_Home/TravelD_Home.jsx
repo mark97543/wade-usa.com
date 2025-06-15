@@ -1,7 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './TravelD_Home.css'
 import TravelCards from '../Travel Cards/TravelCards'
 import Pagination from '@components/Paginnation/Pagination'
+import axios from 'axios';
+
 
 const Data =[
   {id: 1, link: 'google.com', image:"", summary: 'summary1', created: '06/14/25', auther:'Mark Wade', traveled: '06/14/25', status: 'taken', trip_title: 'My First Journey'},
@@ -20,14 +22,53 @@ const Data =[
 
 // This I going to be all the Trips planned 
 function TravelD_Home() {
-  const [posts, setPosts] = useState(Data);
+  const [posts, setPosts]=useState(Data)
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(9);
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const [displayPosts, setDisplayPosts] = useState([]); 
+
+  //Initial filtering by 'planning' status and sorting by creation date (runs once on mount)
+  useEffect(() => {
+    let processedData = [...Data]; // Start with a fresh copy of original Data
+
+    // 1. Filter by 'planning' status
+    const pageFilter = 'planning'; // You can make this a prop or state if user can change filters
+    processedData = processedData.filter(post => post.status === pageFilter);
+
+    // 2. Sort by 'created' date (newest first)
+    processedData.sort((a, b) => {
+      const dateA = new Date(a.created);
+      const dateB = new Date(b.created);
+      return dateB - dateA; // For newest first
+    });
+
+    setPosts(processedData); // Update 'posts' state with the initially filtered and sorted data
+    setCurrentPage(1); // Reset page on initial load
+  }, []);
+
+  //Apply search filtering whenever searchTerm changes or 'posts' (the base filtered/sorted data) changes
+  useEffect(() => {
+    let currentFiltered = [...posts]; // Start with the data already filtered by status and sorted
+
+    // Apply search filter if searchTerm is not empty
+    if (searchTerm) {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      currentFiltered = currentFiltered.filter(post => {
+        const titleMatch = post.trip_title && post.trip_title.toLowerCase().includes(lowercasedSearchTerm);
+        const summaryMatch = post.summary && post.summary.toLowerCase().includes(lowercasedSearchTerm);
+        return titleMatch || summaryMatch;
+      });
+    }
+
+    setDisplayPosts(currentFiltered); // Set the final list of posts to be displayed
+    setCurrentPage(1); // Reset to the first page whenever filters/sorts change
+  }, [searchTerm, posts]); 
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = displayPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -35,6 +76,13 @@ function TravelD_Home() {
 
   return (
     <div className='traveld_home_wrapper'>
+      <input
+        type="text"
+        placeholder="Search trips by title or summary..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="traveld_searchbar" // Add a class for styling
+      />
       <div className='travel_card_wrapper'>
         {currentPosts.map((data)=>(
           <TravelCards key={data.id} data={data} />
@@ -43,7 +91,7 @@ function TravelD_Home() {
       <div className='travelhome_paginnation'>
         <Pagination
           postsPerPage={postsPerPage}
-          totalPosts={posts.length}
+          totalPosts={displayPosts.length}
           paginate={paginate}
         />
       </div>
