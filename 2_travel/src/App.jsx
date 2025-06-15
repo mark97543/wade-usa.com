@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from '../../0_Contexts/AuthContext.jsx'
 import './App.css'
@@ -6,7 +6,14 @@ import Header from '@components/header/header.jsx'
 import TravelD_Home from './assets/TravelD_Home/TravelD_Home.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+
+  const RedirectToMain404 = () => {
+    React.useEffect(() => {
+        window.location.href = 'https://wade-usa.com/404'; // Full redirect to main app's 404
+    }, []);
+    return null; // Or a simple loading/redirect message
+  };
 
   return (
     <Router>
@@ -15,7 +22,8 @@ function App() {
         <Routes>
           <Route path="/" element={<TravelD_Home />} />
 
-          {/* TODO: Need to add link to the forbidden Page */}
+          
+          <Route path="*" element={<RedirectToMain404 />} />
         </Routes>
       </AuthProvider>
     </Router>
