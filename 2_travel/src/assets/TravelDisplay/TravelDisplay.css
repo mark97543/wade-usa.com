@@ -1,0 +1,20 @@
+.trip_report_wrapper{
+    margin-top: 80px;
+    margin-left: 20px;
+}
+
+.trip_report_wrapper > h1{
+    text-align: center;
+}
+
+.trip_report_row2{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+
+.trip_report_row2 > p{
+    margin: 0px;
+    font-style: italic;
+}

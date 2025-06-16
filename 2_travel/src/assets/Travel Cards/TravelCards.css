@@ -1,7 +1,7 @@
 .travelcard_shell{
     --travel-card-width:400px;
     --travel-card-pic-aspect:3/2;
-    
+    cursor: pointer;
     width: var(--travel-card-width);
     height: 402px;
     border-radius: var(--border-radius-lg);

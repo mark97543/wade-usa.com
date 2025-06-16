@@ -4,6 +4,7 @@ import { AuthProvider } from '../../0_Contexts/AuthContext.jsx'
 import './App.css'
 import Header from '@components/header/header.jsx'
 import TravelD_Home from './assets/TravelD_Home/TravelD_Home.jsx'
+import TravelDisplay from './assets/TravelDisplay/TravelDisplay.jsx'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<TravelD_Home />} />
+          <Route path='/travel/:link' element={<TravelDisplay/>}/>
 
           
           <Route path="*" element={<RedirectToMain404 />} />

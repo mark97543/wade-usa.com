@@ -41,7 +41,7 @@ function TravelD_Home() {
 
         const response = await directusApi.get('/items/travel_lvl1_list', { // Assuming your collection is 'travel_lvl1_list'
             params: {
-                fields: 'id,trip_title,summary,image,date_created,auther,traveled,status',
+                fields: 'id,trip_title,summary,image,date_created,auther,traveled,status,link',
             },
         });
         
@@ -104,6 +104,7 @@ function TravelD_Home() {
 
   // Change page handler for Pagination component
   const paginate = pageNumber => setCurrentPage(pageNumber);
+
 
 
   return (
