@@ -1,0 +1,13 @@
+{
+  "name": "@wade-usa/auth",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "dependencies": {
+    "@directus/sdk": "^16.1.2",
+    "react": "^18.2.0"
+  }
+}

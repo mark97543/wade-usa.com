@@ -1,0 +1,7 @@
+{
+  "name": "wade-usa-v3",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @wade-usa/shell dev"
+  }
+}

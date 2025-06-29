@@ -1,0 +1,108 @@
+:root{
+    /* General Page Configuration */
+
+    background-color: var(--color-bg-primary);
+    padding-top: 60px; /*Setting all children be from top below header */
+    padding-left: 10px; /* Setting the internal container size*/
+
+    /* -------------------------------------------------------------------------- */
+    /*  Color Palette (Your Finalized Dark Theme)                             */
+    /* -------------------------------------------------------------------------- */
+        
+    /* --- Backgrounds --- */
+    --color-bg-primary: #1A1A1A; /* Deepest Dark */
+    --color-bg-secondary: #2B2B2B; /* Charcoal Gray */
+    --color-bg-tertiary: #3C3C3C; /* Dark Slate */
+
+    /* --- Text Colors --- */
+    --color-text-primary: #E0E0E0; /* Light Gray */
+    --color-text-secondary: #B0B0B0; /* Medium Gray */
+    --color-text-headings: #F0F0F0; /* Near White */
+
+    /* --- Accents & Interactive --- */
+    --color-accent-primary: #00C8C8; /* Vibrant Teal/Aqua */
+    --color-accent-secondary: #6C7EE1; /* Muted Blue/Violet */
+    --color-accent-tertiary-olive: #5F6B5C; /* Deep Olive */
+
+    /* --- Status & Feedback --- */
+    --color-status-success: #28A745; /* Vibrant Green */
+    --color-status-danger: #DC3545; /* Muted Red */
+    --color-status-warning: #FFC107; /* Warm Orange/Yellow */
+    --color-status-info: #17A2B8; /* Soft Blue */
+
+    /* --- Utility Colors for Contrast (Used internally for text on specific backgrounds) --- */
+    --color-text-on-light: #1A1A1A; /* For text on bright/light elements like buttons */
+    --color-text-on-dark: #E0E0E0;  /* For text on dark elements like backgrounds */
+
+    /* Font Sizes */
+    --font-size-base: 1rem;    /* 16px default */
+    --font-size-sm: 0.875rem;  /* 14px */
+    --font-size-md: 1.125rem;  /* 18px */
+    --font-size-lg: 1.25rem;   /* 20px */
+    --font-size-xl: 1.5rem;    /* 24px */
+    --font-size-2xl: 2rem;     /* 32px */
+    --font-size-3xl: 3rem;     /* 48px */
+
+    /* -------------------------------------------------------------------------- */
+    /* Border Radii & Borders                                                */
+    /* -------------------------------------------------------------------------- */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-circle: 50%;
+
+    --border-width-base: 1px;
+    --border-color-base: var(--color-text-primary);
+
+}
+
+h1, h2, h3, p, label {
+    color: var(--color-text-on-dark);
+}
+
+button {
+    background-color: var(--color-accent-primary);
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    background-color: var(--color-bg-tertiary);
+    border: var(--border-width-base) solid var(--border-color-base);
+    color: var(--color-text-primary);
+    padding: var(--space-sm);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-base);
+    height: 30px;
+    padding-left: 10px;
+}
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 2px rgba(var(--color-accent-primary), 0.3);
+}
+
+/* Buttons*/
+button {
+    background-color: var(--color-accent-primary);
+    color: var(--color-text-on-light);
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    height: 44px;
+}
+button:hover {
+    background-color: var(--color-accent-secondary);
+}
+
+button:disabled{
+    background-color: var(--color-accent-secondary);
+}
