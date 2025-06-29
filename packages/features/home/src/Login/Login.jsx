@@ -5,9 +5,7 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import {useAuth} from '@wade-usa/auth'
 
-// Removed testDirectusClient as it was for the temporary test
-// The main directus client is provided via AuthContext
-const video = '47cdaf48-bd64-4e40-a283-47bfbaa858ec.mp4'
+const video = '44a9adea-9372-4bba-990a-f5505f1902e4.mp4'
 
 
 function Login() {
@@ -16,31 +14,26 @@ function Login() {
     const [loading, setLoading]=useState(false)
     const [error, setError] = useState(null);
     const {login} = useAuth()
+    const navigate = useNavigate();
 
-    const [authErro, setAuthError] =useState(null)
 
-    const navigate = useNavigate(); // Using useNavigate for programmatic navigation
-
-    const handleSubmit = async (event) =>{
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        setLoading(true)
-        setError(null)
+        setLoading(true);
+        setError(null);
 
-        console.log('LOGIN PAGE: Attempting to log in with:', { email, password }); // <-- ADD THIS
-
-
-        try{
+        try {
             await login(email, password);
-            navigate('/docker')
-        }catch (err){
-            console.error('Login failed:', error); // Your existing log
-            console.log('FULL LOGIN ERROR OBJECT:', error); // <-- ADD THIS
-            setAuthError('Invalid email or password.');
-            throw new Error('Invalid email or password.');
-        }finally{
-            setLoading(false)
+            navigate('/docker'); // Redirect to the protected docker page on success
+        } catch (err) {
+            // The error message is already set in the AuthContext
+            // We can just re-throw it or set a local error state
+            setError('Invalid email or password. Please try again.');
+            console.error('Login Page Error:', err);
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
 
 

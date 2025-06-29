@@ -1,10 +1,8 @@
-// Import the core tools we need from React.
+// packages/auth/src/AuthContext.jsx
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
-// Import the navigation hook from React Router to redirect users.
 import { useNavigate } from 'react-router-dom';
-// Import our pre-configured Directus SDK client.
 import client from './api';
-// Import specific authentication functions from the Directus SDK.
 import { login as apiLogin, logout as apiLogout, readMe, createUser, withToken } from '@directus/sdk';
 
 // 1. CREATE THE CONTEXT
@@ -20,9 +18,7 @@ export const AuthProvider = ({ children }) => {
   // --- STATE MANAGEMENT ---
   // The 'user' state holds the logged-in user's data, or `null` if they are logged out.
   const [user, setUser] = useState(null);
-  // The 'loading' state helps us show a "Loading..." message on the initial app load.
   const [loading, setLoading] = useState(true);
-  // The 'authError' state holds any error messages from failed login/registration attempts.
   const [authError, setAuthError] = useState(null);
 
   // Get the navigate function from React Router to use for redirects.
@@ -40,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           // Tell the SDK to use this token for the next request.
-          client.setToken(token); 
+          client.setToken(token);
           // Ask the API for the current user's data. We populate the 'role' to get access level info.
           const userData = await client.request(readMe({ fields: ['*', 'role.*'] }));
           // If the request is successful, the token is valid. Set the user state.
@@ -57,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuthSession();
-  }, []); // The empty array [] ensures this effect only runs once on mount.
+  }, []); 
 
   // --- AUTHENTICATION FUNCTIONS ---
 
@@ -71,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('directus_token', response.access_token);
       // 3. Tell the SDK to use this new token for all future requests.
       client.setToken(response.access_token);
-      
+
       // 4. Fetch the full user data (with their role) and update the state.
       const userData = await client.request(readMe({ fields: ['*', 'role.*'] }));
       setUser(userData);
@@ -99,7 +95,7 @@ export const AuthProvider = ({ children }) => {
       throw new Error('Registration failed.');
     }
   };
-  
+
   // Handles the user logout process.
   const logout = async () => {
     try {
