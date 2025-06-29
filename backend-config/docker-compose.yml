@@ -26,6 +26,8 @@ services:
       - ./uploads:/directus/uploads
       - ./extensions:/directus/extensions
     environment:
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: "http://localhost:5173,https://wade-usa.com,https://www.wade-usa.com"
       KEY: ${KEY}
       SECRET: ${SECRET}
       PUBLIC_URL: "https://api.wade-usa.com" 
