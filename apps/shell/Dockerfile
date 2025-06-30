@@ -41,3 +41,13 @@ EXPOSE 80
 
 # Start the Nginx server when the container launches
 CMD ["nginx", "-g", "daemon off;"]
+
+# Copy our custom Nginx configuration from the correct path
+# relative to the build context (the project root)
+COPY apps/shell/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80 to the outside world
+EXPOSE 80
+
+# Start the Nginx server when the container launches
+CMD ["nginx", "-g", "daemon off;"]
