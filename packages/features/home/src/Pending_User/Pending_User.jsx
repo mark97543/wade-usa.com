@@ -1,7 +1,7 @@
 import React from 'react'
 import './Pending_User.css'
 
-const video = '465c3d0c-5e6b-44ef-8e76-061560e06a87.mp4'
+const video = '98b2e50e-a42c-4ab7-879f-a8e8634f4f06.mp4'
 
 
 function Pending_User() {

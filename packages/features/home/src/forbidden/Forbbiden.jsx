@@ -1,7 +1,7 @@
 import React from 'react'
 import './Forbidden.css'
 
-const video = '9596fa3e-0191-43bc-8de0-254c1d2f3a40.mp4'
+const video = '272d936f-a48a-4d89-af3d-310bbf825cae.mp4'
 
 
 function Forbbiden() {

@@ -1,66 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Registration.css'; // Ensure this CSS file exists and is imported
+import { useAuth } from '@wade-usa/auth'; // Import our existing useAuth hook
+import './Registration.css';
 
-
-const video = '15fcc1bf-6434-4410-9bdd-d426b2265dc9.mp4'
-
+const video = '15fcc1bf-6434-4410-9bdd-d426b2265dc9.mp4';
 
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [localError, setLocalError] = useState('');
-    const [loading, setLoading] = useState(false);
-    // const { register, isLoggedIn } = useAuth(); // Get register function from context
+    
+    // We get the error state and loading state directly from our AuthContext
+    const { register, authError, loading } = useAuth(); 
     const navigate = useNavigate();
-    const [successMessage, setSuccessMessage] = useState(null);
-
-
-    // Redirect if already logged in
-    // if (isLoggedIn) {
-    //     navigate('/dock'); // Or wherever your dashboard page is
-    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLocalError('');
-        setLoading(true);
-
+        
+        // We can keep this local check for immediate feedback
         if (password !== confirmPassword) {
-            setLocalError('Passwords do not match.');
-            setLoading(false);
+            // This is a good place to have a local error state if you want
+            // but for now, we can alert the user or handle it simply.
+            alert('Passwords do not match.');
             return;
         }
 
-        try{
-            //Send Registration Request to Directus API
-            const response = await publicApi.post('/users',{
-                email: email,
-                password: password,
-                role: 'e4af064a-599f-49e9-b591-b7fe4297061b', 
-   
-            })
-
-            if(response.status === 204) {
-                // Registration successful, now log in the user
-                setSuccessMessage('Registration successful! You can now log in.');
-                setTimeout(() => {
-                    navigate('/pending'); // Redirect to login page after successful registration
-                }, 2000); // Redirect after 2 seconds
-            }else{
-                setLocalError('Registration failed. Please try again.');
+        try {
+            // Use the register function from our AuthContext
+            const success = await register(email, password);
+            if (success) {
+                // The register function in the context now handles login,
+                // so we can directly navigate to the protected page.
+                navigate('/docker');
             }
-        }catch (err) {
-            console.error('Registration error:', err.response ? err.response.data : err.message);
-            if (err.response && err.response.data && err.response.data.errors) {
-                // Directus API errors are typically nested under .errors
-                setLocalError(err.response.data.errors[0]?.message || 'An unknown error occurred during registration.');
-            } else {
-                setLocalError('Network Error or unexpected issue during registration.');
-            }
-        } finally {
-            setLoading(false);
+        } catch (err) {
+            // The error is already being managed by the authError state
+            // in the context, so we just need to log it for debugging.
+            console.error("Registration failed on component level:", err);
         }
     };
 
@@ -68,8 +44,8 @@ function Register() {
         <div className='wrapper register_wrapper'>
             <div className="reg_video">
                 <video
-                    width="100%" // Example: Make it responsive width
-                    preload="metadata" // Helps load dimensions/duration quickly
+                    width="100%"
+                    preload="metadata"
                     autoPlay
                     loop
                     muted
@@ -111,8 +87,8 @@ function Register() {
                     disabled={loading}
                 />
 
-                {localError && <p className="error-message">{localError}</p>}
-                {successMessage && <p className="error-message">{successMessage}</p>}
+                {/* Display the error from our central AuthContext */}
+                {authError && <p className="error-message">{authError}</p>}
 
                 <button type='submit' disabled={loading} className='register_button_page'>
                     {loading ? 'Registering...' : 'Register'}

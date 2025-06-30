@@ -1,111 +1,93 @@
-// packages/auth/src/AuthContext.jsx
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import client from './api';
-import { login as apiLogin, logout as apiLogout, readMe, createUser, withToken } from '@directus/sdk';
+// We now need 'readUser' in addition to our other functions
+import { login, logout as apiLogout, readMe, createUser, readUser } from '@directus/sdk'; 
 
-// 1. CREATE THE CONTEXT
-// This creates the "box" that will hold our shared authentication state.
-// We initialize it with `null` because when the app first loads, we don't have any auth data yet.
 const AuthContext = createContext(null);
 
-
-// 2. CREATE THE PROVIDER COMPONENT
-// This is the main component that will wrap our entire application.
-// Its job is to manage all the authentication logic and provide the state to its children.
 export const AuthProvider = ({ children }) => {
-  // --- STATE MANAGEMENT ---
-  // The 'user' state holds the logged-in user's data, or `null` if they are logged out.
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
-
-  // Get the navigate function from React Router to use for redirects.
   const navigate = useNavigate();
 
-  // --- SESSION CHECK ON APP LOAD ---
-  // This `useEffect` hook runs only ONCE when the AuthProvider is first mounted.
-  // Its job is to check if there's an existing login session from a previous visit.
   useEffect(() => {
+    // This function remains the same
     const checkAuthSession = async () => {
-      // Look for our token in the browser's localStorage.
-      const token = localStorage.getItem('directus_token');
-
-      // If a token exists, we try to validate it.
-      if (token) {
+      const authStorage = localStorage.getItem('directus_token');
+      if (authStorage) {
         try {
-          // Tell the SDK to use this token for the next request.
-          client.setToken(token);
-          // Ask the API for the current user's data. We populate the 'role' to get access level info.
+          const tokenData = JSON.parse(authStorage);
+          client.setToken(tokenData.access_token);
           const userData = await client.request(readMe({ fields: ['*', 'role.*'] }));
-          // If the request is successful, the token is valid. Set the user state.
           setUser(userData);
         } catch (error) {
-          // If the request fails (e.g., 401 Unauthorized), the token is bad.
           console.warn('Session token invalid or expired.');
-          localStorage.removeItem('directus_token'); // Clean up the bad token.
+          localStorage.removeItem('directus_token');
           setUser(null);
         }
       }
-      // Whether we found a user or not, we are done with the initial loading check.
       setLoading(false);
     };
-
     checkAuthSession();
-  }, []); 
+  }, []);
 
-  // --- AUTHENTICATION FUNCTIONS ---
-
-  // Handles the user login process.
-  const login = async (email, password) => {
-    setAuthError(null); // Clear any previous errors.
+  // --- MODIFIED LOGIN FUNCTION ---
+  const loginFunc = async (email, password) => {
+    setAuthError(null);
     try {
-      // 1. Send the email/password to the Directus API to get a token.
-      const response = await client.login(email, password);
-      // 2. If successful, save the token in localStorage to persist the session.
-      localStorage.setItem('directus_token', response.access_token);
-      // 3. Tell the SDK to use this new token for all future requests.
-      client.setToken(response.access_token);
+      // 1. Log in to get the access token and basic user info
+      const loginResponse = await client.request(login(email, password));
+      localStorage.setItem('directus_token', JSON.stringify(loginResponse));
+      client.setToken(loginResponse.access_token);
 
-      // 4. Fetch the full user data (with their role) and update the state.
-      const userData = await client.request(readMe({ fields: ['*', 'role.*'] }));
-      setUser(userData);
-      return true; // Return true to signal success to the LoginPage.
+      // 2. Get the current user's ID
+      const me = await client.request(readMe({ fields: ['id'] }));
+
+      // 3. Manually fetch the full user object, explicitly asking for the role data.
+      // This is the key to solving the problem.
+      const fullUserData = await client.request(readUser(me.id, { fields: ['*', 'role.*'] }));
+
+      // 4. Set the user state with the complete data
+      setUser(fullUserData);
+      return true;
     } catch (error) {
       console.error('Login failed:', error);
       setAuthError('Invalid email or password.');
-      throw new Error('Invalid email or password.'); // Throw error so LoginPage can catch it.
+      throw new Error('Invalid email or password.');
     }
   };
 
-  // Handles the user registration process.
   const register = async (email, password) => {
     setAuthError(null);
     try {
-      // Use the SDK to send a request to create a new user.
-      // The user will be assigned the default role you configured in the Directus Settings.
-      await client.request(createUser({ email, password }));
-      // For a good user experience, automatically log them in after they register.
-      await login(email, password);
+      await client.request(createUser({
+        email: email,
+        password: password,
+        role: '54cdf754-88ef-48b4-b847-88e1c7e52aa9',
+      }));
+      await loginFunc(email, password);
       return true;
     } catch (error) {
       console.error('Registration failed:', error);
-      setAuthError('This email may already be registered.');
+      const errorMessage = error.errors?.[0]?.message || 'This email may already be registered.';
+      setAuthError(errorMessage);
       throw new Error('Registration failed.');
     }
   };
 
-  // Handles the user logout process.
-  const logout = async () => {
+  const logoutFunc = async () => {
     try {
-      // Tell the Directus API to invalidate the session token.
-      await client.logout();
+      const authStorage = JSON.parse(localStorage.getItem('directus_token'));
+      const refreshToken = authStorage?.refresh_token;
+
+      if (refreshToken) {
+        await client.request(apiLogout(refreshToken));
+      }
     } catch (error) {
       console.error("Logout API call failed, but clearing client-side session anyway.", error);
     } finally {
-      // This `finally` block runs whether the API call succeeded or failed.
-      // This ensures the user is always logged out on the front-end.
       localStorage.removeItem('directus_token');
       setUser(null);
       setAuthError(null);
@@ -113,23 +95,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // --- CONTEXT VALUE ---
-  // This object bundles up all the state and functions that we want to make
-  // available to the rest of the application.
-  const value = {
-    user,
-    isLoggedIn: !!user, // A handy boolean flag: `!!null` is false, `!!{...}` is true.
-    loading,
-    authError,
-    login,
-    logout,
-    register,
-  };
+  const value = { user, isLoggedIn: !!user, loading, authError, login: loginFunc, logout: logoutFunc, register };
 
-  // --- RENDER LOGIC ---
-  // The AuthProvider component returns the official Provider component from React Context.
-  // It passes our `value` object, making it accessible to all child components.
-  // We also check the `loading` state to avoid rendering the app before our session check is complete.
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
@@ -137,13 +104,8 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// 3. CREATE THE CUSTOM HOOK
-// This is a best-practice shortcut. Instead of other components needing to import both
-// `useContext` and `AuthContext`, they can just import and use this one `useAuth` hook.
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  // This check ensures that if we accidentally try to use this hook outside of the provider,
-  // we get a clear error message instead of a silent bug.
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
