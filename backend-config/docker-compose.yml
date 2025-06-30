@@ -1,12 +1,12 @@
+version: '3'
 
 services:
-  # This is the new service for your React Frontend App
+  # This is the service for your React Frontend App
   frontend:
     build:
       context: ../
       dockerfile: apps/shell/Dockerfile
     restart: always
-    # We don't need to expose ports here because the nginx-proxy will handle it
 
   # This is the main Nginx Proxy that routes traffic
   nginx-proxy:
@@ -23,7 +23,7 @@ services:
       - frontend
       - directus
 
-  # The Directus service remains mostly the same
+  # Directus service
   directus:
     image: directus/directus:latest
     user: "1000:1000"
@@ -31,24 +31,40 @@ services:
     environment:
       CORS_ENABLED: "true"
       CORS_ORIGIN: "https://wade-usa.com,https://www.wade-usa.com"
-      # ... other env variables
-    restart: always
+      KEY: ${KEY}
+      SECRET: ${SECRET}
+      PUBLIC_URL: "https://api.wade-usa.com"
+      DB_CLIENT: 'pg'
+      DB_HOST: 'db'
+      DB_PORT: '5432'
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     depends_on:
       - db
+    restart: always
 
-  # The DB and Certbot services remain the same
+  # Database service
   db:
     image: postgres:15-alpine
     volumes:
-      - ./db_data:/var/lib/postgresql/data
+      # This now uses a Docker-managed named volume for data safety.
+      - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     restart: always
 
+  # Certbot service
   certbot:
     image: certbot/certbot
     volumes:
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
+
+# This new section at the very end defines the named volume.
+volumes:
+  db_data:
