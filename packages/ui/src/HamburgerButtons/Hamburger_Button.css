@@ -1,0 +1,107 @@
+/* Ham Button Styles */
+
+.ham_menu{
+  margin-right: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.bar1, .bar2, .bar3 {
+  width: 35px;
+  height: 5px;
+  background-color: var(--color-accent-primary);
+  margin: 6px 0;
+  transition: 0.4s;
+}
+
+.change .bar1 {
+  transform: translate(0, 11px) rotate(-45deg);
+}
+
+.change .bar2 {opacity: 0;}
+
+.change .bar3 {
+  transform: translate(0, -11px) rotate(45deg);
+}
+
+.ham_container{
+  display: none; /* Hide by default */
+  cursor: pointer;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  padding: 0.5rem;
+}
+
+.ham_dropdown {
+    display: none; /* Hide by default */
+    position: absolute; /* Position relative to .ham_menu */
+    top: 75px; /* Adjust as needed */
+    right: 0;
+    padding: 10px;
+    width: 200px;
+    background-color: var(--color-bg-secondary);
+    z-index: 10;
+    border-radius: var(--border-radius-lg); 
+}
+
+/* Show the dropdown when the container has the 'change' class */
+.ham_container.change + .ham_dropdown {
+    display: none;
+}
+
+.ham_dropdown_lastItem{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: end; */
+    /* align-items: center; */
+    gap: 5px;
+    width: 100%;
+}
+
+/* Clears all lower Level Formatting */
+.ham_dropdown_lastItem :first-child{
+    gap: 0px;
+    margin: 0px auto 0px 0px;
+}
+
+.ham_dropdown_lastItem :last-child{
+    gap: 0px;
+    margin: 0px 0px 0px auto;
+}
+
+.menu_divider{
+    height: 1px; /* The thickness of your line */
+    background-color: var(--color-text-secondary); /* Your preferred color */
+    margin: 10px 0; /* Space above and below the line */
+    width: 100%; /* Adjust width as needed */
+    margin-left: auto; /* Center the line if width is less than 100% */
+    margin-right: auto;
+}
+
+
+@media (max-width: 800px) {
+
+    .ham_menu{
+        width: auto;
+    }
+
+    .ham_container {
+        display: inline; /* Show on small screens */
+    }
+
+    /* Keep the dropdown hidden by default on small screens too */
+    .ham_dropdown {
+        display: none;
+    }
+    
+    /* Show dropdown when active */
+    .ham_container.change + .ham_dropdown {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+
+}
+

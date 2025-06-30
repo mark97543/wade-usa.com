@@ -2,8 +2,8 @@ import React from 'react';
 import './Header.css'; // Import the component's specific styles
 import LoginButtons from '../LoginButtons/LoginButtons';
 import { useAuth } from '@wade-usa/auth';
-
-
+import Hamburger_Button from '../HamburgerButtons/Hamburger_Button';
+import { Login_Menus } from './Menu_Functions';
 
 const Header = () => {
 
@@ -20,9 +20,11 @@ const Header = () => {
       </div>
 
       <div className='Header_Login_Buttons'>
-        {user ? (<h3>Hello, {user.first_name || user.email}</h3>) : ("")}
-        
-        <LoginButtons />
+        <Hamburger_Button lastItem={Login_Menus(user)}/>
+
+        <div className='header_menu_items'>
+          {Login_Menus(user)}
+        </div>
       </div>
  
     </header>
