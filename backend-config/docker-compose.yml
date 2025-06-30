@@ -1,50 +1,42 @@
+
 services:
-  # Nginx Webserver
-  nginx:
+  # This is the new service for your React Frontend App
+  frontend:
+    build:
+      context: ../
+      dockerfile: apps/shell/Dockerfile
+    restart: always
+    # We don't need to expose ports here because the nginx-proxy will handle it
+
+  # This is the main Nginx Proxy that routes traffic
+  nginx-proxy:
     image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ../apps/shell/dist:/var/www/wade-usa.com
       - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     restart: always
     depends_on:
+      - frontend
       - directus
 
-  # Directus CMS
+  # The Directus service remains mostly the same
   directus:
     image: directus/directus:latest
     user: "1000:1000"
-    env_file:
-      - .env
-    ports:
-      - "8055:8055"
-    volumes:
-      - ./database:/directus/database
-      - ./uploads:/directus/uploads
-      - ./extensions:/directus/extensions
+    env_file: .env
     environment:
       CORS_ENABLED: "true"
-      CORS_ORIGIN: "http://localhost:5173,https://wade-usa.com,https://www.wade-usa.com"
-      KEY: ${KEY}
-      SECRET: ${SECRET}
-      PUBLIC_URL: "https://api.wade-usa.com" 
-      DB_CLIENT: 'pg'
-      DB_HOST: 'db'
-      DB_PORT: '5432'
-      DB_DATABASE: ${POSTGRES_DB}
-      DB_USER: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      CORS_ORIGIN: "https://wade-usa.com,https://www.wade-usa.com"
+      # ... other env variables
+    restart: always
     depends_on:
       - db
-    restart: always
 
-  # PostgreSQL Database
+  # The DB and Certbot services remain the same
   db:
     image: postgres:15-alpine
     volumes:
@@ -55,7 +47,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     restart: always
 
-  # Certbot Service
   certbot:
     image: certbot/certbot
     volumes:
