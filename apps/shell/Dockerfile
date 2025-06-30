@@ -32,16 +32,6 @@ FROM nginx:stable-alpine
 # Copy the built files from the "builder" stage into the Nginx webroot
 COPY --from=builder /app/apps/shell/dist /usr/share/nginx/html
 
-# Copy our custom Nginx configuration
-# We will create this file next. It tells Nginx how to handle React Router.
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80 to the outside world
-EXPOSE 80
-
-# Start the Nginx server when the container launches
-CMD ["nginx", "-g", "daemon off;"]
-
 # Copy our custom Nginx configuration from the correct path
 # relative to the build context (the project root)
 COPY apps/shell/nginx.conf /etc/nginx/conf.d/default.conf
