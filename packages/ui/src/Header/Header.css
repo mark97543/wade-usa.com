@@ -45,3 +45,11 @@
     color: var(--color-text-primary);
     text-decoration: none;
 }
+
+.Header_Login_Buttons{
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    gap: 15px;
+    white-space: nowrap;
+}
