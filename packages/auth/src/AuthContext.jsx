@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       await client.request(createUser({
         email: email,
         password: password,
-        role: 'd628f338-72bc-4fe9-8041-2794524444b7',
+        role: 'a069c27d-83f9-4bde-bede-af7f3f581ea9',
       }));
       await loginFunc(email, password);
       return true;
