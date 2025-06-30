@@ -30,7 +30,7 @@ services:
     env_file: .env
     environment:
       CORS_ENABLED: "true"
-      CORS_ORIGIN: "https://wade-usa.com,https://www.wade-usa.com"
+      CORS_ORIGIN: "https://wade-usa.com,https://www.wade-usa.com,http://localhost:5173"
       KEY: ${KEY}
       SECRET: ${SECRET}
       PUBLIC_URL: "https://api.wade-usa.com"
