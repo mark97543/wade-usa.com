@@ -1,0 +1,15 @@
+.travel_home_wrapper{
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+
+@media (max-width: 800px) {
+    .travel_home_wrapper{
+        flex-direction: column;
+    }
+}

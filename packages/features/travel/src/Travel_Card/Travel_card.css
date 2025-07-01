@@ -1,0 +1,7 @@
+.travel_card_box{
+    width: 380px;
+    height: 380px;
+    border: var(--border-width-base) solid var(--border-color-base);
+    border-radius: var(--border-radius-lg);
+
+}
