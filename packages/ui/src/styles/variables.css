@@ -4,6 +4,7 @@
     background-color: var(--color-bg-primary);
     padding-top: 60px; /*Setting all children be from top below header */
     padding-left: 10px; /* Setting the internal container size*/
+    padding-right: 10px;
 
     /* -------------------------------------------------------------------------- */
     /*  Color Palette (Your Finalized Dark Theme)                             */

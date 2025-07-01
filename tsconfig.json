@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "./apps/shell" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/features/home" },
+    { "path": "./packages/auth" },
+    { "path": "./packages/features/travel" } 
+  ]
+}

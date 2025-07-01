@@ -54,13 +54,16 @@
     white-space: nowrap;
 }
 
-.header_menu_items{
+.header_menu_items div{
     display: flex;
     flex-direction: row;
     gap: 15px;
-}/*IMPORTANT: This needs to Jive with the Hamburger button CSS Resolution */
+}
+
+/*IMPORTANT: This needs to Jive with the Hamburger button CSS Resolution */
 @media (max-width: 800px) {
     .header_menu_items{
         display: none;
     }
+
 }

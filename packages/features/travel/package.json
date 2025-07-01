@@ -1,0 +1,15 @@
+{
+  "name": "@wade-usa/feature-travel",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "dependencies": {
+    "@wade-usa/auth": "workspace:*",
+    "react": "^18.2.0",
+    "react-router-dom": "^6.23.1"
+  },
+  "devDependencies": {}
+}

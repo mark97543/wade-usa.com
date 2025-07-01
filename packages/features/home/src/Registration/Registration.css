@@ -1,24 +1,27 @@
 .register_wrapper {
     text-align: center;
+    margin-top: 20px;
 }
 
-.form_box {
+.form_box_reg {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    margin: 30px auto auto auto;
+    max-width: 400px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px;
     border: var(--border-width-base) solid var(--border-color-base);
     border-radius: var(--border-radius-lg);
     background-color: var(--color-bg-secondary);
 }
 
-.form_box > h2 { /* Targeting the h2 specifically for this page */
+.form_box_reg > h2 { /* Targeting the h2 specifically for this page */
     margin: 0 auto 5px auto;
     color: var(--color-text-headings);
 }
 
-.form_box label {
+.form_box_reg label {
     margin-top: 10px;
     text-align: left;
     margin-left: 5px;
@@ -26,8 +29,8 @@
     color: var(--color-text-primary);
 }
 
-.form_box input[type="email"],
-.form_box input[type="password"] {
+.form_box_reg input[type="email"],
+.form_box_reg input[type="password"] {
     padding: 10px;
     margin-top: 5px;
     border-radius: var(--border-radius-sm);
@@ -36,7 +39,7 @@
     color: var(--color-text-primary);
 }
 
-.form_box button {
+.register_button_page {
     margin-top: 20px;
     padding: 10px 15px;
     background-color: var(--color-accent-primary);
@@ -48,7 +51,7 @@
     transition: background-color 0.2s ease;
 }
 
-.form_box button:hover {
+.form_box_reg button:hover {
     background-color: var(--color-accent-secondary);
 }
 
@@ -70,3 +73,4 @@
 .reg_video > video {
     border-radius: 15px;
 }
+

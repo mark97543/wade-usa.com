@@ -1,16 +1,15 @@
 .docker_Wrapper{
     margin-top: 100px;
-    margin-left: 20px;
     text-align: center;
 }
 
 
 
 .goodbye_video{
-    width: 98%;
-    min-width: 400px;
     max-width: 800px;
-    margin: 30px auto auto auto;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .goodbye_video > video{

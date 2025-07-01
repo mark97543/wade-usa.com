@@ -14,3 +14,15 @@ export const Login_Menus = (user) => {
     </div>
   )
 };
+
+/**
+ * Imports the Login Buttons and user welcome.
+ * @returns {React} react item
+ */
+export const Travel_Items = (user) => {
+  return (
+    <div>
+      <p>Travel</p>
+    </div>
+  )
+};

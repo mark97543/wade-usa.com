@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@wade-usa/auth'; // Import our existing useAuth hook
 import './Registration.css';
 
-const video = '15fcc1bf-6434-4410-9bdd-d426b2265dc9.mp4';
+const video = 'Register_Cat.mp4';
 
 function Register() {
     const [email, setEmail] = useState('');
@@ -56,7 +56,7 @@ function Register() {
                 </video>
             </div>
             <h2>Register for an Account</h2>
-            <form className='form_box' onSubmit={handleSubmit}>
+            <form className='form_box_reg' onSubmit={handleSubmit}>
                 <label htmlFor='register_email'>Email</label>
                 <input
                     id='register_email'

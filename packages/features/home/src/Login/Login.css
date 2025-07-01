@@ -12,12 +12,14 @@
     border-radius: 15px;
 }
 
-.form_box{
+.form_box_login{
     display: flex;
     flex-direction: column;
-    width: 400px;
-    margin: 30px auto auto auto;
-    /* padding: 10px; */
+    max-width: 400px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
     border: var(--border-width-base) solid var(--border-color-base);
     border-radius: var(--border-radius-lg);
     background-color: var(--color-bg-secondary);
@@ -42,6 +44,3 @@
     font-style: italic;
 }
 
-.login_page_wrapper{
-    /* margin-top: 100px; */
-}

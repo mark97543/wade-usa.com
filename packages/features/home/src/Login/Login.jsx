@@ -53,7 +53,7 @@ function Login() {
             </video>
         </div>
 
-        <form className='form_box' onSubmit={handleSubmit}>
+        <form className='form_box_login' onSubmit={handleSubmit}>
             <h3>Welcome Back</h3>
             <p>{error}</p> 
             <label htmlFor='login_input'>Email</label>
