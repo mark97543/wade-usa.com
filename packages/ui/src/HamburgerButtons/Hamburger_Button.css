@@ -79,6 +79,23 @@
     margin-right: auto;
 }
 
+.ham_dropdown .dropdown-menu {
+  /* 1. This is the most important change. It puts the menu back into the normal document flow. */
+  position: static;
+
+  /* 2. These lines remove the "pop-out" styling to make it look like part of the main menu. */
+  box-shadow: none;
+  margin-top: 0;
+  width: 100%;
+  background-color: transparent; /* Blends it into the hamburger menu's background */
+  padding: 0; /* Remove extra padding */
+}
+
+/* Optional: This rule indents the sub-menu items to show they belong to the dropdown. */
+.ham_dropdown .dropdown-item {
+  padding-left: 25px; /* Adds a nice indent */
+  font-size: 0.9em;   /* Makes the text slightly smaller */
+}
 
 @media (max-width: 800px) {
 

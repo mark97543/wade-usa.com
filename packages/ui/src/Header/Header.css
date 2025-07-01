@@ -5,7 +5,7 @@
 .header_container{
 
     /* Header Declared Variables */
-    --header-height:60px;
+    --header-height:var(--space-3xl);
 
     background-color: var(--color-bg-secondary);
     width: 98%;
@@ -15,7 +15,7 @@
     
     /* Header Display */
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
 
 
@@ -52,6 +52,7 @@
     width: fit-content;
     gap: 15px;
     white-space: nowrap;
+    margin-left: auto;
 }
 
 .header_menu_items div{
@@ -60,9 +61,17 @@
     gap: 15px;
 }
 
+.Header_Menus{
+    justify-self: flex-start;
+}
+
 /*IMPORTANT: This needs to Jive with the Hamburger button CSS Resolution */
 @media (max-width: 800px) {
     .header_menu_items{
+        display: none;
+    }
+
+    .Header_Menus{
         display: none;
     }
 

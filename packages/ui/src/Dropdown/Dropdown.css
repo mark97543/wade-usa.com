@@ -1,0 +1,76 @@
+/* File: ~/wade-usa.com/_components/Dropdown/Dropdown.css */
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  /* Using theme background for toggle button */
+  background-color: var(--color-bg-secondary);
+  /* Using primary text color from theme */
+  color: var(--color-text-primary);
+  /* Using theme spacing variables for padding */
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-lg); /* Using base font size from theme */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Using theme border radius */
+  border-radius: var(--border-radius-sm);
+}
+
+.dropdown-toggle:hover {
+  /* Using a tertiary background color for hover state */
+  background-color: var(--color-bg-tertiary);
+}
+
+.dropdown-menu {
+  position: absolute;
+  /* Using secondary background for the dropdown menu */
+  background-color: var(--color-bg-secondary);
+  min-width: 200px; /* Specific width, can remain hardcoded or use a spacing variable if appropriate */
+  /* Using a theme shadow variable */
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+  top: 100%;
+  left: 0;
+  /* Using theme border radius */
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  /* Using a theme spacing variable for margin */
+  margin-top: var(--space-md);
+  padding: 5px;
+}
+
+/* Style for links/items within the dropdown menu */
+.dropdown-menu a {
+  /* Using primary text color for dropdown links */
+  color: var(--color-text-primary);
+  /* Using theme spacing variables for padding */
+  padding: var(--space-sm) var(--space-md);
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: var(--font-size-lg);
+}
+
+.dropdown-menu a:hover {
+  /* Using a tertiary background for link hover state */
+  background-color: var(--color-bg-tertiary);
+}
+
+.arrow {
+  margin-left: var(--space-xs); /* Using a theme spacing variable */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* .dropdown-toggle.open .arrow {
+  transform: rotate(180deg);
+} */
+
+.dropdown-item{
+  margin-top: 10px;
+}

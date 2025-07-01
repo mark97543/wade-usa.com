@@ -42,3 +42,12 @@ Bash
 cd backend-config
 docker compose up -d --build
 That's it. Docker will build the new frontend container with your updated code and seamlessly replace the old one. After the command finishes, your changes will be live on https://wade-usa.com.
+
+
+## Troubleshooting:
+
+```bash
+docker compose down --remove-orphans
+docker network prune
+docker compose up -d 
+```
