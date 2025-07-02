@@ -1,7 +1,15 @@
 .travel_card_box{
     width: 380px;
-    height: 380px;
+    height: 500px;
     border: var(--border-width-base) solid var(--border-color-base);
     border-radius: var(--border-radius-lg);
+    overflow: hidden;
+}
 
+.trip_card_image{
+    width: 380px;
+}
+
+.trip_card_title{
+    text-align: center;
 }

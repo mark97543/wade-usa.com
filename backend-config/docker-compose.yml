@@ -1,4 +1,3 @@
-version: '3'
 
 services:
   # This is the service for your React Frontend App
