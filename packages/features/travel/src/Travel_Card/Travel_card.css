@@ -4,6 +4,8 @@
     border: var(--border-width-base) solid var(--border-color-base);
     border-radius: var(--border-radius-lg);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .trip_card_image{
@@ -12,4 +14,25 @@
 
 .trip_card_title{
     text-align: center;
+    margin-bottom: calc(var(--space-sm)*-1);
+}
+
+.trip_card_dates{
+    text-align: center;
+}
+
+.trip_card_summary{
+    margin-left: var(--space-sm);
+    margin-right: var(--space-sm);
+    margin-top: calc(var(--space-sm)*-1);
+    font-size: var(--font-size-md);
+    text-align: center;
+}
+
+.trip_card_misc_date{
+    margin-left: var(--space-sm);
+    margin-right: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    text-align: center;
+    margin-top: auto;
 }
