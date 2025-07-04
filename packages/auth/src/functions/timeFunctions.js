@@ -22,3 +22,28 @@ export const formatDirectusDateToYYMMDD = (isoDateString) => {
   // Format as YY-MMM-DD
   return `${year}-${month}-${day}`;
 };
+
+/**
+ * Converts an ISO 8601 date string from Directus into a 'MMM-DD-YY' format.
+ * @param {string} isoDateString - The date string from Directus (e.g., "2025-06-14T12:00:00.000Z").
+ * @returns {string} The formatted date string (e.g., "Jun-14-25").
+ */
+export const formatDirectusDateToMMDDYY = (isoDateString) => {
+  if (!isoDateString) return ''; // Handle empty or null dates
+
+  const date = new Date(isoDateString);
+
+  // Get year in YY format (last two digits)
+  const year = date.getFullYear().toString().slice(-2);
+  
+  // Get month name abbreviation
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = monthNames[date.getMonth()];
+  
+  // Get day of the month, not padded for this format
+  const day = date.getDate();
+
+  // Format as MMM-DD-YY
+  return `${month}-${day}-${year}`;
+};
