@@ -1,15 +1,43 @@
 .travel_home_wrapper{
     margin-top: var(--space-xl);
     display: flex;
-    flex-direction: row;
-    gap: 10px;
+    flex-direction: column;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1500px;
 }
 
+.travel_home_posts{
+    display: grid;
+    gap: var(--space-sm);
+    grid-template-columns: auto auto auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.travel_home_pagnation{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.traveld_searchbar{
+    width: 300px;
+
+}
+
+.travel_home_input{
+    display: flex;
+    justify-content: center;
+    margin-bottom:var(--space-sm) ;
+}
+
+@media (max-width: 1200px) {
+    .travel_home_posts{
+        grid-template-columns: auto auto;
+    }
+}
 
 @media (max-width: 800px) {
-    .travel_home_wrapper{
-        flex-direction: column;
+    .travel_home_posts{
+        grid-template-columns: auto;
     }
 }

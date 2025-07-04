@@ -3,7 +3,7 @@
 import { readItems } from "@directus/sdk";
 import client from "./api.js";
 
-/* ----------------- Fetches all items from trips collection ---------------- */
+/* ----------------- Fetches all items from trips collection  ---------------- */
 export const fetchAllTrips = async ()=>{
     try{
         const trips = await client.request(
