@@ -1,14 +1,14 @@
 .trip_display_root{
     margin-top: var(--space-lg);
+    width: 100%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .trip_display_header_block1{
     display: flex;
     flex-direction: column;
-    width: 100%;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
     border-top-left-radius: var( --border-radius-lg) ;
     border-top-right-radius: var(--border-radius-lg);
     overflow: hidden;
@@ -18,7 +18,158 @@
     width: 100%;
 }
 
-.trip_display_header_block1 h1, .trip_display_header_block1 h4{
+.trip_display_header_block1 h1, .trip_display_header_block1 h4, .trip_display_header_block1 p{
     text-align: center;
     margin: var(--space-xxs);
+}
+
+.trip_display_root hr{
+    width: 90%;
+
+}
+
+.trip_display_flights_data{
+    border: var(--border-width-base) solid var(--color-text-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-sm);
+}
+
+.trip_display_root h2 {
+    text-align: center;
+}
+
+.trip_display_departing_flight{
+    text-align: center;
+}
+
+.trip_display_flights h2{
+    text-align: left;
+    margin-left: var(--space-sm);
+}
+
+.trip_display_flights{
+    margin-bottom: var(--space-lg);
+}
+
+/* Layover Line Section */
+.hr-sect {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    margin: 8px 0px;
+}
+.hr-sect:before,
+.hr-sect:after {
+    content: "";
+    flex-grow: 1;
+    background: var(--color-text-primary);
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 8px;
+}
+
+.hr{
+    width: 100%;
+}
+
+.double_hr{
+    width: 100% !important;
+}
+
+.flight_data_row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* This is the key property */
+    width: 100%; /* Ensure the row itself takes up the full width */
+    align-items: center; /* This vertically centers all direct children */
+}
+
+.flights_arrow h1{
+    font-size: var(--font-size-3xl) ;
+}
+
+.trip_display_departing_flight h5{
+    margin-bottom: 0px;
+    margin-top: var(--space-sm);
+}
+
+.trip_display_departing_flight h4{
+    margin-top: var(--space-sm);
+}
+
+.flight_note{
+    margin: var(--space-xs);
+}
+
+.hotels_wrapper h2{
+    text-align: left;
+}
+
+.hotel_details{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+}
+
+.hotel_name{
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.hotel_address{
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.hotel_checkin{
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;     /* This vertically centers the h4 */
+    justify-content: center; /* This horizontally centers it (optional) */
+}
+
+.hotel_checkout{
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    align-items: center;     /* This vertically centers the h4 */
+    justify-content: center; /* This horizontally centers it (optional) */
+}
+
+.hotel_note{
+    grid-column: span 2;
+    grid-row: 3;
+}
+
+.hotels_box{
+    border: var(--border-width-base) solid var(--color-text-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-sm);
+}
+
+.hotels_box h3, .hotels_box h4{
+    margin: var(--space-xs);
+}
+
+.destination-group-header h3, .hotels_wrapper h3{
+    margin-bottom: var(--space-xxs);
+}
+@media (max-width: 500px) {
+    .flights_arrow h1{
+        font-size: var(--font-size-xl) ;
+    }
+
+    .trip_display_departing_flight h1{
+        font-size: var(--font-size-xl);
+    }
+
+    .trip_display_departing_flight h4{
+        font-size: var(--font-size-sm);
+    }
+
+    .flights_misc_data{
+        font-size: small;
+    }
 }

@@ -2,7 +2,9 @@ import React, {useState, useEffect} from 'react'
 import './Trip_Display.css'
 import { useParams } from 'react-router-dom'; // Hook to access URL parameters
 import {fetchTripBySlug} from '@wade-usa/auth'
-import {formatDirectusDateToMMDDYY} from '@wade-usa/auth'
+import {formatDirectusDateToMMDDYY, formatDirectusDateTime} from '@wade-usa/auth'
+import Flights from './Components/Flights';
+import Hotels from './Components/Hotels';
 
 
 function Trip_Display() {
@@ -10,6 +12,8 @@ function Trip_Display() {
     const [trip, setTrip] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [flights, setFlights] = useState()
+    const [hotels, setHotels]= useState()
 
     useEffect(() => {
         const loadTrip = async () => {
@@ -18,7 +22,13 @@ function Trip_Display() {
                 const tripData = await fetchTripBySlug(link);
 
                 if (tripData) {
-                setTrip(tripData);
+                    setTrip(tripData);
+                    if (tripData.flights){
+                        setFlights(tripData.flights.sort((a, b) => a.depart.localeCompare(b.depart))); //Sorts Flights andloads into state for mapping
+                    }
+                    if(tripData.hotels){
+                        setHotels(tripData.hotels.sort((a,b) => a.checkin.localeCompare(b.checkin)));
+                    }
                 } else {
                 setError('Trip not found.');
                 }
@@ -47,7 +57,7 @@ function Trip_Display() {
     }
     
 
-    console.log(trip)
+    console.log(hotels)
     return (
         <div className='trip_display_root'>
             <div className='trip_display_header_block1'>
@@ -55,8 +65,16 @@ function Trip_Display() {
                 <h1>{trip.trip_title}</h1>
                 <h4>{`${formatDirectusDateToMMDDYY(trip.start_date)} through ${formatDirectusDateToMMDDYY(trip.end_date)}`}</h4>
                 <h4><i>{`Created: ${formatDirectusDateToMMDDYY(trip.date_created)}, Updated: ${formatDirectusDateToMMDDYY(trip.date_updated)}`}</i></h4>
+                <div dangerouslySetInnerHTML={{ __html: trip.long_summary }}/>
             </div>
-            
+            <hr></hr>
+            <h2>Itinerary</h2>
+            {flights ? (
+                <Flights flights={flights}/>
+            ): ''}
+            {hotels ? (
+                <Hotels hotels={hotels}/>
+            ):''}
         </div>
 
     )
