@@ -14,6 +14,7 @@ function Hotels({hotels}) {
                 const isLastItem = index === hotels.length - 1;
 
                 return(
+                    <>
                     <div className='hotel_details' key={index}>
                         <div className='hotel_name'>
                             <h3>{hotel.hotel_name}</h3>
@@ -22,16 +23,17 @@ function Hotels({hotels}) {
                             <h4>{hotel.hotel_address}</h4>
                         </div>
                         <div className='hotel_checkin'>
-                            <h4>{formatDirectusDateTime(hotel.checkin)}</h4>
+                            <h4>{`Checkin: ${formatDirectusDateTime(hotel.checkin)}`}</h4>
                         </div>
                         <div className='hotel_checkout'>
-                            <h4>{formatDirectusDateTime(hotel.checkout)}</h4>
+                            <h4>{`Checkout: ${formatDirectusDateTime(hotel.checkout)}`}</h4>
                         </div>
                         <div className='hotel_note'>
                             <h4>{hotel.note}</h4>
                         </div>
-                         {!isLastItem && <hr />} 
                     </div>
+                    {!isLastItem && <div className="hr-sect">Next Hotel</div>} 
+                    </>
             )})}
         </div>
     </div>

@@ -108,18 +108,24 @@
 
 .hotel_details{
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr .45fr;
     grid-template-rows: auto auto auto;
 }
 
 .hotel_name{
     grid-column: 1;
     grid-row: 1;
+    display: flex;
+    align-items: center;     /* This vertically centers the h4 */
+    justify-content: left; /* This horizontally centers it (optional) */
 }
 
 .hotel_address{
     grid-column: 1;
     grid-row: 2;
+    display: flex;
+    align-items: center;     /* This vertically centers the h4 */
+    justify-content: left; /* This horizontally centers it (optional) */
 }
 
 .hotel_checkin{
@@ -151,6 +157,7 @@
 
 .hotels_box h3, .hotels_box h4{
     margin: var(--space-xs);
+
 }
 
 .destination-group-header h3, .hotels_wrapper h3{
