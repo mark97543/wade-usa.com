@@ -47,7 +47,7 @@
     margin-left: var(--space-sm);
 }
 
-.trip_display_flights{
+.trip_display_flights, .events_wrapper, .rental_cars_wrapper, .hotels_wrapper{
     margin-bottom: var(--space-lg);
 }
 
@@ -149,20 +149,68 @@
     grid-row: 3;
 }
 
-.hotels_box{
+.hotels_box, .rental_cars_box, .events_box{
     border: var(--border-width-base) solid var(--color-text-primary);
     border-radius: var(--border-radius-lg);
     padding: var(--space-sm);
 }
 
-.hotels_box h3, .hotels_box h4{
+.hotels_box h3, .hotels_box h4, .rental_car_details h4, .rental_car_details h3, .events_wrapper h4, .events_wrapper h3{
     margin: var(--space-xs);
 
 }
 
-.destination-group-header h3, .hotels_wrapper h3{
+.destination-group-header h3, .hotels_wrapper h3, .rental_cars_wrapper h3{
     margin-bottom: var(--space-xxs);
 }
+
+.rental_car_details{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+}
+
+.rental_company{
+    grid-column: span 2;
+    grid-row: 1;
+}
+
+.rental_pickup_time{
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.rental_dropoff_time{
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.event_details{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+}
+
+.event{
+    grid-column: span 2;
+    grid-row: 1;
+}
+
+.event_location{
+    grid-column: span 2;
+    grid-row: 2;
+}
+
+.event_start{
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.event_end{
+    grid-column: 2;
+    grid-row: 3;
+}
+
 @media (max-width: 500px) {
     .flights_arrow h1{
         font-size: var(--font-size-xl) ;

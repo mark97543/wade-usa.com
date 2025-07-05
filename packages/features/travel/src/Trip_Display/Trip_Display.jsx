@@ -5,6 +5,9 @@ import {fetchTripBySlug} from '@wade-usa/auth'
 import {formatDirectusDateToMMDDYY, formatDirectusDateTime} from '@wade-usa/auth'
 import Flights from './Components/Flights';
 import Hotels from './Components/Hotels';
+import RentalCars from './Components/RentalCars';
+import Events from './Components/Events';
+
 
 
 function Trip_Display() {
@@ -14,6 +17,8 @@ function Trip_Display() {
     const [error, setError] = useState(null);
     const [flights, setFlights] = useState()
     const [hotels, setHotels]= useState()
+    const [rentalCars, setRentalCars]=useState()
+    const [events, setEvents]=useState()
 
     useEffect(() => {
         const loadTrip = async () => {
@@ -28,6 +33,12 @@ function Trip_Display() {
                     }
                     if(tripData.hotels){
                         setHotels(tripData.hotels.sort((a,b) => a.checkin.localeCompare(b.checkin)));
+                    }
+                    if(tripData.rental_cars){
+                        setRentalCars(tripData.rental_cars.sort((a,b) => a.pickup_time.localeCompare(b.pickup_time)))
+                    }
+                    if(tripData.events){
+                        setEvents(tripData.events.sort((a,b) => a.start_time.localeCompare(b.start_time)))
                     }
                 } else {
                 setError('Trip not found.');
@@ -57,7 +68,7 @@ function Trip_Display() {
     }
     
 
-    console.log(hotels)
+    console.log(rentalCars)
     return (
         <div className='trip_display_root'>
             <div className='trip_display_header_block1'>
@@ -75,6 +86,12 @@ function Trip_Display() {
             {hotels ? (
                 <Hotels hotels={hotels}/>
             ):''}
+            {rentalCars ? (
+                <RentalCars rentalCars={rentalCars}/>
+            ):''}
+            {events ? (
+                <Events events={events} />
+            ): ''}
         </div>
 
     )
