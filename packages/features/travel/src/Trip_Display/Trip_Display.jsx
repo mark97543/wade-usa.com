@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import './Trip_Display.css'
-import { useParams } from 'react-router-dom'; // Hook to access URL parameters
+import { useActionData, useParams } from 'react-router-dom'; // Hook to access URL parameters
 import {fetchTripBySlug} from '@wade-usa/auth'
 import {formatDirectusDateToMMDDYY, formatDirectusDateTime} from '@wade-usa/auth'
 import Flights from './Components/Flights';
 import Hotels from './Components/Hotels';
 import RentalCars from './Components/RentalCars';
 import Events from './Components/Events';
+import Days from './Components/Days';
 
 
 
@@ -19,6 +20,7 @@ function Trip_Display() {
     const [hotels, setHotels]= useState()
     const [rentalCars, setRentalCars]=useState()
     const [events, setEvents]=useState()
+    const [days, setDays]=useState()
 
     useEffect(() => {
         const loadTrip = async () => {
@@ -39,6 +41,9 @@ function Trip_Display() {
                     }
                     if(tripData.events){
                         setEvents(tripData.events.sort((a,b) => a.start_time.localeCompare(b.start_time)))
+                    }
+                    if(tripData.trip_day_detail){
+                        setDays(tripData.trip_day_detail)
                     }
                 } else {
                 setError('Trip not found.');
@@ -68,7 +73,7 @@ function Trip_Display() {
     }
     
 
-    console.log(rentalCars)
+    //console.log(days)
     return (
         <div className='trip_display_root'>
             <div className='trip_display_header_block1'>
@@ -78,8 +83,22 @@ function Trip_Display() {
                 <h4><i>{`Created: ${formatDirectusDateToMMDDYY(trip.date_created)}, Updated: ${formatDirectusDateToMMDDYY(trip.date_updated)}`}</i></h4>
                 <div dangerouslySetInnerHTML={{ __html: trip.long_summary }}/>
             </div>
+
             <hr></hr>
-            <h2>Itinerary</h2>
+            {days ? (
+                <div>
+                    <h1 className='trip_plans_title'>Trip Plans</h1>
+                    {days.map((day, index)=>{
+                        return(
+                        <div key={index} className='trip_plans_functions'>
+                            <Days day={day}/>
+                        </div>
+                    )})}
+                </div>
+            ):''}
+
+            <hr></hr>
+            <h1 className='trip_plans_title'>Itinerary</h1>
             {flights ? (
                 <Flights flights={flights}/>
             ): ''}
@@ -89,9 +108,12 @@ function Trip_Display() {
             {rentalCars ? (
                 <RentalCars rentalCars={rentalCars}/>
             ):''}
-            {events ? (
+            {/* {events ? (
                 <Events events={events} />
-            ): ''}
+            ): ''} */}
+
+
+
         </div>
 
     )

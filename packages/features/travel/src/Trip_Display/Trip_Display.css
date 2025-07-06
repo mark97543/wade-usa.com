@@ -211,6 +211,101 @@
     grid-row: 3;
 }
 
+.trip_plans_title{
+    text-align: center;
+}
+
+.trip_plans_functions h2{
+    text-align: left;
+}
+
+.trip_plans_functions p{
+    text-align: center;
+}
+
+.day_event_container{
+    display: grid;
+    grid-template-columns: 30px auto 80px 80px 80px;
+    grid-template-rows: auto auto auto;
+    border: var(--border-width-base) solid var(--color-text-primary);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--space-md);
+}
+
+.even_index_div{
+    display: flex;
+    grid-column: 1;
+    grid-row: span 3;
+    align-items: center;
+    justify-content: center;
+    border-right: var(--border-width-base) solid var(--color-text-primary);
+}
+
+.day_name_dic{
+    grid-column: 2;
+    grid-row: 1;
+    text-align: center;
+    border-right: var(--border-width-base) solid var(--color-text-primary);
+}
+
+.day_location_dic{
+    grid-column: 2;
+    grid-row: 2;
+    text-align: center;
+    border-right: var(--border-width-base) solid var(--color-text-primary);
+    border-top: var(--border-width-base) dashed var(--color-text-primary) ;
+}
+
+.day_note_div{
+    grid-column: 2/6;
+    grid-row: 3;
+    border-top: var(--border-width-base) solid var(--color-text-primary) ;
+    padding-left: var(--space-xs);
+}
+
+.day_arrive_text{
+    grid-column: 3;
+    grid-row: 1;
+    border-bottom: var(--border-width-base) dashed var(--color-text-primary) ;
+    border-right: var(--border-width-base) solid var(--color-text-primary);
+    text-align: center;
+}
+
+.day_depart_text{
+    grid-column: 4;
+    grid-row: 1;
+    border-bottom: var(--border-width-base) dashed var(--color-text-primary) ;
+    border-right: var(--border-width-base) solid var(--color-text-primary);
+    text-align: center;
+}
+
+.day_stay_text{
+    grid-column: 5;
+    grid-row: 1;
+    border-bottom: var(--border-width-base) dashed var(--color-text-primary) ;
+    text-align: center;
+}
+
+.day_arrive_calc_text{
+    grid-column: 3;
+    grid-row: 2;
+    border-right: var(--border-width-base) solid var(--color-text-primary);
+    text-align: center;
+}
+
+.day_depart_calc_text{
+    grid-column: 4;
+    grid-row: 2;
+    border-right: var(--border-width-base) solid var(--color-text-primary);
+    text-align: center;
+}
+
+.day_duration_text{
+    grid-column: 5;
+    grid-row: 2;
+    text-align: center;
+}
+
 @media (max-width: 500px) {
     .flights_arrow h1{
         font-size: var(--font-size-xl) ;

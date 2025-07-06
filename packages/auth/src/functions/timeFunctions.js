@@ -72,3 +72,56 @@ export const formatDirectusDateTime = (isoDateString) => {
   // --- Combine date and time ---
   return `${month}-${day}-${year} at ${hours}:${minutes}`;
 };
+
+
+/**
+ * Converts an ISO 8601 date string from Directus into 'HH:MM' (24-hour) format.
+ * @param {string} isoDateString - The date string from Directus (e.g., "2025-06-14T12:30:00.000Z").
+ * @returns {string} The formatted time string (e.g., "12:30").
+ */
+export const formatDirectusTimeOnly = (isoDateString) => {
+    if (!isoDateString) return ''; // Handle empty or null dates
+
+    const date = new Date(isoDateString);
+
+    // --- Isolate only the time logic ---
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    // --- Return just the time ---
+    return `${hours}:${minutes}`;
+};
+
+
+/**
+ * Adds a specified number of hours and minutes to an ISO date string.
+ *
+ * @param {string} isoDateString - The starting date and time in ISO 8601 format (e.g., "2025-07-10T10:00:00").
+ * @param {number} hoursToAdd - The number of hours to add to the date.
+ * @param {number} minutesToAdd - The number of minutes to add to the date.
+ * @returns {Date} A new Date object with the added duration.
+ */
+export const addDurationToDate = (isoDateString, hoursToAdd, minutesToAdd) => {
+  // Create a new Date object from the string to avoid modifying an original object.
+  const newDate = new Date(isoDateString);
+
+  // Add the duration using the 'set' methods.
+  // JavaScript's Date object handles rollovers (e.g., going to the next day) automatically.
+  newDate.setHours(newDate.getHours() + hoursToAdd);
+  newDate.setMinutes(newDate.getMinutes() + minutesToAdd);
+
+  // Return the newly calculated Date object.
+  return newDate;
+};
+
+// --- Example of how to use it ---
+/*
+const startTime = '2025-07-10T23:00:00'; // 11:00 PM
+const tripDurationHours = 3;
+const tripDurationMinutes = 30;
+
+const arrivalTime = addDurationToDate(startTime, tripDurationHours, tripDurationMinutes);
+
+console.log(arrivalTime.toLocaleString()); 
+// Expected output would be the next day at 2:30 AM
+*/
