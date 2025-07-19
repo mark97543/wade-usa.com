@@ -2,14 +2,21 @@ import Travel_Home from './Travel_Home/Travel_Home'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Page404 from '../../home/src/404 page/404NotFound' //This needs to be imported from home. 
-import Trip_Display from './Trip_Display/Trip_Display'
+import Trip_Editor from './Trip_Editor/Trip_Editor'
+import {RoleProtectedRoute} from '@wade-usa/auth'
 
 function TravelMain() {
   return (
     <Routes>
       <Route path="/" element={<Travel_Home />} />
-      <Route path='/:link' element={<Trip_Display/>}/>
+      {/* <Route path='/:link' element={<Trip_Display/>}/> */}
 
+
+      <Route path='/trip-editor' element={
+        <RoleProtectedRoute allowedRoles={['Administrator', 'Basic']}>
+          <Trip_Editor />
+        </RoleProtectedRoute>
+      }/>
       <Route path='*' element={<Page404/>}/> 
     </Routes>
   )

@@ -89,7 +89,7 @@ textarea {
     border-radius: var(--border-radius-sm);
     font-family: var(--font-family-sans);
     font-size: var(--font-size-base);
-    height: 30px;
+    /* height: 30px; */
     padding-left: 10px;
 }
 input:focus,

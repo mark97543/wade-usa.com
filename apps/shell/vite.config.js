@@ -10,7 +10,7 @@ export default defineConfig({
       '@wade-usa/auth': path.resolve(__dirname, '../../packages/auth/src/index.js'),
       '@wade-usa/feature-home': path.resolve(__dirname, '../../packages/features/home/src/index.js'),
       '@repo/ui': path.resolve(__dirname, '../../packages/ui/src/index.js'),
-      '@wade-usa/feature-travel' : path.resolve(__dirname, '../../packages/features/travel/src/index.js'),
+      '@wade-usa/feature-travelv2': path.resolve(__dirname, '../../packages/features/travelv2/src/index.js'),
     }
   }
 })

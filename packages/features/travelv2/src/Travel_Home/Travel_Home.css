@@ -1,0 +1,9 @@
+.travel-home-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.travel-home-container > button{
+    margin: 10px;
+}

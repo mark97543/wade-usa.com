@@ -1,0 +1,66 @@
+.trip-editor-form-group{
+    display: flex;
+    flex-direction: column;
+    max-width: 380px;
+    justify-self: center;
+}
+
+.trip-editor-form-group > input, 
+.trip-editor-form-group > textarea{
+    width: 300px;
+    resize: none;
+}
+
+.trip-editor-form-group > label{
+    margin-bottom: 5px;
+}
+
+.trip-editor-form-group > p {
+    width: 300px;
+    margin-top: 5px;
+    text-align: center;
+    font-style: italic;
+    font-size: var(--font-size-sm);
+}
+
+.trip-editor-submit-group{
+    display: flex;
+    flex-direction: row;
+    width: 380px;
+    justify-self: center;
+    justify-content: center;
+}
+
+.trip-editor-submit-group > button{
+    margin: 10px;
+}
+
+.trip-editor-submit-group :nth-child(2){
+    background-color: var(--color-status-warning);
+}
+
+.trip-editor-submit-group :nth-child(2):hover{
+    background-color: var(--color-accent-secondary);
+}
+
+
+.trip-editor-submit-group :nth-child(3){
+    background-color: var(--color-status-danger);
+}
+
+.trip-editor-submit-group :nth-child(3):hover{
+    background-color: var(--color-accent-secondary);
+}
+
+.trip-add-error-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trip-add-error-container > p{
+    color: var(--color-status-danger);
+    font-size: var(--font-size-xl);
+}
+
+

@@ -70,3 +70,4 @@ function Flights({ flights }) {
 }
 
 export default Flights;
+
