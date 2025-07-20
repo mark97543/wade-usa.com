@@ -4,6 +4,8 @@ import {useNavigate} from 'react-router-dom'
 import './Travel_Home.css'
 import {fetchAllTrips} from '@wade-usa/auth'
 import Travel_Cards from './Travel_Cards/Travel_Cards'
+import {Pagination} from '@repo/ui'
+
 
 
 
@@ -13,6 +15,19 @@ function Travel_Home() {
   const allowedRoles = ['Administrator','Basic']
   const navigate = useNavigate()
   const [tripData, setTripData] = useState([])
+
+  /* ---------------------------- Pagination Items ---------------------------- */
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(6);
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
 
   //Navigate to Trip Editor 
@@ -25,6 +40,7 @@ function Travel_Home() {
     const fetchTrips = async () => {
       const trips = await fetchAllTrips();
       setTripData(trips);
+      setPosts(trips);
     }
     fetchTrips();
   }, [])
@@ -39,10 +55,16 @@ function Travel_Home() {
       {isLoggedIn && allowedRoles.includes(user?.role?.name) ? <button onClick={handleAddTrip}>Add Trip</button> : ""}
 
       <div className='travel_home_travel_cards'>
-        {tripData.map((item, index) => (
+        {currentPosts.map((item, index) => (
           <Travel_Cards key={index} item={item} />
         ))}
       </div>
+
+    <Pagination
+      postsPerPage={postsPerPage}
+      totalPosts={posts.length}
+      paginate={paginate}
+    />
 
     </div>
 
@@ -54,5 +76,6 @@ export default Travel_Home
 
 
 //TODO: Need to link cards to slugs (Add finger when hover over)
-//TODO: Add pagination
 //TODO: Need to test when there are no trips
+//TODO: need to add search function
+//TODO: need to adjust image size

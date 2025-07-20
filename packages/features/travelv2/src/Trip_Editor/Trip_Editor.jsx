@@ -121,7 +121,7 @@ function Trip_Editor() {
                     accept="image/*"
                     disabled={isSubmitting}
                 />
-                <p>Upload an image to represent the trip.</p>
+                <p>Upload an image to represent the trip. Should be 3:2 aspect ratio</p>
 
 
             </div>
