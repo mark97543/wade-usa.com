@@ -29,7 +29,6 @@ function Travel_Cards({item, index}) {
         <h2 className='trip_card_title'>{item.trip_title}</h2>
         <h3 className='trip_card_dates'><i>{`From ${item.start_date} to ${item.end_date}`}</i></h3>
         <p className='trip_card_summary'>{item.trip_summary}</p>
-
         <p className='trip_card_misc_date'><i>{`Created on: ${formatDirectusDateToYYMMDD(item.date_created)} Last Update: ${formatDirectusDateToYYMMDD(item.date_updated)}`}</i></p>
     </div>
   )

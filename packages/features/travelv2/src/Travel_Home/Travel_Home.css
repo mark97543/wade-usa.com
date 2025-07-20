@@ -7,3 +7,23 @@
 .travel-home-container > button{
     margin: 10px;
 }
+
+.travel_home_travel_cards{
+    display: grid;
+    grid-template-columns:auto auto auto;
+    grid-gap: 20px;
+}
+
+@media (max-width: 1200px) {
+    .travel_home_travel_cards{
+        grid-template-columns:auto auto;
+    }
+
+}
+
+@media (max-width: 800px) {
+    .travel_home_travel_cards{
+        grid-template-columns:auto;
+    }
+
+}

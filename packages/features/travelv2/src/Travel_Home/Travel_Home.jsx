@@ -38,7 +38,7 @@ function Travel_Home() {
 
       {isLoggedIn && allowedRoles.includes(user?.role?.name) ? <button onClick={handleAddTrip}>Add Trip</button> : ""}
 
-      <div>
+      <div className='travel_home_travel_cards'>
         {tripData.map((item, index) => (
           <Travel_Cards key={index} item={item} />
         ))}
@@ -54,5 +54,5 @@ export default Travel_Home
 
 
 //TODO: Need to link cards to slugs (Add finger when hover over)
-//TODO: Make Grid Format 3x3 then 2x2 then 1 based on screen size
 //TODO: Add pagination
+//TODO: Need to test when there are no trips
