@@ -14,6 +14,15 @@
     grid-gap: 20px;
 }
 
+.travel_home_input{
+    margin-bottom: 10px;
+}
+
+.travel_home_input > input{
+    width: 300px;
+}
+
+
 @media (max-width: 1200px) {
     .travel_home_travel_cards{
         grid-template-columns:auto auto;

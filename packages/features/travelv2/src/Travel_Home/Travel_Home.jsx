@@ -19,7 +19,7 @@ function Travel_Home() {
   /* ---------------------------- Pagination Items ---------------------------- */
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(6);
+  const [postsPerPage] = useState(1);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -34,6 +34,12 @@ function Travel_Home() {
   const handleAddTrip=()=>{
     navigate('trip-editor')
   }
+
+  /* ----------------------------- Search Function ---------------------------- */
+  const [searchTerm, setSearchTerm] = useState('');
+
+
+  
 
   /* -------------------- Pull all triup data on page loade ------------------- */
   useEffect(() => {
@@ -51,6 +57,16 @@ function Travel_Home() {
   return (
     <div className='travel-home-container'>
       <h1>Upcomming Trips</h1>
+
+      <div className='travel_home_input'>
+        <input
+          type="text"
+          placeholder="Search trips by title or summary..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="traveld_searchbar"
+        />
+      </div>
 
       {isLoggedIn && allowedRoles.includes(user?.role?.name) ? <button onClick={handleAddTrip}>Add Trip</button> : ""}
 
