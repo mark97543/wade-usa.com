@@ -3,6 +3,8 @@ import {useAuth} from '@wade-usa/auth'
 import {useNavigate} from 'react-router-dom'
 import './Travel_Home.css'
 import {fetchAllTrips} from '@wade-usa/auth'
+import Travel_Cards from './Travel_Cards/Travel_Cards'
+
 
 
 function Travel_Home() {
@@ -37,7 +39,9 @@ function Travel_Home() {
       {isLoggedIn && allowedRoles.includes(user?.role?.name) ? <button onClick={handleAddTrip}>Add Trip</button> : ""}
 
       <div>
-        Insert Travel Cards Here
+        {tripData.map((item, index) => (
+          <Travel_Cards key={index} item={item} />
+        ))}
       </div>
 
     </div>
@@ -47,6 +51,8 @@ function Travel_Home() {
 
 export default Travel_Home
 
-//TODO: Need to Fetch all trips from database
-//TODO: Need to make cards for trips
-//TODO: Need to link cards to slugs
+
+
+//TODO: Need to link cards to slugs (Add finger when hover over)
+//TODO: Make Grid Format 3x3 then 2x2 then 1 based on screen size
+//TODO: Add pagination
