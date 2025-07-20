@@ -69,7 +69,7 @@ function Trip_Editor() {
                 end_date: endDate
             });
             clearForm();
-            navigate('/travel');
+            navigate('/travel/editor-page/${slug}');
         } catch (error) {
             setError(error.message);
         } finally {
@@ -145,4 +145,6 @@ function Trip_Editor() {
 }
 
 export default Trip_Editor
+
+
 

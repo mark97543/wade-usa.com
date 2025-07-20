@@ -2,8 +2,13 @@ import React from 'react'
 import './Travel_Cards.css'
 import {formatDirectusDateToYYMMDD} from '@wade-usa/auth'
 import { useNavigate } from 'react-router-dom'; // <-- Import useNavigate
+import {useAuth} from '@wade-usa/auth'
+
 
 function Travel_Cards({item, index}) {
+    const {user, isLoggedIn} = useAuth()
+    const allowedRoles = ['Administrator','Basic']
+
     const navigate = useNavigate(); // <-- Initialize useNavigate hook
     const link = item.slug
 
@@ -26,6 +31,7 @@ function Travel_Cards({item, index}) {
   return (
     <div className='travel_card_box' onClick={handleCardClick}>
         <img className='trip_card_image' src={`https://api.wade-usa.com/assets/${item.trip_image}`}/>
+        {isLoggedIn && allowedRoles.includes(user?.role?.name) ? (<button className='trip_card_edit_button'>Edit</button>):('')}
         <h2 className='trip_card_title'>{item.trip_title}</h2>
         <h3 className='trip_card_dates'><i>{`From ${item.start_date} to ${item.end_date}`}</i></h3>
         <p className='trip_card_summary'>{item.trip_summary}</p>
@@ -37,4 +43,5 @@ function Travel_Cards({item, index}) {
 
 export default Travel_Cards
 
-//TODO: Add Edit Box when logged in. 
+//TODO: On eidt go to main editor page
+//TODO: Format the Edit Button

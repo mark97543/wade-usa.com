@@ -91,11 +91,11 @@ function Travel_Home() {
         ))}
       </div>
 
-    <Pagination
-      postsPerPage={postsPerPage}
-      totalPosts={posts.length}
-      paginate={paginate}
-    />
+      <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={posts.length}
+        paginate={paginate}
+      />
 
     </div>
 
@@ -108,5 +108,4 @@ export default Travel_Home
 
 //TODO: Need to link cards to slugs (Add finger when hover over)
 //TODO: Need to test when there are no trips
-//TODO: need to add search function
 //TODO: need to adjust image size

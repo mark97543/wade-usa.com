@@ -10,6 +10,8 @@
 
 .trip_card_image{
     width: 400px;
+    aspect-ratio: 3/2;
+    object-fit: cover;
 }
 
 .trip_card_title{
