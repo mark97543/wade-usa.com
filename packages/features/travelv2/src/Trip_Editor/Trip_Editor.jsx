@@ -2,6 +2,8 @@ import React, {useState, useEffect}from 'react'
 import './Trip_Editor.css'
 import {useNavigate} from 'react-router-dom'
 import { createTripV2, makeSlug, fetchAllSlugs } from '@wade-usa/auth'
+import Sample_Card from './sample_card/Sample_Card'
+
 
 
 
@@ -14,6 +16,9 @@ function Trip_Editor() {
     const [slug, setSlug] = useState('');
     const [slugs, setSlugs] = useState([]);
     const [tripSummary, setTripSummary] = useState('');
+    const [tripImage, setTripImage] = useState(null)
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
@@ -37,7 +42,12 @@ function Trip_Editor() {
     /* ---------------------------- Clear form button --------------------------- */
     const clearForm = () => {
         setTripTitle('');
+        setTripSummary('');
+        setTripImage(null);
         setError(null);
+        setEndDate('');
+        setStartDate('');
+        document.getElementById('trip-editor-form')?.reset();
     }
 
     /* --------------------------------- Submit --------------------------------- */
@@ -53,7 +63,11 @@ function Trip_Editor() {
         try {
             await createTripV2({ trip_title: tripTitle, 
                 slug: slug,
-                trip_summary: tripSummary });
+                trip_summary: tripSummary,
+                trip_image: tripImage,
+                start_date: startDate,
+                end_date: endDate
+            });
             clearForm();
             navigate('/travel');
         } catch (error) {
@@ -76,7 +90,7 @@ function Trip_Editor() {
     <div className="trip-editor">
         <h1>Enter the following information:</h1>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="trip-editor-form">
             
             <div className='trip-add-error-container'>
                 {error && <p className="error-message">{error}</p>}
@@ -89,13 +103,38 @@ function Trip_Editor() {
 
                 <label htmlFor="summary">Enter Trip Summary:</label>
                 <textarea id="summary" maxLength="200" rows="4" value={tripSummary} onChange={(e) => setTripSummary(e.target.value)} required disabled={isSubmitting}></textarea>
-                <p>This is a breif summary of the trip. It is limited to 200 characters.</p>
+                <p>This is a brief description of the trip. It is limited to 200 characters.</p>
+
+
+                <label htmlFor="start-date">Start Date:</label>
+                <input type="date" id="start-date" disabled={isSubmitting} onChange={(e) => setStartDate(e.target.value)}/>
+
+                <label htmlFor="end-date">End Date:</label>
+                <input type="date" id="end-date" disabled={isSubmitting} onChange={(e) => setEndDate(e.target.value)}/>
+                    
+
+                <label htmlFor="trip-image">Trip Image:</label>
+                <input
+                    type="file"
+                    id="trip-image"
+                    onChange={(e) => setTripImage(e.target.files[0])}
+                    accept="image/*"
+                    disabled={isSubmitting}
+                />
+                <p>Upload an image to represent the trip.</p>
+
+
             </div>
 
             <div className="trip-editor-submit-group">
                 <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Submit'}</button>
                 <button type="button" onClick={clearForm} disabled={isSubmitting}>Clear</button>
                 <button type="button" onClick={cancelForm} disabled={isSubmitting}>Cancel</button>
+            </div>
+
+            <div className="trip-editor-sample-card">
+                <h3>Sample Tile</h3>
+                <Sample_Card item={{ trip_title: tripTitle, trip_summary: tripSummary, trip_image: tripImage, start_date: startDate, end_date: endDate }} />
             </div>
 
         </form>
@@ -106,3 +145,4 @@ function Trip_Editor() {
 }
 
 export default Trip_Editor
+

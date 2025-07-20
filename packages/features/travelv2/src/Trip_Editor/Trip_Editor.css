@@ -13,6 +13,7 @@
 
 .trip-editor-form-group > label{
     margin-bottom: 5px;
+    margin-top: 10px;
 }
 
 .trip-editor-form-group > p {
@@ -61,6 +62,13 @@
 .trip-add-error-container > p{
     color: var(--color-status-danger);
     font-size: var(--font-size-xl);
+}
+
+.trip-editor-sample-card{
+    display: flex;
+    flex-direction: column;
+    max-width: 380px;
+    justify-self: center;
 }
 
 
