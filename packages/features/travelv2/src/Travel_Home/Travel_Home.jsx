@@ -19,7 +19,7 @@ function Travel_Home() {
   /* ---------------------------- Pagination Items ---------------------------- */
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(1);
+  const [postsPerPage] = useState(6);
 
   // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
@@ -37,7 +37,21 @@ function Travel_Home() {
 
   /* ----------------------------- Search Function ---------------------------- */
   const [searchTerm, setSearchTerm] = useState('');
+  useEffect(() => {
+    let filteredPosts = [...tripData];
 
+    if (searchTerm) {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      filteredPosts = tripData.filter(post => {
+        const titleMatch = post.trip_title && post.trip_title.toLowerCase().includes(lowercasedSearchTerm);
+        const summaryMatch = post.trip_summary && post.trip_summary.toLowerCase().includes(lowercasedSearchTerm);
+        return titleMatch || summaryMatch;
+      });
+    }
+
+    setPosts(filteredPosts);
+    setCurrentPage(1); // Reset to the first page whenever search term changes
+  }, [searchTerm, tripData]);
 
   
 
@@ -45,8 +59,9 @@ function Travel_Home() {
   useEffect(() => {
     const fetchTrips = async () => {
       const trips = await fetchAllTrips();
-      setTripData(trips);
-      setPosts(trips);
+      const tripsNotTaken = trips.filter(trip => trip.trip_taken === false); //Filter Based on Trips Not Taken
+      setTripData(tripsNotTaken);
+      setPosts(tripsNotTaken);
     }
     fetchTrips();
   }, [])
