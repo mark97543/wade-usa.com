@@ -17,6 +17,15 @@ function Travel_Cards({item, index}) {
         item.trip_card="ab95449e-d70f-486b-94d0-affed6a7bfa1"
     }
 
+    const handleEditClick = (e) => {
+      e.stopPropagation(); // Prevent the card's onClick from firing
+      if (link) { // Ensure slug exists before navigating
+          navigate(`/travel/editor-page/${link}`); // Navigate to the editor page for this trip
+      } else {
+          console.warn("Cannot edit: slug is missing for this travel card.");
+      }
+    };
+
     const handleCardClick = () => {
       if (link) { // Ensure slug exists before navigating
           navigate(`/travel/${link}`); // Programmatic navigation using the slug
@@ -27,11 +36,10 @@ function Travel_Cards({item, index}) {
       }
     };
 
- 
   return (
     <div className='travel_card_box' onClick={handleCardClick}>
         <img className='trip_card_image' src={`https://api.wade-usa.com/assets/${item.trip_image}`}/>
-        {isLoggedIn && allowedRoles.includes(user?.role?.name) ? (<button className='trip_card_edit_button'>Edit</button>):('')}
+        {isLoggedIn && allowedRoles.includes(user?.role?.name) ? (<button onClick={handleEditClick} className='trip_card_edit_button'>Edit</button>):('')}
         <h2 className='trip_card_title'>{item.trip_title}</h2>
         <h3 className='trip_card_dates'><i>{`From ${item.start_date} to ${item.end_date}`}</i></h3>
         <p className='trip_card_summary'>{item.trip_summary}</p>
@@ -43,5 +51,4 @@ function Travel_Cards({item, index}) {
 
 export default Travel_Cards
 
-//TODO: On eidt go to main editor page
-//TODO: Format the Edit Button
+

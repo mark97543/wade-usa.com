@@ -6,6 +6,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 .trip_card_image{

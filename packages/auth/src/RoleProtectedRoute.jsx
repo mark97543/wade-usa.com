@@ -14,7 +14,7 @@ export const RoleProtectedRoute = ({ children, allowedRoles }) => {
 
     // While we're checking for a user, we can show a loading indicator
     if (loading) {
-        return <div>Checking authentication...</div>; // TODO: LOADING TO ANIMATE
+        return <div>Checking authentication...</div>; 
     }
 
     // If the user is not logged in at all, send them to the login page

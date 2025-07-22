@@ -69,7 +69,7 @@ function Trip_Editor() {
                 end_date: endDate
             });
             clearForm();
-            navigate('/travel/editor-page/${slug}');
+            navigate(`/travel/editor-page/${slug}`);
         } catch (error) {
             setError(error.message);
         } finally {
@@ -146,5 +146,4 @@ function Trip_Editor() {
 
 export default Trip_Editor
 
-
-
+//TODO: BUG: Need to Fix the rendering of the sample card. Its is overlapping based on data input. 
