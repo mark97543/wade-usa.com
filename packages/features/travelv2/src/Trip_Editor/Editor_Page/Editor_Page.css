@@ -1,24 +1,31 @@
+/* Main wrapper for the entire editor page, centering it and setting a fixed width. */
 .editor_page_wrapper{
-    max-width: 800px;
-    min-width: 300px;
+    width: 380px;
+    display: flex;  
+    justify-self: center;
+    flex-direction: column;
 }
 
+/* Styles the main heading within the card editor section. */
 .editor_page_card > h1 {
     margin-bottom: 10px;
 }
 
+/* Container for the main trip card editing form (summary, dates, image). */
 .editor_page_card{
     display: flex;
     flex-direction: column;
-    justify-self: center;
+    align-items: center;
 }
 
+/* General styling for input and textarea fields within the card editor. */
 .editor_page_card > input, 
 .editor_page_card > textarea{
     width: 300px;
     resize: none;
 }
 
+/* Styling for the small, italicized helper text paragraphs under form fields. */
 .editor_page_card  > p {
     width: 300px;
     margin-top: 5px;
@@ -27,7 +34,173 @@
     font-size: var(--font-size-sm);
 }
 
+/* Styling for the labels associated with form fields. */
 .editor_page_card > label{
     margin-bottom: 5px;
     margin-top: 10px;
+}
+
+/* Container for the form's main action buttons (e.g., Submit, Cancel). */
+.editor_page_submit{
+    display: flex;
+    flex-direction: row;
+    width: 380px;
+    justify-self: center;
+    justify-content: center;
+}
+
+/* Adds spacing around the submit and cancel buttons. */
+.editor_page_submit > button{
+    margin: 10px;
+}
+
+/* Specifically targets the second button (Cancel) to give it a danger color. */
+.editor_page_submit :nth-child(2){
+    background-color: var(--color-status-danger);
+}
+
+/* Hover effect for the Cancel button. */
+.editor_page_submit :nth-child(2):hover{
+    background-color: var(--color-accent-secondary);
+}
+
+/* NOTE: This class appears to be unused. The active class is .editor_page_flight_item */
+.flight-item {
+    border: 1px solid var(--color-bg-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-sm);
+    margin-top: var(--space-md);
+    width: 380px;
+}
+
+/* Container for the entire flights section, including the list and the "Add Flight" button. */
+.editor_page_flights{
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styles the container for a single flight item, using a grid for layout. */
+.editor_page_flight_item{
+    width: 380px;
+    border: var(--border-width-base) solid var(--border-color-base);
+    border-radius: var(--border-radius-lg);
+    display: grid;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+}
+
+#flight_number{
+    grid-column: 1/4;
+    grid-row: 1;
+    /* border: 1px solid red; */
+    margin: 5px 0px 0px 5px;
+    text-align: center;
+}
+
+.editor_page_flight_item_remove{
+    display: flex;
+    flex-direction: row;
+    /* border: 1px solid red; */
+    grid-column: 1/4;
+    grid-row: 5;
+}
+
+#editor_page_flight_left_panel{
+    display: flex;
+    flex-direction: column;
+    grid-column: 1;
+    grid-row: 2/5;
+    padding: 5px;
+    /* border: 1px solid red; */
+    justify-content: center;
+}
+
+#editor_page_flight_mid_top_panel{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    grid-column: 2/4;
+    grid-row: 2;
+    /* border: 1px solid green; */
+}
+
+#editor_page_flight_mid_bottom_panel1{
+    display: flex;
+    flex-direction: column;
+    grid-column: 2/3;
+    grid-row: 3;
+    width: 120px;
+    /* border: 1px solid yellow; */
+}
+
+#editor_page_flight_mid_bottom_panel2{
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    grid-column: 3/4;
+    grid-row: 3;
+    /* border: 1px solid white; */
+}
+
+#editor_page_flight_right_panel{
+    display: flex;
+}
+
+#editor_page_flight_Note_panel{
+    display: flex;
+    flex-direction: column;
+    grid-column: 2/4;
+    grid-row: 4;
+    margin-right: 5px;
+    /* border: 1px solid blue; */
+}
+
+/* Styles the remove button (-) for each flight item. */
+.editor_page_flight_item_remove :last-child {
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background-color: var(--color-status-danger);
+}
+
+/* Hover effect for the remove flight button. */
+.editor_page_flight_item_remove :last-child:hover {
+    background-color: var(--color-accent-secondary);
+}
+
+#editor_page_flight_left_panel > input{
+    width: 80px;
+}
+
+#editor_page_flight_left_panel > label{
+    margin-top: 10px;
+}
+
+.editor_page_flight_duration {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.editor_page_flight_duration input {
+    width: 30px;
+}
+
+#from_ap_code, #to_ap_code{
+    width: 50px;
+    font-size: var(--font-size-xl);
+    margin-right: 5px;
+}
+
+.gen_cont{
+    display: flex;
+    flex-direction: column;
+}
+
+#editor_page_flight_arrow{
+    margin: 25px auto auto auto;
 }
