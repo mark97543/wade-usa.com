@@ -8,6 +8,10 @@
     flex-direction: column;
 }
 
+.travel_card_box > p {
+    margin-left: var(--space-sm);
+}
+
 .trip_card_image{
     width: 400px;
     aspect-ratio: 3/2;

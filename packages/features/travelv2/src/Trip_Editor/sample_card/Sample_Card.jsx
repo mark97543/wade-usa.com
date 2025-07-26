@@ -28,25 +28,25 @@ function Sample_Card({item}) {
         {imagePreviewUrl ? (
             <img className='trip_card_image' src={imagePreviewUrl} alt="Trip preview" />
         ) : (
-            ""
+            <p>No image</p>
         )}
 
         {item.trip_title ? (
             <h2 className='trip_card_title'>{item.trip_title}</h2>
         ) : (
-            ""
+            <p>No title</p>
         )}
 
         {item.start_date && item.end_date ? (
             <h4 className='trip_card_dates'><i>{`From ${item.start_date} to ${item.end_date}`}</i></h4>
         ):(
-            ""
+            <p>No dates</p>
         )}
         
         {item.trip_summary ? (
             <p className='trip_card_summary'>{item.trip_summary}</p>
         ) : (
-            ""
+            <p>No summary</p>
         )}
         
 

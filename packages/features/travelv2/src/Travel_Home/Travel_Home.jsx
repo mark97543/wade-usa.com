@@ -66,7 +66,7 @@ function Travel_Home() {
     fetchTrips();
   }, [])
 
-  console.log(tripData)
+  //console.log(tripData)
 
 
   return (
