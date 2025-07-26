@@ -6,13 +6,16 @@ function Sample_Card({item}) {
 
     useEffect(() => {
         let objectUrl;
-        // Check if trip_image is a File object
+        // Check if trip_image is a File object (for new uploads)
         if (item?.trip_image instanceof File) {
-        objectUrl = URL.createObjectURL(item.trip_image);
-        setImagePreviewUrl(objectUrl);
+            objectUrl = URL.createObjectURL(item.trip_image);
+            setImagePreviewUrl(objectUrl);
+        } else if (typeof item?.trip_image === 'string' && item.trip_image) {
+            // If it's a string, it's an ID for an existing image. Construct the URL.
+            setImagePreviewUrl(`https://api.wade-usa.com/assets/${item.trip_image}`);
         } else {
-        // Reset if it's not a file (e.g., null)
-        setImagePreviewUrl(null);
+            // Reset if it's neither a file nor a string (e.g., null)
+            setImagePreviewUrl(null);
         }
 
         // Cleanup function to revoke the object URL when the component unmounts or the image changes

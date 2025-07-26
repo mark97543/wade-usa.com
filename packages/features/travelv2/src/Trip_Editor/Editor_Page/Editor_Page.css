@@ -1,16 +1,33 @@
 .editor_page_wrapper{
     max-width: 800px;
     min-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.editor_page_card > p {
-    margin-top: 0px;
 }
 
 .editor_page_card > h1 {
-    margin-bottom: 0px;
+    margin-bottom: 10px;
 }
 
+.editor_page_card{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
 
+.editor_page_card > input, 
+.editor_page_card > textarea{
+    width: 300px;
+    resize: none;
+}
+
+.editor_page_card  > p {
+    width: 300px;
+    margin-top: 5px;
+    text-align: center;
+    font-style: italic;
+    font-size: var(--font-size-sm);
+}
+
+.editor_page_card > label{
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
