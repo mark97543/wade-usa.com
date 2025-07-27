@@ -36,6 +36,7 @@ function Editor_Page() {
   const [tripTaken, setTripTaken] = useState(false);
   const [postTripSummary, setPostTripSummary] = useState('');
   const [galleryImages, setGalleryImages] = useState([]);
+  const [initialTripImages, setInitialTripImages] = useState([]); // Will store the full junction items
 
   // Use the custom hook to manage flights, hotels, and rental cars
   const { items: flights, setItems: setFlights, addItem: addFlight, deleteItem: deleteFlight, handleItemChange: handleFlightChange } = useItemManager([]);
@@ -94,7 +95,8 @@ function Editor_Page() {
         setRoadTripStops(sortedRoadTripStops);
         setInitialRoadTripStops(sortedRoadTripStops);
         setTripTaken(trip.trip_taken);
-        // The API returns junction table items. We need to extract the actual file objects.
+        setInitialTripImages(trip.trip_images || []); // Store the initial junction items
+        // Extract the actual file objects to display in the uploader
         const extractedImages = (trip.trip_images || [])
           .map(junctionItem => junctionItem.directus_files_id)
           .filter(Boolean); // Filter out any null/undefined entries
@@ -137,6 +139,20 @@ function Editor_Page() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Helper to convert empty strings in date fields to null, which the database expects.
+    const sanitizePayload = (items, fieldsToSanitize) => {
+      if (!items) return [];
+      return items.map(item => {
+        const sanitizedItem = { ...item };
+        fieldsToSanitize.forEach(field => {
+          if (sanitizedItem[field] === '') {
+            sanitizedItem[field] = null;
+          }
+        });
+        return sanitizedItem;
+      });
+    };
+
     // Use the helper to prepare payloads for each item type
     const { payload: flightsPayload, deletedIds: deletedFlightIds } = prepareRelatedItemsPayload(flights, initialFlights);
     const { payload: hotelsPayload, deletedIds: deletedHotelIds } = prepareRelatedItemsPayload(hotels, initialHotels);
@@ -149,15 +165,18 @@ function Editor_Page() {
       long_summary: longSummary,
       post_trip_summary: postTripSummary,
       trip_summary: tripSummary,
-      start_date: startDate,
-      end_date: endDate,
-      flights: flightsPayload,
-      hotels: hotelsPayload,
-      rental_cars: rentalCarsPayload,
-      events: eventsPayload,
+      start_date: startDate || null,
+      end_date: endDate || null,
+      flights: sanitizePayload(flightsPayload, ['start', 'end']),
+      hotels: sanitizePayload(hotelsPayload, ['checkin', 'checkout']),
+      rental_cars: sanitizePayload(rentalCarsPayload, ['pickup_date', 'dropoff_date']),
+      events: sanitizePayload(eventsPayload, ['start']),
       roadtrip: roadTripPayload, 
       trip_taken: tripTaken,
-      trip_images: galleryImages,
+      trip_images: { // Pass both current and initial state for diffing in the API
+        current: galleryImages,
+        initial: initialTripImages,
+      },
     };
 
     // Conditionally add the trip image to the payload.

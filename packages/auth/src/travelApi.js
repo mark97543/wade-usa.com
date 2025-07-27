@@ -7,7 +7,6 @@ export const fetchAllTrips = async ()=>{
     try{
         const trips = await client.request(
             readItems('trips_v2',{
-                fields:['*'],
                 sort:['start_date']
             })
         );
@@ -25,7 +24,15 @@ export const fetchTripsBySlug = async (slug)=>{
     try{
         const trips = await client.request(
             readItems('trips_v2',{
-              fields:['*', { flights: ['*'], trip_images: ['directus_files_id.*'] }],
+              fields:[
+                '*', 
+                { flights: ['*'] },
+                { hotels: ['*'] },
+                { rental_cars: ['*'] },
+                { events: ['*'] },
+                { roadtrip: ['*'] },
+                { trip_images: ['directus_files_id.*'] }
+              ],
               filter:{
                 slug:slug
                 }
@@ -58,10 +65,11 @@ const handleFileUpload = async (payload, fieldName) => {
  * This is for a Directus "Files" (many-to-many) field.
  * @param {object} payload - The data payload.
  * @param {string} fieldName - The name of the file array field in the payload.
+ * @param {'create' | 'update'} [operation='update'] - The type of operation.
  */
-const handleMultipleFileUploads = async (payload, fieldName) => {
+const handleMultipleFileUploads = async (payload, fieldName, operation = 'update') => {
   if (payload[fieldName] && Array.isArray(payload[fieldName])) {
-    const fileIds = await Promise.all(
+    const uploadedFileIds = await Promise.all(
       payload[fieldName].map(async (fileOrObject) => {
         // If it's a File object, upload it and return the new ID.
         if (fileOrObject instanceof File) {
@@ -81,9 +89,18 @@ const handleMultipleFileUploads = async (payload, fieldName) => {
         return null;
       })
     );
-    // Filter out any nulls and replace the original array with the array of IDs.
-    // This is how you update a M2M relationship in Directus - by providing the full array of related primary keys.
-    payload[fieldName] = fileIds.filter(id => id !== null);
+
+    const finalIds = uploadedFileIds.filter(id => id !== null);
+
+    if (operation === 'create') {
+      // For 'create', we need to use the deep/relational create syntax.
+      payload[fieldName] = {
+        create: finalIds.map(id => ({ directus_files_id: id })),
+      };
+    } else {
+      // For 'update', providing the full array of related primary keys acts as a "replace" operation.
+      payload[fieldName] = finalIds;
+    }
   }
 };
 
@@ -92,7 +109,7 @@ export const createTripV2 = async (tripData) => {
   try {
     const tripDataPayload = { ...tripData };
     await handleFileUpload(tripDataPayload, 'trip_image');
-    await handleMultipleFileUploads(tripDataPayload, 'trip_images');
+    await handleMultipleFileUploads(tripDataPayload, 'trip_images', 'create');
     const newTrip = await client.request(
       createItem('trips_v2', tripDataPayload)
     );
@@ -146,21 +163,67 @@ export const updateTripV2 = async (tripId, tripData, deletedItems) => {
       for (const collectionName of Object.keys(deletedItems)) {
         const idsToDelete = deletedItems[collectionName];
         if (idsToDelete && idsToDelete.length > 0) {
-          // e.g., deleteItems('flights', [1, 2]), deleteItems('road_trip', [5, 8]), etc.
           await client.request(deleteItems(collectionName, idsToDelete));
         }
       }
     }
 
-    const tripDataPayload = { ...tripData };
+    // 2. Separate the gallery images from the main payload to handle them in a second step.
+    const { trip_images, ...mainTripData } = tripData;
+    const tripDataPayload = { ...mainTripData };
 
-    // 2. Handle file uploads for trip_image and banner_picture
+    // 3. Handle single file uploads for the main payload (trip_image, banner_picture).
     await handleFileUpload(tripDataPayload, 'trip_image');
     await handleFileUpload(tripDataPayload, 'banner_picture');
-    await handleMultipleFileUploads(tripDataPayload, 'trip_images');
 
-    // 3. Update the trip item. Directus handles the deep create/update for relational arrays.
-    const updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
+    // 4. Update the main trip item with all data EXCEPT the gallery.
+    let updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
+
+    // 5. Now, handle the gallery images in a separate, dedicated update.
+    if (trip_images && trip_images.current) {
+      const { current, initial } = trip_images;
+
+      // Process the 'current' array to get a final list of all file IDs.
+      const finalFileIds = await Promise.all(
+        current.map(async (fileOrObject) => {
+          if (fileOrObject instanceof File) {
+            const formData = new FormData();
+            formData.append('file', fileOrObject);
+            const fileResponse = await client.request(uploadFiles(formData));
+            return fileResponse.id;
+          }
+          return fileOrObject?.id || fileOrObject;
+        })
+      );
+      const finalFileIdSet = new Set(finalFileIds.filter(Boolean));
+
+      // Map initial file IDs to their junction table primary keys.
+      const initialFileIdToJunctionIdMap = new Map();
+      initial.forEach(item => {
+        if (item.directus_files_id) {
+          initialFileIdToJunctionIdMap.set(item.directus_files_id.id, item.id);
+        }
+      });
+      const initialFileIdSet = new Set(initialFileIdToJunctionIdMap.keys());
+
+      // Calculate the differences to create an explicit payload.
+      const filesToCreate = [...finalFileIdSet].filter(id => !initialFileIdSet.has(id));
+      const filesToDelete = [...initialFileIdSet].filter(id => !finalFileIdSet.has(id));
+      const junctionIdsToDelete = filesToDelete.map(fileId => initialFileIdToJunctionIdMap.get(fileId)).filter(Boolean);
+
+      const galleryPayload = {
+        trip_images: {
+          create: filesToCreate.map(fileId => ({ directus_files_id: fileId })),
+          delete: junctionIdsToDelete,
+        }
+      };
+
+      if (galleryPayload.trip_images.create.length > 0 || galleryPayload.trip_images.delete.length > 0) {
+        console.log("Attempting to link/unlink images with explicit payload:", JSON.stringify(galleryPayload, null, 2));
+        updatedTrip = await client.request(updateItem('trips_v2', tripId, galleryPayload));
+      }
+    }
+
     return updatedTrip;
   } catch (error) {
     // Enhanced error logging to see details from Directus

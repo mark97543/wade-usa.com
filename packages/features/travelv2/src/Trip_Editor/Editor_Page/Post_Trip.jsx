@@ -1,19 +1,16 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import ImageGalleryUploader from './Image_Gallery_Uploader';
 
 /**
  * @component Post_Trip
- * @description Renders a WYSIWYG editor for the trip's post-trip summary and a gallery uploader.
+ * @description Renders a WYSIWYG editor for the trip's post-trip summary.
  * @param {object} props - The component props.
  * @param {string} props.postTripSummary - The HTML content for the editor.
  * @param {Function} props.setPostTripSummary - Callback to update the post-trip summary.
- * @param {Array<File|object|string>} props.galleryImages - Array of images for the gallery.
- * @param {Function} props.setGalleryImages - Callback to update the gallery images array.
  * @returns {React.ReactElement} The rendered post-trip summary editor section.
  */
-function Post_Trip({ postTripSummary, setPostTripSummary, galleryImages, setGalleryImages }) {
+function Post_Trip({ postTripSummary, setPostTripSummary }) {
   return (
     <div className="editor_page_post_trip">
       <h2>Post-Trip Summary</h2>
@@ -22,10 +19,6 @@ function Post_Trip({ postTripSummary, setPostTripSummary, galleryImages, setGall
         theme="snow"
         value={postTripSummary}
         onChange={setPostTripSummary}
-      />
-      <ImageGalleryUploader
-        galleryImages={galleryImages}
-        setGalleryImages={setGalleryImages}
       />
     </div>
   );
