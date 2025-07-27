@@ -31,6 +31,7 @@ export const fetchTripsBySlug = async (slug)=>{
                 { rental_cars: ['*'] },
                 { events: ['*'] },
                 { roadtrip: ['*'] },
+                { carousel_images: ['id', 'directus_files_id.*'] }
               ],
               filter:{
                 slug:slug
@@ -60,6 +61,38 @@ const handleFileUpload = async (payload, fieldName) => {
 };
 
 /**
+ * A helper function to upload multiple files if they exist on the payload and replace them with their IDs.
+ * This is for a Directus "Files" (many-to-many) field.
+ * @param {object} payload - The data payload.
+ * @param {string} fieldName - The name of the file array field in the payload.
+ */
+const handleMultipleFileUploads = async (payload, fieldName) => {
+  if (payload[fieldName] && Array.isArray(payload[fieldName])) {
+    const uploadedFileIds = await Promise.all(
+      payload[fieldName].map(async (fileOrObject) => {
+        if (fileOrObject instanceof File) {
+          const formData = new FormData();
+          formData.append('file', fileOrObject);
+          const fileResponse = await client.request(uploadFiles(formData));
+          return fileResponse.id;
+        }
+        if (typeof fileOrObject === 'object' && fileOrObject !== null && fileOrObject.id) {
+          return fileOrObject.id;
+        }
+        if (typeof fileOrObject === 'string') {
+          return fileOrObject;
+        }
+        return null;
+      })
+    );
+
+    // For both create and update, Directus can accept a simple array of foreign keys for a M2M relationship.
+    // This will replace the existing set of related items with the new set.
+    payload[fieldName] = uploadedFileIds.filter(id => id !== null);
+  }
+};
+
+/**
  * Uploads an image file for use within the Quill editor.
  * @param {File} file The image file to upload.
  * @returns {Promise<string>} The URL of the uploaded image.
@@ -81,6 +114,7 @@ export const createTripV2 = async (tripData) => {
   try {
     const tripDataPayload = { ...tripData };
     await handleFileUpload(tripDataPayload, 'trip_image');
+    await handleMultipleFileUploads(tripDataPayload, 'carousel_images');
     const newTrip = await client.request(
       createItem('trips_v2', tripDataPayload)
     );
@@ -139,13 +173,60 @@ export const updateTripV2 = async (tripId, tripData, deletedItems) => {
       }
     }
 
-    const tripDataPayload = { ...tripData };
+    // Separate the carousel images from the main payload to handle them in a second step.
+    const { carousel_images, ...mainTripData } = tripData;
+    const tripDataPayload = { ...mainTripData };
 
     // Handle single file uploads for the main payload (trip_image, banner_picture).
     await handleFileUpload(tripDataPayload, 'trip_image');
     await handleFileUpload(tripDataPayload, 'banner_picture');
 
-    const updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
+    // Update the main trip item with all data EXCEPT the carousel images.
+    let updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
+
+    // Now, handle the carousel images in a separate, dedicated update.
+    if (carousel_images && carousel_images.current) {
+      const { current, initial } = carousel_images;
+
+      // Process the 'current' array to get a final list of all file IDs, uploading new files.
+      const finalFileIds = await Promise.all(
+        current.map(async (fileOrObject) => {
+          if (fileOrObject instanceof File) {
+            const formData = new FormData();
+            formData.append('file', fileOrObject);
+            const fileResponse = await client.request(uploadFiles(formData));
+            return fileResponse.id;
+          }
+          return fileOrObject?.id || fileOrObject;
+        })
+      );
+      const finalFileIdSet = new Set(finalFileIds.filter(Boolean));
+
+      // Map initial file IDs to their junction table primary keys for deletion.
+      const initialFileIdToJunctionIdMap = new Map();
+      (initial || []).forEach(item => {
+        if (item.directus_files_id) {
+          initialFileIdToJunctionIdMap.set(item.directus_files_id.id, item.id);
+        }
+      });
+      const initialFileIdSet = new Set(initialFileIdToJunctionIdMap.keys());
+
+      // Calculate the differences to create an explicit payload.
+      const filesToCreate = [...finalFileIdSet].filter(id => !initialFileIdSet.has(id));
+      const junctionIdsToDelete = [...initialFileIdSet].filter(id => !finalFileIdSet.has(id)).map(fileId => initialFileIdToJunctionIdMap.get(fileId)).filter(Boolean);
+
+      const carouselPayload = {
+        carousel_images: {
+          create: filesToCreate.map(fileId => ({ directus_files_id: fileId })),
+          delete: junctionIdsToDelete,
+        }
+      };
+
+      // Only send the update if there are actual changes to be made.
+      if (carouselPayload.carousel_images.create.length > 0 || carouselPayload.carousel_images.delete.length > 0) {
+        updatedTrip = await client.request(updateItem('trips_v2', tripId, carouselPayload));
+      }
+    }
 
     return updatedTrip;
   } catch (error) {

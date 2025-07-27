@@ -19,6 +19,7 @@ import Road_trip from './Road_trip.jsx';
 import { useItemManager } from './useItemManager.js';
 import Page_Layout from './Page_Layout.jsx';
 import Post_Trip from './Post_Trip.jsx';
+import ImageGalleryUploader from './Image_Gallery_Uploader.jsx';
 
 function Editor_Page() {
   const { tripID } = useParams();
@@ -35,6 +36,8 @@ function Editor_Page() {
   const [tripImage, setTripImage] = useState(null);
   const [tripTaken, setTripTaken] = useState(false);
   const [postTripSummary, setPostTripSummary] = useState('');
+  const [carouselImages, setCarouselImages] = useState([]);
+  const [initialCarouselImages, setInitialCarouselImages] = useState([]);
 
   // Use the custom hook to manage flights, hotels, and rental cars
   const { items: flights, setItems: setFlights, addItem: addFlight, deleteItem: deleteFlight, handleItemChange: handleFlightChange } = useItemManager([]);
@@ -93,6 +96,12 @@ function Editor_Page() {
         setRoadTripStops(sortedRoadTripStops);
         setInitialRoadTripStops(sortedRoadTripStops);
         setTripTaken(trip.trip_taken);
+        setInitialCarouselImages(trip.carousel_images || []); // Store the initial junction items
+        // The API returns junction table items. We need to extract the actual file objects.
+        const extractedCarouselImages = (trip.carousel_images || [])
+          .map(junctionItem => junctionItem.directus_files_id)
+          .filter(Boolean); // Filter out any null/undefined entries
+        setCarouselImages(extractedCarouselImages);
       }
     };
     fetchTrip();
@@ -165,6 +174,10 @@ function Editor_Page() {
       events: sanitizePayload(eventsPayload, ['start']),
       roadtrip: roadTripPayload, 
       trip_taken: tripTaken,
+      carousel_images: {
+        current: carouselImages,
+        initial: initialCarouselImages,
+      },
     };
 
     // Conditionally add the trip image to the payload.
@@ -335,6 +348,11 @@ function Editor_Page() {
           addRoadTripStop={addNewRoadTripStop}
           deleteRoadTripStop={deleteRoadTripStop}
           handleRoadTripReorder={handleRoadTripReorder}
+        />
+        <hr className='editor_page_hr'></hr>
+        <ImageGalleryUploader
+          carouselImages={carouselImages}
+          setCarouselImages={setCarouselImages}
         />
         <hr className='editor_page_hr'></hr>
         <Post_Trip
