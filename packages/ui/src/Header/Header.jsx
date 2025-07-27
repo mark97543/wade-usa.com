@@ -11,7 +11,7 @@ import Dropdown from '../Dropdown/Dropdown';
 /* -------------------------------------------------------------------------- */
 const travelMenuItems = [
   { id: 1, label: 'Upcomming Trips', link: '/travel' },
-
+  { id: 2, label: 'Past Trips', link: '/travel/past-trips' },
 ];
 
 /* -------------------------------------------------------------------------- */

@@ -6,12 +6,14 @@ import Trip_Editor from './Trip_Editor/Trip_Editor'
 import {RoleProtectedRoute} from '@wade-usa/auth'
 import Editor_Page from './Trip_Editor/Editor_Page/Editor_Page'
 import Slug from './Slug_Page/Slug'
+import Travel_Home_Past from './Past_Trips/Travel_Home_Past'
 
 function TravelMain() {
   return (
     <Routes>
       <Route path="/" element={<Travel_Home />} />
       <Route path="/:slug" element={<Slug />} />
+      <Route path="/past-trips" element={<Travel_Home_Past />} />
       {/* <Route path='/:link' element={<Trip_Display/>}/> */}
 
 

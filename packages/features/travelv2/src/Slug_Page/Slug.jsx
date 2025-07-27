@@ -6,6 +6,8 @@ import './Slug.css'
 function Slug() {
   const { slug } = useParams() // Correctly destructure 'slug' to match the route parameter
 
+  //TODO: Need to see if user is logged in and if they are go to the editor page. 
+
 
   return (
     <div>
