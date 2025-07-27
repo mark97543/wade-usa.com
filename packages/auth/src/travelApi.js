@@ -235,3 +235,18 @@ export const updateTripV2 = async (tripId, tripData, deletedItems) => {
     throw error;
   }
 };
+
+/**
+ * Deletes a trip from the database.
+ * @param {number | string} tripId The primary key of the trip to delete.
+ * @returns {Promise<void>}
+ */
+export const deleteTripV2 = async (tripId) => {
+  try {
+    // Directus deleteItems expects an array of keys.
+    await client.request(deleteItems('trips_v2', [tripId]));
+  } catch (error) {
+    console.error("Failed to Delete Trip (travelApi.js): ", error);
+    throw error;
+  }
+};

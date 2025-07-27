@@ -5,11 +5,13 @@ import Page404 from '../../home/src/404 page/404NotFound' //This needs to be imp
 import Trip_Editor from './Trip_Editor/Trip_Editor'
 import {RoleProtectedRoute} from '@wade-usa/auth'
 import Editor_Page from './Trip_Editor/Editor_Page/Editor_Page'
+import Slug from './Slug_Page/Slug'
 
 function TravelMain() {
   return (
     <Routes>
       <Route path="/" element={<Travel_Home />} />
+      <Route path="/:slug" element={<Slug />} />
       {/* <Route path='/:link' element={<Trip_Display/>}/> */}
 
 

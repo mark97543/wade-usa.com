@@ -8,8 +8,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'
 import './Editor_Page.css'
-import {fetchTripsBySlug} from '@wade-usa/auth'
-import {updateTripV2} from '@wade-usa/auth'
+import { fetchTripsBySlug, updateTripV2, deleteTripV2 } from '@wade-usa/auth'
 import Editor_Page_Card from './Editor_Page_Card.jsx'
 import Flight_Items from './Flight_Items.jsx'
 import Hotel_Items from './Hotel_Items.jsx';
@@ -214,6 +213,22 @@ function Editor_Page() {
     }
   }
 
+  const handleDeleteTrip = async () => {
+    // Confirm with the user before deleting.
+    if (window.confirm('Are you sure you want to permanently delete this trip? This action cannot be undone.')) {
+      setIsSubmitting(true); // Reuse isSubmitting to disable buttons
+      try {
+        await deleteTripV2(tripData.id);
+        alert('Trip deleted successfully.');
+        navigate('/travel'); // Navigate to the main travel page
+      } catch (error) {
+        console.error("Failed to delete trip:", error);
+        alert('Failed to delete trip. See console for details.');
+        setIsSubmitting(false); // Re-enable buttons on failure
+      }
+    }
+  };
+
   // Render a loading indicator while the initial trip data is being fetched.
   if (!tripData) {
     return <h2>Loading...</h2>;
@@ -362,8 +377,9 @@ function Editor_Page() {
         <hr className='editor_page_hr'></hr>
 
         <div className='editor_page_submit'>
-          <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Changes'}</button>
-          <button type="button" onClick={cancelForm}>Cancel</button>
+          <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save'}</button>
+          <button type="button" className="cancel-button" onClick={cancelForm} disabled={isSubmitting}>Cancel</button>
+          <button type="button" className="delete-button" onClick={handleDeleteTrip} disabled={isSubmitting}>☢ Delete Trip</button>
         </div>
 
       </form>

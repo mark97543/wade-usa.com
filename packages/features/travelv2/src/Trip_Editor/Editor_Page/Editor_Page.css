@@ -630,3 +630,7 @@
     font-size: var(--font-size-sm);
     margin-bottom: 10px;
 }
+
+.delete-button{
+    background-color: orange;
+}
