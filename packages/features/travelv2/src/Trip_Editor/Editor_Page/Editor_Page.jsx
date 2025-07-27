@@ -19,6 +19,7 @@ import Road_trip from './Road_trip.jsx';
 import { useItemManager } from './useItemManager.js';
 import Page_Layout from './Page_Layout.jsx';
 import Post_Trip from './Post_Trip.jsx';
+import ImageGalleryUploader from './Image_Gallery_Uploader.jsx';
 
 function Editor_Page() {
   const { tripID } = useParams();
@@ -349,11 +350,14 @@ function Editor_Page() {
           handleRoadTripReorder={handleRoadTripReorder}
         />
         <hr className='editor_page_hr'></hr>
+        <ImageGalleryUploader
+          galleryImages={galleryImages}
+          setGalleryImages={setGalleryImages}
+        />
+        <hr className='editor_page_hr'></hr>
         <Post_Trip
           postTripSummary={postTripSummary}
           setPostTripSummary={setPostTripSummary}
-          galleryImages={galleryImages}
-          setGalleryImages={setGalleryImages}
         />
         <hr className='editor_page_hr'></hr>
 

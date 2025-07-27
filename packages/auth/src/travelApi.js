@@ -104,6 +104,23 @@ const handleMultipleFileUploads = async (payload, fieldName, operation = 'update
   }
 };
 
+/**
+ * Uploads an image file for use within the Quill editor.
+ * @param {File} file The image file to upload.
+ * @returns {Promise<string>} The URL of the uploaded image.
+ */
+export const uploadEditorImage = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const fileResponse = await client.request(uploadFiles(formData));
+    return `https://api.wade-usa.com/assets/${fileResponse.id}`;
+  } catch (error) {
+    console.error("Failed to upload image for editor:", error);
+    throw error;
+  }
+};
+
 /* ----------------- Creates a new item in the trips_v2 collection ----------------- */
 export const createTripV2 = async (tripData) => {
   try {
