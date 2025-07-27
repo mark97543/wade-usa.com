@@ -1,0 +1,76 @@
+/*
+ * Quill Editor Dark Theme Overrides
+ * This file contains styles to make the Quill editor's toolbar
+ * and content area compatible with a dark application theme.
+ */
+
+/* Change the color of the toolbar icons (stroke-based icons) */
+.ql-snow .ql-stroke {
+    stroke: var(--color-text-headings, #F0F0F0);
+}
+
+/* Change the color of the toolbar icons (fill-based icons) */
+.ql-snow .ql-fill {
+    fill: var(--color-text-headings, #F0F0F0);
+}
+
+/* Change the color of the picker labels (e.g., "Normal" for headings) */
+.ql-snow .ql-picker-label {
+    color: var(--color-text-headings, #F0F0F0);
+}
+
+/* Style the toolbar button on hover to give feedback */
+.ql-snow .ql-toolbar button:hover,
+.ql-snow.ql-toolbar button:hover,
+.ql-snow .ql-toolbar button:focus,
+.ql-snow.ql-toolbar button:focus,
+.ql-snow .ql-toolbar .ql-picker-label:hover,
+.ql-snow.ql-toolbar .ql-picker-label:hover,
+.ql-snow .ql-toolbar .ql-picker-item:hover,
+.ql-snow.ql-toolbar .ql-picker-item:hover {
+    background-color: var(--color-bg-tertiary, #3C3C3C);
+}
+
+.ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow .ql-toolbar button:focus .ql-stroke,
+.ql-snow.ql-toolbar button:focus .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke {
+    stroke: var(--color-accent-primary, #00C8C8);
+}
+
+.ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button:hover .ql-fill {
+    fill: var(--color-accent-primary, #00C8C8);
+}
+
+/* Style for the dropdown options */
+.ql-snow .ql-picker-options {
+    background-color: var(--color-bg-secondary, #2B2B2B);
+    border-color: var(--color-bg-tertiary, #3C3C3C);
+}
+
+.ql-snow .ql-picker-options .ql-picker-item {
+    color: var(--color-text-primary, #E0E0E0);
+}
+
+/* Make the editor content area text white */
+.ql-editor {
+    color: var(--color-text-primary, #E0E0E0);
+}
+
+/* Make the editor placeholder text lighter */
+.ql-editor.ql-blank::before {
+    color: var(--color-text-secondary, #B0B0B0);
+}
+
+/* Change the border color of the toolbar and editor */
+.ql-snow.ql-toolbar {
+    border-color: var(--color-bg-tertiary, #3C3C3C) !important;
+}
+
+.ql-snow .ql-container {
+    border-color: var(--color-bg-tertiary, #3C3C3C) !important;
+}

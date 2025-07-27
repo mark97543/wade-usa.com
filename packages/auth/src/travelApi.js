@@ -31,7 +31,6 @@ export const fetchTripsBySlug = async (slug)=>{
                 { rental_cars: ['*'] },
                 { events: ['*'] },
                 { roadtrip: ['*'] },
-                { trip_images: ['directus_files_id.*'] }
               ],
               filter:{
                 slug:slug
@@ -61,50 +60,6 @@ const handleFileUpload = async (payload, fieldName) => {
 };
 
 /**
- * A helper function to upload multiple files if they exist on the payload and replace them with their IDs.
- * This is for a Directus "Files" (many-to-many) field.
- * @param {object} payload - The data payload.
- * @param {string} fieldName - The name of the file array field in the payload.
- * @param {'create' | 'update'} [operation='update'] - The type of operation.
- */
-const handleMultipleFileUploads = async (payload, fieldName, operation = 'update') => {
-  if (payload[fieldName] && Array.isArray(payload[fieldName])) {
-    const uploadedFileIds = await Promise.all(
-      payload[fieldName].map(async (fileOrObject) => {
-        // If it's a File object, upload it and return the new ID.
-        if (fileOrObject instanceof File) {
-          const formData = new FormData();
-          formData.append('file', fileOrObject);
-          const fileResponse = await client.request(uploadFiles(formData));
-          return fileResponse.id;
-        }
-        // If it's an object with an ID (like from a Directus read), return the ID.
-        if (typeof fileOrObject === 'object' && fileOrObject !== null && fileOrObject.id) {
-          return fileOrObject.id;
-        }
-        // If it's already a string ID, just return it.
-        if (typeof fileOrObject === 'string') {
-          return fileOrObject;
-        }
-        return null;
-      })
-    );
-
-    const finalIds = uploadedFileIds.filter(id => id !== null);
-
-    if (operation === 'create') {
-      // For 'create', we need to use the deep/relational create syntax.
-      payload[fieldName] = {
-        create: finalIds.map(id => ({ directus_files_id: id })),
-      };
-    } else {
-      // For 'update', providing the full array of related primary keys acts as a "replace" operation.
-      payload[fieldName] = finalIds;
-    }
-  }
-};
-
-/**
  * Uploads an image file for use within the Quill editor.
  * @param {File} file The image file to upload.
  * @returns {Promise<string>} The URL of the uploaded image.
@@ -126,7 +81,6 @@ export const createTripV2 = async (tripData) => {
   try {
     const tripDataPayload = { ...tripData };
     await handleFileUpload(tripDataPayload, 'trip_image');
-    await handleMultipleFileUploads(tripDataPayload, 'trip_images', 'create');
     const newTrip = await client.request(
       createItem('trips_v2', tripDataPayload)
     );
@@ -185,61 +139,13 @@ export const updateTripV2 = async (tripId, tripData, deletedItems) => {
       }
     }
 
-    // 2. Separate the gallery images from the main payload to handle them in a second step.
-    const { trip_images, ...mainTripData } = tripData;
-    const tripDataPayload = { ...mainTripData };
+    const tripDataPayload = { ...tripData };
 
-    // 3. Handle single file uploads for the main payload (trip_image, banner_picture).
+    // Handle single file uploads for the main payload (trip_image, banner_picture).
     await handleFileUpload(tripDataPayload, 'trip_image');
     await handleFileUpload(tripDataPayload, 'banner_picture');
 
-    // 4. Update the main trip item with all data EXCEPT the gallery.
-    let updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
-
-    // 5. Now, handle the gallery images in a separate, dedicated update.
-    if (trip_images && trip_images.current) {
-      const { current, initial } = trip_images;
-
-      // Process the 'current' array to get a final list of all file IDs.
-      const finalFileIds = await Promise.all(
-        current.map(async (fileOrObject) => {
-          if (fileOrObject instanceof File) {
-            const formData = new FormData();
-            formData.append('file', fileOrObject);
-            const fileResponse = await client.request(uploadFiles(formData));
-            return fileResponse.id;
-          }
-          return fileOrObject?.id || fileOrObject;
-        })
-      );
-      const finalFileIdSet = new Set(finalFileIds.filter(Boolean));
-
-      // Map initial file IDs to their junction table primary keys.
-      const initialFileIdToJunctionIdMap = new Map();
-      initial.forEach(item => {
-        if (item.directus_files_id) {
-          initialFileIdToJunctionIdMap.set(item.directus_files_id.id, item.id);
-        }
-      });
-      const initialFileIdSet = new Set(initialFileIdToJunctionIdMap.keys());
-
-      // Calculate the differences to create an explicit payload.
-      const filesToCreate = [...finalFileIdSet].filter(id => !initialFileIdSet.has(id));
-      const filesToDelete = [...initialFileIdSet].filter(id => !finalFileIdSet.has(id));
-      const junctionIdsToDelete = filesToDelete.map(fileId => initialFileIdToJunctionIdMap.get(fileId)).filter(Boolean);
-
-      const galleryPayload = {
-        trip_images: {
-          create: filesToCreate.map(fileId => ({ directus_files_id: fileId })),
-          delete: junctionIdsToDelete,
-        }
-      };
-
-      if (galleryPayload.trip_images.create.length > 0 || galleryPayload.trip_images.delete.length > 0) {
-        console.log("Attempting to link/unlink images with explicit payload:", JSON.stringify(galleryPayload, null, 2));
-        updatedTrip = await client.request(updateItem('trips_v2', tripId, galleryPayload));
-      }
-    }
+    const updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
 
     return updatedTrip;
   } catch (error) {

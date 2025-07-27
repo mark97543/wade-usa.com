@@ -1,8 +1,14 @@
 import React, { useMemo, useRef } from 'react';
-import ReactQuill from 'react-quill';
+// We need to import Quill statically to register the image resize module.
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import './Post_Trip.css'; // Import custom styles for Quill
 import { uploadEditorImage } from '@wade-usa/auth';
+// Import the image resize module
+import ImageResize from 'quill-image-resize-module-react';
 
+// Register the module with Quill.
+Quill.register('modules/imageResize', ImageResize);
 /**
  * @component Post_Trip
  * @description Renders a WYSIWYG editor for the trip's post-trip summary.
@@ -50,6 +56,11 @@ function Post_Trip({ postTripSummary, setPostTripSummary }) {
         },
       },
     },
+    // Add the image resize module to Quill's modules.
+    imageResize: {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize']
+    }
   }), []);
 
   return (

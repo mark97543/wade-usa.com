@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@wade-usa/auth": "workspace:*",
+    "quill-image-resize-module-react": "^3.0.0",
     "react": "^18.2.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1"
