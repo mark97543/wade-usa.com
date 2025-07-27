@@ -13,6 +13,7 @@ import {updateTripV2} from '@wade-usa/auth'
 import Editor_Page_Card from './Editor_Page_Card.jsx'
 import Flight_Items from './Flight_Items.jsx'
 import Hotel_Items from './Hotel_Items.jsx';
+import Rental_Cars from './Rental_Cars.jsx';
 
 
 
@@ -38,6 +39,10 @@ function Editor_Page() {
   const [hotels, setHotels] = useState([]);
   // Store the initial state of hotels to detect deletions.
   const [initialHotels, setInitialHotels] = useState([]);
+  // State for managing rental cars.
+  const [rentalCars, setRentalCars] = useState([]);
+  // Store the initial state of rental cars to detect deletions.
+  const [initialRentalCars, setInitialRentalCars] = useState([]);
 
   // UI state management.
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,6 +71,10 @@ function Editor_Page() {
         const sortedHotels = (trip.hotels || []).sort((a, b) => new Date(a.check_in) - new Date(b.check_in));
         setHotels(sortedHotels);
         setInitialHotels(sortedHotels);
+        // Populate rental cars from the fetched trip data, sorting by pickup date.
+        const sortedRentalCars = (trip.rental_cars || []).sort((a, b) => new Date(a.pickup_date) - new Date(b.pickup_date));
+        setRentalCars(sortedRentalCars);
+        setInitialRentalCars(sortedRentalCars);
         setTripTaken(trip.trip_taken);
       }
     };
@@ -125,6 +134,23 @@ function Editor_Page() {
       ...updatedHotels
     ];
 
+    // --- Rental Car Payload Preparation ---
+    const createdRentalCars = rentalCars
+      .filter(c => String(c.id).startsWith('new-'))
+      .map(({ id, ...data }) => data);
+
+    const updatedRentalCars = rentalCars.filter(c => !String(c.id).startsWith('new-'));
+
+    const currentRentalCarIds = new Set(updatedRentalCars.map(c => c.id));
+    const deletedRentalCarIds = initialRentalCars
+      .filter(c => !currentRentalCarIds.has(c.id))
+      .map(c => c.id);
+
+    const rentalCarsPayload = [
+      ...createdRentalCars,
+      ...updatedRentalCars
+    ];
+
     // --- Main Trip Data Payload ---
 
     const tripUpdateData = {
@@ -133,6 +159,7 @@ function Editor_Page() {
       end_date: endDate,
       flights: flightsPayload,
       hotels: hotelsPayload,
+      rental_cars: rentalCarsPayload,
       trip_taken: tripTaken,
     };
 
@@ -148,6 +175,7 @@ function Editor_Page() {
     const deletedItems = {
       flights: deletedFlightIds,
       hotels: deletedHotelIds,
+      rental_cars: deletedRentalCarIds,
     };
 
     try {
@@ -261,6 +289,46 @@ function Editor_Page() {
     );
   };
 
+  /**
+   * Adds a new, empty rental car object to the `rentalCars` state array.
+   */
+  const addRentalCar = () => {
+    const newCar = {
+      id: `new-${Date.now()}`,
+      company: '',
+      pickup_location: '',
+      dropoff_location: '',
+      pickup_date: null,
+      dropoff_date: null,
+    };
+    setRentalCars(prevCars => [...(prevCars || []), newCar]);
+  };
+
+  /**
+   * Handles changes to any field of a specific rental car item.
+   * @param {number} index - The index of the car being changed.
+   * @param {string} field - The name of the field being updated.
+   * @param {any} value - The new value for the field.
+   */
+  const handleRentalCarChange = (index, field, value) => {
+    setRentalCars(prevCars => {
+      const newCars = [...prevCars];
+      newCars[index] = { ...newCars[index], [field]: value };
+      return newCars;
+    });
+  };
+
+  /**
+   * Deletes a rental car from the `rentalCars` state array at a given index.
+   * @param {number} indexToDelete - The index of the car to remove.
+   */
+  const deleteRentalCar = (indexToDelete) => {
+    setRentalCars(currentCars =>
+      currentCars.filter((_, index) => index !== indexToDelete)
+    );
+  };
+
+
   // Once data is loaded, render the main editor form.
   return (
     <div className='editor_page_wrapper'>
@@ -289,7 +357,14 @@ function Editor_Page() {
           addHotel={addHotel} 
           deleteHotel={deleteHotel} 
         />
-
+        <hr className='editor_page_hr'></hr>
+        <Rental_Cars
+          rentalCars={rentalCars}
+          handleRentalCarChange={handleRentalCarChange}
+          addRentalCar={addRentalCar}
+          deleteRentalCar={deleteRentalCar}
+        />
+        <hr className='editor_page_hr'></hr>
 
         <div className='editor_page_submit'>
           <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Changes'}</button>

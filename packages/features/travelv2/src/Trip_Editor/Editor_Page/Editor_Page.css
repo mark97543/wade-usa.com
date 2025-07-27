@@ -246,12 +246,12 @@
     height: 20px;
 }
 
-#add_flight_button, #add_hotel_button{
+#add_flight_button, #add_hotel_button, #add_rental_car_button{
     width: 100%;
     background-color: var(--color-accent-tertiary-olive);
 }
 
-#add_flight_button:hover, #add_hotel_button:hover{
+#add_flight_button:hover, #add_hotel_button:hover, #add_rental_car_button:hover{
     background-color: var(--color-accent-secondary);
 }
 
@@ -279,7 +279,8 @@
 /* Hotel Number: Centered heading for each hotel item. */
 #hotel_number {
     text-align: center;
-    margin: 0;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .editor_page_hotel_fields {
@@ -327,4 +328,62 @@
     height: 3px; /* Creates a 1px gap between the two 1px borders */
     border-top: 1px solid var(--border-color-base);
     border-bottom: 1px solid var(--border-color-base);
+}
+
+/* ==========================================================================
+   6. Rental Car Item Styles
+   ========================================================================== */
+
+/* Container for the entire rental cars section. */
+.editor_page_rental_cars {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styles the container for a single rental car item. */
+.editor_page_rental_car_item {
+    width: 380px;
+    border: var(--border-width-base) solid var(--border-color-base);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+/* Rental Car Number: Centered heading for each item. */
+#rental_car_number {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.editor_page_rental_car_fields {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 5px;
+}
+
+.editor_page_rental_car_fields > label {
+    margin-top: 5px;
+}
+
+.editor_page_rental_car_item_remove {
+    display: flex;
+    margin-top: 5px;
+}
+
+.editor_page_rental_car_item_remove button {
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background-color: var(--color-status-danger);
+}
+
+.editor_page_rental_car_item_remove button:hover {
+    background-color: var(--color-accent-secondary);
 }
