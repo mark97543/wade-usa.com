@@ -246,12 +246,12 @@
     height: 20px;
 }
 
-#add_flight_button, #add_hotel_button, #add_rental_car_button, #add_event_button{
+#add_flight_button, #add_hotel_button, #add_rental_car_button, #add_event_button, #add_road_trip_button{
     width: 100%;
     background-color: var(--color-accent-tertiary-olive);
 }
 
-#add_flight_button:hover, #add_hotel_button:hover, #add_rental_car_button:hover, #add_event_button:hover{
+#add_flight_button:hover, #add_hotel_button:hover, #add_rental_car_button:hover, #add_event_button:hover, #add_road_trip_button:hover{
     background-color: var(--color-accent-secondary);
 }
 
@@ -303,7 +303,8 @@
 
 .editor_page_hotel_fields > textarea,
 .editor_page_rental_car_fields > textarea,
-.editor_page_event_fields > textarea {
+.editor_page_event_fields > textarea,
+.editor_page_road_trip_fields > textarea {
     resize: none;
     /* Override default fixed height to allow rows attribute to work */
     height: auto; 
@@ -452,4 +453,68 @@
 
 .editor_page_event_item_remove button:hover {
     background-color: var(--color-accent-secondary);
+}
+
+/* ==========================================================================
+   8. Road Trip Item Styles
+   ========================================================================== */
+
+/* Container for the entire road trip section. */
+.editor_page_road_trip {
+    display: flex;
+    flex-direction: column;
+}
+
+.editor_page_road_trip_list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Styles for a single draggable road trip stop item. */
+.editor_page_road_trip_item {
+    width: 380px;
+    border: var(--border-width-base) solid var(--border-color-base);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    gap: 10px;
+    padding: 10px;
+    background-color: var(--color-bg-primary);
+    cursor: grab;
+}
+
+/* Style for the item being dragged */
+.editor_page_road_trip_item.dragging {
+    opacity: 0.5;
+    background-color: var(--color-bg-secondary);
+}
+
+/* Drag handle for reordering */
+.drag-handle {
+    font-size: 20px;
+    color: var(--color-text-secondary);
+    padding-top: 20px; /* Adjust to vertically center with the first input */
+}
+
+/* Stop number indicator */
+.stop-number {
+    font-weight: bold;
+    padding-top: 25px; /* Adjust to vertically center with the first input */
+}
+
+/* Container for the form fields within a stop item */
+.editor_page_road_trip_fields {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 5px;
+}
+
+/* Container for the remove button */
+.editor_page_road_trip_item_remove {
+    display: flex;
+    align-items: center;
+    padding-top: 20px; /* Adjust to align with the first input */
 }

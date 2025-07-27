@@ -15,12 +15,10 @@ import Flight_Items from './Flight_Items.jsx'
 import Hotel_Items from './Hotel_Items.jsx';
 import Rental_Cars from './Rental_Cars.jsx';
 import Events from './Events.jsx';
+import Road_trip from './Road_trip.jsx';
 import { useItemManager } from './useItemManager.js';
 
-
-
 function Editor_Page() {
-  // Get the trip slug from the URL. Note: tripID from params is actually the slug.
   const { tripID } = useParams();
   const navigate = useNavigate();
 
@@ -38,12 +36,14 @@ function Editor_Page() {
   const { items: hotels, setItems: setHotels, addItem: addHotel, deleteItem: deleteHotel, handleItemChange: handleHotelChange } = useItemManager([]);
   const { items: rentalCars, setItems: setRentalCars, addItem: addRentalCar, deleteItem: deleteRentalCar, handleItemChange: handleRentalCarChange } = useItemManager([]);
   const { items: events, setItems: setEvents, addItem: addEvent, deleteItem: deleteEvent, handleItemChange: handleEventChange } = useItemManager([]);
+  const { items: roadTripStops, setItems: setRoadTripStops, addItem: addRoadTripStop, deleteItem: deleteRoadTripStop, handleItemChange: handleRoadTripChange } = useItemManager([]);
 
   // Store the initial state of related items to detect deletions on submit.
   const [initialFlights, setInitialFlights] = useState([]);
   const [initialHotels, setInitialHotels] = useState([]);
   const [initialRentalCars, setInitialRentalCars] = useState([]);
   const [initialEvents, setInitialEvents] = useState([]);
+  const [initialRoadTripStops, setInitialRoadTripStops] = useState([]);
 
   // UI state management.
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,6 +80,10 @@ function Editor_Page() {
         const sortedEvents = (trip.events || []).sort((a, b) => new Date(a.start) - new Date(b.start));
         setEvents(sortedEvents);
         setInitialEvents(sortedEvents);
+        // Populate road trip stops from fetched data, sorting by stop number.
+        const sortedRoadTripStops = (trip.roadtrip || []).sort((a, b) => a.stop - b.stop);
+        setRoadTripStops(sortedRoadTripStops);
+        setInitialRoadTripStops(sortedRoadTripStops);
         setTripTaken(trip.trip_taken);
       }
     };
@@ -124,6 +128,7 @@ function Editor_Page() {
     const { payload: hotelsPayload, deletedIds: deletedHotelIds } = prepareRelatedItemsPayload(hotels, initialHotels);
     const { payload: rentalCarsPayload, deletedIds: deletedRentalCarIds } = prepareRelatedItemsPayload(rentalCars, initialRentalCars);
     const { payload: eventsPayload, deletedIds: deletedEventIds } = prepareRelatedItemsPayload(events, initialEvents);
+    const { payload: roadTripPayload, deletedIds: deletedRoadTripIds } = prepareRelatedItemsPayload(roadTripStops, initialRoadTripStops);
 
     // --- Main Trip Data Payload ---
     const tripUpdateData = {
@@ -134,6 +139,7 @@ function Editor_Page() {
       hotels: hotelsPayload,
       rental_cars: rentalCarsPayload,
       events: eventsPayload,
+      roadtrip: roadTripPayload, 
       trip_taken: tripTaken,
     };
 
@@ -151,6 +157,7 @@ function Editor_Page() {
       hotels: deletedHotelIds,
       rental_cars: deletedRentalCarIds,
       events: deletedEventIds,
+      roadtrip: deletedRoadTripIds,
     };
 
     try {
@@ -218,6 +225,28 @@ function Editor_Page() {
       note: '',
   });
 
+  const addNewRoadTripStop = () => addRoadTripStop({
+    stop: roadTripStops.length + 1,
+    name: '',
+    long_lat: '',
+    note: '',
+  });
+
+  /**
+   * Reorders road trip stops after a drag-and-drop operation and updates stop numbers.
+   * @param {number} startIndex - The original index of the dragged item.
+   * @param {number} endIndex - The new index for the dropped item.
+   */
+  const handleRoadTripReorder = (startIndex, endIndex) => {
+    const reorderedStops = Array.from(roadTripStops);
+    const [removed] = reorderedStops.splice(startIndex, 1);
+    reorderedStops.splice(endIndex, 0, removed);
+
+    // Update the 'stop' number for each item based on its new position
+    const updatedStops = reorderedStops.map((item, index) => ({ ...item, stop: index + 1 }));
+
+    setRoadTripStops(updatedStops);
+  };
 
   // Once data is loaded, render the main editor form.
   return (
@@ -262,6 +291,14 @@ function Editor_Page() {
           deleteEvent={deleteEvent}
         />
         <hr className='editor_page_hr'></hr>
+        <Road_trip
+          roadTripStops={roadTripStops}
+          handleRoadTripChange={handleRoadTripChange}
+          addRoadTripStop={addNewRoadTripStop}
+          deleteRoadTripStop={deleteRoadTripStop}
+          handleRoadTripReorder={handleRoadTripReorder}
+        />
+        <hr className='editor_page_hr'></hr>
 
         <div className='editor_page_submit'>
           <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Changes'}</button>
@@ -273,4 +310,4 @@ function Editor_Page() {
   )
 }
 
-export default Editor_Page
+export default Editor_Page;
