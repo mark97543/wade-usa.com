@@ -94,7 +94,11 @@ function Editor_Page() {
         setRoadTripStops(sortedRoadTripStops);
         setInitialRoadTripStops(sortedRoadTripStops);
         setTripTaken(trip.trip_taken);
-        setGalleryImages(trip.trip_gallery_images || []);
+        // The API returns junction table items. We need to extract the actual file objects.
+        const extractedImages = (trip.trip_images || [])
+          .map(junctionItem => junctionItem.directus_files_id)
+          .filter(Boolean); // Filter out any null/undefined entries
+        setGalleryImages(extractedImages);
       }
     };
     fetchTrip();
@@ -153,7 +157,7 @@ function Editor_Page() {
       events: eventsPayload,
       roadtrip: roadTripPayload, 
       trip_taken: tripTaken,
-      trip_gallery_images: galleryImages,
+      trip_images: galleryImages,
     };
 
     // Conditionally add the trip image to the payload.

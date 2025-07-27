@@ -25,7 +25,7 @@ export const fetchTripsBySlug = async (slug)=>{
     try{
         const trips = await client.request(
             readItems('trips_v2',{
-              fields:['*', { flights: ['*'], trip_gallery_images: ['*'] }],
+              fields:['*', { flights: ['*'], trip_images: ['directus_files_id.*'] }],
               filter:{
                 slug:slug
                 }
@@ -92,7 +92,7 @@ export const createTripV2 = async (tripData) => {
   try {
     const tripDataPayload = { ...tripData };
     await handleFileUpload(tripDataPayload, 'trip_image');
-    await handleMultipleFileUploads(tripDataPayload, 'trip_gallery_images');
+    await handleMultipleFileUploads(tripDataPayload, 'trip_images');
     const newTrip = await client.request(
       createItem('trips_v2', tripDataPayload)
     );
@@ -157,7 +157,7 @@ export const updateTripV2 = async (tripId, tripData, deletedItems) => {
     // 2. Handle file uploads for trip_image and banner_picture
     await handleFileUpload(tripDataPayload, 'trip_image');
     await handleFileUpload(tripDataPayload, 'banner_picture');
-    await handleMultipleFileUploads(tripDataPayload, 'trip_gallery_images');
+    await handleMultipleFileUploads(tripDataPayload, 'trip_images');
 
     // 3. Update the trip item. Directus handles the deep create/update for relational arrays.
     const updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
