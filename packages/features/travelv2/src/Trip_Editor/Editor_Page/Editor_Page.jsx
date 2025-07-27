@@ -12,6 +12,7 @@ import {fetchTripsBySlug} from '@wade-usa/auth'
 import {updateTripV2} from '@wade-usa/auth'
 import Editor_Page_Card from './Editor_Page_Card.jsx'
 import Flight_Items from './Flight_Items.jsx'
+import Hotel_Items from './Hotel_Items.jsx';
 
 
 
@@ -33,6 +34,10 @@ function Editor_Page() {
   const [flights, setFlights] = useState([]);
   // Store the initial state of flights to detect deletions.
   const [initialFlights, setInitialFlights] = useState([]);
+  // State for managing hotels.
+  const [hotels, setHotels] = useState([]);
+  // Store the initial state of hotels to detect deletions.
+  const [initialHotels, setInitialHotels] = useState([]);
 
   // UI state management.
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,6 +62,10 @@ function Editor_Page() {
         const sortedFlights = (trip.flights || []).sort((a, b) => new Date(a.start) - new Date(b.start));
         setFlights(sortedFlights);
         setInitialFlights(sortedFlights);
+        // Populate hotels from the fetched trip data, sorting by check-in date.
+        const sortedHotels = (trip.hotels || []).sort((a, b) => new Date(a.check_in) - new Date(b.check_in));
+        setHotels(sortedHotels);
+        setInitialHotels(sortedHotels);
         setTripTaken(trip.trip_taken);
       }
     };
@@ -99,6 +108,23 @@ function Editor_Page() {
       ...updatedFlights
     ];
 
+    // --- Hotel Payload Preparation ---
+    const createdHotels = hotels
+      .filter(h => String(h.id).startsWith('new-'))
+      .map(({ id, ...data }) => data);
+
+    const updatedHotels = hotels.filter(h => !String(h.id).startsWith('new-'));
+
+    const currentHotelIds = new Set(updatedHotels.map(h => h.id));
+    const deletedHotelIds = initialHotels
+      .filter(h => !currentHotelIds.has(h.id))
+      .map(h => h.id);
+
+    const hotelsPayload = [
+      ...createdHotels,
+      ...updatedHotels
+    ];
+
     // --- Main Trip Data Payload ---
 
     const tripUpdateData = {
@@ -106,6 +132,7 @@ function Editor_Page() {
       start_date: startDate,
       end_date: endDate,
       flights: flightsPayload,
+      hotels: hotelsPayload,
       trip_taken: tripTaken,
     };
 
@@ -116,8 +143,15 @@ function Editor_Page() {
       tripUpdateData.trip_image = tripImage;
     }
 
+    // Consolidate all items to be deleted into a single object.
+    // This makes the API call more scalable for future related items.
+    const deletedItems = {
+      flights: deletedFlightIds,
+      hotels: deletedHotelIds,
+    };
+
     try {
-      await updateTripV2(tripData.id, tripUpdateData, deletedFlightIds);
+      await updateTripV2(tripData.id, tripUpdateData, deletedItems);
       alert('Trip updated successfully!');
       navigate(`/travel/${tripData.slug}`); // Navigate to the updated trip page
     } catch (error) {
@@ -188,6 +222,44 @@ function Editor_Page() {
     );
   };
 
+  /**
+   * Adds a new, empty hotel object to the `hotels` state array.
+   */
+  const addHotel = () => {
+    const newHotel = {
+      id: `new-${Date.now()}`,
+      hotel_name: '',
+      hotel_address: '',
+      checkin: null,
+      checkout: null,
+      note: '',
+    };
+    setHotels(prevHotels => [...(prevHotels || []), newHotel]);
+  };
+
+  /**
+   * Handles changes to any field of a specific hotel item.
+   * @param {number} index - The index of the hotel being changed.
+   * @param {string} field - The name of the field being updated.
+   * @param {any} value - The new value for the field.
+   */
+  const handleHotelChange = (index, field, value) => {
+    setHotels(prevHotels => {
+      const newHotels = [...prevHotels];
+      newHotels[index] = { ...newHotels[index], [field]: value };
+      return newHotels;
+    });
+  };
+
+  /**
+   * Deletes a hotel from the `hotels` state array at a given index.
+   * @param {number} indexToDelete - The index of the hotel to remove.
+   */
+  const deleteHotel = (indexToDelete) => {
+    setHotels(currentHotels =>
+      currentHotels.filter((_, index) => index !== indexToDelete)
+    );
+  };
 
   // Once data is loaded, render the main editor form.
   return (
@@ -210,6 +282,14 @@ function Editor_Page() {
         />
 
         <Flight_Items flights={flights} handleFlightChange={handleFlightChange} addFlight={addFlight} deleteFlight={deleteFlight} />
+        <hr className='editor_page_hr'></hr>
+        <Hotel_Items 
+          hotels={hotels} 
+          handleHotelChange={handleHotelChange} 
+          addHotel={addHotel} 
+          deleteHotel={deleteHotel} 
+        />
+
 
         <div className='editor_page_submit'>
           <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Changes'}</button>
