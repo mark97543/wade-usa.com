@@ -1,5 +1,5 @@
 //Import Travel Information from Directus
-import { readItems, createItem, uploadFiles } from "@directus/sdk";
+import { readItems, createItem, updateItem, uploadFiles, deleteItems } from "@directus/sdk";
 import client from "./api.js";
 
 /* ----------------- Fetches all items from trips collection  ---------------- */
@@ -25,7 +25,7 @@ export const fetchTripsBySlug = async (slug)=>{
     try{
         const trips = await client.request(
             readItems('trips_v2',{
-              fields:['*'],
+              fields:['*', { flights: ['*'] }],
               filter:{
                 slug:slug
                 }
@@ -34,7 +34,7 @@ export const fetchTripsBySlug = async (slug)=>{
         //console.log(trips)
         return trips;
       }catch(error){
-        console.error("Failed to Fetch Trips (travelAPI.js): ", error)
+        console.error("Failed to Fetch Trip by Slug (travelApi.js): ", error)
         return [];
       }
 }                
@@ -92,5 +92,41 @@ export const fetchAllSlugs = async () => {
   } catch (error) {
     console.error("Failed to Fetch Slugs (travelApi.js): ", error);
     return [];
+  }
+};
+
+/* ---------------------------- Saves and updates --------------------------- */
+
+/**
+ * Updates an existing trip, including its relational data.
+ * @param {number | string} tripId The primary key of the trip to update.
+ * @param {object} tripData The data to update.
+ * @returns {Promise<object>} The updated trip object.
+ */
+export const updateTripV2 = async (tripId, tripData, deletedFlightIds) => {
+  try {
+    // 1. Delete any flights that were removed from the list.
+    if (deletedFlightIds && deletedFlightIds.length > 0) {
+      // This requires the user to have delete permissions on the 'flights' collection.
+      await client.request(deleteItems('flights', deletedFlightIds));
+    }
+
+    const tripDataPayload = { ...tripData };
+
+    // 2. Handle file upload if a new image is provided (it will be a File object)
+    if (tripDataPayload.trip_image && tripDataPayload.trip_image instanceof File) {
+      const formData = new FormData();
+      formData.append('file', tripDataPayload.trip_image);
+      const fileResponse = await client.request(uploadFiles(formData));
+      // Replace the file object with the new file ID
+      tripDataPayload.trip_image = fileResponse.id;
+    }
+
+    // 3. Update the trip item. Directus handles the deep create/update for the O2M flights array.
+    const updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));
+    return updatedTrip;
+  } catch (error) {
+    console.error("Failed to Update Trip (travelApi.js): ", error.errors || error);
+    throw error;
   }
 };

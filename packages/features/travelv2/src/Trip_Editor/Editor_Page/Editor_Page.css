@@ -1,4 +1,17 @@
-/* Main wrapper for the entire editor page, centering it and setting a fixed width. */
+/*
+ * ==========================================================================
+ *  Trip Editor Page Styles
+ *  File: /home/mark/Documents/wade-usa-v3/packages/features/travelv2/src/Trip_Editor/Editor_Page/Editor_Page.css
+ *  Description: This file contains styles for the trip editor page, including
+ *               the main card editor and the flight details section.
+ * ==========================================================================
+ */
+
+/* ==========================================================================
+   1. General Page Layout
+   ========================================================================== */
+
+/* Main wrapper for the entire editor page. Centers content horizontally. */
 .editor_page_wrapper{
     width: 380px;
     display: flex;  
@@ -6,12 +19,17 @@
     flex-direction: column;
 }
 
+
 /* Styles the main heading within the card editor section. */
 .editor_page_card > h1 {
     margin-bottom: 10px;
 }
 
 /* Container for the main trip card editing form (summary, dates, image). */
+/* ==========================================================================
+   2. Main Trip Card Editor
+   ========================================================================== */
+
 .editor_page_card{
     display: flex;
     flex-direction: column;
@@ -72,15 +90,19 @@
     margin-top: var(--space-md);
     width: 380px;
 }
-
-/* Container for the entire flights section, including the list and the "Add Flight" button. */
-.editor_page_flights{
-    display: flex;
-    flex-direction: column;
-}
-
 /* Styles the container for a single flight item, using a grid for layout. */
 .editor_page_flight_item{
+    /*
+     * ==========================================================================
+     *  3. Flight Item Grid Layout
+     *  Description: The .editor_page_flight_item uses a 3-column, 5-row grid.
+     *  - Row 1: Flight Number (Full Width)
+     *  - Row 2: Departure/Arrival Info
+     *  - Row 3: Date/Time Info
+     *  - Row 4: Notes (Spans middle and right columns)
+     *  - Row 5: Remove Button (Full Width)
+     * ==========================================================================
+     */
     width: 380px;
     border: var(--border-width-base) solid var(--border-color-base);
     border-radius: var(--border-radius-lg);
@@ -88,73 +110,79 @@
     grid-template-rows: auto auto auto auto auto;
     grid-template-columns: auto auto auto;
     gap: 5px;
+    margin-bottom:10px ;
 }
 
+/* Flight Number: Spans all 3 columns in the first row. */
 #flight_number{
     grid-column: 1/4;
     grid-row: 1;
-    /* border: 1px solid red; */
     margin: 5px 0px 0px 5px;
     text-align: center;
 }
 
+/* Remove Button Container: Spans all 3 columns in the fifth (last) row. */
 .editor_page_flight_item_remove{
     display: flex;
     flex-direction: row;
-    /* border: 1px solid red; */
     grid-column: 1/4;
     grid-row: 5;
 }
 
+/* Left Panel: Contains date/time inputs. Occupies the first column, spanning rows 2-4. */
 #editor_page_flight_left_panel{
     display: flex;
     flex-direction: column;
     grid-column: 1;
     grid-row: 2/5;
     padding: 5px;
-    /* border: 1px solid red; */
     justify-content: center;
 }
 
+/* Middle Top Panel: Contains airport codes and arrow. Spans columns 2-3 in the second row. */
 #editor_page_flight_mid_top_panel{
     display: flex;
     flex-direction: row;
     align-items: center;
     grid-column: 2/4;
     grid-row: 2;
-    /* border: 1px solid green; */
 }
 
+/* Middle Bottom Panel 1: Contains departure details. Occupies column 2 in the third row. */
 #editor_page_flight_mid_bottom_panel1{
     display: flex;
     flex-direction: column;
     grid-column: 2/3;
     grid-row: 3;
     width: 120px;
-    /* border: 1px solid yellow; */
 }
 
+/* Middle Bottom Panel 2: Contains arrival details. Occupies column 3 in the third row. */
 #editor_page_flight_mid_bottom_panel2{
     display: flex;
     flex-direction: column;
     width: 120px;
     grid-column: 3/4;
     grid-row: 3;
-    /* border: 1px solid white; */
 }
 
+/* Right Panel: General container, currently empty but available for layout. */
 #editor_page_flight_right_panel{
     display: flex;
 }
 
+/* Note Panel: Contains the notes textarea. Spans columns 2-3 in the fourth row. */
 #editor_page_flight_Note_panel{
     display: flex;
     flex-direction: column;
     grid-column: 2/4;
     grid-row: 4;
     margin-right: 5px;
-    /* border: 1px solid blue; */
 }
+
+/* ==========================================================================
+   4. Flight Item Components
+   ========================================================================== */
 
 /* Styles the remove button (-) for each flight item. */
 .editor_page_flight_item_remove :last-child {
@@ -172,35 +200,58 @@
     background-color: var(--color-accent-secondary);
 }
 
+/* Input fields within the left panel (date/time). */
 #editor_page_flight_left_panel > input{
     width: 80px;
 }
 
+/* Labels within the left panel. */
 #editor_page_flight_left_panel > label{
     margin-top: 10px;
 }
 
+/* Container for flight duration inputs (Hours and Minutes). */
 .editor_page_flight_duration {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
+/* Specific styling for the small duration input fields. */
 .editor_page_flight_duration input {
     width: 30px;
 }
 
+/* Styling for the large airport code inputs (FROM and TO). */
 #from_ap_code, #to_ap_code{
     width: 50px;
     font-size: var(--font-size-xl);
     margin-right: 5px;
 }
 
+/* A generic container for flex column layouts, used within flight item panels. */
 .gen_cont{
     display: flex;
     flex-direction: column;
 }
 
+/* The arrow icon separating the FROM and TO airport codes. */
 #editor_page_flight_arrow{
     margin: 25px auto auto auto;
 }
+
+/* Styling for the "Trip Taken" checkbox. */
+#trip_taken{
+    width: 20px;
+    height: 20px;
+}
+
+#add_flight_button{
+    width: 100%;
+    background-color: var(--color-accent-tertiary-olive);
+}
+
+#add_flight_button:hover{
+    background-color: var(--color-accent-secondary);
+}
+

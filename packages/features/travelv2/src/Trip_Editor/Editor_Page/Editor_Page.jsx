@@ -1,59 +1,152 @@
-import React, { useState, useEffect } from 'react'
+/**
+ * @file Editor_Page.jsx
+ * @module Editor_Page
+ * @description This component serves as the main editor page for a trip. It fetches
+ * trip data based on a URL parameter, allows users to edit trip details and associated
+ * flights, and handles the submission of these updates to the backend.
+ */
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'
 import './Editor_Page.css'
 import {fetchTripsBySlug} from '@wade-usa/auth'
-import Sample_Card from '../sample_card/Sample_Card.jsx'
-import Flight_Items from '../Editor_Page/Flight_Items.jsx'
+import {updateTripV2} from '@wade-usa/auth'
+import Editor_Page_Card from './Editor_Page_Card.jsx'
+import Flight_Items from './Flight_Items.jsx'
 
 
 
 function Editor_Page() {
-  const { tripID } = useParams() // We destructure tripID to get the slug.
+  // Get the trip slug from the URL. Note: tripID from params is actually the slug.
+  const { tripID } = useParams();
   const navigate = useNavigate();
-  const [tripData, setTripData] = useState(null) // Initialize with null to better handle loading state
-  const [tripSummary, setTripSummary]=useState('')
+
+  // State for the entire trip object fetched from the database.
+  const [tripData, setTripData] = useState(null);
+  // State for individual form fields, decoupled from tripData to allow editing.
+  const [tripSummary, setTripSummary] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [tripImage, setTripImage] = useState(null)
-  const [flights, setFlights]=useState([])
+  const [tripImage, setTripImage] = useState(null);
+  const [tripTaken, setTripTaken] = useState(false);
+
+  // State for managing flights.
+  const [flights, setFlights] = useState([]);
+  // Store the initial state of flights to detect deletions.
+  const [initialFlights, setInitialFlights] = useState([]);
+
+  // UI state management.
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   
-  /* ----------------------- fetch the slug information ----------------------- */
-  useEffect(()=>{
-    const fetchTrip = async()=>{
-      // fetchTripsBySlug likely returns an array, even if it's just one item.
-      const trips = await fetchTripsBySlug(tripID)
+  /**
+   * Fetches trip data when the component mounts or the tripID (slug) changes.
+   * Populates the component's state with the fetched data.
+   */
+  useEffect(() => {
+    const fetchTrip = async () => {
+      const trips = await fetchTripsBySlug(tripID);
       if (trips && trips.length > 0) {
-        const trip = trips[0]; // Get the first trip from the array
+        const trip = trips[0]; // Assuming slug is unique, take the first result.
         setTripData(trip);
-        setTripSummary(trip.trip_summary); // Set summary from the freshly fetched data
+        // Populate form state from the fetched trip data.
+        setTripSummary(trip.trip_summary);
         setStartDate(trip.start_date);
         setEndDate(trip.end_date);
         setTripImage(trip.trip_image);
         // Ensure flights is always an array, defaulting to an empty one if null/undefined.
-        //TODO: Need to organize by start Date
-        setFlights(trip.flights || [])
+        const sortedFlights = (trip.flights || []).sort((a, b) => new Date(a.start) - new Date(b.start));
+        setFlights(sortedFlights);
+        setInitialFlights(sortedFlights);
+        setTripTaken(trip.trip_taken);
       }
+    };
+    fetchTrip();
+  }, [tripID]); // Dependency array ensures this runs only when tripID changes.
+
+  /**
+   * Handles the form submission.
+   * It constructs a payload for updating the trip and its related flights,
+   * including creating new flights, updating existing ones, and deleting removed ones.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // --- Flight Payload Preparation for Directus Deep Write ---
+
+    // 1. Identify flights to be CREATED.
+    // These are flights with a temporary ID starting with 'new-'.
+    const createdFlights = flights
+      .filter(f => String(f.id).startsWith('new-'))
+      .map(({ id, ...data }) => data); // Omit temporary client-side ID
+
+    // 2. Identify flights to be UPDATED.
+    // These are flights that have an existing (numeric) ID.
+    const updatedFlights = flights.filter(f => !String(f.id).startsWith('new-'));
+
+    // 3. Identify flights to be DELETED.
+    // This is done by finding which of the initial flights are no longer present.
+    const currentFlightIds = new Set(updatedFlights.map(f => f.id));
+    const deletedFlightIds = initialFlights
+      .filter(f => !currentFlightIds.has(f.id))
+      .map(f => f.id);
+
+    // 4. Construct the final flights payload for the One-to-Many relationship.
+    // Directus handles create/update based on the presence of an 'id' in each object.
+    const flightsPayload = [
+      ...createdFlights,
+      ...updatedFlights
+    ];
+
+    // --- Main Trip Data Payload ---
+
+    const tripUpdateData = {
+      trip_summary: tripSummary,
+      start_date: startDate,
+      end_date: endDate,
+      flights: flightsPayload,
+      trip_taken: tripTaken,
+    };
+
+    // Conditionally add the trip image to the payload.
+    // If it's a File object, it's a new upload. Otherwise, we don't send it,
+    // and the existing image on the server remains unchanged.
+    if (tripImage instanceof File) {
+      tripUpdateData.trip_image = tripImage;
     }
-    fetchTrip()
 
-  },[tripID])
+    try {
+      await updateTripV2(tripData.id, tripUpdateData, deletedFlightIds);
+      alert('Trip updated successfully!');
+      navigate(`/travel/${tripData.slug}`); // Navigate to the updated trip page
+    } catch (error) {
+      console.error("Failed to update trip:", error);
+      alert('Failed to update trip. See console for details.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
-  // Render a loading state while tripData is null (i.e., being fetched)
+  // Render a loading indicator while the initial trip data is being fetched.
   if (!tripData) {
     return <h2>Loading...</h2>;
   }
 
-  /* ----------------- Cancels Edit and returns to Travel Home ---------------- */
+  /**
+   * Navigates the user back to the main travel page, canceling the edit.
+   */
   const cancelForm = () => {
       navigate('/travel');
   }
 
-  /* ---------------------------- adds a new flight --------------------------- */
-  const addFlight = ()=>{
-    // Create a new flight object with default empty values.
+  /**
+   * Adds a new, empty flight object to the `flights` state array.
+   */
+  const addFlight = () => {
     const newFlight = {
-      // Using a temporary unique ID for the key prop during rendering.
+      // Use a temporary, client-side unique ID for React's `key` prop.
+      // This also helps identify new flights during submission.
       id: `new-${Date.now()}`,
       start: null,
       end: null,
@@ -67,10 +160,16 @@ function Editor_Page() {
       duration_minutes: null,
       note: '',
     };
-    // Use the callback form of setFlights to append the new flight to the previous state.
+    // Append the new flight to the existing flights array.
     setFlights(prevFlights => [...(prevFlights || []), newFlight]);
   }
 
+  /**
+   * Handles changes to any field of a specific flight item.
+   * @param {number} index - The index of the flight being changed in the `flights` array.
+   * @param {string} field - The name of the field being updated (e.g., 'airline', 'from').
+   * @param {any} value - The new value for the field.
+   */
   const handleFlightChange = (index, field, value) => {
     setFlights(prevFlights => {
       const newFlights = [...prevFlights];
@@ -79,56 +178,41 @@ function Editor_Page() {
     });
   };
 
-  /* ------------------------------ Delete Flight ----------------------------- */
+  /**
+   * Deletes a flight from the `flights` state array at a given index.
+   * @param {number} indexToDelete - The index of the flight to remove.
+   */
+  const deleteFlight = (indexToDelete) => {
+    setFlights(currentFlights => 
+      currentFlights.filter((_, index) => index !== indexToDelete)
+    );
+  };
 
-  const deleteFlight = (flightId) => {
-    setFlights(prevFlights => prevFlights.filter(flight => flight.id !== flightId));
-  }
 
-  
-
-  console.log(tripData)
-
-
-  // Once data is loaded, render the editor. The return must be a single valid JSX element.
+  // Once data is loaded, render the main editor form.
   return (
     <div className='editor_page_wrapper'>
       <h1>Editing: {tripData.trip_title}</h1>
 
-      <form id="trip-editor-form">
+      <form id="trip-editor-form" onSubmit={handleSubmit}>
 
-        <div className='editor_page_card'>
-          <h1>Card Edit</h1>
-
-          <label htmlFor="summary">Enter Trip Summary:</label>
-          <textarea id="summary" maxLength="200" rows="4" value={tripSummary} onChange={(e) => setTripSummary(e.target.value)} required ></textarea>
-          <p>This is a brief description of the trip. It is limited to 200 characters.</p>
-
-          <label htmlFor="start-date">Start Date:</label>
-          <input type="date" id="start-date" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
-
-          <label htmlFor="end-date">End Date:</label>
-          <input type="date" id="end-date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
-
-          <label htmlFor="trip-image">Trip Image:</label>
-          <input
-              type="file"
-              id="trip-image"
-              onChange={(e) => setTripImage(e.target.files[0])}
-              accept="image/*"
-          />
-          <p>Upload an image to represent the trip. Should be 3:2 aspect ratio. </p>
-
-          <div className="trip-editor-sample-card">
-            <h3>Sample Tile</h3>
-            <Sample_Card item={{ trip_title: tripData.trip_title, trip_summary: tripSummary, trip_image: tripImage, start_date: startDate, end_date: endDate }} />
-          </div>
-        </div>
+        <Editor_Page_Card 
+          tripData={tripData} 
+          tripSummary={tripSummary} 
+          setTripSummary={setTripSummary} 
+          startDate={startDate} setStartDate={setStartDate} 
+          endDate={endDate} 
+          setEndDate={setEndDate} 
+          tripImage={tripImage} 
+          setTripImage={setTripImage} 
+          tripTaken={tripTaken} 
+          setTripTaken={setTripTaken} 
+        />
 
         <Flight_Items flights={flights} handleFlightChange={handleFlightChange} addFlight={addFlight} deleteFlight={deleteFlight} />
 
         <div className='editor_page_submit'>
-          <button type="submit">Submit</button> {/* TODO: Need Submit Function*/}
+          <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Saving...' : 'Save Changes'}</button>
           <button type="button" onClick={cancelForm}>Cancel</button>
         </div>
 
