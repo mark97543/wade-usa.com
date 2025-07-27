@@ -16,7 +16,7 @@ import React from 'react';
 function Flight_Items({ flights, handleFlightChange, addFlight, deleteFlight }) {
   return (
     <div className='editor_page_flights'>
-        <h1>Flights</h1>
+        <h2>Flights</h2>
 
         {/* Conditionally render the list of flights or a "No Flights" message. */}
         {flights.length > 0 ? (

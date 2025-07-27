@@ -14,6 +14,8 @@ import Editor_Page_Card from './Editor_Page_Card.jsx'
 import Flight_Items from './Flight_Items.jsx'
 import Hotel_Items from './Hotel_Items.jsx';
 import Rental_Cars from './Rental_Cars.jsx';
+import Events from './Events.jsx';
+import { useItemManager } from './useItemManager.js';
 
 
 
@@ -31,18 +33,17 @@ function Editor_Page() {
   const [tripImage, setTripImage] = useState(null);
   const [tripTaken, setTripTaken] = useState(false);
 
-  // State for managing flights.
-  const [flights, setFlights] = useState([]);
-  // Store the initial state of flights to detect deletions.
+  // Use the custom hook to manage flights, hotels, and rental cars
+  const { items: flights, setItems: setFlights, addItem: addFlight, deleteItem: deleteFlight, handleItemChange: handleFlightChange } = useItemManager([]);
+  const { items: hotels, setItems: setHotels, addItem: addHotel, deleteItem: deleteHotel, handleItemChange: handleHotelChange } = useItemManager([]);
+  const { items: rentalCars, setItems: setRentalCars, addItem: addRentalCar, deleteItem: deleteRentalCar, handleItemChange: handleRentalCarChange } = useItemManager([]);
+  const { items: events, setItems: setEvents, addItem: addEvent, deleteItem: deleteEvent, handleItemChange: handleEventChange } = useItemManager([]);
+
+  // Store the initial state of related items to detect deletions on submit.
   const [initialFlights, setInitialFlights] = useState([]);
-  // State for managing hotels.
-  const [hotels, setHotels] = useState([]);
-  // Store the initial state of hotels to detect deletions.
   const [initialHotels, setInitialHotels] = useState([]);
-  // State for managing rental cars.
-  const [rentalCars, setRentalCars] = useState([]);
-  // Store the initial state of rental cars to detect deletions.
   const [initialRentalCars, setInitialRentalCars] = useState([]);
+  const [initialEvents, setInitialEvents] = useState([]);
 
   // UI state management.
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,11 +76,38 @@ function Editor_Page() {
         const sortedRentalCars = (trip.rental_cars || []).sort((a, b) => new Date(a.pickup_date) - new Date(b.pickup_date));
         setRentalCars(sortedRentalCars);
         setInitialRentalCars(sortedRentalCars);
+        // Populate events from the fetched trip data, sorting by start date.
+        const sortedEvents = (trip.events || []).sort((a, b) => new Date(a.start) - new Date(b.start));
+        setEvents(sortedEvents);
+        setInitialEvents(sortedEvents);
         setTripTaken(trip.trip_taken);
       }
     };
     fetchTrip();
   }, [tripID]); // Dependency array ensures this runs only when tripID changes.
+
+  /**
+   * A helper function to prepare the payload for related items (flights, hotels, etc.).
+   * It identifies which items are to be created, updated, or deleted.
+   * @param {Array} currentItems - The current state of items from the form.
+   * @param {Array} initialItems - The initial state of items when the page loaded.
+   * @returns {{payload: Array, deletedIds: Array}}
+   */
+  const prepareRelatedItemsPayload = (currentItems, initialItems) => {
+    const createdItems = currentItems
+      .filter(item => String(item.id).startsWith('new-'))
+      .map(({ id, ...data }) => data);
+
+    const updatedItems = currentItems.filter(item => !String(item.id).startsWith('new-'));
+
+    const currentItemIds = new Set(updatedItems.map(item => item.id));
+    const deletedIds = initialItems
+      .filter(item => !currentItemIds.has(item.id))
+      .map(item => item.id);
+
+    const payload = [...createdItems, ...updatedItems];
+    return { payload, deletedIds };
+  };
 
   /**
    * Handles the form submission.
@@ -91,68 +119,13 @@ function Editor_Page() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // --- Flight Payload Preparation for Directus Deep Write ---
-
-    // 1. Identify flights to be CREATED.
-    // These are flights with a temporary ID starting with 'new-'.
-    const createdFlights = flights
-      .filter(f => String(f.id).startsWith('new-'))
-      .map(({ id, ...data }) => data); // Omit temporary client-side ID
-
-    // 2. Identify flights to be UPDATED.
-    // These are flights that have an existing (numeric) ID.
-    const updatedFlights = flights.filter(f => !String(f.id).startsWith('new-'));
-
-    // 3. Identify flights to be DELETED.
-    // This is done by finding which of the initial flights are no longer present.
-    const currentFlightIds = new Set(updatedFlights.map(f => f.id));
-    const deletedFlightIds = initialFlights
-      .filter(f => !currentFlightIds.has(f.id))
-      .map(f => f.id);
-
-    // 4. Construct the final flights payload for the One-to-Many relationship.
-    // Directus handles create/update based on the presence of an 'id' in each object.
-    const flightsPayload = [
-      ...createdFlights,
-      ...updatedFlights
-    ];
-
-    // --- Hotel Payload Preparation ---
-    const createdHotels = hotels
-      .filter(h => String(h.id).startsWith('new-'))
-      .map(({ id, ...data }) => data);
-
-    const updatedHotels = hotels.filter(h => !String(h.id).startsWith('new-'));
-
-    const currentHotelIds = new Set(updatedHotels.map(h => h.id));
-    const deletedHotelIds = initialHotels
-      .filter(h => !currentHotelIds.has(h.id))
-      .map(h => h.id);
-
-    const hotelsPayload = [
-      ...createdHotels,
-      ...updatedHotels
-    ];
-
-    // --- Rental Car Payload Preparation ---
-    const createdRentalCars = rentalCars
-      .filter(c => String(c.id).startsWith('new-'))
-      .map(({ id, ...data }) => data);
-
-    const updatedRentalCars = rentalCars.filter(c => !String(c.id).startsWith('new-'));
-
-    const currentRentalCarIds = new Set(updatedRentalCars.map(c => c.id));
-    const deletedRentalCarIds = initialRentalCars
-      .filter(c => !currentRentalCarIds.has(c.id))
-      .map(c => c.id);
-
-    const rentalCarsPayload = [
-      ...createdRentalCars,
-      ...updatedRentalCars
-    ];
+    // Use the helper to prepare payloads for each item type
+    const { payload: flightsPayload, deletedIds: deletedFlightIds } = prepareRelatedItemsPayload(flights, initialFlights);
+    const { payload: hotelsPayload, deletedIds: deletedHotelIds } = prepareRelatedItemsPayload(hotels, initialHotels);
+    const { payload: rentalCarsPayload, deletedIds: deletedRentalCarIds } = prepareRelatedItemsPayload(rentalCars, initialRentalCars);
+    const { payload: eventsPayload, deletedIds: deletedEventIds } = prepareRelatedItemsPayload(events, initialEvents);
 
     // --- Main Trip Data Payload ---
-
     const tripUpdateData = {
       trip_summary: tripSummary,
       start_date: startDate,
@@ -160,6 +133,7 @@ function Editor_Page() {
       flights: flightsPayload,
       hotels: hotelsPayload,
       rental_cars: rentalCarsPayload,
+      events: eventsPayload,
       trip_taken: tripTaken,
     };
 
@@ -176,6 +150,7 @@ function Editor_Page() {
       flights: deletedFlightIds,
       hotels: deletedHotelIds,
       rental_cars: deletedRentalCarIds,
+      events: deletedEventIds,
     };
 
     try {
@@ -203,13 +178,9 @@ function Editor_Page() {
   }
 
   /**
-   * Adds a new, empty flight object to the `flights` state array.
+   * Wrappers for the `addItem` hook function to provide specific templates.
    */
-  const addFlight = () => {
-    const newFlight = {
-      // Use a temporary, client-side unique ID for React's `key` prop.
-      // This also helps identify new flights during submission.
-      id: `new-${Date.now()}`,
+  const addNewFlight = () => addFlight({
       start: null,
       end: null,
       airline: '',
@@ -221,112 +192,31 @@ function Editor_Page() {
       duration_hours: null,
       duration_minutes: null,
       note: '',
-    };
-    // Append the new flight to the existing flights array.
-    setFlights(prevFlights => [...(prevFlights || []), newFlight]);
-  }
+  });
 
-  /**
-   * Handles changes to any field of a specific flight item.
-   * @param {number} index - The index of the flight being changed in the `flights` array.
-   * @param {string} field - The name of the field being updated (e.g., 'airline', 'from').
-   * @param {any} value - The new value for the field.
-   */
-  const handleFlightChange = (index, field, value) => {
-    setFlights(prevFlights => {
-      const newFlights = [...prevFlights];
-      newFlights[index] = { ...newFlights[index], [field]: value };
-      return newFlights;
-    });
-  };
-
-  /**
-   * Deletes a flight from the `flights` state array at a given index.
-   * @param {number} indexToDelete - The index of the flight to remove.
-   */
-  const deleteFlight = (indexToDelete) => {
-    setFlights(currentFlights => 
-      currentFlights.filter((_, index) => index !== indexToDelete)
-    );
-  };
-
-  /**
-   * Adds a new, empty hotel object to the `hotels` state array.
-   */
-  const addHotel = () => {
-    const newHotel = {
-      id: `new-${Date.now()}`,
+  const addNewHotel = () => addHotel({
       hotel_name: '',
       hotel_address: '',
       checkin: null,
       checkout: null,
       note: '',
-    };
-    setHotels(prevHotels => [...(prevHotels || []), newHotel]);
-  };
+  });
 
-  /**
-   * Handles changes to any field of a specific hotel item.
-   * @param {number} index - The index of the hotel being changed.
-   * @param {string} field - The name of the field being updated.
-   * @param {any} value - The new value for the field.
-   */
-  const handleHotelChange = (index, field, value) => {
-    setHotels(prevHotels => {
-      const newHotels = [...prevHotels];
-      newHotels[index] = { ...newHotels[index], [field]: value };
-      return newHotels;
-    });
-  };
-
-  /**
-   * Deletes a hotel from the `hotels` state array at a given index.
-   * @param {number} indexToDelete - The index of the hotel to remove.
-   */
-  const deleteHotel = (indexToDelete) => {
-    setHotels(currentHotels =>
-      currentHotels.filter((_, index) => index !== indexToDelete)
-    );
-  };
-
-  /**
-   * Adds a new, empty rental car object to the `rentalCars` state array.
-   */
-  const addRentalCar = () => {
-    const newCar = {
-      id: `new-${Date.now()}`,
+  const addNewRentalCar = () => addRentalCar({
       company: '',
       pickup_location: '',
       dropoff_location: '',
       pickup_date: null,
       dropoff_date: null,
-    };
-    setRentalCars(prevCars => [...(prevCars || []), newCar]);
-  };
+      note: '',
+  });
 
-  /**
-   * Handles changes to any field of a specific rental car item.
-   * @param {number} index - The index of the car being changed.
-   * @param {string} field - The name of the field being updated.
-   * @param {any} value - The new value for the field.
-   */
-  const handleRentalCarChange = (index, field, value) => {
-    setRentalCars(prevCars => {
-      const newCars = [...prevCars];
-      newCars[index] = { ...newCars[index], [field]: value };
-      return newCars;
-    });
-  };
-
-  /**
-   * Deletes a rental car from the `rentalCars` state array at a given index.
-   * @param {number} indexToDelete - The index of the car to remove.
-   */
-  const deleteRentalCar = (indexToDelete) => {
-    setRentalCars(currentCars =>
-      currentCars.filter((_, index) => index !== indexToDelete)
-    );
-  };
+  const addNewEvent = () => addEvent({
+      start: null,
+      event_name: '',
+      event_location: '',
+      note: '',
+  });
 
 
   // Once data is loaded, render the main editor form.
@@ -349,20 +239,27 @@ function Editor_Page() {
           setTripTaken={setTripTaken} 
         />
 
-        <Flight_Items flights={flights} handleFlightChange={handleFlightChange} addFlight={addFlight} deleteFlight={deleteFlight} />
+        <Flight_Items flights={flights} handleFlightChange={handleFlightChange} addFlight={addNewFlight} deleteFlight={deleteFlight} />
         <hr className='editor_page_hr'></hr>
         <Hotel_Items 
           hotels={hotels} 
           handleHotelChange={handleHotelChange} 
-          addHotel={addHotel} 
+          addHotel={addNewHotel} 
           deleteHotel={deleteHotel} 
         />
         <hr className='editor_page_hr'></hr>
         <Rental_Cars
           rentalCars={rentalCars}
           handleRentalCarChange={handleRentalCarChange}
-          addRentalCar={addRentalCar}
+          addRentalCar={addNewRentalCar}
           deleteRentalCar={deleteRentalCar}
+        />
+        <hr className='editor_page_hr'></hr>
+        <Events
+          events={events}
+          handleEventChange={handleEventChange}
+          addEvent={addNewEvent}
+          deleteEvent={deleteEvent}
         />
         <hr className='editor_page_hr'></hr>
 

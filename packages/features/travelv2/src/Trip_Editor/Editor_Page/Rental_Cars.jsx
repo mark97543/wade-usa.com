@@ -33,6 +33,9 @@ function Rental_Cars({ rentalCars = [], handleRentalCarChange, addRentalCar, del
 
               <label htmlFor={`dropoff-date-${index}`}>Dropoff Date:</label>
               <input type="datetime-local" id={`dropoff-date-${index}`} value={car.dropoff_date ? car.dropoff_date.slice(0, 16) : ''} onChange={(e) => handleRentalCarChange(index, 'dropoff_date', e.target.value)} />
+
+              <label htmlFor={`rental-car-note-${index}`}>Note:</label>
+              <textarea id={`rental-car-note-${index}`} value={car.note || ''} onChange={(e) => handleRentalCarChange(index, 'note', e.target.value)} placeholder="Notes" rows="3"/>
             </div>
             <div className='editor_page_rental_car_item_remove'>
               <button type="button" onClick={() => deleteRentalCar(index)}>-</button>

@@ -246,12 +246,12 @@
     height: 20px;
 }
 
-#add_flight_button, #add_hotel_button, #add_rental_car_button{
+#add_flight_button, #add_hotel_button, #add_rental_car_button, #add_event_button{
     width: 100%;
     background-color: var(--color-accent-tertiary-olive);
 }
 
-#add_flight_button:hover, #add_hotel_button:hover, #add_rental_car_button:hover{
+#add_flight_button:hover, #add_hotel_button:hover, #add_rental_car_button:hover, #add_event_button:hover{
     background-color: var(--color-accent-secondary);
 }
 
@@ -299,6 +299,14 @@
 .editor_page_hotel_fields > input,
 .editor_page_hotel_fields > textarea {
     width: 330px;
+}
+
+.editor_page_hotel_fields > textarea,
+.editor_page_rental_car_fields > textarea,
+.editor_page_event_fields > textarea {
+    resize: none;
+    /* Override default fixed height to allow rows attribute to work */
+    height: auto; 
 }
 
 .editor_page_hotel_item_remove {
@@ -385,5 +393,63 @@
 }
 
 .editor_page_rental_car_item_remove button:hover {
+    background-color: var(--color-accent-secondary);
+}
+
+/* ==========================================================================
+   7. Event Item Styles
+   ========================================================================== */
+
+/* Container for the entire events section. */
+.editor_page_events {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styles the container for a single event item. */
+.editor_page_event_item {
+    width: 380px;
+    border: var(--border-width-base) solid var(--border-color-base);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+/* Event Number: Centered heading for each event item. */
+#event_number {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.editor_page_event_fields {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 5px;
+}
+
+.editor_page_event_fields > label {
+    margin-top: 5px;
+}
+
+.editor_page_event_item_remove {
+    display: flex;
+    margin-top: 5px;
+}
+
+.editor_page_event_item_remove button {
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background-color: var(--color-status-danger);
+}
+
+.editor_page_event_item_remove button:hover {
     background-color: var(--color-accent-secondary);
 }

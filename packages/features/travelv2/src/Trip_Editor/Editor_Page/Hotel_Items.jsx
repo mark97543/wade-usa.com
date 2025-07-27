@@ -24,7 +24,7 @@ function Hotel_Items({ hotels = [], handleHotelChange, addHotel, deleteHotel }) 
                         <input type="text" id={`hotel-name-${index}`} value={hotel.hotel_name || ''} onChange={(e) => handleHotelChange(index, 'hotel_name', e.target.value)} />
                         
                         <label htmlFor={`hotel-address-${index}`}>Address:</label>
-                        <textarea id={`hotel-address-${index}`} value={hotel.hotel_address || ''} onChange={(e) => handleHotelChange(index, 'hotel_address', e.target.value)} rows="4" />
+                        <textarea id={`hotel-address-${index}`} value={hotel.hotel_address || ''} onChange={(e) => handleHotelChange(index, 'hotel_address', e.target.value)} rows="3" />
 
                         <label htmlFor={`checkin-datetime-${index}`}>Check-in:</label>
                         <input type="datetime-local" id={`checkin-datetime-${index}`} value={hotel.checkin ? hotel.checkin.slice(0, 16) : ''} onChange={(e) => handleHotelChange(index, 'checkin', e.target.value)} />
