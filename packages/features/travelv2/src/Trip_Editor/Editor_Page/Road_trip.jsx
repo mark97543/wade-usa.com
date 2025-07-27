@@ -59,9 +59,9 @@ function Road_trip({ roadTripStops = [], handleRoadTripChange, addRoadTripStop, 
 
                 <label htmlFor={`roadtrip-note-${index}`}>Note:</label>
                 <textarea id={`roadtrip-note-${index}`} value={stop.note || ''} onChange={(e) => handleRoadTripChange(index, 'note', e.target.value)} rows="3" />
-              </div>
-              <div className='editor_page_road_trip_item_remove'>
-                <button type="button" onClick={() => deleteRoadTripStop(index)}>-</button>
+                <div className='editor_page_road_trip_item_remove'>
+                  <button type="button" onClick={() => deleteRoadTripStop(index)}>-</button>
+                </div>
               </div>
             </div>
           ))

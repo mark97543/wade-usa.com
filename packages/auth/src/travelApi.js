@@ -25,7 +25,7 @@ export const fetchTripsBySlug = async (slug)=>{
     try{
         const trips = await client.request(
             readItems('trips_v2',{
-              fields:['*', { flights: ['*'] }],
+              fields:['*', { flights: ['*'], trip_gallery_images: ['*'] }],
               filter:{
                 slug:slug
                 }
@@ -39,24 +39,60 @@ export const fetchTripsBySlug = async (slug)=>{
       }
 }                
 
+/**
+ * A helper function to upload a file if it exists on the payload and replace it with its ID.
+ * @param {object} payload - The data payload.
+ * @param {string} fieldName - The name of the file field in the payload.
+ */
+const handleFileUpload = async (payload, fieldName) => {
+  if (payload[fieldName] && payload[fieldName] instanceof File) {
+    const formData = new FormData();
+    formData.append('file', payload[fieldName]);
+    const fileResponse = await client.request(uploadFiles(formData));
+    payload[fieldName] = fileResponse.id;
+  }
+};
+
+/**
+ * A helper function to upload multiple files if they exist on the payload and replace them with their IDs.
+ * This is for a Directus "Files" (many-to-many) field.
+ * @param {object} payload - The data payload.
+ * @param {string} fieldName - The name of the file array field in the payload.
+ */
+const handleMultipleFileUploads = async (payload, fieldName) => {
+  if (payload[fieldName] && Array.isArray(payload[fieldName])) {
+    const fileIds = await Promise.all(
+      payload[fieldName].map(async (fileOrObject) => {
+        // If it's a File object, upload it and return the new ID.
+        if (fileOrObject instanceof File) {
+          const formData = new FormData();
+          formData.append('file', fileOrObject);
+          const fileResponse = await client.request(uploadFiles(formData));
+          return fileResponse.id;
+        }
+        // If it's an object with an ID (like from a Directus read), return the ID.
+        if (typeof fileOrObject === 'object' && fileOrObject !== null && fileOrObject.id) {
+          return fileOrObject.id;
+        }
+        // If it's already a string ID, just return it.
+        if (typeof fileOrObject === 'string') {
+          return fileOrObject;
+        }
+        return null;
+      })
+    );
+    // Filter out any nulls and replace the original array with the array of IDs.
+    // This is how you update a M2M relationship in Directus - by providing the full array of related primary keys.
+    payload[fieldName] = fileIds.filter(id => id !== null);
+  }
+};
+
 /* ----------------- Creates a new item in the trips_v2 collection ----------------- */
 export const createTripV2 = async (tripData) => {
   try {
     const tripDataPayload = { ...tripData };
-
-    // Check if there's an image to upload and it's a File object
-    if (tripDataPayload.trip_image && tripDataPayload.trip_image instanceof File) {
-      const formData = new FormData();
-      formData.append('file', tripDataPayload.trip_image);
-
-      // 1. Upload the file and get its ID
-      const fileResponse = await client.request(uploadFiles(formData));
-
-      // 2. Replace the file object with the file ID for the trip creation
-      tripDataPayload.trip_image = fileResponse.id;
-    }
-
-    // 3. Create the trip item with the file ID
+    await handleFileUpload(tripDataPayload, 'trip_image');
+    await handleMultipleFileUploads(tripDataPayload, 'trip_gallery_images');
     const newTrip = await client.request(
       createItem('trips_v2', tripDataPayload)
     );
@@ -118,13 +154,10 @@ export const updateTripV2 = async (tripId, tripData, deletedItems) => {
 
     const tripDataPayload = { ...tripData };
 
-    // 2. Handle file upload if a new image is provided
-    if (tripDataPayload.trip_image && tripDataPayload.trip_image instanceof File) {
-      const formData = new FormData();
-      formData.append('file', tripDataPayload.trip_image);
-      const fileResponse = await client.request(uploadFiles(formData));
-      tripDataPayload.trip_image = fileResponse.id;
-    }
+    // 2. Handle file uploads for trip_image and banner_picture
+    await handleFileUpload(tripDataPayload, 'trip_image');
+    await handleFileUpload(tripDataPayload, 'banner_picture');
+    await handleMultipleFileUploads(tripDataPayload, 'trip_gallery_images');
 
     // 3. Update the trip item. Directus handles the deep create/update for relational arrays.
     const updatedTrip = await client.request(updateItem('trips_v2', tripId, tripDataPayload));

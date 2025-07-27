@@ -17,6 +17,8 @@ import Rental_Cars from './Rental_Cars.jsx';
 import Events from './Events.jsx';
 import Road_trip from './Road_trip.jsx';
 import { useItemManager } from './useItemManager.js';
+import Page_Layout from './Page_Layout.jsx';
+import Post_Trip from './Post_Trip.jsx';
 
 function Editor_Page() {
   const { tripID } = useParams();
@@ -25,11 +27,15 @@ function Editor_Page() {
   // State for the entire trip object fetched from the database.
   const [tripData, setTripData] = useState(null);
   // State for individual form fields, decoupled from tripData to allow editing.
+  const [longSummary, setLongSummary] = useState('');
   const [tripSummary, setTripSummary] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [bannerPicture, setBannerPicture] = useState(null);
   const [tripImage, setTripImage] = useState(null);
   const [tripTaken, setTripTaken] = useState(false);
+  const [postTripSummary, setPostTripSummary] = useState('');
+  const [galleryImages, setGalleryImages] = useState([]);
 
   // Use the custom hook to manage flights, hotels, and rental cars
   const { items: flights, setItems: setFlights, addItem: addFlight, deleteItem: deleteFlight, handleItemChange: handleFlightChange } = useItemManager([]);
@@ -60,6 +66,9 @@ function Editor_Page() {
         const trip = trips[0]; // Assuming slug is unique, take the first result.
         setTripData(trip);
         // Populate form state from the fetched trip data.
+        setLongSummary(trip.long_summary || '');
+        setPostTripSummary(trip.post_trip_summary || '');
+        setBannerPicture(trip.banner_picture);
         setTripSummary(trip.trip_summary);
         setStartDate(trip.start_date);
         setEndDate(trip.end_date);
@@ -85,6 +94,7 @@ function Editor_Page() {
         setRoadTripStops(sortedRoadTripStops);
         setInitialRoadTripStops(sortedRoadTripStops);
         setTripTaken(trip.trip_taken);
+        setGalleryImages(trip.trip_gallery_images || []);
       }
     };
     fetchTrip();
@@ -132,6 +142,8 @@ function Editor_Page() {
 
     // --- Main Trip Data Payload ---
     const tripUpdateData = {
+      long_summary: longSummary,
+      post_trip_summary: postTripSummary,
       trip_summary: tripSummary,
       start_date: startDate,
       end_date: endDate,
@@ -141,6 +153,7 @@ function Editor_Page() {
       events: eventsPayload,
       roadtrip: roadTripPayload, 
       trip_taken: tripTaken,
+      trip_gallery_images: galleryImages,
     };
 
     // Conditionally add the trip image to the payload.
@@ -148,6 +161,11 @@ function Editor_Page() {
     // and the existing image on the server remains unchanged.
     if (tripImage instanceof File) {
       tripUpdateData.trip_image = tripImage;
+    }
+
+    // Conditionally add the banner picture to the payload.
+    if (bannerPicture instanceof File) {
+      tripUpdateData.banner_picture = bannerPicture;
     }
 
     // Consolidate all items to be deleted into a single object.
@@ -268,6 +286,15 @@ function Editor_Page() {
           setTripTaken={setTripTaken} 
         />
 
+        <hr className='editor_page_hr'></hr>
+        <Page_Layout
+          longSummary={longSummary}
+          setLongSummary={setLongSummary}
+          bannerPicture={bannerPicture}
+          setBannerPicture={setBannerPicture}
+        />
+        <hr className='editor_page_hr'></hr>
+
         <Flight_Items flights={flights} handleFlightChange={handleFlightChange} addFlight={addNewFlight} deleteFlight={deleteFlight} />
         <hr className='editor_page_hr'></hr>
         <Hotel_Items 
@@ -297,6 +324,13 @@ function Editor_Page() {
           addRoadTripStop={addNewRoadTripStop}
           deleteRoadTripStop={deleteRoadTripStop}
           handleRoadTripReorder={handleRoadTripReorder}
+        />
+        <hr className='editor_page_hr'></hr>
+        <Post_Trip
+          postTripSummary={postTripSummary}
+          setPostTripSummary={setPostTripSummary}
+          galleryImages={galleryImages}
+          setGalleryImages={setGalleryImages}
         />
         <hr className='editor_page_hr'></hr>
 

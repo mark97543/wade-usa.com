@@ -461,6 +461,7 @@
 
 /* Container for the entire road trip section. */
 .editor_page_road_trip {
+    width: 380px;
     display: flex;
     flex-direction: column;
 }
@@ -470,6 +471,7 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 10px;
+    width: 380px;
 }
 
 /* Styles for a single draggable road trip stop item. */
@@ -482,6 +484,7 @@
     gap: 10px;
     padding: 10px;
     background-color: var(--color-bg-primary);
+    box-sizing: border-box;
     cursor: grab;
 }
 
@@ -512,9 +515,118 @@
     gap: 5px;
 }
 
+.editor_page_road_trip_fields > input,
+.editor_page_road_trip_fields > textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 /* Container for the remove button */
 .editor_page_road_trip_item_remove {
     display: flex;
+    margin-top: 5px;
+}
+
+.editor_page_road_trip_item_remove button {
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+    margin-left: auto; /* Pushes button to the right */
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background-color: var(--color-status-danger);
+}
+
+.editor_page_road_trip_item_remove button:hover {
+    background-color: var(--color-accent-secondary);
+}
+
+/* ==========================================================================
+   9. Page Layout (WYSIWYG) Styles
+   ========================================================================== */
+
+.editor_page_layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.editor_page_layout > h2 {
+    text-align: center;
+}
+
+.editor_page_layout > p {
+    text-align: center;
+    font-style: italic;
+    font-size: var(--font-size-sm);
+    margin-bottom: 10px;
+}
+
+/* Style the Quill editor container to match the theme */
+.ql-container.ql-snow {
+    border-bottom-left-radius: var(--border-radius-lg);
+    border-bottom-right-radius: var(--border-radius-lg);
+    border-color: var(--border-color-base);
+}
+
+.ql-toolbar.ql-snow {
+    border-top-left-radius: var(--border-radius-lg);
+    border-top-right-radius: var(--border-radius-lg);
+    border-color: var(--border-color-base);
+}
+
+.ql-editor {
+    min-height: 150px; /* Give it some default height */
+}
+
+.editor_page_banner_section {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding-top: 20px; /* Adjust to align with the first input */
+    gap: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color-base);
+    border-radius: var(--border-radius-lg);
+    padding: 15px;
+}
+
+.editor_page_banner_section > label {
+    font-weight: bold;
+    font-size: var(--font-size-lg);
+}
+
+.editor_page_banner_section > p {
+    font-style: italic;
+    font-size: var(--font-size-sm);
+    text-align: center;
+    margin: 0;
+}
+
+.editor_page_banner_preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--border-color-base);
+    margin-top: 5px;
+}
+
+/* ==========================================================================
+   10. Post Trip Summary Styles
+   ========================================================================== */
+
+.editor_page_post_trip {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.editor_page_post_trip > h2 {
+    text-align: center;
+}
+
+.editor_page_post_trip > p {
+    text-align: center;
+    font-style: italic;
+    font-size: var(--font-size-sm);
+    margin-bottom: 10px;
 }
