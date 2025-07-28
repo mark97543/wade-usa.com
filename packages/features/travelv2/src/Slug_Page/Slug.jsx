@@ -4,6 +4,7 @@ import { fetchTripsBySlug } from '@wade-usa/auth'
 import './Slug.css'
 import {useAuth} from '@wade-usa/auth'
 import {useNavigate} from 'react-router-dom'
+import Flights from './Flights'
 
 
 function Slug() {
@@ -21,8 +22,12 @@ function Slug() {
     const fetchTrip = async () => {
       const trips = await fetchTripsBySlug(slug)
       if (trips && trips.length > 0) {
-        const trip = trips[0] // Assuming slug is unique, take the first result
-        setItem(trip)
+        const trip = trips[0]; // Assuming slug is unique, take the first result
+        // Sort flights by start date before setting state
+        if (trip.flights && Array.isArray(trip.flights)) {
+          trip.flights.sort((a, b) => new Date(a.start) - new Date(b.start));
+        }
+        setItem(trip);
       } else {
         console.log(`No trip found with slug: ${slug}`)
       }
@@ -30,7 +35,7 @@ function Slug() {
     fetchTrip()
   }, [slug]) // Dependency array ensures this runs only when slug changes
 
-  console.log(item)
+
   if (!item) {
     return <div>Loading...</div>
   }
@@ -44,6 +49,15 @@ function Slug() {
       <h1>{item.trip_title}</h1>
       <h3><i>{`From ${item.start_date} to ${item.end_date}`}</i></h3>
       <div className='slug_long_summary' dangerouslySetInnerHTML={{ __html: item.long_summary }} />
+
+      <h1>Trip Itinerary</h1>
+
+      {item.flights && Array.isArray(item.flights) && item.flights.length > 0 ? (
+        <Flights flights={item.flights} />
+      ) : (
+        ""
+      )}
+
     </div>
   )
 }
