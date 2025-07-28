@@ -1,6 +1,6 @@
 .travel_card_box{
     width: 380px;
-    height: 500px;
+    height: 600px !important;
     border: var(--border-width-base) solid var(--border-color-base);
     border-radius: var(--border-radius-lg);
     overflow: hidden;
