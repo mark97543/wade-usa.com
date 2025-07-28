@@ -33,6 +33,7 @@ Bash
 
 cd ~/wade-usa.com
 git pull origin main
+
 Step 5: Re-build and Deploy the Docker Container
 
 Finally, navigate to your backend-config directory and run the docker compose up command with the --build flag. This tells Docker to rebuild your frontend image with the new files you just pulled.
