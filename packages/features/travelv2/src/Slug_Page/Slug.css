@@ -127,7 +127,8 @@
 
 .slug_flights_container,
 .slug_hotels_container,
-.slug_rental_cars_container{
+.slug_rental_cars_container,
+.slug_events_container{
     min-width: 380px;
     width: 90%;
     display: flex;
@@ -217,6 +218,7 @@
     grid-template-rows: auto auto auto;
     border: 1px solid var(--color-text-primary);
     border-radius: var(--border-radius-lg);
+
 }
 
 .slug_rental_car_box0{
@@ -235,6 +237,7 @@
     border-bottom: 1px solid var(--color-text-primary);
     padding-left: 10px;
     text-align: center;
+
 }
 
 .slug_rental_car_box1 h5,
@@ -267,7 +270,33 @@
     padding-left: 10px;
     padding-right: 10px;
 
+
 }
+
+.slug_event{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-text-primary);
+    border-radius: var(--border-radius-lg);
+    margin-top: 10px;
+    overflow: hidden; /* Ensures child borders respect the container's border-radius */
+}
+
+.slug_event h3, .slug_event h4{
+    /* Add horizontal padding to indent the text content */
+    padding: 5px;
+    margin: 0px;
+}
+
+.slug_event_start{
+    border-top: 1px solid var(--color-text-primary);
+    border-bottom: 1px solid var(--color-text-primary);;
+}
+
+.slug_event_end{
+    border-bottom: 1px solid var(--color-text-primary)
+}
+
 /* --- Grid Debugging --- */
 /* .slug_flight > * {
     border: 1px dashed red; /* This will outline all direct children of the grid */

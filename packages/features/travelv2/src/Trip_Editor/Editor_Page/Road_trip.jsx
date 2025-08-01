@@ -51,7 +51,7 @@ function Road_trip({ roadTripStops = [], handleRoadTripChange, addRoadTripStop, 
               <div className="drag-handle">⠿</div>
               <div className="stop-number">{index + 1}</div>
               <div className="editor_page_road_trip_fields">
-                <label htmlFor={`roadtrip-name-${index}`}>Name:</label>
+                <label htmlFor={`roadtrip-name-${index}`}> Stop Name:</label>
                 <input type="text" id={`roadtrip-name-${index}`} value={stop.name || ''} onChange={(e) => handleRoadTripChange(index, 'name', e.target.value)} />
 
                 <label htmlFor={`roadtrip-long-lat-${index}`}>Coordinates (Long, Lat):</label>

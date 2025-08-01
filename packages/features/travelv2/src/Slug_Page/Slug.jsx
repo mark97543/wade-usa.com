@@ -7,6 +7,7 @@ import {useNavigate} from 'react-router-dom'
 import Flights from './Flights'
 import Hotels from './Hotels'
 import Rental_Cars from './Rental_Cars'
+import Events from './Events'
 
 
 function Slug() {
@@ -36,6 +37,10 @@ function Slug() {
         // Sort rental cars by start date before setting state
         if (trip.rental_cars && Array.isArray(trip.rental_cars)) {
           trip.rental_cars.sort((a, b) => new Date(a.pickup_dat) - new Date(b.pickup_date));
+        }
+        //Sort events by start date before setting state
+        if (trip.events && Array.isArray(trip.events)) {
+          trip.events.sort((a, b) => new Date(a.start) - new Date(b.start));
         }
         setItem(trip);
       } else {
@@ -76,6 +81,12 @@ function Slug() {
 
       {item.rental_cars && Array.isArray(item.rental_cars) && item.rental_cars.length > 0 ? (
         <Rental_Cars rental_cars={item.rental_cars} />
+      ) : (
+        ""
+      )}
+
+      {item.events && Array.isArray(item.events) && item.events.length > 0 ? (
+        <Events events={item.events} />
       ) : (
         ""
       )}

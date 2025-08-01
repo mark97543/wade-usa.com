@@ -191,18 +191,13 @@ function Editor_Page() {
       tripUpdateData.banner_picture = bannerPicture;
     }
 
-    // Consolidate all items to be deleted into a single object.
-    // This makes the API call more scalable for future related items.
-    const deletedItems = {
-      flights: deletedFlightIds,
-      hotels: deletedHotelIds,
-      rental_cars: deletedRentalCarIds,
-      events: deletedEventIds,
-      roadtrip: deletedRoadTripIds,
-    };
-
     try {
-      await updateTripV2(tripData.id, tripUpdateData, deletedItems);
+      // By passing an empty object for the `deletedItems`, we prevent the API from
+      // attempting a direct DELETE operation on the related collections, which was
+      // causing a 403 Forbidden error. Directus will handle the deletions of
+      // related items automatically when the parent trip item is updated with the
+      // new, filtered list of flights, hotels, etc.
+      await updateTripV2(tripData.id, tripUpdateData, {});
       alert('Trip updated successfully!');
       navigate(`/travel/${tripData.slug}`); // Navigate to the updated trip page
     } catch (error) {
