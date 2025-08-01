@@ -6,6 +6,7 @@ import {useAuth} from '@wade-usa/auth'
 import {useNavigate} from 'react-router-dom'
 import Flights from './Flights'
 import Hotels from './Hotels'
+import Rental_Cars from './Rental_Cars'
 
 
 function Slug() {
@@ -32,6 +33,10 @@ function Slug() {
         if (trip.hotels && Array.isArray(trip.hotels)) {
           trip.hotels.sort((a, b) => new Date(a.checkin) - new Date(b.checkin));
         }
+        // Sort rental cars by start date before setting state
+        if (trip.rental_cars && Array.isArray(trip.rental_cars)) {
+          trip.rental_cars.sort((a, b) => new Date(a.pickup_dat) - new Date(b.pickup_date));
+        }
         setItem(trip);
       } else {
         console.log(`No trip found with slug: ${slug}`)
@@ -45,7 +50,7 @@ function Slug() {
     return <div>Loading...</div>
   }
 
-
+  //console.log(item.rental_cars)
 
   return (
     <div className='slug-container'>
@@ -64,10 +69,13 @@ function Slug() {
       )}
 
       {item.hotels && Array.isArray(item.hotels) && item.hotels.length > 0 ? (
-        <>
           <Hotels hotels={item.hotels} />
-        </>
-        
+      ) : (
+        ""
+      )}
+
+      {item.rental_cars && Array.isArray(item.rental_cars) && item.rental_cars.length > 0 ? (
+        <Rental_Cars rental_cars={item.rental_cars} />
       ) : (
         ""
       )}
