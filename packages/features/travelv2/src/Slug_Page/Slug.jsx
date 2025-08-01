@@ -5,6 +5,7 @@ import './Slug.css'
 import {useAuth} from '@wade-usa/auth'
 import {useNavigate} from 'react-router-dom'
 import Flights from './Flights'
+import Hotels from './Hotels'
 
 
 function Slug() {
@@ -26,6 +27,10 @@ function Slug() {
         // Sort flights by start date before setting state
         if (trip.flights && Array.isArray(trip.flights)) {
           trip.flights.sort((a, b) => new Date(a.start) - new Date(b.start));
+        }
+        // Sort hotels by check-in date before setting state
+        if (trip.hotels && Array.isArray(trip.hotels)) {
+          trip.hotels.sort((a, b) => new Date(a.checkin) - new Date(b.checkin));
         }
         setItem(trip);
       } else {
@@ -54,6 +59,15 @@ function Slug() {
 
       {item.flights && Array.isArray(item.flights) && item.flights.length > 0 ? (
         <Flights flights={item.flights} />
+      ) : (
+        ""
+      )}
+
+      {item.hotels && Array.isArray(item.hotels) && item.hotels.length > 0 ? (
+        <>
+          <Hotels hotels={item.hotels} />
+        </>
+        
       ) : (
         ""
       )}

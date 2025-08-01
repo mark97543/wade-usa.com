@@ -4,7 +4,7 @@ import {formatDirectusTimeOnly, formatDirectusDateToMMDDYY} from '@wade-usa/auth
 
 
 function Flights({flights}) {
-    console.log(flights)
+    //console.log(flights)
   return (
     <div className='slug_flights_container'>
         <h2>Flights</h2>
