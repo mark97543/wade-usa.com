@@ -1,6 +1,6 @@
 import React from 'react'
 import {formatDirectusTimeOnly, formatDirectusDateToMMDDYY} from '@wade-usa/auth'
-
+//
 /**
  * @component Events
  * @description Renders a list of events or activities for a specific trip.
