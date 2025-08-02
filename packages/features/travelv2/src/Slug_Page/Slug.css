@@ -128,7 +128,8 @@
 .slug_flights_container,
 .slug_hotels_container,
 .slug_rental_cars_container,
-.slug_events_container{
+.slug_events_container,
+.slug_post_trip_container{
     min-width: 380px;
     width: 90%;
     display: flex;
@@ -295,6 +296,107 @@
 
 .slug_event_end{
     border-bottom: 1px solid var(--color-text-primary)
+}
+
+.slug_road_trip_container{
+    min-width: 380px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.slug_road_trip_table{
+    text-align: center;
+    border: 1px solid var(--color-text-primary);
+    border-radius: var(--border-radius-lg);
+    margin-top: 10px;
+    /* Use border-collapse and overflow to ensure the child elements
+       respect the parent's border-radius. */
+    border-collapse: collapse;
+    overflow: hidden;
+    width: 100%;
+}
+
+.slug_road_trip_table th,
+.slug_road_trip_table td {
+    padding: var(--space-sm);
+    border-bottom: 1px solid var(--color-bg-tertiary);
+}
+
+/* Style for the table header (th) elements. */
+.slug_road_trip_table th {
+    background-color: var(--color-bg-secondary); /* Sets the background color for the header */
+    color: var(--color-text-headings);
+    font-weight: bold;
+}
+
+/* Alternating row colors for better readability in the table body. */
+.slug_road_trip_table tbody tr:nth-child(even) {
+    background-color: var(--color-bg-tertiary);
+}
+
+.slug_road_trip_table_cell_name{
+    width: 20%;
+}
+
+.slug_road_trip_table_cell_name a{
+    color: var(--color-text-primary);
+}
+
+.slug_road_trip_table_cell_cord{
+    width: 40%;
+}
+
+.slug_road_trip_table_cell_note{
+    width: 40%;
+    text-align: left;
+}
+
+/*
+ * ==========================================================================
+ *  Post Trip & Carousel Styles
+ * ==========================================================================
+ */
+
+ .slug_post_trip_container{
+    margin-top: 50px;
+ }
+
+
+.post_trip_carousel_wrapper {
+    margin-top: var(--space-lg);
+}
+
+.post_trip_carousel_wrapper h3 {
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+
+.carousel-root {
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-color-base);
+}
+
+.carousel .slide {
+    background: var(--color-bg-secondary); /* Dark background for slides */
+}
+
+.carousel .slide img {
+    max-height: 500px; /* Adjust as needed */
+    width: auto !important; /* Override default inline styles from the library */
+    object-fit: contain;
+    margin: auto; /* Center the image horizontally */
+}
+
+.carousel .control-dots .dot {
+    background: var(--color-text-secondary);
+    box-shadow: none;
+}
+
+.carousel .control-dots .dot.selected, 
+.carousel .control-dots .dot:hover {
+    background: var(--color-accent-primary);
 }
 
 /* --- Grid Debugging --- */

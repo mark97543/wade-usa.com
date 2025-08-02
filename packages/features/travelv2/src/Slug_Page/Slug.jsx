@@ -8,6 +8,8 @@ import Flights from './Flights'
 import Hotels from './Hotels'
 import Rental_Cars from './Rental_Cars'
 import Events from './Events'
+import Road_Trip from './Road_Trip'
+import Post_Trip from './Post_Trip'
 
 
 function Slug() {
@@ -55,7 +57,7 @@ function Slug() {
     return <div>Loading...</div>
   }
 
-  //console.log(item.rental_cars)
+  console.log(item)
 
   return (
     <div className='slug-container'>
@@ -87,6 +89,19 @@ function Slug() {
 
       {item.events && Array.isArray(item.events) && item.events.length > 0 ? (
         <Events events={item.events} />
+      ) : (
+        ""
+      )}
+
+      {item.roadtrip && Array.isArray(item.roadtrip) && item.roadtrip.length > 0 ? (
+        <Road_Trip item={item.roadtrip}/>
+      ) : (
+        ""
+      )}
+
+      {/* The Post-Trip Summary should only be displayed if the trip is marked as "taken" and a summary exists. */}
+      {item.trip_taken ? (
+        <Post_Trip pts={item.post_trip_summary} images={item.carousel_images} />
       ) : (
         ""
       )}
