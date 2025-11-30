@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		// Folders/patterns set to true will be hidden in Explorer.
+		"files.exclude": {
+			"**/.git": true,
+			"**/node_modules": true,
+			"**/dist": true,
+			"Bash/Subscirpts/": false
+		},
+		// Also exclude from Search (optional)
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/dist": true
+		}
+	}
+}

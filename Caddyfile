@@ -1,0 +1,20 @@
+{
+    email wade.mark.a@gmail.com
+    # Add this line to use Staging:
+    acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+# 1. Main Website
+wade-usa.com {
+    reverse_proxy frontend:80
+}
+
+# 2. Directus API & Admin
+api.wade-usa.com {
+    reverse_proxy directus:8055
+}
+
+# 3. Future Dashboard Subdomain
+dashboard.wade-usa.com {
+    reverse_proxy frontend-dashboard:80
+}
