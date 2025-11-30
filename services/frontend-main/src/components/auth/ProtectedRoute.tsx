@@ -1,26 +1,28 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'; // Keep ReactNode import
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Spinner } from '@/components/atoms/Spinner/Spinner';
 
 export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { user, isLoading } = useAuth();
+  // Use isAuthenticated to clearly check if the user is logged in
+  const { user, isLoading, isAuthenticated } = useAuth(); 
   const location = useLocation();
 
+  // 1. If still checking the session, show a full-screen spinner.
   if (isLoading) {
-    // Show a full-screen spinner while checking the cookie
     return (
         <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Spinner size="lg" />
+            <Spinner size="lg" /> 
         </div>
     );
   }
 
-  if (!user) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected.
+  // 2. If checking is done AND user is not authenticated, redirect.
+  if (!isAuthenticated) {
+    // Redirect them to the /login page, saving the location they were trying to reach.
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  // 3. Authenticated: Render the protected content.
   return children;
 };
