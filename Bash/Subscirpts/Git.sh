@@ -1,6 +1,16 @@
 #!/bin/bash
 
 
+# Get the directory of the script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Load .env file from project root (../../.env)
+if [ -f "$SCRIPT_DIR/../../.env" ]; then
+    # Export variables from .env
+    set -a
+    source "$SCRIPT_DIR/../../.env"
+    set +a
+fi
 while true
 do
     clear
