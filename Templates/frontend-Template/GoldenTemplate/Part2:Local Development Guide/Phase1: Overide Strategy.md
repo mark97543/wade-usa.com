@@ -101,12 +101,36 @@
     - **Host/Name:** `newsite`
     - **Value/IP:** `138.68.228.190` (Your Droplet IP)
 
-  ### 2. Deploy to Server
+  ### 2. Update Server CORS Config (REQUIRED)
 
-  Wait 5-10 minutes for DNS propagation, then SSH into your Droplet to deploy.
+  Directus will block the new domain unless we add it to the allowed list. **Symptom:** If the site loads but **theme colors/fonts are missing**, it is because Directus rejected the API request.
+
+  - **Action:** SSH into your server (`ssh wade@138.68.228.190`).
+
+  - **Edit Config:** `nano /opt/wade-usa/.env.production`
+
+  - **Find:** `CORS_ORIGIN`
+
+  - **Append:** Add your new domain to the comma-separated list.
+
+    ```
+    CORS_ORIGIN="[https://wade-usa.com](https://wade-usa.com),...,[https://newsite.wade-usa.com](https://newsite.wade-usa.com)"
+    ```
+
+  - **Save:** `Ctrl+O`, `Enter`, `Ctrl+X`.
+
+  - **Apply:** You must restart Directus for this to take effect.
+
+    ```
+    dcp up -d --force-recreate directus
+    ```
+
+  ### 3. Deploy to Server
+
+  Wait 5-10 minutes for DNS propagation, then deploy the new container.
 
   ```
-  # On the Server (ssh wade@138.68.228.190)
+  # On the Server
   cd /opt/wade-usa
   git pull origin main
   
@@ -115,10 +139,10 @@
   docker compose --env-file .env.production up -d --build frontend-newsite
   ```
 
-  ### 3. Final Verification
+  ### 4. Final Verification
 
   - Visit `https://newsite.wade-usa.com/`
-  - **Expected Result:** The new application loads, and Caddy automatically provisions the SSL certificate.
+  - **Expected Result:** The new application loads, Caddy provisions SSL, and the **Theme Colors load correctly**.
 
   ## Phase 4: Local Testing & Validation
 
