@@ -66,6 +66,28 @@ services:
     networks:
       - internal_net
 
+  # --- NEW SERVICE: Frontend Application ---
+  frontend-main:
+    container_name: wade_frontend_main
+    build:
+      context: ./services/frontend-main  # Path to the Dockerfile
+      dockerfile: Dockerfile
+      args:
+        # Pass the API URL into the build phase (used inside the Dockerfile)
+        VITE_API_URL: ${VITE_API_URL} 
+    restart: always
+    networks:
+      - internal_net
+    # Use a lightweight server (Nginx) and expose its internal port 80
+    expose:
+      - 80 
+    depends_on:
+      - directus # Ensure backend is running before trying to fetch data
+    deploy:
+      resources:
+        limits:
+          memory: 256M # Keep the Nginx server small
+
 networks:
   internal_net:
     driver: bridge
