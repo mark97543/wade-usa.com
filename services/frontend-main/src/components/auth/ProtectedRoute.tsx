@@ -4,8 +4,8 @@ import { useAuth } from '@/context/AuthContext';
 import { Spinner } from '@/components/atoms/Spinner/Spinner';
 
 export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  // Use isAuthenticated to clearly check if the user is logged in
-  const { user, isLoading, isAuthenticated } = useAuth(); 
+  // FIX: Removed 'user' from destructuring to solve TS6133 error.
+  const { isLoading, isAuthenticated } = useAuth(); 
   const location = useLocation();
 
   // 1. If still checking the session, show a full-screen spinner.
