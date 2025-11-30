@@ -79,17 +79,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }));
   };
 
-  // 4. Logout Action
+  // 4. Logout Action (THE FIX)
   const logout = async () => {
     // Optimization: If we don't have a user, we don't need to call the server
     if (!user) return;
 
     try {
-      await client.logout();
+      // FIX: Manually call the endpoint and inject the withCredentials property
+      await client.request({
+          path: '/auth/logout',
+          method: 'POST',
+          // CRITICAL: Inject withCredentials to force the browser to send the cookie
+          axios: { withCredentials: true } 
+      } as any); 
     } catch (error) {
-      // It is normal to get a 400 here if the session cookie was already expired or missing
-      console.warn("AUTH: Logout failed (likely session already expired). Local state cleared.", error);
+      // It is normal to get a 400/500 here if the session cookie was already expired or missing
+      console.warn("AUTH: Logout failed gracefully (session likely already cleared). Local state cleared.", error);
     } finally {
+      // Always clear local state regardless of API success
       setUser(null);
     }
   };
