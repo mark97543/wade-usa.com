@@ -122,11 +122,33 @@ export const Header = () => {
           Design System
         </Link>
         
-        {/* Mobile "Features" */}
-        <div style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1rem' }}>
-          <div style={{ opacity: 0.5, marginBottom: '0.5rem', fontSize: '0.9rem', textTransform: 'uppercase' }}>Features</div>
-          <Link to="/feature-a" className={styles.mobileLink} style={{ border: 'none', paddingLeft: '1rem', fontSize: '1rem' }} onClick={() => setIsMenuOpen(false)}>Feature A</Link>
-          <Link to="/feature-b" className={styles.mobileLink} style={{ border: 'none', paddingLeft: '1rem', fontSize: '1rem' }} onClick={() => setIsMenuOpen(false)}>Feature B</Link>
+        {/* Mobile "Features" - Grouped with Flex Column to fix row layout */}
+        <div style={{ 
+            borderBottom: '1px solid rgba(255,255,255,0.05)', 
+            paddingBottom: '1rem',
+            display: 'flex',       /* FIX: Enable Flexbox */
+            flexDirection: 'column', /* FIX: Force vertical stack */
+            gap: '0.5rem'          /* FIX: Add spacing between items */
+        }}>
+          <div style={{ opacity: 0.5, marginBottom: '0.25rem', fontSize: '0.9rem', textTransform: 'uppercase' }}>Features</div>
+          
+          <Link 
+            to="/feature-a" 
+            className={styles.mobileLink} 
+            style={{ border: 'none', padding: '0.5rem 0 0.5rem 1rem', fontSize: '1rem' }} 
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Feature A
+          </Link>
+          
+          <Link 
+            to="/feature-b" 
+            className={styles.mobileLink} 
+            style={{ border: 'none', padding: '0.5rem 0 0.5rem 1rem', fontSize: '1rem' }} 
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Feature B
+          </Link>
         </div>
 
         {isAuthenticated && (
