@@ -1,174 +1,158 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTheme } from '@/context/ThemeContext';
-import { useAuth } from '@/context/AuthContext';
 import { Hamburger } from '@/components/atoms/Hamburger/Hamburger';
 import { Dropdown, DropdownItem } from '@/components/molecules/Dropdown/Dropdown';
 import { Button } from '@/components/atoms/Button/Button';
-import { ROLES } from '@/lib/directus'; 
 import styles from './Header.module.css';
+import type { HeaderProps, NavItem } from './types'; 
 
-export const Header = () => {
-  const { site_name, site_logo } = useTheme();
-  const { user, logout, isAuthenticated } = useAuth();
+export const Header = ({ 
+  logoUrl, 
+  siteName, 
+  mainNav = [], 
+  user, 
+  onLogin, 
+  onLogout 
+}: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const logoUrl = site_logo 
-    ? `${import.meta.env.VITE_API_URL}/assets/${site_logo}` 
-    : null;
+  // Helper: Renders a single nav item
+  const renderNavItem = (item: NavItem, isMobile = false) => {
+    // ---------------------------------------------------------
+    // NOTE: Security checks are done in App.tsx. 
+    // We assume everything passed to 'mainNav' is safe to render.
+    // ---------------------------------------------------------
 
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
+    // A. Dropdown Handling (Recursive)
+    if (item.children && item.children.length > 0) {
+      if (isMobile) {
+        return (
+          <div key={item.label} className={styles.mobileGroup}>
+            <div className={styles.mobileGroupTitle}>{item.label}</div>
+            {item.children.map(child => (
+               <Link 
+                 key={child.label} 
+                 to={child.path || '#'} 
+                 className={styles.mobileLink}
+                 onClick={() => setIsMenuOpen(false)}
+               >
+                 {child.label}
+               </Link>
+            ))}
+          </div>
+        );
+      }
+      
+      // Desktop Dropdown
+      return (
+        <Dropdown 
+          key={item.label}
+          trigger={
+            <span className={styles.link} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              {item.label} <small>▼</small>
+            </span>
+          }
+        >
+          {item.children.map((child) => (
+            <DropdownItem key={child.label} onClick={() => child.path && navigate(child.path)}>
+              {child.label}
+            </DropdownItem>
+          ))}
+        </Dropdown>
+      );
+    }
+
+    // B. Standard Link
+    return (
+      <Link 
+        key={item.label} 
+        to={item.path || '#'} 
+        className={isMobile ? styles.mobileLink : styles.link}
+        onClick={() => isMobile && setIsMenuOpen(false)}
+      >
+        {item.label}
+      </Link>
+    );
   };
-
-  const isAdmin = user?.role?.id === ROLES.ADMIN;
 
   return (
     <>
       <header className={styles.header}>
         <div className={styles.container}>
           
-          {/* --- LEFT SECTION: Logo & Navigation Links --- */}
+          {/* --- LEFT: Brand & Main Nav --- */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
-            {/* 1. Brand / Logo */}
             <Link to="/" className={styles.brand} onClick={() => setIsMenuOpen(false)}>
-              {logoUrl && <img src={logoUrl} alt={site_name} className={styles.logo} />}
-              <span>{site_name}</span>
+              {logoUrl && <img src={logoUrl} alt={siteName} className={styles.logo} />}
+              <span>{siteName}</span>
             </Link>
 
-            {/* 2. Desktop Navigation (Hidden on Mobile) */}
+            {/* Desktop Nav Loop */}
             <nav className={styles.desktopNav}>
-              <Link to="/design" className={styles.link}>Design System</Link>
-
-              {/* Features Dropdown */}
-              <Dropdown 
-                trigger={
-                  <span className={styles.link} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                    Features <small>▼</small>
-                  </span>
-                }
-              >
-                <DropdownItem onClick={() => navigate('/feature-a')}>Feature A</DropdownItem>
-                <DropdownItem onClick={() => navigate('/feature-b')}>Feature B</DropdownItem>
-                <DropdownItem onClick={() => navigate('/feature-c')}>Feature C</DropdownItem>
-              </Dropdown>
-
-              {/* Private Links */}
-              {isAuthenticated && (
-                <Link to="/dashboard" className={styles.link}>Dashboard</Link>
-              )}
-
-              {/* Admin Links */}
-              {isAuthenticated && isAdmin && (
-                 <a href="https://api.wade-usa.com/admin" target="_blank" rel="noreferrer" className={styles.link} style={{ color: 'var(--accent-color)' }}>
-                   Admin
-                 </a>
-              )}
+              {mainNav.map(item => renderNavItem(item, false))}
             </nav>
           </div>
 
-          {/* --- RIGHT SECTION: Auth Actions & Mobile Toggle --- */}
+          {/* --- RIGHT: User Actions --- */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             
-            {/* Desktop Auth (Hidden on Mobile) */}
+            {/* Desktop Auth */}
             <div className={styles.desktopNav}>
-              {isAuthenticated ? (
+              {user ? (
                 <Dropdown 
                   trigger={
-                    <span style={{ cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {user?.first_name || 'User'} <small>▼</small>
+                    <span className="span_link" style={{ cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      {user.name} <small>▼</small>
                     </span>
                   }
                 >
                   <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: '0.85rem', opacity: 0.7 }}>
-                    Signed in as <br/>
-                    <strong>{user?.email}</strong>
+                    Signed in as <br/><strong>{user.email}</strong>
+                    {/* Optional: Show Role Badge */}
+                    <div style={{ marginTop: '0.25rem', fontSize: '0.7rem', opacity: 0.5, textTransform: 'uppercase' }}>
+                      {user.isAdmin ? 'Admin' : 'Member'}
+                    </div>
                   </div>
-                  <DropdownItem onClick={() => navigate('/dashboard')}>Dashboard</DropdownItem>
-                  <DropdownItem onClick={() => navigate('/profile')}>My Profile</DropdownItem>
-                  <DropdownItem onClick={handleLogout} style={{ color: 'var(--danger-color)' }}>
+                  {/* <DropdownItem onClick={() => navigate('/profile')}>My Profile</DropdownItem> */}
+                  <DropdownItem onClick={onLogout} style={{ color: 'var(--danger-color)' }}>
                     Log Out
                   </DropdownItem>
                 </Dropdown>
               ) : (
-                <Link to="/login">
-                  <Button size="sm">Login</Button>
-                </Link>
+                <Button size="sm" onClick={onLogin}>Login</Button>
               )}
             </div>
 
             {/* Mobile Hamburger */}
             <div className={styles.mobileToggle}>
-              <Hamburger 
-                isOpen={isMenuOpen} 
-                toggle={() => setIsMenuOpen(!isMenuOpen)} 
-              />
+              <Hamburger isOpen={isMenuOpen} toggle={() => setIsMenuOpen(!isMenuOpen)} />
             </div>
           </div>
-
         </div>
       </header>
 
-      {/* 4. Mobile Menu Overlay */}
-      <div 
-        className={`${styles.backdrop} ${isMenuOpen ? styles.open : ''}`} 
-        onClick={() => setIsMenuOpen(false)}
-      />
-
+      {/* --- MOBILE MENU --- */}
+      <div className={`${styles.backdrop} ${isMenuOpen ? styles.open : ''}`} onClick={() => setIsMenuOpen(false)} />
+      
       <nav className={`${styles.mobileMenu} ${isMenuOpen ? styles.open : ''}`}>
-        <Link to="/design" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
-          Design System
-        </Link>
-        
-        {/* Mobile "Features" - Grouped with Flex Column to fix row layout */}
-        <div style={{ 
-            borderBottom: '1px solid rgba(255,255,255,0.05)', 
-            paddingBottom: '1rem',
-            display: 'flex',       /* FIX: Enable Flexbox */
-            flexDirection: 'column', /* FIX: Force vertical stack */
-            gap: '0.5rem'          /* FIX: Add spacing between items */
-        }}>
-          <div style={{ opacity: 0.5, marginBottom: '0.25rem', fontSize: '0.9rem', textTransform: 'uppercase' }}>Features</div>
-          
-          <Link 
-            to="/feature-a" 
-            className={styles.mobileLink} 
-            style={{ border: 'none', padding: '0.5rem 0 0.5rem 1rem', fontSize: '1rem' }} 
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Feature A
-          </Link>
-          
-          <Link 
-            to="/feature-b" 
-            className={styles.mobileLink} 
-            style={{ border: 'none', padding: '0.5rem 0 0.5rem 1rem', fontSize: '1rem' }} 
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Feature B
-          </Link>
-        </div>
-
-        {isAuthenticated && (
-          <Link to="/dashboard" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
-            Dashboard
-          </Link>
-        )}
-
-        {isAuthenticated ? (
-          <button 
-            className={styles.mobileLink} 
-            onClick={() => { handleLogout(); setIsMenuOpen(false); }}
-            style={{ color: 'var(--danger-color)', textAlign: 'left', background: 'none', border: 'none', width: '100%', cursor: 'pointer' }}
-          >
-            Log Out ({user?.first_name})
-          </button>
+        {mainNav.map(item => renderNavItem(item, true))}
+        <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '1rem 0' }} />
+        {user ? (
+          <>
+            {/* <Link to="/profile" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>My Profile</Link> */}
+            <button 
+              className={styles.mobileLink} 
+              onClick={() => { onLogout && onLogout(); setIsMenuOpen(false); }}
+              style={{ color: 'var(--danger-color)', textAlign: 'left', width: '100%', background: 'transparent', border: 'none' }}
+            >
+              Log Out
+            </button>
+          </>
         ) : (
-          <Link to="/login" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
-            Login
-          </Link>
+          <div style={{ padding: '0 1rem', marginTop: '0.5rem' }}>
+             <Button size="sm" onClick={() => { onLogin && onLogin(); setIsMenuOpen(false); }} style={{ width: '100%' }}>Login</Button>
+          </div>
         )}
       </nav>
     </>

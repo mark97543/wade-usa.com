@@ -76,6 +76,9 @@ services:
         # Pass the API URL into the build phase (used inside the Dockerfile)
         VITE_API_URL: ${VITE_API_URL} 
         VITE_APP_MAIN_URL: ${VITE_APP_MAIN_URL}
+        VITE_ROLE_ADMIN: ${VITE_ROLE_ADMIN}
+        VITE_ROLE_BASIC: ${VITE_ROLE_BASIC}
+        VITE_ROLE_PENDING: ${VITE_ROLE_PENDING}
     restart: always
     networks:
       - internal_net
