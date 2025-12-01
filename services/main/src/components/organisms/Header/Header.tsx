@@ -1,3 +1,5 @@
+// services/main/src/components/organisms/Header/Header.tsx
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Hamburger } from '@/components/atoms/Hamburger/Hamburger';
@@ -49,6 +51,7 @@ export const Header = ({
         <Dropdown 
           key={item.label}
           trigger={
+            // Used inline style for internal spacing/cursor, relies on .link for color/hover
             <span className={styles.link} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               {item.label} <small>▼</small>
             </span>
@@ -82,6 +85,7 @@ export const Header = ({
         <div className={styles.container}>
           
           {/* --- LEFT: Brand & Main Nav --- */}
+          {/* Maintained flex container structure with consistent gap */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
             <Link to="/" className={styles.brand} onClick={() => setIsMenuOpen(false)}>
               {logoUrl && <img src={logoUrl} alt={siteName} className={styles.logo} />}
@@ -95,6 +99,7 @@ export const Header = ({
           </div>
 
           {/* --- RIGHT: User Actions --- */}
+          {/* Maintained flex container structure with consistent gap */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             
             {/* Desktop Auth */}
@@ -102,11 +107,13 @@ export const Header = ({
               {user ? (
                 <Dropdown 
                   trigger={
-                    <span className="span_link" style={{ cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    // Replaced inline style with new .userTrigger class for theme coloring
+                    <span className={styles.userTrigger}>
                       {user.name} <small>▼</small>
                     </span>
                   }
                 >
+                  {/* Kept inner dropdown styles for subtitle formatting */}
                   <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: '0.85rem', opacity: 0.7 }}>
                     Signed in as <br/><strong>{user.email}</strong>
                     {/* Optional: Show Role Badge */}
@@ -114,7 +121,6 @@ export const Header = ({
                       {user.isAdmin ? 'Admin' : 'Member'}
                     </div>
                   </div>
-                  {/* <DropdownItem onClick={() => navigate('/profile')}>My Profile</DropdownItem> */}
                   <DropdownItem onClick={onLogout} style={{ color: 'var(--danger-color)' }}>
                     Log Out
                   </DropdownItem>
@@ -137,14 +143,16 @@ export const Header = ({
       
       <nav className={`${styles.mobileMenu} ${isMenuOpen ? styles.open : ''}`}>
         {mainNav.map(item => renderNavItem(item, true))}
-        <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '1rem 0' }} />
+        
+        {/* Replaced inline style with new .mobileSeparator class */}
+        <hr className={styles.mobileSeparator} />
+        
         {user ? (
           <>
-            {/* <Link to="/profile" className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>My Profile</Link> */}
             <button 
-              className={styles.mobileLink} 
+              // Replaced all inline styles with new .logoutButton class
+              className={styles.logoutButton} 
               onClick={() => { onLogout && onLogout(); setIsMenuOpen(false); }}
-              style={{ color: 'var(--danger-color)', textAlign: 'left', width: '100%', background: 'transparent', border: 'none' }}
             >
               Log Out
             </button>
