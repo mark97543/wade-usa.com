@@ -68,13 +68,14 @@ services:
 
   # --- NEW SERVICE: Frontend Application ---
   frontend-main:
-    container_name: wade_frontend_main
+    container_name: main_wade_usa
     build:
-      context: ./services/frontend-main  # Path to the Dockerfile
+      context: ./services/main  # Path to the Dockerfile
       dockerfile: Dockerfile
       args:
         # Pass the API URL into the build phase (used inside the Dockerfile)
         VITE_API_URL: ${VITE_API_URL} 
+        VITE_APP_MAIN_URL: ${VITE_APP_MAIN_URL}
     restart: always
     networks:
       - internal_net

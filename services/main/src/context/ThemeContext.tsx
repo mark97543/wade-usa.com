@@ -3,16 +3,14 @@ import { readSingleton } from '@directus/sdk';
 import { client } from '@/lib/directus';
 
 // 1. Define the shape of our Theme Data
+// We use [key: string]: any to tell TypeScript "Expect anything"
 interface Theme {
   site_name: string;
   primary_color: string;
   secondary_color: string;
   font_family: string;
   site_logo: string;
-  accent_color: string;
-  surface_color: string;
-  danger_color: string;
-  success_color: string;
+  [key: string]: any; 
 }
 
 // 2. Default values (Fallback if API fails)
@@ -22,10 +20,6 @@ const defaultTheme: Theme = {
   secondary_color: '#ffffff',
   font_family: 'sans-serif',
   site_logo: '',
-  accent_color: '#000000',
-  surface_color: '#ffffff',
-  danger_color: '#000000',
-  success_color: '#ffffff',
 };
 
 const ThemeContext = createContext<Theme>(defaultTheme);
@@ -37,21 +31,28 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     async function fetchTheme() {
       try {
         // Fetch the Singleton data
+        // NOTE: Must match the Collection Key in Directus exactly (Case Sensitive!)
         const data = await client.request(readSingleton('Global_Theme'));
         
-        // Save to state
-        // @ts-ignore - Directus types can be tricky with partials
-        setTheme(data || defaultTheme);
+        if (data) {
+            // @ts-ignore
+            setTheme(data);
 
-        // INJECT CSS VARIABLES
-        const root = document.documentElement;
-        root.style.setProperty('--primary-color', data?.primary_color || '#000');
-        root.style.setProperty('--secondary-color', data?.secondary_color || '#fff');
-        root.style.setProperty('--font-family', data?.font_family || 'sans-serif');
-        root.style.setProperty('--accent-color', data?.accent_color || '#000');
-        root.style.setProperty('--surface-color', data?.surface_color || '#fff');
-        root.style.setProperty('--danger-color', data?.danger_color || '#000');
-        root.style.setProperty('--success-color', data?.success_color || '#fff');
+            // --- THE SMART LOOP ---
+            // This takes EVERY field from Directus and makes it a CSS variable.
+            // No manual updates required ever again.
+            const root = document.documentElement;
+            
+            Object.entries(data).forEach(([key, value]) => {
+                // Only turn strings/numbers into variables (ignore objects/arrays)
+                if (typeof value === 'string' || typeof value === 'number') {
+                    // Convert "accent_color" -> "--accent-color"
+                    const cssVarName = `--${key.replace(/_/g, '-')}`;
+                    root.style.setProperty(cssVarName, String(value));
+                }
+            });
+            // ----------------------
+        }
         
       } catch (error) {
         console.error("Failed to load theme:", error);

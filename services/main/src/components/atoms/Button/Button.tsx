@@ -4,11 +4,13 @@ import { Spinner } from '../Spinner/Spinner';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'outline' | 'danger';
+  size?: 'sm' | 'md' | 'lg'; // Added Size Prop
   isLoading?: boolean;
 }
 
 export const Button = ({ 
   variant = 'primary', 
+  size = 'md', // Default to Medium
   isLoading, 
   children, 
   className, 
@@ -17,11 +19,13 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button 
-      className={`${styles.btn} ${styles[variant]} ${className || ''}`}
+      // Combine base class, variant class, and size class
+      className={`${styles.btn} ${styles[variant]} ${styles[size]} ${className || ''}`}
       disabled={disabled || isLoading}
       {...props}
     >
-      {isLoading && <Spinner size="sm" className={styles.spinner} />}
+      {/* If loading, show spinner. If small button, use small spinner. */}
+      {isLoading && <Spinner size={size === 'sm' ? 'sm' : 'md'} className={styles.spinner} />}
       {children}
     </button>
   );
