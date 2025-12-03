@@ -6,14 +6,14 @@ import { Routes, Route, Link } from 'react-router-dom';
 import  NotFound  from './pages/404';
 import Landing from './pages/Landing';
 import UnauthorizedPage from './pages/UnauthorizedPage';
+import Dash from './pages/Dash';
 
 // --- COMPONENTS ---
 import { Login } from '@/pages/Login';
-// import { ProtectedRoute } from '@/componets/auth/ProtectedRoute';
 import { Header } from '@/components/organisms/Header/Header';
-import { Button } from '@/components/atoms/Button/Button';
 import type { NavItem } from '@/components/organisms/Header/types';
 import {Showcase} from '@/pages/Showcase';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
 // --- CONTEXT ---
 import { useAuth } from '@/context/AuthContext';
@@ -72,16 +72,6 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 };
 //#endregion
 
-//#region  --- PLACEHOLDER PAGES ---
-
-// const UnauthorizedPage = () => ( // TODO: Replace with actual UnauthorizedPage component
-//   <div style={{ padding: '4rem', textAlign: 'center' }}>
-//     <h1>403 - Access Denied</h1>
-//     <Link to="/"><Button>Go Home</Button></Link>
-//   </div>
-// );
-
-//#endregion
 
 function App() {
 
@@ -128,6 +118,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="/showcase" element={<Showcase />} />
+
+          {/* --- admin and basic --- */}
+          <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.BASIC]} />}>
+            <Route path="/dashboard" element={<Dash />} />
+          </Route>
 
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />

@@ -24,10 +24,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // -----------------
     try {
       const userData = await client.request(readMe({ 
-        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role.id', 'role.name'] as any
+        fields: ['id', 'first_name', 'last_name', 'email', 'role'] as any
       }));
       // --- DEBUG LOG ---
-      console.log("AUTH: Session valid! User:", userData.email);
+      console.log("AUTH: Session valid! User:", userData);
       // -----------------
       setUser(userData as unknown as User);
     } catch (error) {

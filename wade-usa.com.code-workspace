@@ -17,13 +17,13 @@
 			"**/molecules": true,
 			"**/organisms": true,
 			"**/templates": true,
-			"**/components": true,
+			// "**/components": true,
 
 			//Context Library
-			"**/context": true,
+			// "**/context": true,
 			"**/lib": true,
 			"**/types": true,
-			"**/auth": true,
+			// "**/auth": true,
 
 			//Templates Library
 			"**/Templates": true,

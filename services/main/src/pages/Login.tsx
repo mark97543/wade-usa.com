@@ -24,10 +24,10 @@ export const Login = () => {
     setError('');
 
     // --- DEBUG LOGS ADDED HERE ---
-    console.log("--- Login Attempt ---");
-    console.log("State Email:", email);
-    console.log("State Password:", password);
-    console.log("Redirect target:", from);
+    // console.log("--- Login Attempt ---");
+    // console.log("State Email:", email);
+    // console.log("State Password:", password);
+    // console.log("Redirect target:", from);
     // -----------------------------
     
     try {
