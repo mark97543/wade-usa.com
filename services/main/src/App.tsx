@@ -1,9 +1,11 @@
+//#region  --- IMPORTS ---
 import { useMemo } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 
 // --- PAGES ---
 import  NotFound  from './pages/404';
-import Landing from './pages/Landing'; 
+import Landing from './pages/Landing';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 
 // --- COMPONENTS ---
 import { Login } from '@/pages/Login';
@@ -15,18 +17,18 @@ import {Showcase} from '@/pages/Showcase';
 
 // --- CONTEXT ---
 import { useAuth } from '@/context/AuthContext';
+//#endregion
 
-// --- CONFIGURATION ---
+//#region  --- CONFIGURATION ---
 // 1. Define Roles (Ensure these match your Directus UUIDs)
 const ROLES = {
   ADMIN: import.meta.env.VITE_ROLE_ADMIN || 'admin-uuid-placeholder',
   BASIC: import.meta.env.VITE_ROLE_BASIC || 'basic-uuid-placeholder',
   PENDING: import.meta.env.VITE_ROLE_PENDING || 'pending-uuid-placeholder',
 };
+//#endregion
 
-// ==========================================
-// 2. HELPER FUNCTIONS (Logic Layer)
-// ==========================================
+//#region  --- HELPER FUNCTIONS (Logic Layer) ---
 
 /**
  * Safely extracts the Role ID from a User object, 
@@ -68,42 +70,35 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
     return acc;
   }, []);
 };
+//#endregion
 
-// ==========================================
-// 3. PLACEHOLDER PAGES
-// ==========================================
-// const Dashboard = () => <div className="p-8"><h1>Dashboard Page</h1></div>; // TODO: Replace with actual Dashboard component
+//#region  --- PLACEHOLDER PAGES ---
 
-const UnauthorizedPage = () => ( // TODO: Replace with actual UnauthorizedPage component
-  <div style={{ padding: '4rem', textAlign: 'center' }}>
-    <h1>403 - Access Denied</h1>
-    <Link to="/"><Button>Go Home</Button></Link>
-  </div>
-);
+// const UnauthorizedPage = () => ( // TODO: Replace with actual UnauthorizedPage component
+//   <div style={{ padding: '4rem', textAlign: 'center' }}>
+//     <h1>403 - Access Denied</h1>
+//     <Link to="/"><Button>Go Home</Button></Link>
+//   </div>
+// );
 
-// ==========================================
-// 4. MAIN APP COMPONENT
-// ==========================================
+//#endregion
 
 function App() {
-  const { user, logout } = useAuth();
 
+  //#region ---GUI and Secutity
+  const { user, logout } = useAuth();
   // 1. Get the Safe Role ID
   const userRoleId = getRoleId(user);
-
   // 2. Define the Master Menu (Contains ALL links for ALL users)
   // We use useMemo so we don't recreate this array on every render
   const masterMenu: NavItem[] = useMemo(() => [
 
-    
   ], []);
-
   // 3. Calculate the "Visible Menu"
   // This runs whenever the user logs in/out or changes roles
   const visibleMenu = useMemo(() => {
     return filterMenuByRole(masterMenu, userRoleId);
   }, [masterMenu, userRoleId]);
-
   // 4. Prepare User object for Header
   const headerUser = user ? {
     name: user.first_name || 'User',
@@ -111,6 +106,8 @@ function App() {
     isAdmin: userRoleId === ROLES.ADMIN,
     roleId: userRoleId
   } : null;
+  //#endregion
+
 
   return (
     <>
