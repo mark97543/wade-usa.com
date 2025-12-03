@@ -1,0 +1,50 @@
+/* services/main/src/components/molecules/Toast/Toast.module.css */
+
+.toastContainer {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 10000; /* Extremely high z-index */
+  display: flex;
+  flex-direction: column-reverse; /* Newest toast on top */
+  gap: 0.5rem;
+  pointer-events: none; /* Allow clicks to pass through container if empty */
+}
+
+.toast {
+  pointer-events: auto; /* Re-enable pointer events for the toast itself */
+  padding: 1rem 1.5rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  min-width: 250px;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast.success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.toast.error {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.toast.info {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.toast.warning {
+  background-color: #f59e0b; /* Tailwind amber-500 equivalent */
+  color: white;
+}
