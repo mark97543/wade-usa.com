@@ -69,10 +69,9 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 // ==========================================
 // 3. PLACEHOLDER PAGES
 // ==========================================
-const Profile = () => <div className="p-8"><h1>My Profile</h1><p>Manage account.</p></div>;
-const Orders = () => <div className="p-8"><h1>My Orders</h1><p>Order History.</p></div>;
-const AdminDashboard = () => <div className="p-8 bg-red-50"><h1 className="text-red-800">Admin Dashboard</h1></div>;
-const UnauthorizedPage = () => (
+const Dashboard = () => <div className="p-8"><h1>Dashboard Page</h1></div>; // TODO: Replace with actual Dashboard component
+
+const UnauthorizedPage = () => ( // TODO: Replace with actual UnauthorizedPage component
   <div style={{ padding: '4rem', textAlign: 'center' }}>
     <h1>403 - Access Denied</h1>
     <Link to="/"><Button>Go Home</Button></Link>
@@ -92,27 +91,8 @@ function App() {
   // 2. Define the Master Menu (Contains ALL links for ALL users)
   // We use useMemo so we don't recreate this array on every render
   const masterMenu: NavItem[] = useMemo(() => [
-    { label: 'Home', path: '/' },
+
     
-    // Public/Shared Links
-    { label: 'Profile', path: '/profile' }, 
-
-    // Basic & Admin Only
-    { 
-      label: 'Orders', 
-      path: '/orders',
-      allowedRoles: [ROLES.BASIC, ROLES.ADMIN] 
-    },
-
-    // Admin Only Group
-    { 
-      label: 'Admin', 
-      allowedRoles: [ROLES.ADMIN], 
-      children: [
-        { label: 'Dashboard', path: '/admin/dashboard' },
-        { label: 'Users', path: '/admin/users' },
-      ] 
-    }
   ], []);
 
   // 3. Calculate the "Visible Menu"
@@ -148,22 +128,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="/showcase" element={<Showcase />} />
-
-          {/* --- LEVEL 1: ALL LOGGED IN (Including Pending) --- */}
-          <Route element={<ProtectedRoute />}> 
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-
-          {/* --- LEVEL 2: BASIC & ADMIN (Pending Blocked) --- */}
-          <Route element={<ProtectedRoute allowedRoles={[ROLES.BASIC, ROLES.ADMIN]} />}>
-            <Route path="/orders" element={<Orders />} />
-          </Route>
-
-          {/* --- LEVEL 3: ADMIN ONLY --- */}
-          <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<div className="p-8">User Management</div>} />
-          </Route>
 
           {/* Catch-all */}
           <Route path="*" element={<div className="p-8">404 - Page Not Found</div>} />

@@ -2,7 +2,7 @@ import { createDirectus, rest, authentication } from '@directus/sdk';
 
 // We define the shape of our CMS here.
 // As we create collections in Directus, we add them here to get type hints.
-interface Schema {
+export interface Schema {
     Global_Theme: {
         site_name: string;
         primary_color: string;
@@ -14,6 +14,10 @@ interface Schema {
         danger_color: string;
         success_color: string;
     };
+    main_landing_site: {
+        id: string;
+        c_pic: string;
+    }[];
 }
 
 // This pulls the IDs from your .env file automatically

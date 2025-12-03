@@ -21,3 +21,22 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition when theme loads */
 }
 
+/* * --- MAIN CONTENT LAYOUT ---
+ * Applies global constraints to all pages not using a dedicated layout.
+ */
+main {
+  /* Center and constrain width on large screens */
+  max-width: var(--content-max-width);
+  margin: 0 auto; 
+  
+  /* 1. Clear the sticky Header (3rem height + 1rem buffer) */
+  padding-top: 1rem; 
+  
+  /* 2. Add margin/padding from the side edges */
+  padding-left: 1rem; 
+  padding-right: 1rem;
+  padding-bottom: 2rem; /* Add spacing at the bottom */
+  
+  /* Retain the minimum height from your previous style */
+  min-height: 80vh; 
+}
