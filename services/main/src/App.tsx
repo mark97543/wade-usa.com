@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 
+// --- PAGES ---
+import  NotFound  from './pages/404';
+import Landing from './pages/Landing'; 
+
 // --- COMPONENTS ---
 import { Login } from '@/pages/Login';
-import Landing from './pages/Landing'; 
-// import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+// import { ProtectedRoute } from '@/componets/auth/ProtectedRoute';
 import { Header } from '@/components/organisms/Header/Header';
 import { Button } from '@/components/atoms/Button/Button';
 import type { NavItem } from '@/components/organisms/Header/types';
@@ -130,7 +133,7 @@ function App() {
           <Route path="/showcase" element={<Showcase />} />
 
           {/* Catch-all */}
-          <Route path="*" element={<div className="p-8">404 - Page Not Found</div>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </>

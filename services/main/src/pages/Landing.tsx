@@ -50,7 +50,7 @@ export default function Landing() {
 
     return (
         <div>
-            <Carousel maxWidth="1200px" height="700px" >
+            <Carousel maxWidth="1200px" height="auto" >
                 {/* Check if we have slides, otherwise show nothing or a placeholder */}
                 {slides.length > 0 ? (
                     slides.map((slide) => (

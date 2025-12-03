@@ -21,9 +21,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition when theme loads */
 }
 
-/* * --- MAIN CONTENT LAYOUT ---
- * Applies global constraints to all pages not using a dedicated layout.
- */
+/* * --- MAIN CONTENT LAYOUT --- */
 main {
   /* Center and constrain width on large screens */
   max-width: var(--content-max-width);
@@ -39,4 +37,21 @@ main {
   
   /* Retain the minimum height from your previous style */
   min-height: 80vh; 
+}
+
+/* * --- NOT FOUND PAGE --- */
+.notfound_page_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 1rem;
+  overflow: hidden;
+}
+
+.notfound_page_wrapper img {
+  max-width: 1200px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
