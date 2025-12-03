@@ -17,37 +17,16 @@ import { Tabs } from '@/components/molecules/Tabs/Tabs';
 import { Pagination } from '@/components/molecules/Pagination/Pagination';
 import { Accordion } from '@/components/molecules/Accordion/Accordion';
 import { Modal } from '@/components/molecules/Modal/Modal';
-import { useToast } from '@/components/molecules/Toast/Toast.tsx';
+import { Carousel } from '@/components/molecules/Carousel/Carousel';
+import { useToast } from '@/components/molecules/Toast/Toast';
 import type { NavItem } from '@/components/organisms/Header/types'; 
-
-// --- Local Helpers ---
-
-// Component for the reusable sub-title style
-const SubTitle = ({ children }: { children: React.ReactNode }) => (
-    <h4 style={{ marginBottom: '1rem', fontSize: '1rem', opacity: 0.8 }}>{children}</h4>
-);
-
-// Component for displaying code snippets
-const CodeBlock = ({ children }: { children: string }) => (
-  <pre style={{ 
-      backgroundColor: '#1e1e1e', 
-      padding: '0.75rem', 
-      borderRadius: '4px', 
-      overflowX: 'auto', 
-      fontSize: '0.85rem',
-      margin: '1rem 0'
-  }}>
-    <code style={{ color: '#d4d4d4' }}>{children.trim()}</code>
-  </pre>
-);
-
 
 // Define dummy navigation items for the showcase header
 const DUMMY_NAV: NavItem[] = [
   { label: 'Home', path: '/' },
   { label: 'Docs', path: '/docs' },
   { 
-    label: 'Products', 
+    label: 'Products', // <-- FIX APPLIED HERE
     children: [
       { label: 'Category 1', path: '/products/1' },
       { label: 'Category 2', path: '/products/2' },
@@ -108,6 +87,25 @@ const TAB_DATA = [
     ) 
   }
 ];
+
+// Component for the reusable sub-title style
+const SubTitle = ({ children }: { children: React.ReactNode }) => (
+    <h4 style={{ marginBottom: '1rem', fontSize: '1rem', opacity: 0.8 }}>{children}</h4>
+);
+
+// Component for displaying code snippets
+const CodeBlock = ({ children }: { children: string }) => (
+  <pre style={{ 
+      backgroundColor: '#1e1e1e', 
+      padding: '0.75rem', 
+      borderRadius: '4px', 
+      overflowX: 'auto', 
+      fontSize: '0.85rem',
+      margin: '1rem 0'
+  }}>
+    <code style={{ color: '#d4d4d4' }}>{children.trim()}</code>
+  </pre>
+);
 
 
 // NOTICE: We use 'export const' here, not 'export default'
@@ -312,6 +310,46 @@ const [vol, setVol] = useState(50);
         <section style={{ marginBottom: '4rem' }}>
           <h2 style={{ marginBottom: '1.5rem', color: 'var(--accent-color)', borderBottom: '1px dashed #333', paddingBottom: '0.5rem' }}>2. Molecules</h2>
           
+          {/* --- CAROUSEL DEMO --- */}
+          <div style={{ marginBottom: '2rem' }}>
+            <SubTitle>Carousel (Content Slider - Default Size)</SubTitle>
+            <Carousel>
+              {/* Slide 1: Image Slide */}
+              <img src="https://picsum.photos/600/350?random=1" alt="Abstract city lights background" />
+              
+              {/* Slide 2: Text Content Slide (Wrapped in Card) */}
+              <Card style={{ margin: '0', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }} title="Slide 2: Dynamic Theming">
+                <p>Content slides (like Cards) are automatically centered. This slide uses theme color for the title.</p>
+                <Button size="sm" style={{ marginTop: '1rem' }}>Learn More</Button>
+              </Card>
+            </Carousel>
+            <CodeBlock>{`
+// Default Size Example (max-width: 600px, height: 350px)
+<Carousel>
+  <img src="/assets/image1.jpg" />
+  <Card title="Text Slide" />
+</Carousel>
+            `}</CodeBlock>
+
+            <SubTitle>Carousel (Custom Size Banner)</SubTitle>
+            <Carousel height="200px" maxWidth="100%" width="100%">
+                <img src="https://picsum.photos/1200/200?random=2" alt="Wide banner background" />
+                {/* Text slide content wrapped in a div */}
+                <div style={{ padding: '2rem', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                  <h3 style={{ color: 'var(--primary-color)', fontSize: '2rem'}}>Adjustable Height Banner</h3>
+                  <p style={{ color: 'var(--primary-color)' }}>This demonstrates flexible sizing via props.</p>
+                </div>
+            </Carousel>
+            <CodeBlock>{`
+// Custom Size Example (100% width, Shorter height for a banner)
+<Carousel height="200px" maxWidth="100%" width="100%">
+    <img src="/assets/banner.jpg" />
+    <div style={{ color: 'white' }}>Banner Text</div>
+</Carousel>
+            `}</CodeBlock>
+          </div>
+          {/* --- END CAROUSEL DEMO --- */}
+
           <div style={{ marginBottom: '2rem' }}>
             <SubTitle>Toasts (Non-Modal Notifications)</SubTitle>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
@@ -337,9 +375,6 @@ const [vol, setVol] = useState(50);
 </Button>
 <Button onClick={() => showToast("Error connecting.", 'error')}>
   Error
-</Button>
-<Button onClick={() => showToast("A new feature is available.", 'info')}>
-  Info
 </Button>
             `}</CodeBlock>
           </div>
@@ -446,7 +481,7 @@ const options = [
             <CodeBlock>{`
 const options = [
   { label: 'Email', value: 'email' },
-  { label: 'SMS', value: 'sms' },
+  { label: 'sms', value: 'sms' },
 ];
 
 <RadioGroup
@@ -509,7 +544,7 @@ const options = [
                 { key: 'role', header: 'Job Title' },
               ]}
               data={[
-                { name: 'Wade Wilson', role: 'Mercenary' },
+                { name: `Item ${currentPage * 3 - 2}`, role: 'Role A' },
               ]}
             />
             <CodeBlock>{`

@@ -575,6 +575,51 @@ const [isOpen, setIsOpen] = useState(false);
 
 ------
 
+### 3.12. Carousel (Content Slider)
+
+
+
+A component that manages visibility, state, and smooth transitions for a series of slides. This component now uses CSS variables to allow for **adjustable width and height** via props.
+
+| **Prop**   | **Type**         | **Default** | **Description**                                              |
+| ---------- | ---------------- | ----------- | ------------------------------------------------------------ |
+| `children` | `ReactElement[]` | -           | The individual slides (e.g., `<img />`, `<Card />`, or `<div>`) to cycle through. |
+| `width`    | `string`         | `'100%'`    | Sets the CSS `width` property (e.g., `'500px'`, `'100%'`).   |
+| `maxWidth` | `string`         | `'600px'`   | Sets the CSS `max-width` property.                           |
+| `height`   | `string`         | `'350px'`   | Sets the CSS `height` property for the slide container.      |
+
+
+
+#### 🖼️ Image and Content Recommendations
+
+
+
+- **Default Size:** The component defaults to **600px wide by 350px tall**.
+- **Image Handling:** If you pass an `<img />` tag directly, the component uses `object-fit: cover` to ensure the image fills the slide area completely.
+- **Recommended Resolution:** For high-quality displays, provide images at least **1200px wide by 700px tall** (2x resolution).
+
+**Simple Example (Custom Size Banner):**
+
+TypeScript
+
+```
+import { Carousel } from '@/components/molecules/Carousel/Carousel';
+import { Card } from '@/components/molecules/Card/Card';
+
+// Creates a wide, short banner that takes up 100% width
+<Carousel height="200px" maxWidth="100%" width="100%">
+  {/* Slide 1: Image content (Fills the 200px height) */}
+  <img src="/images/banner-image.jpg" alt="Banner" />
+
+  {/* Slide 2: Text content (Use Card for automatic theming and padding) */}
+  <Card title="Adjustable Banner" style={{ margin: 0, height: '100%' }}>
+    <p>This demo uses a custom height of 200px.</p>
+  </Card>
+</Carousel>
+```
+
+
+
 
 
 ## 4. System Utility

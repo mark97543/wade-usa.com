@@ -12,6 +12,22 @@
 			"**/dist": true,
 			"Bash/Subscirpts/": false,
 			"**/data": true,
+
+			//Components Library
+			"**/atoms": true,
+			// "**/molecules": true,
+			"**/organisms": true,
+			"**/templates": true,
+			// "**/components": true,
+
+			//Context Library
+			"**/context": true,
+			"**/lib": true,
+			"**/types": true,
+			"**/auth": true,
+			
+			
+				
 		},
 		// Also exclude from Search (optional)
 		"search.exclude": {
