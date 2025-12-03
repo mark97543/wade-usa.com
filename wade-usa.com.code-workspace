@@ -13,11 +13,11 @@
 			"**/data": true,
 
 			//Components Library
-			"**/atoms": true,
-			"**/molecules": true,
-			"**/organisms": true,
-			"**/templates": true,
-			"**/components": true,
+			// "**/atoms": true,
+			// "**/molecules": true,
+			// "**/organisms": true,
+			// "**/templates": true,
+			// "**/components": true,
 
 			//Context Library
 			"**/context": true,

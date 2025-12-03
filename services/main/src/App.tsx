@@ -4,7 +4,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 // --- COMPONENTS ---
 import { Login } from '@/pages/Login';
 import Landing from './pages/Landing'; 
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+// import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Header } from '@/components/organisms/Header/Header';
 import { Button } from '@/components/atoms/Button/Button';
 import type { NavItem } from '@/components/organisms/Header/types';
@@ -69,7 +69,7 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 // ==========================================
 // 3. PLACEHOLDER PAGES
 // ==========================================
-const Dashboard = () => <div className="p-8"><h1>Dashboard Page</h1></div>; // TODO: Replace with actual Dashboard component
+// const Dashboard = () => <div className="p-8"><h1>Dashboard Page</h1></div>; // TODO: Replace with actual Dashboard component
 
 const UnauthorizedPage = () => ( // TODO: Replace with actual UnauthorizedPage component
   <div style={{ padding: '4rem', textAlign: 'center' }}>
