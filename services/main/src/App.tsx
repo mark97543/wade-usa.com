@@ -8,6 +8,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Header } from '@/components/organisms/Header/Header';
 import { Button } from '@/components/atoms/Button/Button';
 import type { NavItem } from '@/components/organisms/Header/types';
+import {Showcase} from '@/pages/Showcase';
 
 // --- CONTEXT ---
 import { useAuth } from '@/context/AuthContext';
@@ -146,6 +147,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          <Route path="/showcase" element={<Showcase />} />
 
           {/* --- LEVEL 1: ALL LOGGED IN (Including Pending) --- */}
           <Route element={<ProtectedRoute />}> 
