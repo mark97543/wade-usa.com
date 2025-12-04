@@ -1,13 +1,12 @@
 import { createDirectus, rest, authentication } from '@directus/sdk';
 
-// We define the shape of our CMS here.
-// As we create collections in Directus, we add them here to get type hints.
+// Define the shape of your global theme and other collections here
 interface Schema {
     Global_Theme: {
         site_name: string;
         primary_color: string;
         secondary_color: string;
-        site_logo: string; // UUID of the image file
+        site_logo: string; 
         font_family: string;
         accent_color: string;
         surface_color: string;
@@ -16,25 +15,23 @@ interface Schema {
     };
 }
 
-// This pulls the IDs from your .env file automatically
+// Environment Variables
 export const ROLES = {
   ADMIN: import.meta.env.VITE_ROLE_ADMIN || '',
   BASIC: import.meta.env.VITE_ROLE_BASIC || '',
   PENDING: import.meta.env.VITE_ROLE_PENDING || '',
-  PUBLIC: null // Public is always null in Directus
+  PUBLIC: null
 };
 
-// Connect to your specific API domain
 const apiUrl = import.meta.env.VITE_API_URL || 'https://api.wade-usa.com';
 
-// **FINAL FIX:** Ensure the rest extension, with its axios config, is correctly chained
+// 1. Create the Client
 export const client = createDirectus<Schema>(apiUrl)
     .with(rest({ 
-        // In the new SDK (using fetch), we use 'credentials' instead of 'withCredentials'
-        credentials: 'include'
+        // CRITICAL: This tells the browser to send the HttpOnly cookie with every request
+        credentials: 'include' 
     })) 
-    .with(authentication('cookie', {
-        autoRefresh: true, // Handles the silent refresh automatically
+    .with(authentication('cookie', { 
+        // CRITICAL: This ensures the SDK silently renews the token when it expires
+        autoRefresh: true 
     }));
-
-    
