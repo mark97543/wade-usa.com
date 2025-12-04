@@ -2,9 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
   readMe, 
   createUser,
-  // CRITICAL: Import the Type for the Login response (REMOVED: AuthResult)
 } from '@directus/sdk';
-import { client, ROLES } from '@/lib/directus'; // Import the ROLES constant
+import { client, ROLES } from '@/lib/directus'; 
 import type { User, AuthContextType } from '@/types/user';
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -13,27 +12,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 1. Silent Refresh (Check session on load)
+  // 1. Check Session on Page Load (The "Silent" Login)
   useEffect(() => {
     checkSession();
   }, []);
 
   const checkSession = async () => {
-    // --- DEBUG LOG ---
-    console.log("AUTH: Attempting to check session via readMe()...");
-    // -----------------
     try {
+      // STEP A: Try to exchange the cookie for a new Access Token
+      // Even if we have no token in memory, this uses the HttpOnly cookie to get one.
+      await client.refresh();
+
+      // STEP B: Now that we have a token, fetch the user's details
       const userData = await client.request(readMe({ 
-        fields: ['id', 'first_name', 'last_name', 'email', 'role'] as any
+        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role.id', 'role.name'] as any
       }));
-      // --- DEBUG LOG ---
-      console.log("AUTH: Session valid! User:", userData);
-      // -----------------
+
+      console.log("AUTH: Session restored!", userData.email);
       setUser(userData as unknown as User);
+
     } catch (error) {
-      // --- DEBUG LOG ---
-      console.warn("AUTH: Session check failed (401 expected if not logged in).");
-      // -----------------
+      // This is normal for a guest user (no cookie = 401/403)
+      console.log("AUTH: No active session found.");
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -43,34 +43,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // 2. Login Action
   const login = async (email: string, password: string) => {
     try {
-      // 1. Send Login Request
-      // NOTE: Removed explicit AuthResult type. TS will infer the structure from client.login()
-      // FIX: Added mode: 'cookie' to ensure the server sets the refresh token in a cookie
-      // Cast to any because the SDK types might not include 'mode' in LocalLoginPayload yet
-      const authResponse = await client.login({ email, password, mode: 'cookie' } as any);
+      // Perform the login (Back-end sets the HttpOnly cookie here)
+      await client.login({ email, password });
       
-      // --- DEBUG LOG ---
-      console.log("AUTH: client.login() succeeded. Received Token.");
-      // -----------------
-
-      // 2. Temporarily set the token on the client instance (Fix for localhost/caching issues)
-      client.setToken(authResponse.access_token);
-      
-      // 3. Check the session using the new, fresh token
+      // Immediately fetch the user details to update the UI
       await checkSession();
-      
-      // 4. Clear the token immediately after use (since we rely on the cookie)
-      client.setToken(null);
 
     } catch (error: any) {
-        // --- DEBUG LOG ---
-        console.error("AUTH: Login failed in AuthContext.", error);
-        throw error; // Re-throw the error so the Login.tsx page can catch and display it
-        // -----------------
+        console.error("AUTH: Login failed.", error);
+        throw error; 
     }
   };
 
-  // 3. Register Action (THE GATEKEEPER)
+  // 3. Register Action
   const register = async (email: string, password: string, first_name: string, last_name: string) => {
     await client.request(createUser({
       email,
@@ -81,39 +66,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }));
   };
 
-  // 4. Logout Action (THE FIX)
+  // 4. Logout Action
   const logout = async () => {
-    // Optimization: If we don't have a user, we don't need to call the server
-    if (!user) return;
-
     try {
-      // FIX: Manually call the endpoint. 
-      // 'credentials: include' is already set globally in directus.ts, so we don't need axios config here.
-      await client.request({
-          path: '/auth/logout',
-          method: 'POST',
-      } as any); 
+      // Destroy the cookie on the server
+      await client.logout(); 
     } catch (error) {
-      // It is normal to get a 400/500 here if the session cookie was already expired or missing
-      console.warn("AUTH: Logout failed gracefully (session likely already cleared). Local state cleared.", error);
+      console.warn("Logout failed (session might already be expired)", error);
     } finally {
-      // Always clear local state regardless of API success
+      // Always clear local state
       setUser(null);
     }
   };
 
   // 5. Role Helper
-  const hasRole = (roleId: string) => {
-    return user?.role?.id === roleId;
-  };
-
+  const hasRole = (roleId: string) => user?.role?.id === roleId;
   const isAdmin = user?.role?.id === ROLES.ADMIN;
 
   return (
     <AuthContext.Provider 
       value={{ 
         user, 
-        token: null,
+        token: null, // We don't expose the token to the UI anymore
         isLoading, 
         isAuthenticated: !!user,
         login, 
