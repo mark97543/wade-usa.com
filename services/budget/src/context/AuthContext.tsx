@@ -24,10 +24,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // -----------------
     try {
       const userData = await client.request(readMe({ 
-        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role.id', 'role.name'] as any
+        fields: ['id', 'first_name', 'last_name', 'email', 'role'] as any
       }));
       // --- DEBUG LOG ---
-      console.log("AUTH: Session valid! User:", userData.email);
+      console.log("AUTH: Session valid! User:", userData);
       // -----------------
       setUser(userData as unknown as User);
     } catch (error) {
@@ -45,7 +45,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       // 1. Send Login Request
       // NOTE: Removed explicit AuthResult type. TS will infer the structure from client.login()
-      const authResponse = await client.login({ email, password });
+      // FIX: Added mode: 'cookie' to ensure the server sets the refresh token in a cookie
+      // Cast to any because the SDK types might not include 'mode' in LocalLoginPayload yet
+      const authResponse = await client.login({ email, password, mode: 'cookie' } as any);
       
       // --- DEBUG LOG ---
       console.log("AUTH: client.login() succeeded. Received Token.");
@@ -85,12 +87,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user) return;
 
     try {
-      // FIX: Manually call the endpoint and inject the withCredentials property
+      // FIX: Manually call the endpoint. 
+      // 'credentials: include' is already set globally in directus.ts, so we don't need axios config here.
       await client.request({
           path: '/auth/logout',
           method: 'POST',
-          // CRITICAL: Inject withCredentials to force the browser to send the cookie
-          axios: { withCredentials: true } 
       } as any); 
     } catch (error) {
       // It is normal to get a 400/500 here if the session cookie was already expired or missing
