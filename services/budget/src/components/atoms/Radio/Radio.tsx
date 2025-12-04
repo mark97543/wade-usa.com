@@ -1,6 +1,4 @@
 // services/main/src/components/atoms/Radio/Radio.tsx
-
-import React from 'react';
 import type { InputHTMLAttributes } from 'react';
 import styles from './Radio.module.css';
 

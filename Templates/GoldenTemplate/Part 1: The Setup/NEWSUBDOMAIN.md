@@ -78,10 +78,12 @@
   }
   ```
 
+  2.a Update the package.json name
+
   ### 3. Commit Local Changes
 
   Commit the structural changes and new files to your repository.
-
+  
   ```
   cd ~/Documents/wade-usa.com
   git add services/frontend-newsite docker-compose.yml Caddyfile
@@ -94,7 +96,7 @@
   ### 1. Update DNS Records (CRUCIAL)
 
   The Internet needs to know your Droplet hosts this new domain.
-
+  
   - **Action:** Go to your DNS provider (where you manage `wade-usa.com`).
   - **Create a new A Record:**
     - **Type:** `A`
@@ -104,7 +106,7 @@
   ### 2. Deploy to Server
 
   Wait 5-10 minutes for DNS propagation, then SSH into your Droplet to deploy.
-
+  
   ```
   # On the Server (ssh wade@138.68.228.190)
   cd /opt/wade-usa
@@ -116,7 +118,7 @@
   ```
 
   ### 3. Final Verification
-
+  
   - Visit `https://newsite.wade-usa.com/`
   - **Expected Result:** The new application loads, and Caddy automatically provisions the SSL certificate.
 
@@ -129,7 +131,7 @@
   To see the new site on your laptop, you must map it to a port (e.g., `3002`).
 
   - **Action:** Open/Create `docker-compose.override.yml` (This file is Git-ignored).
-
+  
   ```
   services:
     # Map existing apps
@@ -148,27 +150,27 @@
   
 
   ### 2. Run the Local Fleet
-
-  Spin up the entire stack (or just the new service) locally.
   
-  **Option A: Run Everything**
+  Spin up the entire stack (or just the new service) locally.
 
+  **Option A: Run Everything**
+  
   ```
   docker compose up -d --build
   ```
-  
-  **Option B: Run Only the New App (Faster)**
 
+  **Option B: Run Only the New App (Faster)**
+  
   ```
   docker compose up -d --build frontend-newsite
   ```
-  
-  ### 3. Verify in Browser
 
+  ### 3. Verify in Browser
+  
   1. Open `http://localhost:3002`.
   2. **Test Auth:** Try logging in. (Note: It uses the LIVE database, so use real credentials).
   3. **Test Theme:** Verify the colors match the Global Theme settings.
-
+  
   ### 4. Cleanup (Optional)
   
   When finished testing, you can stop the containers to save battery/RAM.
