@@ -1,6 +1,6 @@
 // services/main/src/context/ToastContext.tsx
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import styles from '@/components/molecules/Toast/Toast.module.css';
 
