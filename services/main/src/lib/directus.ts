@@ -13,6 +13,10 @@ interface Schema {
         danger_color: string;
         success_color: string;
     };
+    main_landing_site: {
+        id: string;
+        c_pic: string;
+    }[];
 }
 
 // Environment Variables

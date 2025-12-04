@@ -17,7 +17,6 @@ interface CarouselItem {
 const fetchAllItems = async (collectionName: string) => {
     try {
         const items = await client.request(
-            // We use 'as any' here because 'main_landing_site' isn't in your global Schema yet
             readItems(collectionName as 'main_landing_site', {  
                 // Optional: filter: { status: { _eq: 'published' } },
             })
