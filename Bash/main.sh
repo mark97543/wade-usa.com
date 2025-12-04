@@ -13,13 +13,14 @@ while true; do
     echo "================================="
     echo "1. Deployment Options"
     echo "2. Git Options"
-    echo "3. Exit"
+    echo "3. Development Options"  # <--- NEW OPTION
+    echo "4. Exit"
     echo "================================="
-    read -p "Enter your choice [1-3]: " choice
+    read -p "Enter your choice [1-4]: " choice
 
     case $choice in
         1)
-            # Check if SSH.sh exists and is executable
+            # ... existing SSH logic ...
             if [ -f "$SCRIPT_DIR/Subscirpts/SSH.sh" ]; then
                 chmod +x "$SCRIPT_DIR/Subscirpts/SSH.sh"
                 "$SCRIPT_DIR/Subscirpts/SSH.sh"
@@ -29,7 +30,7 @@ while true; do
             fi
             ;;
         2)
-            # Check if Git.sh exists and is executable
+            # ... existing Git logic ...
             if [ -f "$SCRIPT_DIR/Subscirpts/Git.sh" ]; then
                 chmod +x "$SCRIPT_DIR/Subscirpts/Git.sh"
                 "$SCRIPT_DIR/Subscirpts/Git.sh"
@@ -39,6 +40,16 @@ while true; do
             fi
             ;;
         3)
+            # --- NEW DEV LOGIC ---
+            if [ -f "$SCRIPT_DIR/Subscirpts/Dev.sh" ]; then
+                chmod +x "$SCRIPT_DIR/Subscirpts/Dev.sh"
+                "$SCRIPT_DIR/Subscirpts/Dev.sh"
+            else
+                echo "Error: Subscirpts/Dev.sh not found!"
+                read -p "Press Enter to continue..."
+            fi
+            ;;
+        4)
             echo "Exiting..."
             exit 0
             ;;

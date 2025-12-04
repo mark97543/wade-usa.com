@@ -14,7 +14,8 @@ api.wade-usa.com {
     reverse_proxy directus:8055
 }
 
-# 3. Future Dashboard Subdomain
-dashboard.wade-usa.com {
-    reverse_proxy frontend-dashboard:80
+# 3. Buget Domain
+budget.wade-usa.com {
+    reverse_proxy budget_wade_usa:80
 }
+

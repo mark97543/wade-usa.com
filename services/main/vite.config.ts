@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import basicSsl from '@vitejs/plugin-basic-ssl'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,10 +11,18 @@ export default defineConfig({
   // This is safer than '../..' because it works regardless of OS.
   envDir: path.resolve(__dirname, '../../'), 
   
-  plugins: [react()],
+  plugins: [react(), basicSsl()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+
+  server: {
+    port: 3000,
+    strictPort: true,
+    host: '127.0.0.1',   // Bind to local loopback
+    allowedHosts: ['dev.wade-usa.com'] // Allow the spoofed domain
+  },
+
 })

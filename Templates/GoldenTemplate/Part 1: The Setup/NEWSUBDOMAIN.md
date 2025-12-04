@@ -143,22 +143,26 @@
         - "3002:80" # Access at http://localhost:3002
   ```
 
+  Make sure to update the local vite page
+
+  
+
   ### 2. Run the Local Fleet
 
   Spin up the entire stack (or just the new service) locally.
-
+  
   **Option A: Run Everything**
 
   ```
   docker compose up -d --build
   ```
-
+  
   **Option B: Run Only the New App (Faster)**
 
   ```
   docker compose up -d --build frontend-newsite
   ```
-
+  
   ### 3. Verify in Browser
 
   1. Open `http://localhost:3002`.
@@ -166,9 +170,9 @@
   3. **Test Theme:** Verify the colors match the Global Theme settings.
 
   ### 4. Cleanup (Optional)
-
+  
   When finished testing, you can stop the containers to save battery/RAM.
-
+  
   ```
   # Stop all containers
   docker compose down

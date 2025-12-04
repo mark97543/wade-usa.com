@@ -1,0 +1,67 @@
+/* services/main/src/components/molecules/Accordion/Accordion.module.css */
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  overflow: hidden; /* Crucial for hiding content during collapse */
+  background-color: var(--surface-color);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.03); /* Subtle contrast */
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-family);
+  text-align: left;
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.icon {
+  margin-left: 1rem;
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+  color: var(--accent-color);
+}
+
+.header.open .icon {
+  transform: rotate(180deg);
+}
+
+.contentWrapper {
+  /* This wrapper holds the visible content and ensures the transition works */
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+
+.contentWrapper.open {
+  grid-template-rows: 1fr;
+}
+
+.content {
+  /* Inner padding and border only visible when open */
+  padding: 0 1.5rem;
+  min-height: 0; /* Ensures content wrapper can collapse to 0 */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.content p {
+    padding: 1rem 0 1.5rem 0;
+    line-height: 1.6;
+    opacity: 0.8;
+}

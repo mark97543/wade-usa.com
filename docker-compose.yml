@@ -92,6 +92,34 @@ services:
         limits:
           memory: 256M # Keep the Nginx server small
 
+  # --- NEW SERVICE: Budget App ---
+  frontend-budget:
+    container_name: budget_wade_usa
+    build:
+      context: ./services/budget  # Path to the Dockerfile
+      dockerfile: Dockerfile
+      args:
+        # Pass the API URL into the build phase (used inside the Dockerfile)
+        VITE_API_URL: ${VITE_API_URL} 
+        VITE_ROLE_ADMIN: ${VITE_ROLE_ADMIN}
+        VITE_ROLE_BASIC: ${VITE_ROLE_BASIC}
+        VITE_ROLE_PENDING: ${VITE_ROLE_PENDING}
+        VITE_APP_BUDGET_URL: ${VITE_APP_BUDGET_URL}
+        VITE_APP_MAIN_URL: ${VITE_APP_MAIN_URL}
+    restart: always
+    networks:
+      - internal_net
+    # Use a lightweight server (Nginx) and expose its internal port 80
+    expose:
+      - 80 
+    depends_on:
+      - directus # Ensure backend is running before trying to fetch data
+    deploy:
+      resources:
+        limits:
+          memory: 256M # Keep the Nginx server small
+  
+
 networks:
   internal_net:
     driver: bridge

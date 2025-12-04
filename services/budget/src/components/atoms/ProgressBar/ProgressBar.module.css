@@ -1,0 +1,47 @@
+/* services/main/src/components/atoms/ProgressBar/ProgressBar.module.css */
+
+.container {
+  font-family: var(--font-family);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.labelContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--primary-color);
+  opacity: 0.8;
+}
+
+.percentage {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.track {
+  height: var(--progress-height, 0.5rem); /* Customizable height */
+  background-color: rgba(255, 255, 255, 0.15); /* Light grey track background */
+  border-radius: var(--progress-height, 0.5rem);
+  overflow: hidden; /* Ensures bar stays inside track boundary */
+}
+
+.bar {
+  height: 100%;
+  width: 0;
+  background-color: var(--accent-color);
+  transition: width 0.6s ease-in-out;
+  border-radius: inherit;
+}
+
+/* Optional: Different colors for different states (using custom props) */
+.bar.danger {
+  background-color: var(--danger-color);
+}
+.bar.success {
+  background-color: var(--success-color);
+}

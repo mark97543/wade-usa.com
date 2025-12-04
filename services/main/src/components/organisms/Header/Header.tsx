@@ -21,11 +21,6 @@ export const Header = ({
 
   // Helper: Renders a single nav item
   const renderNavItem = (item: NavItem, isMobile = false) => {
-    // ---------------------------------------------------------
-    // NOTE: Security checks are done in App.tsx. 
-    // We assume everything passed to 'mainNav' is safe to render.
-    // ---------------------------------------------------------
-
     // A. Dropdown Handling (Recursive)
     if (item.children && item.children.length > 0) {
       if (isMobile) {
@@ -51,7 +46,6 @@ export const Header = ({
         <Dropdown 
           key={item.label}
           trigger={
-            // Used inline style for internal spacing/cursor, relies on .link for color/hover
             <span className={styles.link} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
               {item.label} <small>▼</small>
             </span>
@@ -66,7 +60,23 @@ export const Header = ({
       );
     }
 
-    // B. Standard Link
+    // --- NEW LOGIC: External / Subdomain Links ---
+    // If path starts with http (e.g. http://localhost:3001 or https://dashboard.wade-usa.com)
+    // we must use a standard <a> tag to force a full page load.
+    if (item.path && item.path.startsWith('http')) {
+      return (
+        <a 
+          key={item.label} 
+          href={item.path}
+          className={isMobile ? styles.mobileLink : styles.link}
+          onClick={() => isMobile && setIsMenuOpen(false)}
+        >
+          {item.label}
+        </a>
+      );
+    }
+
+    // C. Internal Router Link
     return (
       <Link 
         key={item.label} 
@@ -85,7 +95,6 @@ export const Header = ({
         <div className={styles.container}>
           
           {/* --- LEFT: Brand & Main Nav --- */}
-          {/* Maintained flex container structure with consistent gap */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
             <Link to="/" className={styles.brand} onClick={() => setIsMenuOpen(false)}>
               {logoUrl && <img src={logoUrl} alt={siteName} className={styles.logo} />}
@@ -99,7 +108,6 @@ export const Header = ({
           </div>
 
           {/* --- RIGHT: User Actions --- */}
-          {/* Maintained flex container structure with consistent gap */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             
             {/* Desktop Auth */}
@@ -107,16 +115,13 @@ export const Header = ({
               {user ? (
                 <Dropdown 
                   trigger={
-                    // Replaced inline style with new .userTrigger class for theme coloring
                     <span className={styles.userTrigger}>
                       {user.name} <small>▼</small>
                     </span>
                   }
                 >
-                  {/* Kept inner dropdown styles for subtitle formatting */}
                   <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: '0.85rem', opacity: 0.7 }}>
                     Signed in as <br/><strong>{user.email}</strong>
-                    {/* Optional: Show Role Badge */}
                     <div style={{ marginTop: '0.25rem', fontSize: '0.7rem', opacity: 0.5, textTransform: 'uppercase' }}>
                       {user.isAdmin ? 'Admin' : 'Member'}
                     </div>
@@ -144,13 +149,11 @@ export const Header = ({
       <nav className={`${styles.mobileMenu} ${isMenuOpen ? styles.open : ''}`}>
         {mainNav.map(item => renderNavItem(item, true))}
         
-        {/* Replaced inline style with new .mobileSeparator class */}
         <hr className={styles.mobileSeparator} />
         
         {user ? (
           <>
             <button 
-              // Replaced all inline styles with new .logoutButton class
               className={styles.logoutButton} 
               onClick={() => { onLogout && onLogout(); setIsMenuOpen(false); }}
             >
