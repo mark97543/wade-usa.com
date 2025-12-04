@@ -12,28 +12,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 1. Check Session on Page Load (The "Silent" Login)
+  // 1. Silent Refresh (Check session on load)
   useEffect(() => {
     checkSession();
   }, []);
 
   const checkSession = async () => {
+    console.log("AUTH: Checking session...");
     try {
-      // STEP A: Try to exchange the cookie for a new Access Token
-      // Even if we have no token in memory, this uses the HttpOnly cookie to get one.
+      // --- THE MISSING BRIDGE ---
+      // This uses the HttpOnly cookie to get a fresh Access Token.
+      // If the user has a cookie, this succeeds. If not, it throws (Goes to catch).
       await client.refresh();
 
-      // STEP B: Now that we have a token, fetch the user's details
+      // Now that we have a token (in memory), we can fetch the user.
       const userData = await client.request(readMe({ 
-        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role.id', 'role.name'] as any
+        fields: ['id', 'first_name', 'last_name', 'email', 'role.id', 'role.name'] as any
       }));
-
-      console.log("AUTH: Session restored!", userData.email);
+      
+      console.log("AUTH: Session valid for:", userData.email);
       setUser(userData as unknown as User);
-
     } catch (error) {
-      // This is normal for a guest user (no cookie = 401/403)
-      console.log("AUTH: No active session found.");
+      // Normal behavior for a guest user (no cookie = no session)
+      console.log("AUTH: No active session (Guest Mode).");
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -43,10 +44,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // 2. Login Action
   const login = async (email: string, password: string) => {
     try {
-      // Perform the login (Back-end sets the HttpOnly cookie here)
-      await client.login({ email, password });
+      // We force 'cookie' mode. The server sets the HttpOnly cookie.
+      // The response contains the access_token for immediate use.
+      await client.login({ email, password, mode: 'cookie' } as any);
       
-      // Immediately fetch the user details to update the UI
+      console.log("AUTH: Login successful. refreshing session...");
+      
+      // We call checkSession to fetch the full user object immediately
       await checkSession();
 
     } catch (error: any) {
@@ -68,18 +72,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // 4. Logout Action
   const logout = async () => {
+    if (!user) return;
     try {
       // Destroy the cookie on the server
       await client.logout(); 
     } catch (error) {
-      console.warn("Logout failed (session might already be expired)", error);
+      console.warn("AUTH: Logout failed gracefully.", error);
     } finally {
-      // Always clear local state
       setUser(null);
     }
   };
 
-  // 5. Role Helper
+  // 5. Role Helpers
   const hasRole = (roleId: string) => user?.role?.id === roleId;
   const isAdmin = user?.role?.id === ROLES.ADMIN;
 
@@ -87,7 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <AuthContext.Provider 
       value={{ 
         user, 
-        token: null, // We don't expose the token to the UI anymore
+        token: null, // Token is internal now
         isLoading, 
         isAuthenticated: !!user,
         login, 
