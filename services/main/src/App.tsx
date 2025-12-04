@@ -1,6 +1,6 @@
 //#region  --- IMPORTS ---
 import { useMemo } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 // --- PAGES ---
 import  NotFound  from './pages/404';
