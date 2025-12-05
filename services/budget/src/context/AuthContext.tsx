@@ -1,99 +1,104 @@
-// services/main/src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
   readMe, 
-  createUser, 
-  // We use the SDK commands, but let the client handle the state
+  createUser,
 } from '@directus/sdk';
-import { client, ROLES } from '@/lib/directus';
+import { client, ROLES } from '@/lib/directus'; 
 import type { User, AuthContextType } from '@/types/user';
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  // Default to true so we don't flash the login screen while checking
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 1. SESSION CHECK (Run once on mount)
+  // 1. Silent Refresh (Check session on load)
   useEffect(() => {
     checkSession();
   }, []);
 
   const checkSession = async () => {
+    console.log("AUTH: Starting Session Check...");
     try {
-      // We don't need to manually refresh; the SDK autoRefresh:true handles it.
-      // We just try to fetch the user. If we have a valid cookie, this succeeds.
+      // PHASE 1: FORCE REFRESH
+      console.log("AUTH: Attempting to refresh token from cookie...");
+      await client.refresh();
+      console.log("AUTH: Token refreshed successfully.");
+
+      // PHASE 2: FETCH USER
       const userData = await client.request(readMe({ 
         fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role.id', 'role.name'] as any
       }));
       
-      console.log("AUTH: Session Active for", userData.email);
+      console.log("AUTH: User Data received:", userData.email);
       setUser(userData as unknown as User);
+
     } catch (error) {
-      // 401 is expected if not logged in.
-      // We don't log an error here to keep the console clean for guests.
+      console.warn("AUTH: Session check failed.", error);
       setUser(null);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // 2. LOGIN ACTION
   const login = async (email: string, password: string) => {
     try {
-      // A. Perform the login
-      // This sets the access token in memory AND the refresh cookie in the browser
-      await client.login({ email, password }); // Wrap arguments in an object {}
-      // B. Verify the session immediately
-      // We do this to get the User Object (name, role, etc) which login() doesn't return
+      const authResponse = await client.login({ email, password });
+      client.setToken(authResponse.access_token);
       await checkSession();
-
+      client.setToken(null);
     } catch (error: any) {
-        console.error("AUTH: Login Failed", error);
-        throw error; // Throw so the UI can show an error message
+        console.error("AUTH: Login failed.", error);
+        throw error; 
     }
   };
 
-  // 3. LOGOUT ACTION
-  const logout = async () => {
-    try {
-      // A. Call API to destroy the cookie on the server
-      await client.logout(); 
-    } catch (error) {
-      console.warn("AUTH: Logout API call failed (Session likely expired already)");
-    } finally {
-      // B. Always wipe local state
-      setUser(null);
-      // Optional: Redirect is handled by the UI consuming this context
-    }
-  };
-
-  // 4. REGISTER ACTION (The Gatekeeper)
   const register = async (email: string, password: string, first_name: string, last_name: string) => {
     await client.request(createUser({
       email,
       password,
       first_name,
       last_name,
-      role: ROLES.PENDING, // Auto-assign Pending Role
+      role: ROLES.PENDING,
     }));
   };
 
-  // 5. HELPER: Check Role
-  const hasRole = (roleId: string) => {
-    // Handle both object and string formats for role
-    const currentRoleId = typeof user?.role === 'object' ? user.role.id : user?.role;
-    return currentRoleId === roleId;
+  const logout = async () => {
+    if (!user) return;
+    try {
+      await client.request({
+          path: '/auth/logout',
+          method: 'POST',
+          axios: { withCredentials: true } 
+      } as any); 
+    } catch (error) {
+      console.warn("AUTH: Logout error (likely already expired).", error);
+    } finally {
+      setUser(null);
+    }
   };
 
-  const isAdmin = hasRole(ROLES.ADMIN);
+  // --- SAFE ROLE EXTRACTION HELPER ---
+  const getRoleId = (userObj: User | null): string | null => {
+    if (!userObj || !userObj.role) return null;
+    // Check if it's an object (has .id) or just a string
+    // @ts-ignore - Bypass TS thinking it's always one or the other if definitions drift
+    return typeof userObj.role === 'object' ? userObj.role.id : userObj.role;
+  };
+
+  // 5. Role Helper (UPDATED)
+  const hasRole = (roleId: string) => {
+    return getRoleId(user) === roleId;
+  };
+
+  // 6. Admin Helper (UPDATED)
+  const isAdmin = getRoleId(user) === ROLES.ADMIN;
 
   return (
     <AuthContext.Provider 
       value={{ 
         user, 
-        token: null, // We don't expose the raw token to the UI anymore
+        token: null,
         isLoading, 
         isAuthenticated: !!user,
         login, 
