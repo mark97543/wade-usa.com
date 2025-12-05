@@ -3,7 +3,7 @@ import {Button} from '@/components/atoms/Button/Button'
 export default function Dash() {
 
     const buttonClicker = () => {
-        window.location.href = 'https://dev.wade-usa.com:3001';
+        window.location.href = `${import.meta.env.VITE_APP_BUDGET_URL}`;
     }
 
     return (
