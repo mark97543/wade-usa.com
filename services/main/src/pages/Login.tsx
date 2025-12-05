@@ -43,16 +43,26 @@ export const Login = () => {
         <form onSubmit={handleSubmit}>
           <FormGroup label="Email Address" id="email">
             <Input 
-              id="email" type="email" value={email}
+              id="email" 
+              type="email" 
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@wade-usa.com" autoFocus
+              placeholder="you@wade-usa.com" 
+              autoFocus
+              // ADD THIS:
+              autoComplete="username"
             />
           </FormGroup>
+
           <FormGroup label="Password" id="password">
             <Input 
-              id="password" type="password" value={password}
+              id="password" 
+              type="password" 
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••" 
+              // ADD THIS:
+              autoComplete="current-password"
             />
           </FormGroup>
           <Button style={{ width: '100%', marginTop: '1rem' }} isLoading={isLoading}>
