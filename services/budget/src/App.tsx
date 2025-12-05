@@ -6,7 +6,8 @@ import { Header } from '@/components/organisms/Header/Header';
 import type { NavItem } from '@/components/organisms/Header/types';
 
 // --- PAGES ---
-import BudgetMain from '@/pages/BudgetMain';
+// Make sure this path exists or swap with a placeholder if needed
+import BudgetMain from '@/pages/BudgetMain'; 
 
 // --- CONTEXT ---
 import { useAuth } from '@/context/AuthContext';
@@ -22,16 +23,8 @@ const ROLES = {
 
 //#region -- Helper Functions --
 const getRoleId = (user: any): string | null => {
-  // DEBUG: Check what raw data we are trying to parse
-  // console.log("getRoleId -> Input User:", user); 
-
   if (!user || !user.role) return null;
-  
-  const roleId = typeof user.role === 'object' ? user.role.id : user.role;
-  
-  // DEBUG: Confirm we found a valid ID
-  // console.log("getRoleId -> Extracted ID:", roleId);
-  return roleId;
+  return typeof user.role === 'object' ? user.role.id : user.role;
 };
 
 const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[] => {
@@ -51,19 +44,31 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 };
 //#endregion
 
-// --- NEW COMPONENT: Redirect Bridge ---
+// --- NEW COMPONENT: Redirect Bridge (DEBUG VERSION) ---
 const RedirectToMainLogin = () => {
   useEffect(() => {
-    console.warn("⛔ RedirectToMainLogin Triggered: Redirecting user to Main Site Login...");
-    window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`;
+    console.warn("⛔ RedirectToMainLogin Triggered: Redirecting in 5 seconds...");
+    
+    // Add a 5-second delay so you can read the console
+    const timer = setTimeout(() => {
+        window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`;
+    }, 5000);
+
+    return () => clearTimeout(timer); // Cleanup
   }, []);
-  return <div style={{padding: '2rem', textAlign: 'center'}}>Redirecting to login...</div>;
+
+  return (
+    <div style={{padding: '4rem', textAlign: 'center', color: 'red'}}>
+      <h2>DEBUG MODE</h2>
+      <p>Redirecting to Main Login in 5 seconds...</p>
+      <p><strong>Check your console logs now!</strong></p>
+    </div>
+  );
 };
 
 function App() {
   //#region -- Security and header --
-  // DEBUG: Grab isLoading to see if we are just waiting for the server
-  const { user, logout, isLoading } = useAuth(); 
+  const { user, logout, isLoading } = useAuth();
   const userRoleId = getRoleId(user);
 
   // --- DEBUGGING LOGS ---
@@ -97,7 +102,6 @@ function App() {
   } : null;
   //#endregion
 
-  // OPTIONAL: Prevent flickering by showing a loader while checking cookies
   if (isLoading) {
     return <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>Loading Session...</div>;
   }
@@ -109,6 +113,7 @@ function App() {
         mainNav={visibleMenu} 
         user={headerUser}
         onLogout={logout}
+        // Manual login click handling
         onLogin={() => window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`}
       />
 
