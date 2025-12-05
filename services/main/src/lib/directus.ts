@@ -1,22 +1,18 @@
+// services/main/src/lib/directus.ts
 import { createDirectus, rest, authentication } from '@directus/sdk';
 
-// Define the shape of your global theme and other collections here
 interface Schema {
     Global_Theme: {
         site_name: string;
         primary_color: string;
         secondary_color: string;
-        site_logo: string; 
+        site_logo: string;
         font_family: string;
         accent_color: string;
         surface_color: string;
         danger_color: string;
         success_color: string;
     };
-    main_landing_site: {
-        id: string;
-        c_pic: string;
-    }[];
 }
 
 // Environment Variables
@@ -29,13 +25,13 @@ export const ROLES = {
 
 const apiUrl = import.meta.env.VITE_API_URL || 'https://api.wade-usa.com';
 
-// 1. Create the Client
+// 1. Create Client
 export const client = createDirectus<Schema>(apiUrl)
     .with(rest({ 
-        // CRITICAL: This tells the browser to send the HttpOnly cookie with every request
+        // CRITICAL: This allows cookies to be sent/received across domains
         credentials: 'include' 
     })) 
     .with(authentication('cookie', { 
-        // CRITICAL: This ensures the SDK silently renews the token when it expires
+        // CRITICAL: This handles the silent refresh loop automatically
         autoRefresh: true 
     }));

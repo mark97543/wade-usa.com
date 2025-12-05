@@ -1,106 +1,107 @@
+// services/main/src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
   readMe, 
-  createUser,
+  createUser, 
+  // We use the SDK commands, but let the client handle the state
 } from '@directus/sdk';
-import { client, ROLES } from '@/lib/directus'; 
+import { client, ROLES } from '@/lib/directus';
 import type { User, AuthContextType } from '@/types/user';
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Default to true so we don't flash the login screen while checking
+  const [isLoading, setIsLoading] = useState(true); 
 
-  // 1. Silent Refresh (Check session on load)
+  // 1. SESSION CHECK (Run once on mount)
   useEffect(() => {
-    console.log("🔄 [AuthContext] App mounted. Triggering checkSession()...");
     checkSession();
   }, []);
 
   const checkSession = async () => {
-    console.log("🕵️ [AuthContext] checkSession: Starting...");
     try {
-      // STEP A: Try to exchange the cookie for a new Access Token
-      console.log("⏳ [AuthContext] client.refresh(): Attempting to exchange cookie for token...");
-      await client.refresh();
-      console.log("✅ [AuthContext] client.refresh(): Success! Access Token should be in memory.");
-
-      // STEP B: Fetch User
-      console.log("⏳ [AuthContext] readMe(): Fetching user data...");
+      // We don't need to manually refresh; the SDK autoRefresh:true handles it.
+      // We just try to fetch the user. If we have a valid cookie, this succeeds.
       const userData = await client.request(readMe({ 
-        fields: ['id', 'first_name', 'last_name', 'email', 'role.id', 'role.name'] as any
+        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role.id', 'role.name'] as any
       }));
       
-      console.log("✅ [AuthContext] readMe(): Success!", userData.email);
+      console.log("AUTH: Session Active for", userData.email);
       setUser(userData as unknown as User);
-
-    } catch (error: any) {
-      console.warn("❌ [AuthContext] checkSession FAILED.");
-      if (error?.errors) {
-        console.error("   -> API Error Details:", JSON.stringify(error.errors, null, 2));
-      } else {
-        console.error("   -> Network/Unknown Error:", error);
-      }
+    } catch (error) {
+      // 401 is expected if not logged in.
+      // We don't log an error here to keep the console clean for guests.
       setUser(null);
     } finally {
       setIsLoading(false);
-      console.log("🏁 [AuthContext] checkSession: Finished. isLoading = false.");
     }
   };
 
-  // 2. Login Action
+  // 2. LOGIN ACTION
   const login = async (email: string, password: string) => {
-    console.log(`🔑 [AuthContext] login(): Attempting login for ${email}...`);
     try {
-      // FIX: Use 'session' mode to ensure the server sends the correct Set-Cookie headers
-      // for the new SameSite=None configuration.
-      const response = await client.login({ email, password, mode: 'session' } as any);
-      
-      console.log("✅ [AuthContext] login(): Server responded 200 OK.");
-      console.log("   -> Access Token Received?", !!response?.access_token);
-      
-      console.log("🔄 [AuthContext] login(): Immediately calling checkSession() to verify cookie...");
+      // A. Perform the login
+      // This sets the access token in memory AND the refresh cookie in the browser
+      await client.login({ email, password }); // Wrap arguments in an object {}
+      // B. Verify the session immediately
+      // We do this to get the User Object (name, role, etc) which login() doesn't return
       await checkSession();
 
     } catch (error: any) {
-        console.error("❌ [AuthContext] login(): FAILED.", error);
-        throw error; 
+        console.error("AUTH: Login Failed", error);
+        throw error; // Throw so the UI can show an error message
     }
   };
 
-  // 3. Register Action
+  // 3. LOGOUT ACTION
+  const logout = async () => {
+    try {
+      // A. Call API to destroy the cookie on the server
+      await client.logout(); 
+    } catch (error) {
+      console.warn("AUTH: Logout API call failed (Session likely expired already)");
+    } finally {
+      // B. Always wipe local state
+      setUser(null);
+      // Optional: Redirect is handled by the UI consuming this context
+    }
+  };
+
+  // 4. REGISTER ACTION (The Gatekeeper)
   const register = async (email: string, password: string, first_name: string, last_name: string) => {
     await client.request(createUser({
       email,
       password,
       first_name,
       last_name,
-      role: ROLES.PENDING,
+      role: ROLES.PENDING, // Auto-assign Pending Role
     }));
   };
 
-  // 4. Logout Action
-  const logout = async () => {
-    console.log("🚪 [AuthContext] logout(): Called.");
-    if (!user) return;
-    
-    try {
-      await client.logout(); 
-      console.log("✅ [AuthContext] logout(): Success.");
-    } catch (error) {
-      console.warn("⚠️ [AuthContext] logout(): Failed (Session might already be dead).", error);
-    } finally {
-      setUser(null);
-    }
+  // 5. HELPER: Check Role
+  const hasRole = (roleId: string) => {
+    // Handle both object and string formats for role
+    const currentRoleId = typeof user?.role === 'object' ? user.role.id : user?.role;
+    return currentRoleId === roleId;
   };
 
-  const hasRole = (roleId: string) => user?.role?.id === roleId;
-  const isAdmin = user?.role?.id === ROLES.ADMIN;
+  const isAdmin = hasRole(ROLES.ADMIN);
 
   return (
     <AuthContext.Provider 
-      value={{ user, token: null, isLoading, isAuthenticated: !!user, login, register, logout, hasRole, isAdmin }}
+      value={{ 
+        user, 
+        token: null, // We don't expose the raw token to the UI anymore
+        isLoading, 
+        isAuthenticated: !!user,
+        login, 
+        register, 
+        logout,
+        hasRole,
+        isAdmin
+      }}
     >
       {children}
     </AuthContext.Provider>
