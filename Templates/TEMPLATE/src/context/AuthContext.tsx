@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.log(`🔑 [AuthContext] login(): Attempting login for ${email}...`);
     try {
       // We force 'cookie' mode.
-      const response = await client.login({ email, password, mode: 'cookie' } as any);
+      const response = await client.login({ email, password, mode: 'session' } as any);
       console.log("✅ [AuthContext] login(): Server responded 200 OK.");
       console.log("   -> Access Token Received?", !!response?.access_token);
       console.log("   -> Expires in:", response?.expires);
