@@ -1,46 +1,35 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { Spinner } from '@/components/atoms/Spinner/Spinner';
 
 interface ProtectedRouteProps {
-  allowedRoles?: string[]; // Array of Role IDs allowed to see this page
+  children: React.ReactNode;
+  requiredRole?: string;
 }
 
-export const ProtectedRoute = ({ allowedRoles = [] }: ProtectedRouteProps) => {
-  const { user, isAuthenticated, isLoading } = useAuth();
+export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
+  const { user, isLoading, hasRole } = useAuth();
   const location = useLocation();
 
-  // 1. Loading State
-  // Don't kick the user out while we are still asking the server "Who is this?"
+  // DEBUG LOGS
   if (isLoading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
-        Loading permissions...
-      </div>
-    );
+     console.log(`🛡️ [ProtectedRoute] Loading... (${location.pathname})`);
+     return <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}><Spinner /></div>;
   }
 
-  // 2. Auth Check
-  // If not logged in, send them to Login
-  if (!isAuthenticated || !user) {
+  if (!user) {
+    console.warn(`⛔ [ProtectedRoute] Access Denied. No User found. Redirecting to /login.`);
+    console.warn(`   -> Current Path: ${location.pathname}`);
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // 3. Role Check (The Crash-Proof Fix)
-  if (allowedRoles.length > 0) {
-    
-    // LOGIC: Directus might return 'role' as a string ("UUID") OR an object ({ id: "UUID" })
-    // We check both possibilities to prevent the "reading 'id' of undefined" crash.
-    const userRoleId = 
-      typeof user.role === 'object' && user.role !== null
-        ? user.role.id     // It's an object, grab .id
-        : user.role;       // It's likely just the string UUID
-
-    // If we can't find an ID, or the ID isn't in the allowed list -> Access Denied
-    if (!userRoleId || !allowedRoles.includes(userRoleId)) {
-      return <Navigate to="/unauthorized" replace />;
-    }
+  if (requiredRole && !hasRole(requiredRole)) {
+    console.warn(`⛔ [ProtectedRoute] Access Denied. Role Mismatch.`);
+    console.warn(`   -> Required: ${requiredRole}`);
+    console.warn(`   -> User Role: ${user.role?.id}`);
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  // 4. If all checks pass, show the page
-  return <Outlet />;
+  console.log(`🔓 [ProtectedRoute] Access Granted to ${location.pathname}`);
+  return <>{children}</>;
 };
