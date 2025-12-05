@@ -43,45 +43,14 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 };
 //#endregion
 
-// --- DEBUG COMPONENT: Redirect Paused ---
+// --- PRODUCTION COMPONENT: Redirect Bridge (CLEAN) ---
 const RedirectToMainLogin = () => {
   useEffect(() => {
-    // -----------------------------------------------------------
-    // DEBUGGING STEP: Redirect is PAUSED.
-    // This allows you to check the Network Tab for cookies.
-    // -----------------------------------------------------------
-    console.warn("⛔ RedirectToMainLogin Triggered: REDIRECT BLOCKED FOR DEBUGGING.");
-    console.log("👉 ACTION REQUIRED: Open DevTools (F12) -> Network Tab.");
-    console.log("👉 Look for the red 'me' request.");
-    console.log("👉 Check 'Request Headers': Is the 'Cookie' header present?");
+    // This immediately sends the user to the main site's login page
+    window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`;
   }, []);
-
-  return (
-    <div style={{padding: '4rem', textAlign: 'center', backgroundColor: '#fff1f2', color: '#991b1b'}}>
-      <h2>🛑 Debug Mode: Redirect Paused</h2>
-      <p>The app wants to redirect you to <code>/login</code>, but we stopped it.</p>
-      <hr style={{margin: '1rem 0', borderColor: '#fca5a5'}}/>
-      <div style={{textAlign: 'left', maxWidth: '500px', margin: '0 auto'}}>
-        <strong>Check your Network Tab now:</strong>
-        <ol>
-            <li>Look for the failed request (401 Unauthorized).</li>
-            <li>Click it and view <strong>Request Headers</strong>.</li>
-            <li>Look for <code>Cookie: directus_refresh_token=...</code></li>
-        </ol>
-        <p>
-            If the cookie is <strong>MISSING</strong>: Your browser blocked it (Domain mismatch).<br/>
-            If the cookie is <strong>PRESENT</strong>: The Server rejected it (CORS/Config issue).
-        </p>
-      </div>
-      <br />
-      <button 
-        onClick={() => window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`}
-        style={{padding: '1rem', cursor: 'pointer', fontWeight: 'bold'}}
-      >
-        Manual Continue to Login
-      </button>
-    </div>
-  );
+  // Render null while we wait for the browser redirect to execute
+  return null;
 };
 
 function App() {
@@ -89,20 +58,7 @@ function App() {
   const { user, logout, isLoading } = useAuth();
   const userRoleId = getRoleId(user);
 
-  // --- DEBUGGING LOGS ---
-  useEffect(() => {
-    console.group("🔍 Budget App Debugger");
-    console.log("1. Auth Loading State:", isLoading);
-    console.log("2. Current User Object:", user);
-    console.log("3. Extracted Role ID:", userRoleId);
-    console.log("4. Env - Main URL:", import.meta.env.VITE_APP_MAIN_URL);
-    
-    if (!isLoading && !user) {
-        console.warn("⚠️ No User found. Rendering <RedirectToMainLogin />");
-    }
-    console.groupEnd();
-  }, [user, isLoading, userRoleId]);
-  // ----------------------
+  // NOTE: All debugging logs and useEffects have been removed.
 
   const masterMenu: NavItem[] = useMemo(() => [
     { label: 'Dashboard', path: `${import.meta.env.VITE_APP_MAIN_URL}/dashboard`}, 
@@ -131,7 +87,7 @@ function App() {
         mainNav={visibleMenu} 
         user={headerUser}
         onLogout={logout}
-        // Manual login click handling
+        // Redirects to main app login
         onLogin={() => window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`}
       />
 
@@ -142,9 +98,10 @@ function App() {
             <Route path="/" element={<BudgetMain />} />
           </Route>
 
-          {/* --- BRIDGE ROUTES --- */}
+          {/* --- BRIDGE ROUTE: Redirect to Main Login --- */}
           <Route path="/login" element={<RedirectToMainLogin />} />
 
+          {/* --- UNAUTHORIZED ROUTE --- */}
           <Route path="/unauthorized" element={
             <div style={{ padding: '4rem', textAlign: 'center' }}>
               <h1>403 - Access Denied</h1>
