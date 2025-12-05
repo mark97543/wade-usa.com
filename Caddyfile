@@ -1,7 +1,5 @@
 {
     email wade.mark.a@gmail.com
-    # Add this line to use Staging:
-    acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
 # 1. Main Website
