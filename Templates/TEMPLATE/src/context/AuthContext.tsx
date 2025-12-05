@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
   readMe, 
   createUser,
+  // NOTE: client.logout() is registered on the client instance 
+  // via the authentication('cookie', ...) extension.
 } from '@directus/sdk';
 import { client, ROLES } from '@/lib/directus'; 
 import type { User, AuthContextType } from '@/types/user';
@@ -12,6 +14,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // --- Safe Role Extraction Helper ---
+  // Must be defined here to be available to hasRole/isAdmin
+  const getRoleId = (userObj: User | null): string | null => {
+    if (!userObj || !userObj.role) return null;
+    // @ts-ignore - Safely check if it's an object or a string UUID
+    return typeof userObj.role === 'object' ? userObj.role.id : userObj.role;
+  };
+  
   // 1. Silent Refresh (Check session on load)
   useEffect(() => {
     checkSession();
@@ -21,6 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("AUTH: Starting Session Check...");
     try {
       // PHASE 1: FORCE REFRESH
+      // This explicitly forces the cookie exchange for a new Access Token.
       console.log("AUTH: Attempting to refresh token from cookie...");
       await client.refresh();
       console.log("AUTH: Token refreshed successfully.");
@@ -63,35 +74,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }));
   };
 
+  // 4. Logout Action (THE FIX)
   const logout = async () => {
     if (!user) return;
     try {
-      await client.request({
-          path: '/auth/logout',
-          method: 'POST',
-          axios: { withCredentials: true } 
-      } as any); 
+      // CRITICAL FIX: Use the built-in client.logout() method.
+      // This method is automatically provided by the authentication extension
+      // and knows how to send the cookie to the server to revoke the session.
+      // It is cleaner and more reliable than a manual request override.
+      // @ts-ignore
+      await client.logout();
+      console.log("AUTH: Server-side token revoked successfully.");
+
     } catch (error) {
-      console.warn("AUTH: Logout error (likely already expired).", error);
+      // It is common to get an error if the token has already expired on the server,
+      // but we still want to clear the local state to log the user out.
+      console.warn("AUTH: Logout error on server (session may be expired). Clearing local state.", error);
     } finally {
+      // CRITICAL: Always clear local state to force UI update and redirect on next load
       setUser(null);
     }
   };
 
-  // --- SAFE ROLE EXTRACTION HELPER ---
-  const getRoleId = (userObj: User | null): string | null => {
-    if (!userObj || !userObj.role) return null;
-    // Check if it's an object (has .id) or just a string
-    // @ts-ignore - Bypass TS thinking it's always one or the other if definitions drift
-    return typeof userObj.role === 'object' ? userObj.role.id : userObj.role;
-  };
-
-  // 5. Role Helper (UPDATED)
   const hasRole = (roleId: string) => {
     return getRoleId(user) === roleId;
   };
 
-  // 6. Admin Helper (UPDATED)
   const isAdmin = getRoleId(user) === ROLES.ADMIN;
 
   return (
