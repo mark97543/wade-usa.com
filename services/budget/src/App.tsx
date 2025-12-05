@@ -6,7 +6,6 @@ import { Header } from '@/components/organisms/Header/Header';
 import type { NavItem } from '@/components/organisms/Header/types';
 
 // --- PAGES ---
-// Make sure this path exists or swap with a placeholder if needed
 import BudgetMain from '@/pages/BudgetMain'; 
 
 // --- CONTEXT ---
@@ -44,24 +43,43 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 };
 //#endregion
 
-// --- NEW COMPONENT: Redirect Bridge (DEBUG VERSION) ---
+// --- DEBUG COMPONENT: Redirect Paused ---
 const RedirectToMainLogin = () => {
   useEffect(() => {
-    console.warn("⛔ RedirectToMainLogin Triggered: Redirecting in 5 seconds...");
-    
-    // Add a 5-second delay so you can read the console
-    const timer = setTimeout(() => {
-        window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`;
-    }, 5000);
-
-    return () => clearTimeout(timer); // Cleanup
+    // -----------------------------------------------------------
+    // DEBUGGING STEP: Redirect is PAUSED.
+    // This allows you to check the Network Tab for cookies.
+    // -----------------------------------------------------------
+    console.warn("⛔ RedirectToMainLogin Triggered: REDIRECT BLOCKED FOR DEBUGGING.");
+    console.log("👉 ACTION REQUIRED: Open DevTools (F12) -> Network Tab.");
+    console.log("👉 Look for the red 'me' request.");
+    console.log("👉 Check 'Request Headers': Is the 'Cookie' header present?");
   }, []);
 
   return (
-    <div style={{padding: '4rem', textAlign: 'center', color: 'red'}}>
-      <h2>DEBUG MODE</h2>
-      <p>Redirecting to Main Login in 5 seconds...</p>
-      <p><strong>Check your console logs now!</strong></p>
+    <div style={{padding: '4rem', textAlign: 'center', backgroundColor: '#fff1f2', color: '#991b1b'}}>
+      <h2>🛑 Debug Mode: Redirect Paused</h2>
+      <p>The app wants to redirect you to <code>/login</code>, but we stopped it.</p>
+      <hr style={{margin: '1rem 0', borderColor: '#fca5a5'}}/>
+      <div style={{textAlign: 'left', maxWidth: '500px', margin: '0 auto'}}>
+        <strong>Check your Network Tab now:</strong>
+        <ol>
+            <li>Look for the failed request (401 Unauthorized).</li>
+            <li>Click it and view <strong>Request Headers</strong>.</li>
+            <li>Look for <code>Cookie: directus_refresh_token=...</code></li>
+        </ol>
+        <p>
+            If the cookie is <strong>MISSING</strong>: Your browser blocked it (Domain mismatch).<br/>
+            If the cookie is <strong>PRESENT</strong>: The Server rejected it (CORS/Config issue).
+        </p>
+      </div>
+      <br />
+      <button 
+        onClick={() => window.location.href = `${import.meta.env.VITE_APP_MAIN_URL}/login`}
+        style={{padding: '1rem', cursor: 'pointer', fontWeight: 'bold'}}
+      >
+        Manual Continue to Login
+      </button>
     </div>
   );
 };
@@ -80,7 +98,7 @@ function App() {
     console.log("4. Env - Main URL:", import.meta.env.VITE_APP_MAIN_URL);
     
     if (!isLoading && !user) {
-        console.warn("⚠️ No User found after loading. Expecting redirect to /login.");
+        console.warn("⚠️ No User found. Rendering <RedirectToMainLogin />");
     }
     console.groupEnd();
   }, [user, isLoading, userRoleId]);
