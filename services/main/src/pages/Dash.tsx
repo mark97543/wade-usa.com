@@ -1,16 +1,25 @@
-import {Button} from '@/components/atoms/Button/Button'
+// src/pages/Dash.tsx (or similar)
+import { Button } from '@/components/atoms/Button/Button'
 
 export default function Dash() {
+    const budgetUrl = import.meta.env.VITE_APP_BUDGET_URL;
 
     const buttonClicker = () => {
-        window.location.href = `${import.meta.env.VITE_APP_BUDGET_URL}`;
+        // Debugging: Check console to ensure URL is actually there
+        console.log("Navigating to:", budgetUrl); 
+        
+        if (budgetUrl) {
+            window.location.href = budgetUrl;
+        } else {
+            alert("Error: Budget URL not configured!");
+        }
     }
 
     return (
         <div>
             <h1>Wade Updates</h1>
             <Button variant="danger" onClick={buttonClicker}>Go to Budget</Button>
-            <p>12/3/25: Added dashboard and updated the Auth to pull the correct data from directus.</p>
+            <p>12/3/25: Added dashboard and updated the Auth...</p>
         </div>
     );
 }
