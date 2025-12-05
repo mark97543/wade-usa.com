@@ -41,4 +41,50 @@ main {
   min-height: 80vh; 
 }
 
+/* * --- BUDGET MAIN --- */
+.BudgetMainWrapper { 
+    display: flex;
+    flex-direction: row;
+}
+
+.BudgetMain_Navbar{
+    width: 3rem;
+    height: 89vh;
+    background-color: var(--surface-color);
+}
+
+.BudgetMain_Navbar.open {
+    width: 10rem;
+}
+
+.BudgetMain_Navbar button {
+    width: 100%;
+    height: 3rem;
+    background-color: transparent;
+    color: var(--primary-color);
+    border: none;
+    cursor: pointer;
+}
+
+.BudgetMain_Navbar button:hover {
+    background-color: var(--accent-color);;
+}
+
+@media (max-width: 600px) {
+    .BudgetMainWrapper {
+        flex-direction: column;
+    }
+
+    .BudgetMain_Navbar, .BudgetMain_Navbar.open {
+        width: 100%;
+        height: 3rem;
+    }
+
+    .BudgetMain_Navbar button:nth-child(1) {
+        display: none;
+    }
+}
+
+
+
 

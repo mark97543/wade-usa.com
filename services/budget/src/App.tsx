@@ -58,8 +58,6 @@ function App() {
   const { user, logout, isLoading } = useAuth();
   const userRoleId = getRoleId(user);
 
-  // NOTE: All debugging logs and useEffects have been removed.
-
   const masterMenu: NavItem[] = useMemo(() => [
     { label: 'Dashboard', path: `${import.meta.env.VITE_APP_MAIN_URL}/dashboard`}, 
   ], []);

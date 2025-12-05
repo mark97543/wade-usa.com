@@ -91,10 +91,14 @@
   git push origin main
   ```
 
+  
+
+  4.  Updae Envireonmental variables. Update the docker compose and dockerfile with new variables. 
+
   ## Phase 3: Deployment & Verification
-
+  
   ### 1. Update DNS Records (CRUCIAL)
-
+  
   The Internet needs to know your Droplet hosts this new domain.
   
   - **Action:** Go to your DNS provider (where you manage `wade-usa.com`).
@@ -102,9 +106,9 @@
     - **Type:** `A`
     - **Host/Name:** `newsite`
     - **Value/IP:** `138.68.228.190` (Your Droplet IP)
-
+  
   ### 2. Deploy to Server
-
+  
   Wait 5-10 minutes for DNS propagation, then SSH into your Droplet to deploy.
   
   ```
@@ -116,7 +120,7 @@
   # This command is efficient as it uses Docker's cache for existing images.
   docker compose --env-file .env.production up -d --build frontend-newsite
   ```
-
+  
   ### 3. Final Verification
   
   - Visit `https://newsite.wade-usa.com/`
@@ -127,9 +131,9 @@
   Before deploying, test the new site locally alongside your other apps using Docker.
 
   ### 1. Update Local Override Config
-
+  
   To see the new site on your laptop, you must map it to a port (e.g., `3002`).
-
+  
   - **Action:** Open/Create `docker-compose.override.yml` (This file is Git-ignored).
   
   ```
@@ -146,25 +150,25 @@
   ```
 
   Make sure to update the local vite page
-
+  
   
 
   ### 2. Run the Local Fleet
   
   Spin up the entire stack (or just the new service) locally.
-
-  **Option A: Run Everything**
   
+  **Option A: Run Everything**
+
   ```
   docker compose up -d --build
   ```
-
-  **Option B: Run Only the New App (Faster)**
   
+  **Option B: Run Only the New App (Faster)**
+
   ```
   docker compose up -d --build frontend-newsite
   ```
-
+  
   ### 3. Verify in Browser
   
   1. Open `http://localhost:3002`.
