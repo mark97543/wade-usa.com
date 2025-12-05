@@ -79,6 +79,7 @@ services:
         VITE_ROLE_ADMIN: ${VITE_ROLE_ADMIN}
         VITE_ROLE_BASIC: ${VITE_ROLE_BASIC}
         VITE_ROLE_PENDING: ${VITE_ROLE_PENDING}
+        VITE_APP_BUDGET_URL: ${VITE_APP_BUDGET_URL}
     restart: always
     networks:
       - internal_net
