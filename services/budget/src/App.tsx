@@ -1,13 +1,16 @@
 import { useMemo } from 'react';
-// import { Routes, Route, Link } from 'react-router-dom';
+import {Route, Routes } from 'react-router-dom';
 
 // --- COMPONENTS ---
 import { Header } from '@/components/organisms/Header/Header';
 import type { NavItem } from '@/components/organisms/Header/types';
 
+// --- PAGES ---
+import BudgetMain from '@/pages/BudgetMain';
 
 // --- CONTEXT ---
 import { useAuth } from '@/context/AuthContext';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 //#region --- CONFIGURATION ---
 // 1. Define Roles (Ensure these match your Directus UUIDs)
@@ -97,7 +100,13 @@ function App() {
       />
 
       <main style={{ minHeight: '80vh' }}>
-        <h1>Wade USA Budget</h1>
+        <Routes>
+          <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.BASIC]} />}>
+            <Route path="/" element={<BudgetMain />} />
+          </Route>
+        </Routes> 
+
+
       </main>
     </>
   );
