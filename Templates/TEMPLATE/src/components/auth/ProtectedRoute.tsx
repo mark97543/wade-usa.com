@@ -1,35 +1,41 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Spinner } from '@/components/atoms/Spinner/Spinner';
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
-  requiredRole?: string;
+  allowedRoles?: string[]; // Array of Role IDs allowed to see this page
 }
 
-export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
-  const { user, isLoading, hasRole } = useAuth();
+export const ProtectedRoute = ({ allowedRoles = [] }: ProtectedRouteProps) => {
+  const { user, isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 
-  // DEBUG LOGS
+  // 1. Loading State
   if (isLoading) {
-     console.log(`🛡️ [ProtectedRoute] Loading... (${location.pathname})`);
-     return <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}><Spinner /></div>;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+        <Spinner />
+      </div>
+    );
   }
 
-  if (!user) {
-    console.warn(`⛔ [ProtectedRoute] Access Denied. No User found. Redirecting to /login.`);
-    console.warn(`   -> Current Path: ${location.pathname}`);
+  // 2. Auth Check
+  if (!isAuthenticated || !user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (requiredRole && !hasRole(requiredRole)) {
-    console.warn(`⛔ [ProtectedRoute] Access Denied. Role Mismatch.`);
-    console.warn(`   -> Required: ${requiredRole}`);
-    console.warn(`   -> User Role: ${user.role?.id}`);
-    return <Navigate to="/unauthorized" replace />;
+  // 3. Role Check
+  if (allowedRoles.length > 0) {
+    // Directus sometimes returns role as an object { id: "..." } or just a string "..."
+    const userRoleId = typeof user.role === 'object' && user.role !== null
+        ? user.role.id 
+        : user.role;
+
+    if (!userRoleId || !allowedRoles.includes(userRoleId)) {
+      return <Navigate to="/unauthorized" replace />;
+    }
   }
 
-  console.log(`🔓 [ProtectedRoute] Access Granted to ${location.pathname}`);
-  return <>{children}</>;
+  // 4. Render the Child Route
+  return <Outlet />;
 };
