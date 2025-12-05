@@ -36,15 +36,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(userData as unknown as User);
 
     } catch (error: any) {
-      // Detailed Error Logging
       console.warn("❌ [AuthContext] checkSession FAILED.");
       if (error?.errors) {
         console.error("   -> API Error Details:", JSON.stringify(error.errors, null, 2));
       } else {
         console.error("   -> Network/Unknown Error:", error);
       }
-      
-      // If refresh fails, we are definitely logged out
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -56,11 +53,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     console.log(`🔑 [AuthContext] login(): Attempting login for ${email}...`);
     try {
-      // We force 'cookie' mode.
+      // FIX: Use 'session' mode to ensure the server sends the correct Set-Cookie headers
+      // for the new SameSite=None configuration.
       const response = await client.login({ email, password, mode: 'session' } as any);
+      
       console.log("✅ [AuthContext] login(): Server responded 200 OK.");
       console.log("   -> Access Token Received?", !!response?.access_token);
-      console.log("   -> Expires in:", response?.expires);
       
       console.log("🔄 [AuthContext] login(): Immediately calling checkSession() to verify cookie...");
       await checkSession();
@@ -85,10 +83,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // 4. Logout Action
   const logout = async () => {
     console.log("🚪 [AuthContext] logout(): Called.");
-    if (!user) {
-        console.log("   -> No user to logout. Skipping.");
-        return;
-    }
+    if (!user) return;
+    
     try {
       await client.logout(); 
       console.log("✅ [AuthContext] logout(): Success.");
