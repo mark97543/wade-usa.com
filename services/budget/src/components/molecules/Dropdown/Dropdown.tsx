@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Dropdown.module.css';
 
@@ -9,97 +9,93 @@ interface DropdownProps {
 
 export const Dropdown = ({ trigger, children }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState<React.CSSProperties>({});
   
+  // We need distinct refs for the button (in the table) and the menu (in the body)
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  
+  // Store coordinates for the floating menu
+  const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
 
-  // Function to calculate position before opening
-  const handleOpen = () => {
-    if (triggerRef.current) {
+  // 1. Calculate Position when opening
+  useLayoutEffect(() => {
+    if (isOpen && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      const screenWidth = document.documentElement.clientWidth;
-      const screenHeight = document.documentElement.clientHeight;
-
-      // 1. Calculate placement (Align Right edge of menu to Right edge of trigger)
-      const rightSpace = screenWidth - rect.right;
       
-      // 2. Smart Flip (Check if enough space below, otherwise flip up)
-      const spaceBelow = screenHeight - rect.bottom;
-      const spaceAbove = rect.top;
-      const menuHeightApprox = 200; // Estimate or measure if needed
-
-      let topPosition: number;
-      let bottomPosition: number | undefined;
-      
-      if (spaceBelow < menuHeightApprox && spaceAbove > spaceBelow) {
-        // Not enough space below, put it ABOVE
-        topPosition = -9999; // Unused
-        bottomPosition = screenHeight - rect.top;
-      } else {
-        // Put it BELOW
-        topPosition = rect.bottom + 5; // +5px gap
-        bottomPosition = undefined;
-      }
-
-      setPosition({
-        position: 'fixed',
-        right: `${rightSpace}px`,
-        top: bottomPosition ? 'auto' : `${topPosition}px`,
-        bottom: bottomPosition ? `${bottomPosition}px` : 'auto',
-        minWidth: '200px',
-        zIndex: 9999, // Ensure it's on top of everything
+      // Basic positioning: Align bottom-left of trigger
+      // Note: You might want to adjust 'left' if you want right alignment (rect.right - 200)
+      setCoords({
+        top: rect.bottom + window.scrollY + 4, // 4px gap
+        left: rect.left + window.scrollX,
+        width: rect.width
       });
     }
-    setIsOpen(!isOpen);
-  };
+  }, [isOpen]);
 
-  // Close when clicking outside OR Scrolling (to prevent detached menus)
+  // 2. Handle "Click Outside" (Updated for Portal)
   useEffect(() => {
-    if (!isOpen) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      // We must check BOTH the trigger and the menu since they are now in different places in the DOM
+      const clickedTrigger = triggerRef.current && triggerRef.current.contains(event.target as Node);
+      const clickedMenu = menuRef.current && menuRef.current.contains(event.target as Node);
 
-    const closeMenu = () => setIsOpen(false);
+      if (!clickedTrigger && !clickedMenu) {
+        setIsOpen(false);
+      }
+    };
 
-    document.addEventListener('mousedown', closeMenu);
-    document.addEventListener('scroll', closeMenu, true); // true = capture scroll in any container
-    window.addEventListener('resize', closeMenu);
+    // Close on Scroll/Resize (Prevents menu from floating detached when you scroll the table)
+    const handleScroll = () => { if(isOpen) setIsOpen(false); };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      window.addEventListener('scroll', handleScroll, true); // true = capture phase (detects table scroll)
+      window.addEventListener('resize', handleScroll);
+    }
 
     return () => {
-      document.removeEventListener('mousedown', closeMenu);
-      document.removeEventListener('scroll', closeMenu, true);
-      window.removeEventListener('resize', closeMenu);
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener('resize', handleScroll);
     };
   }, [isOpen]);
+
+  // 3. Render the Menu into document.body using a Portal
+  const menuContent = isOpen ? (
+    <div 
+      ref={menuRef}
+      className={`${styles.menu} ${styles.open}`}
+      style={{
+        position: 'fixed', // Fixed to viewport
+        top: coords.top - window.scrollY, // Adjust for viewport relative
+        left: coords.left - window.scrollX,
+        zIndex: 9999, // Ensure it's on top of everything
+        minWidth: '200px', // Prevent squishing
+        // width: coords.width // Optional: Match trigger width?
+      }}
+      onClick={() => setIsOpen(false)} // Close when an item is clicked
+    >
+      {children}
+    </div>
+  ) : null;
 
   return (
     <>
       <button 
         ref={triggerRef}
         className={styles.trigger} 
-        onClick={(e) => {
-          e.stopPropagation(); // Prevent immediate closing
-          handleOpen();
-        }}
+        onClick={() => setIsOpen(!isOpen)}
         type="button"
       >
         {trigger}
       </button>
 
-      {/* Render the Menu directly into the Body (Portal) */}
-      {isOpen && createPortal(
-        <div 
-          className={`${styles.menu} ${styles.open}`}
-          style={position}
-          onClick={() => setIsOpen(false)} // Close on item click
-        >
-          {children}
-        </div>,
-        document.body
-      )}
+      {/* Magic: Teleport this div to <body> */}
+      {createPortal(menuContent, document.body)}
     </>
   );
 };
 
-// Helper component (Unchanged)
 export const DropdownItem = ({ children, onClick, ...props }: React.HTMLAttributes<HTMLButtonElement>) => {
   return (
     <button className={styles.item} onClick={onClick} {...props}>

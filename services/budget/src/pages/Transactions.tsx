@@ -34,9 +34,9 @@ interface Category{
 }
 // -- Dummy Data --
 const TransactionsData: Transaction[] = [ 
-    { id: 1, date: "2022-01-01", item: "Item 1", deposit: 100, withdrawal: 0, paid: true, category: "Category 1", note: "Note 1" },
-    { id: 2, date: "2022-01-02", item: "Item 2", deposit: 0, withdrawal: 200, paid: false, category: "Category 2", note: "Note 2" },
-    { id: 3, date: "2022-01-03", item: "Item 3", deposit: 0, withdrawal: 300, paid: true, category: "Category 3", note: "Note 3" },
+    { id: 1, date: "2022-01-01", item: "Item 1", deposit: 100, withdrawal: 0, paid: true, category: "Pay", note: "Note 1" },
+    { id: 2, date: "2022-01-02", item: "Item 2", deposit: 0, withdrawal: 200, paid: false, category: "Pay", note: "Note 2" },
+    { id: 3, date: "2022-01-03", item: "Item 3", deposit: 0, withdrawal: 300, paid: true, category: "Pay", note: "Note 3" },
 ]
 
 export default function Transactions() {
@@ -76,6 +76,7 @@ export default function Transactions() {
 
     // Updates the DRAFT state only (Dropdown selection)
     const handleCategoryChange = (newCategory: string) => {
+        console.log(newCategory)
         setEditFormData(prev => {
             if (!prev) return null;
             return { ...prev, category: newCategory };
@@ -240,8 +241,8 @@ export default function Transactions() {
                             }
                         >
                             {/* Update DRAFT state on click */}
-                            {category.map((item)=>(
-                                <DropdownItem key={item.id} onClick={()=> handleCategoryChange(item.item)}>{item.item}</DropdownItem>
+                            {category.map((cat)=>(
+                                <DropdownItem key={cat.id} onClick={()=> handleCategoryChange(cat.item)}>{cat.item}</DropdownItem>
                             ))}
                         </Dropdown>
                     ) : (
@@ -285,6 +286,9 @@ export default function Transactions() {
 
         setColumns(TransactionsColumns);
     }, [transactions, editingId, updateTransaction, deleteTransaction, editFormData, category]); 
+
+    
+
 
     return (
         <div className="Transactions_Wrapper">
