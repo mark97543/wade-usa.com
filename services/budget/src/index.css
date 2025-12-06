@@ -113,6 +113,7 @@ main {
     margin: 1rem;
 }
 
+
 .Transactions_Actions button {
     width: 2rem;
     height: 2rem;
@@ -124,6 +125,46 @@ main {
 .Transactions_Actions button:hover {
     background-color: var(--accent-color);
     border-radius: .5rem;
+}
+
+.Transactions_Wrapper table th:nth-child(1),
+.Transactions_Add_Form button{
+    width: 50px;
+}
+
+.Transactions_Wrapper table th:nth-child(2),
+.Transactions_Wrapper table th:nth-child(3),
+.Transactions_Add_Form input{
+    width: 172px;
+}
+
+.Transactions_Wrapper table th:nth-child(4),
+.Transactions_Wrapper table th:nth-child(5),
+.Transactions_Wrapper table td:nth-child(4) input,
+.Transactions_Wrapper table td:nth-child(5) input{
+    width: 6rem;
+}
+
+.Transactions_Wrapper table th:nth-child(6){
+    width: 172px;
+}
+
+.Transactions_Wrapper table th:nth-child(7),
+.Transactions_Wrapper table td:nth-child(7) input,
+.Transactions_Wrapper table td:nth-child(7) div{
+    width: 250px;
+    min-width: 250px;
+    overflow-wrap: normal;
+}
+
+.Transactions_Wrapper table th:nth-child(8){
+    width: 100px;
+}
+
+.Transactions_Add_Form{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
 }
 
 @media (max-width: 600px) {

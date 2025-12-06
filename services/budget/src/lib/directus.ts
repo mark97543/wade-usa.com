@@ -13,6 +13,10 @@ interface Schema {
         danger_color: string;
         success_color: string;
     };
+    budget_categories:{
+        id:number;
+        item:string;
+    }[];
 }
 
 // Environment Variables

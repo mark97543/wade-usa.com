@@ -1,5 +1,6 @@
+/* Container is no longer needed for positioning context, 
+   but kept for the trigger button alignment if needed */
 .container {
-  position: relative;
   display: inline-block;
 }
 
@@ -10,26 +11,24 @@
   padding: 0;
   display: flex;
   align-items: center;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .menu {
-  position: absolute;
-  top: 100%;
-  right: 0; /* Align to right edge of trigger */
-  margin-top: 0.5rem;
-  min-width: 200px;
+  /* Position is now handled inline by JS (fixed), so we remove absolute/top/right here */
   background-color: var(--surface-color);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.375rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  z-index: 100;
   overflow: hidden;
   
   /* Animation setup */
   opacity: 0;
   transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
   pointer-events: none;
-  transition: all 0.2s ease;
 }
 
 .menu.open {
@@ -38,6 +37,7 @@
   pointer-events: auto;
 }
 
+/* Items remain the same */
 .item {
   display: block;
   width: 100%;
