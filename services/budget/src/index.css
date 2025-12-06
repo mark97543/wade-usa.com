@@ -54,7 +54,7 @@ main {
 }
 
 .BudgetMain_Navbar.open {
-    width: 10rem;
+    width: 12rem;
 }
 
 .BudgetMain_Navbar button {
@@ -66,8 +66,64 @@ main {
     cursor: pointer;
 }
 
+.BudgetMain_Navbar_Button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0rem;
+}
+
+.BudgetMain_Navbar_Button.open {
+    padding-left: 1rem;
+    justify-content: left;
+}
+
+.BudgetMain_Navbar_Button img {
+    width: 2rem;
+    margin-right: 0rem;
+}
+
+.BudgetMain_Navbar_Button.open img{
+    width: 2rem;
+    margin-right: 1rem;
+}
+
+.BudgetMain_Navbar_Button p {
+    font-size: 1.2rem;
+}
+
 .BudgetMain_Navbar button:hover {
-    background-color: var(--accent-color);;
+    background-color: var(--accent-color);
+    border-radius: .5rem;
+}
+
+.BudgetMain_Navbar .BudgetMain_Navbar_Button.selected {
+    background-color: var(--accent-color);
+    border-radius: .5rem;
+}
+
+
+
+
+/* * --- TRANSACTIONS --- */
+.Transactions_Wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.Transactions_Actions button {
+    width: 2rem;
+    height: 2rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.Transactions_Actions button:hover {
+    background-color: var(--accent-color);
+    border-radius: .5rem;
 }
 
 @media (max-width: 600px) {
@@ -78,6 +134,8 @@ main {
     .BudgetMain_Navbar, .BudgetMain_Navbar.open {
         width: 100%;
         height: 3rem;
+        display: flex;
+        flex-direction: row;
     }
 
     .BudgetMain_Navbar button:nth-child(1) {
