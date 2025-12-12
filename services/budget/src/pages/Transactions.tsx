@@ -7,16 +7,16 @@ import { Input } from "@/components/atoms/Input/Input";
 import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown";
 import { Pagination } from "@/components/molecules/Pagination/Pagination";
 import { Button } from "@/components/atoms/Button/Button";
-import { readItems } from "@directus/sdk";
+import { readItems, createItem, deleteItem, updateItem } from "@directus/sdk";
 import { client } from "@/lib/directus";
 
-// --- Interfaces ---
+// #region --- Interfaces ---
 interface Transaction {
     id: number;
     date: string;
     item: string;
-    deposit: number;
-    withdrawal: number;
+    deposit: number | string;
+    withdrawal: number | string;
     paid: boolean;
     category: string;
     note: string;
@@ -32,33 +32,66 @@ interface Category{
     id:number;
     item:string;
 }
-// -- Dummy Data --
-const TransactionsData: Transaction[] = [ 
-    { id: 1, date: "2022-01-01", item: "Item 1", deposit: 100, withdrawal: 0, paid: true, category: "Pay", note: "Note 1" },
-    { id: 2, date: "2022-01-02", item: "Item 2", deposit: 0, withdrawal: 200, paid: false, category: "Pay", note: "Note 2" },
-    { id: 3, date: "2022-01-03", item: "Item 3", deposit: 0, withdrawal: 300, paid: true, category: "Pay", note: "Note 3" },
-]
+
+interface NewData{
+    date: string;
+    item: string;
+    deposit: number | string;
+    withdrawal: number | string;
+    paid: boolean;
+    category: string;
+    note: string;
+}
+
+// #endregion
 
 export default function Transactions() {
-    const [transactions, setTransactions] = useState(TransactionsData);
+
+    // #region --- States/Variables --- 
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [columns, setColumns] = useState<Column[]>([]); 
 
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editFormData, setEditFormData] = useState<Transaction | null>(null);
-    const [newItem, setNewItem]=useState<Transaction | null>(null)
+    const [newItem, setNewItem] = useState<NewData>({
+        date: '', 
+        item: '', 
+        deposit: '', 
+        withdrawal: '', 
+        paid: false, 
+        category: '', 
+        note: ''
+    });
     const [category, setCategory]=useState<Category[]>([])
-
+    // #endregion 
 
     // Checkbox updates immediately (often preferred for toggles)
-    const updateTransaction = useCallback((transactionId: number) => {
-        setTransactions((prevTransactions) =>
-            prevTransactions.map((t) =>
-                t.id === transactionId ? { ...t, paid: !t.paid } : t
-            )
+    const updateTransaction = useCallback(async (transactionId: number, currentPaidStatus: boolean) => {
+        
+        // 1. Update UI Immediately (Optimistic)
+        setTransactions((prev) =>
+            prev.map((t) => t.id === transactionId ? { ...t, paid: !t.paid } : t)
         );
-    }, []);
+
+        try {
+            // 2. Send API Request
+            await client.request(
+                updateItem('transactions', transactionId, {
+                    paid: !currentPaidStatus
+                })
+            );
+        } catch (error) {
+            console.error("Failed to update data: ", error);
+            
+            // 3. Revert UI if API fails
+            setTransactions((prev) =>
+                prev.map((t) => t.id === transactionId ? { ...t, paid: currentPaidStatus } : t)
+            );
+        }
+    }, [client]); // 'client' is the only dependency
 
     const deleteTransaction = useCallback((transactionId: number) => {
+        removeTransaction(transactionId);
         setTransactions((prevTransactions) =>
             prevTransactions.filter((t) => t.id !== transactionId)
         );
@@ -83,7 +116,6 @@ export default function Transactions() {
         });
     };
 
-    // --- Edit Flow ---
 
     const startEdit = (transactionId: number) => {
         setEditingId(transactionId);
@@ -94,10 +126,23 @@ export default function Transactions() {
         }
     };
     
-    const saveEdit = () => {
+    const saveEdit = async() => {
         if (!editFormData) return;
+        try{
+            await client.request(
+                updateItem('transactions', editFormData.id, {
+                    date: editFormData.date,
+                    item: editFormData.item,
+                    deposit: editFormData.deposit,
+                    withdrawal: editFormData.withdrawal,
+                    paid: editFormData.paid,
+                    category: editFormData.category,
+                    note: editFormData.note
+                }))
+        }catch(error){
+            console.error("Failed to update data: ", error);
+        }
         
-        // CRITICAL: This is the ONLY place where the real 'transactions' list is updated
         setTransactions(prevTransactions =>
             prevTransactions.map(t =>
                 t.id === editFormData.id ? editFormData : t
@@ -115,7 +160,7 @@ export default function Transactions() {
         setEditFormData(null); 
     };
 
-    // --- EFFECT 1: Fetch Categories ---
+    //#region --- EFFECT 1: Fetch Categories ---
     useEffect(() => {
         async function fetchCategory(){
             try{
@@ -130,10 +175,13 @@ export default function Transactions() {
             }
         }
         fetchCategory()
+
+        fetchTransactions()
     }, []); // Empty dependency array = Run once on mount
+    //#endregion
 
 
-    // --- Column Definition // Category Definition ---
+    //#region --- Column Definition // Category Definition ---
     useEffect(() => {
 
         // Helper: If editing, show Draft value. If not, show Real value.
@@ -188,7 +236,7 @@ export default function Transactions() {
                 )
             },
             {
-                key:'deposit', header:"Deposit", render: (row: Transaction) => (
+                key:'deposit', header:"Dep", render: (row: Transaction) => (
                     row.id === editingId ? (
                         <Input
                             type="number"
@@ -198,12 +246,12 @@ export default function Transactions() {
                             style={{ maxWidth: '140px', padding: '0.25rem 0.5rem' }} 
                         />
                     ) : (
-                        <div>{row.deposit}</div>
+                        <div>$ {Number(row.deposit).toFixed(2)}</div>
                     )
                 )
             },
             {
-                key:'withdrawal', header:"Withdrawal", render: (row: Transaction) => (
+                key:'withdrawal', header:"With", render: (row: Transaction) => (
                     row.id === editingId ? (
                         <Input
                             type="number"
@@ -213,7 +261,7 @@ export default function Transactions() {
                             style={{ maxWidth: '140px', padding: '0.25rem 0.5rem' }} 
                         />
                     ) : (
-                        <div>{row.withdrawal}</div>
+                        <div>$ {Number(row.withdrawal).toFixed(2)}</div>
                     )
                 )
             },
@@ -286,8 +334,68 @@ export default function Transactions() {
 
         setColumns(TransactionsColumns);
     }, [transactions, editingId, updateTransaction, deleteTransaction, editFormData, category]); 
+    //#endregion
 
-    
+    // #region --- DB Functions ---
+    async function fetchTransactions(){
+        try{
+            const data = await client.request(
+                readItems('transactions',{
+                    sort: ['date'], // or ['-date'] for newest first
+                    limit: -1, // <--- Add this back to prevent missing items > 100
+                    filter: {
+                        item: { _neq: `cache_bust_${Date.now()}` } 
+                    }
+                })
+            )
+            console.log('data pulled: ', data)
+            setTransactions(data)
+        }catch(error){
+            console.error("Failed to pull in Transactions: ", error)
+        }
+    }
+
+    async function saveNewItem(){
+        // Prevent empty saves
+        if (!newItem.item) return; 
+
+        try{
+            // 1. Send to Server
+            const result = await client.request(
+                createItem('transactions', newItem)
+            );
+            console.log('Transaction Added: ', result);
+
+            // 2. INSTANTLY update the table (Don't wait for fetch!)
+            setTransactions(prev => {
+                // Add the new item to the existing list immediately
+                const updatedList = [...prev, result as Transaction];
+                // Sort it so it appears in the correct date order
+                return updatedList.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            });
+
+            // 3. Clear Form
+            setNewItem({
+                date: '', item: '', deposit: '', withdrawal: '', 
+                paid: false, category: '', note: ''
+            });
+            
+        } catch(error){
+            console.error("Failed to save data: ", error);
+        }
+    }
+
+    async function removeTransaction(id:number){
+        try{
+            const result = await client.request(
+                deleteItem('transactions',id)
+            );
+            console.log('Transaction Deleted: ', result);
+        } catch(error){
+            console.error("Failed to delete data: ", error);
+        }
+    }
+    // #endregion
 
 
     return (
@@ -299,14 +407,86 @@ export default function Transactions() {
 
                 <div className="Transactions_Add_Form">
                     
-                    <Button>+</Button>
+                    <Button onClick={()=>saveNewItem()}>+</Button>
                     
                     <Input type="date" onChange={(e)=>setNewItem(
                         prev => {
-                            if(!prev) return null;
                             return{
                                 ...prev, 
                                 date:e.target.value
+                            }
+                        })}>
+                    </Input>
+
+                    <Input type="text" onChange={(e)=>setNewItem(
+                        prev => {
+                            return{
+                                ...prev, 
+                                item:e.target.value
+                            }
+                        })}>
+                    </Input>
+
+                    <Input type="number" onChange={(e)=>setNewItem(
+                        prev => {
+                            return{
+                                ...prev, 
+                                deposit:e.target.value
+                            }
+                        })}>
+                    </Input>
+
+                    <Input type="number" onChange={(e)=>setNewItem(
+                        prev => {;
+                            return{
+                                ...prev, 
+                                withdrawal:e.target.value
+                            }
+                        })}>
+                    </Input>
+
+                    <Dropdown trigger={
+                        <span style={{ 
+                            cursor: 'pointer', 
+                            padding: '0.25rem 0.5rem', 
+                            border: '1px solid rgba(255,255,255,0.1)', 
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            minWidth: '120px',
+                            justifyContent: 'space-between',
+                            userSelect: 'none'
+                        }}> 
+                            {newItem?.category || 'Select...'}
+                            <small style={{ opacity: 0.5 }}>▼</small>
+                        </span>
+                    }>
+
+                        {category.map((cat)=>(
+                            <DropdownItem 
+                                key={cat.id} 
+                                onClick={() => setNewItem(prev => {
+                                    // 1. If 'prev' is null, create a blank default object
+                                    const current = prev || { 
+                                        id: 0, date: '', item: '', deposit: 0, withdrawal: 0, paid: false, category: '', note: '' 
+                                    };
+                                    
+                                    // 2. Now update the category
+                                    return { ...current, category: cat.item };
+                                })}
+                            >
+                                {cat.item}
+                            </DropdownItem>
+                        ))}
+
+                    </Dropdown>
+
+                    <Input type="text" onChange={(e)=>setNewItem(
+                        prev => {
+                            return{
+                                ...prev, 
+                                note:e.target.value
                             }
                         })}>
                     </Input>

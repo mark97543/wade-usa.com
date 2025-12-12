@@ -92,9 +92,9 @@ function App() {
       <main style={{ minHeight: '80vh' }}>
         <Routes>
           {/* --- PROTECTED APP ROUTES --- */}
-          <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.BASIC]} />}>
+          {/* <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.BASIC]} />}> */}
             <Route path="/" element={<BudgetMain />} />
-          </Route>
+          {/* </Route> */}
 
           {/* --- BRIDGE ROUTE: Redirect to Main Login --- */}
           <Route path="/login" element={<RedirectToMainLogin />} />

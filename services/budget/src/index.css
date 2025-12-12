@@ -127,22 +127,27 @@ main {
     border-radius: .5rem;
 }
 
-.Transactions_Wrapper table th:nth-child(1),
-.Transactions_Add_Form button{
+.Transactions_Wrapper table th:nth-child(1){
     width: 50px;
 }
 
 .Transactions_Wrapper table th:nth-child(2),
-.Transactions_Wrapper table th:nth-child(3),
-.Transactions_Add_Form input{
+.Transactions_Wrapper table th:nth-child(3){
     width: 172px;
 }
 
 .Transactions_Wrapper table th:nth-child(4),
 .Transactions_Wrapper table th:nth-child(5),
+.Transactions_Wrapper table td:nth-child(4),
+.Transactions_Wrapper table td:nth-child(5){
+    width: 120px;
+    padding: 10px;
+}
+
+
 .Transactions_Wrapper table td:nth-child(4) input,
 .Transactions_Wrapper table td:nth-child(5) input{
-    width: 6rem;
+    width: 100px;
 }
 
 .Transactions_Wrapper table th:nth-child(6){
@@ -162,9 +167,9 @@ main {
 }
 
 .Transactions_Add_Form{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: 50px 172px 172px 100px 100px 172px 250px;
+    gap: 6px;
 }
 
 @media (max-width: 600px) {

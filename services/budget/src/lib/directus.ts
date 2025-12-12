@@ -1,6 +1,7 @@
 // services/main/src/lib/directus.ts
 import { createDirectus, rest, authentication } from '@directus/sdk';
 
+
 interface Schema {
     Global_Theme: {
         site_name: string;
@@ -13,11 +14,23 @@ interface Schema {
         danger_color: string;
         success_color: string;
     };
-    budget_categories:{
-        id:number;
-        item:string;
+    budget_categories: {
+        id: number;
+        item: string;
+    }[];
+    // CHANGE: Renamed from 'Transaction' to 'transactions' to match your readItems() call
+    transactions: {
+        id: number;
+        date: string;
+        item: string;
+        deposit: number | string; 
+        withdrawal: number | string;
+        paid: boolean;
+        category: string;
+        note: string;
     }[];
 }
+
 
 // Environment Variables
 export const ROLES = {
@@ -33,10 +46,14 @@ const apiUrl = import.meta.env.VITE_API_URL || 'https://api.wade-usa.com';
 export const client = createDirectus<Schema>(apiUrl)
     .with(rest({ 
         // CRITICAL: This allows cookies to be sent/received across domains
-        credentials: 'include' 
+        credentials: 'include',
+        
+        // ✅ FIX: Use the 'onRequest' hook to disable caching globally
+        onRequest: (options) => ({
+            ...options,
+            cache: 'no-store', 
+        }),
     })) 
     .with(authentication('cookie', { 
-        // CRITICAL: This handles the silent refresh loop automatically
         autoRefresh: true,
-        credentials: 'include' 
     }));
