@@ -20,6 +20,7 @@ export default function Dash() {
             <h1>Wade Updates</h1>
             <Button variant="danger" onClick={buttonClicker}>Go to Budget</Button>
             <p>12/3/25: Added dashboard and updated the Auth...</p>
+            <p>12/12/25: Added DB options to the budget transaction page. </p>
         </div>
     );
 }

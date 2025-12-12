@@ -41,7 +41,7 @@ main {
   min-height: 80vh; 
 }
 
-/* * --- BUDGET MAIN --- */
+/*#region * --- BUDGET MAIN --- */
 .BudgetMainWrapper { 
     display: flex;
     flex-direction: row;
@@ -103,16 +103,19 @@ main {
     border-radius: .5rem;
 }
 
+/*#endregion */
 
 
-
-/* * --- TRANSACTIONS --- */
+/*#region * --- TRANSACTIONS --- */
 .Transactions_Wrapper {
     display: flex;
     flex-direction: column;
     margin: 1rem;
 }
 
+.Transactions_table_container{
+    min-height: 635px;
+}
 
 .Transactions_Actions button {
     width: 2rem;
@@ -170,11 +173,13 @@ main {
     display: grid;
     grid-template-columns: 50px 172px 172px 100px 100px 172px 250px;
     gap: 6px;
+    margin-top: 20px;
 }
 
 @media (max-width: 600px) {
     .BudgetMainWrapper {
         flex-direction: column;
+        display: none; /*Tmeporary until build this */
     }
 
     .BudgetMain_Navbar, .BudgetMain_Navbar.open {
@@ -189,6 +194,16 @@ main {
     }
 }
 
+@media (min-width: 600px) and (max-width: 1199px) {
+    .BudgetMainWrapper {
+        display: none; /* Temp until we build tablet mode */
+    }
+}
 
+@media(max-width: 1200px){
+
+}
+
+/*#endregion */
 
 

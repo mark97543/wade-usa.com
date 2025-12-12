@@ -1,14 +1,13 @@
-// services/main/src/pages/Transactions.tsx
 import { useState, useEffect, useCallback } from "react";
 import { Table } from '@/components/molecules/Table/Table.tsx';
 import { Checkbox } from "@/components/atoms/Checkbox/Checkbox";
 import type { ReactNode } from "react";
 import { Input } from "@/components/atoms/Input/Input";
 import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown";
-import { Pagination } from "@/components/molecules/Pagination/Pagination";
 import { Button } from "@/components/atoms/Button/Button";
 import { readItems, createItem, deleteItem, updateItem } from "@directus/sdk";
 import { client } from "@/lib/directus";
+import { Pagination } from "@/components/molecules/Pagination/Pagination";
 
 // #region --- Interfaces ---
 interface Transaction {
@@ -63,8 +62,30 @@ export default function Transactions() {
         note: ''
     });
     const [category, setCategory]=useState<Category[]>([])
+
+    //Paginnation
+    //1. Source Data
+
+    //const allData = Array.from({ length: 100 }, (_, i) => `Item ${i + 1}`);
+    const [page, setPage]=useState(1); 
+    const itemsPerPage = 9;
+
+    //2. Calculate the Data to show for the current page
+    const startIndex = (page-1)*itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentData = transactions.slice(startIndex,endIndex);
+
+    //3. Calculate the total pages 
+    const totalPages = Math.ceil(transactions.length/itemsPerPage);
+    
+    const handlePageChange = (newPage:number)=>{
+        setPage(newPage);
+    };
+    
+    
     // #endregion 
 
+    //#region --- DB Functions ---
     // Checkbox updates immediately (often preferred for toggles)
     const updateTransaction = useCallback(async (transactionId: number, currentPaidStatus: boolean) => {
         
@@ -88,7 +109,7 @@ export default function Transactions() {
                 prev.map((t) => t.id === transactionId ? { ...t, paid: currentPaidStatus } : t)
             );
         }
-    }, [client]); // 'client' is the only dependency
+    }, []); // 'client' is stable, usually don't need to list it, but can if linter complains
 
     const deleteTransaction = useCallback((transactionId: number) => {
         removeTransaction(transactionId);
@@ -115,7 +136,6 @@ export default function Transactions() {
             return { ...prev, category: newCategory };
         });
     };
-
 
     const startEdit = (transactionId: number) => {
         setEditingId(transactionId);
@@ -160,6 +180,8 @@ export default function Transactions() {
         setEditFormData(null); 
     };
 
+    //#endregion
+
     //#region --- EFFECT 1: Fetch Categories ---
     useEffect(() => {
         async function fetchCategory(){
@@ -179,7 +201,6 @@ export default function Transactions() {
         fetchTransactions()
     }, []); // Empty dependency array = Run once on mount
     //#endregion
-
 
     //#region --- Column Definition // Category Definition ---
     useEffect(() => {
@@ -201,7 +222,8 @@ export default function Transactions() {
                         name={`paid-${row.id}`}
                         value={String(row.id)} 
                         checked={row.paid}
-                        onChange={() => updateTransaction(row.id)}
+                        // FIX: Pass the second argument 'row.paid'
+                        onChange={() => updateTransaction(row.id, row.paid)}
                     />
                 )
             },
@@ -397,19 +419,25 @@ export default function Transactions() {
     }
     // #endregion
 
-
     return (
         <div className="Transactions_Wrapper">
             <h1>Transactions</h1>
-            <Table columns={columns} data={transactions} />
-            <div>
-                <p>Add Item</p>
+            <div className="Transactions_table_container">
+                <Table columns={columns} data={currentData} />
+            </div>
 
+            <div>
+                <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                    pageRange={1}
+                />
                 <div className="Transactions_Add_Form">
                     
                     <Button onClick={()=>saveNewItem()}>+</Button>
                     
-                    <Input type="date" onChange={(e)=>setNewItem(
+                    <Input type="date" value={newItem.date} onChange={(e)=>setNewItem(
                         prev => {
                             return{
                                 ...prev, 
@@ -418,7 +446,7 @@ export default function Transactions() {
                         })}>
                     </Input>
 
-                    <Input type="text" onChange={(e)=>setNewItem(
+                    <Input type="text" placeholder={"Item"} value={newItem.item} onChange={(e)=>setNewItem(
                         prev => {
                             return{
                                 ...prev, 
@@ -427,7 +455,7 @@ export default function Transactions() {
                         })}>
                     </Input>
 
-                    <Input type="number" onChange={(e)=>setNewItem(
+                    <Input type="number" placeholder={"Deposit"} value={newItem.deposit} onChange={(e)=>setNewItem(
                         prev => {
                             return{
                                 ...prev, 
@@ -436,7 +464,7 @@ export default function Transactions() {
                         })}>
                     </Input>
 
-                    <Input type="number" onChange={(e)=>setNewItem(
+                    <Input type="number" placeholder={"With"} value={newItem.withdrawal} onChange={(e)=>setNewItem(
                         prev => {;
                             return{
                                 ...prev, 
@@ -482,7 +510,7 @@ export default function Transactions() {
 
                     </Dropdown>
 
-                    <Input type="text" onChange={(e)=>setNewItem(
+                    <Input type="text" placeholder={"Note"} value={newItem.note} onChange={(e)=>setNewItem(
                         prev => {
                             return{
                                 ...prev, 

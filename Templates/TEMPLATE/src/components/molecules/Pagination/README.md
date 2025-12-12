@@ -96,3 +96,39 @@ The component relies on a CSS Module (`Pagination.module.css`). You will need to
 - `.pageButton`: Base style for numbers, Next, and Prev.
 - `.active`: Modifier for the currently selected page.
 - `.ellipsis`: Style for the `...` text (non-clickable).
+
+## Usage Example
+
+```react
+import React, { useState } from 'react';
+import { Pagination } from './Pagination';
+
+const MyList = () => {
+  const [page, setPage] = useState(1);
+  const totalItems = 100;
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    // Fetch new data here based on newPage
+  };
+
+  return (
+    <div>
+      <ul>
+        {/* Render your list items for the current page here */}
+      </ul>
+
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        pageRange={1} // Optional: Shows [Prev, 1 ... 4, 5, 6 ... 10, Next] if on page 5
+      />
+    </div>
+  );
+};
+
+```
+
