@@ -18,7 +18,7 @@ export function useTransactions() {
 
     // --- Pagination ---
     const [page, setPage] = useState(1); 
-    const itemsPerPage = 11;
+    const itemsPerPage = 12;
     const startIndex = (page - 1) * itemsPerPage;
     const currentData = transactions.slice(startIndex, startIndex + itemsPerPage);
     const totalPages = Math.ceil(transactions.length / itemsPerPage);
