@@ -1,137 +1,101 @@
-- ## 📊 Table Component (`Table.tsx`) - Updated
+# React Split-Row Table
 
-  | **Detail**  | **Value**                                                    |
-  | ----------- | ------------------------------------------------------------ |
-  | **Path**    | `src/components/molecules/Table/Table.tsx`                   |
-  | **Type**    | Molecule (Compound Component)                                |
-  | **Purpose** | Displays structured data in a responsive, theme-aware grid with optional row interaction. |
+A generic React table component designed to render complex row layouts (like "sandwich" rows) without hardcoding structure. It supports spanning columns vertically across multiple visual rows per data item.
 
-  ------
+## Features
 
-  ## 1. Overview and Usage
+- **Configurable Layout:** Control cell placement (`main`, `sub`, `both`) via column definitions.
+    
+- **Vertical Spanning:** Easily create "Action" or "ID" columns that span the full height of the row group.
+    
+- **Flat Data Structure:** Handles complex visuals while keeping your data array simple.
+    
 
-  The `<Table>` component is a responsive data grid designed to display an array of objects. It automatically handles the column mapping and implements theme-aware styling, including striped rows and hover effects.
+## Usage
 
-  **Import:**
+### The "Sandwich" Layout
 
-  JavaScript
+This example creates a layout where **ID** and **Actions** span vertically, **Data** sits on top, and a **Note** sits underneath.
 
-  ```
-  import { Table } from '@/components/molecules/Table/Table';
-  ```
+TypeScript
 
-  **Example Usage:**
+```
+import { Table } from './Table';
 
-  TypeScript
-
-  ```
-  import { Table } from '@/components/molecules/Table/Table';
-  
-  const employeeColumns = [
-    { key: 'name', header: 'Employee Name' },
-    { key: 'role', header: 'Job Title' },
-    { key: 'status', header: 'Status' }
+const MyComponent = () => {
+  const data = [
+    { id: 1, date: '2023-10-01', item: 'Apple', note: 'Warning: Perishable', status: 'Active' },
+    { id: 2, date: '2023-10-05', item: 'Banana', note: 'Check stock', status: 'Pending' },
   ];
-  
-  const employeeData = [
-    { name: 'Wade Wilson', role: 'Mercenary', status: 'Active' },
-    { name: 'Peter Parker', role: 'Photographer', status: 'Active' },
-    { name: 'Tony Stark', role: 'Engineer', status: 'Retired' }
-  ];
-  
-  return (
-    <Table 
-      columns={employeeColumns} 
-      data={employeeData} 
-      onRowClick={(row) => alert(`Clicked data for ${row.name}`)} 
-    />
-  );
-  ```
 
-  ------
+  const columns = [
+    // 1. Spans Vertical (Left side)
+    { key: 'id', header: 'ID', rowType: 'both' },
 
-  ## 2. Props API (`TableProps`)
+    // 2. Top Row (Middle)
+    { key: 'date', header: 'Date', rowType: 'main' },
+    { key: 'item', header: 'Item', rowType: 'main' },
 
-  | **Prop**      | **Type**              | **Description**                                              |
-  | ------------- | --------------------- | ------------------------------------------------------------ |
-  | **`columns`** | `Column[]`            | **Required.** An array defining the table structure. Each object needs a `key` and a `header`. **(Now supports a custom `render` function. See Section 4).** |
-  | **`data`**    | `any[]`               | **Required.** An array of data objects. The property names must match the `key` values defined in the columns array. |
-  | `onRowClick`  | `(item: any) => void` | **Optional.** A function that executes when any table row is clicked. The full row object is passed to this function. |
+    // 3. Spans Vertical (Right side)
+    { key: 'status', header: 'Status', rowType: 'both' },
 
-  ### `Column` Interface (Updated)
-
-  The `Column` interface has been expanded to allow a custom rendering function for maximum flexibility.
-
-  TypeScript
-
-  ```
-  interface Column {
-    key: string;    // Property name in the data object
-    header: string; // Text for the table header
-    // NEW: Allows rendering custom JSX (Checkbox, Button, Icon, etc.)
-    render?: (row: any) => React.ReactNode; 
-  }
-  ```
-
-  ------
-
-  ## 3. Theming and Styling
-
-  The table uses CSS Modules to ensure it follows the application's global theme settings.
-
-  - **Background:** The table uses the theme's surface color (`--surface-color`) for its background.
-  - **Headers:** Table headers (`<th>`) are styled using the brand's accent color (`--accent-color`).
-  - **Striping:** Rows are automatically striped by applying a subtle background color to every even row (`tr:nth-child(even)`) for readability.
-  - **Responsiveness:** The component is wrapped in a container with `overflow-x: auto` to prevent horizontal overflow on smaller screens.
-
-  ------
-
-  ## 4. Advanced Usage: Custom Renderers
-
-  The optional `render` function allows you to insert any piece of JSX, including your custom components, into a column. This keeps the `<Table>` component clean and decouples its display from your component library's business logic.
-
-  **Key Principle:** The parent component **must** import the custom element (e.g., `<CustomCheckbox>`) and use it within the `render` function closure.
-
-  TypeScript
-
-  ```
-  // Inside your parent page component (e.g., DocumentPage.tsx)
-  
-  import { CustomCheckbox } from '@/components/atoms/Checkbox/CustomCheckbox'; // Your custom component
-  import { Button } from '@/components/atoms/Button/Button'; 
-  
-  // ... data setup ...
-  
-  const advancedColumns = [
-    // COLUMN 1: Custom Checkbox
+    // 4. Bottom Row (The Note)
+    // MUST calculate colSpan: (Total Columns - 'Both' Columns)
     { 
-      key: 'selector', 
-      header: '', 
-      render: (row) => (
-        // You must import and use your custom component here
-        <CustomCheckbox 
-          checked={row.is_selected} 
-          onChange={(e) => handleToggle(row.id, e.target.checked)}
-        />
-      ),
-    },
-    // COLUMN 2: Standard Data
-    { key: 'title', header: 'Document' },
-    // COLUMN 3: Custom Button (Action)
-    {
-      key: 'actions', 
-      header: 'Actions',
-      render: (row) => (
-        <Button 
-          size="sm" 
-          variant="outline"
-          onClick={() => handleEdit(row.id)}
-        >
-          Edit
-        </Button>
-      )
+      key: 'note', 
+      header: 'Notes', 
+      rowType: 'sub',
+      render: (row) => <em>{row.note}</em>,
+      cellProps: () => ({ colSpan: 2, style: { background: '#f9f9f9' } })
     }
   ];
-  
-  return <Table columns={advancedColumns} data={data} />;
-  ```
+
+  return <Table columns={columns} data={data} />;
+};
+```
+
+## API Reference
+
+### `Column` Configuration
+
+| **Property** | **Type** | **Default** | **Description** |
+| --- | --- | --- | --- |
+| `key` | `string` | **Required** | Unique identifier for the data field. |
+| `header` | `string` | **Required** | Display text for the table header. |
+| `rowType` | `'main' \| 'sub' \| 'both'` | `'main'` | **`main`**: Renders in the top row.  <br><br/><br/><br/>**`sub`**: Renders in the bottom row.  <br><br/><br/><br/>**`both`**: Spans vertically (`rowSpan=2`). |
+| `render` | `(row) => ReactNode` | `null` | Custom render function. |
+| `cellProps` | `(row) => object` | `null` | dynamic props for `<td>` (e.g., `colSpan`, `className`). |
+
+### `rowType` Visual Guide
+
+Plaintext
+
+```
++------+-----------------------------+------+
+|      |      rowType: 'main'        |      |
+| both |-----------------------------| both |
+|      |      rowType: 'sub'         |      |
++------+-----------------------------+------+
+```
+
+## Styling Tips
+
+To make the split rows look like a single unified item, remove the internal borders in your CSS Module:
+
+CSS
+
+```
+/* Table.module.css */
+
+/* Remove border between the Top and Bottom row */
+.table tr:nth-child(odd) td {
+  border-bottom: none;
+}
+
+/* Optional: Add spacing or background to the Bottom (Note) row */
+.table tr:nth-child(even) td {
+  border-top: none;
+  padding-top: 0;
+  color: #666;
+}
+```

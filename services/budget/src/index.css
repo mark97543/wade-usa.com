@@ -41,7 +41,7 @@ main {
   min-height: 80vh; 
 }
 
-/*#region * --- BUDGET MAIN --- */
+/*#region * -------------------------------------------- BUDGET MAIN --- */
 .BudgetMainWrapper { 
     display: flex;
     flex-direction: row;
@@ -106,11 +106,16 @@ main {
 /*#endregion */
 
 
-/*#region * --- TRANSACTIONS --- */
+/*#region * -------------------------------------------- TRANSACTIONS --- */
+:root{
+    --transaction-viewport-size:860px;
+}
+
 .Transactions_Wrapper {
     display: flex;
     flex-direction: column;
     margin: 1rem;
+    width: var(--transaction-viewport-size);
 }
 
 .Transactions_table_container{
@@ -130,56 +135,78 @@ main {
     border-radius: .5rem;
 }
 
-.Transactions_Wrapper table th:nth-child(1){
-    min-width: 50px;
+/*Overall Table */
+.Transactions_Wrapper table {
+    table-layout: fixed;
+    width: 100%;
 }
 
+/*Paid Column */
+.Transactions_Wrapper table th:nth-child(1),
+.Transactions_Wrapper table td:nth-child(1){
+    width: 2rem;
+    padding: .25rem;
+}
+
+.Transactions_Wrapper table tr td label div{
+    margin: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Date Column*/
 .Transactions_Wrapper table th:nth-child(2),
-.Transactions_Wrapper table th:nth-child(3){
-    min-width: 125px;
+.Transactions_Wrapper table td:nth-child(2){
+    width: 5.5rem;
+    padding: .25rem;
+    text-align: center;
 }
 
+/* Item Column */
+.Transactions_Wrapper table th:nth-child(3),
+.Transactions_Wrapper table td:nth-child(3){
+    width: 12rem;
+    padding: .25rem;
+    text-align: center;
+}
+
+/*With, Bal and Dep Cols */
 .Transactions_Wrapper table th:nth-child(4),
 .Transactions_Wrapper table th:nth-child(5),
 .Transactions_Wrapper table td:nth-child(4),
-.Transactions_Wrapper table td:nth-child(5){
-    min-width: 120px;
-    padding: 10px;
+.Transactions_Wrapper table td:nth-child(5),
+.Transactions_Wrapper table th:nth-child(6),
+.Transactions_Wrapper table td:nth-child(6){
+    width: 5.25rem;
+    padding: .25rem;
+    text-align: center;
 }
 
-
-.Transactions_Wrapper table td:nth-child(4) input,
-.Transactions_Wrapper table td:nth-child(5) input{
-    min-width: 100px;
+/* Cat Column */
+.Transactions_Wrapper table th:nth-child(7),
+.Transactions_Wrapper table td:nth-child(7){
+    width: 5.5rem;
+    padding: .25rem;
+    text-align: center;
 }
 
-.Transactions_Wrapper table th:nth-child(6){
-    min-width: 100px;
-}
-
-.Transactions_Wrapper table th:nth-child(7){
-    min-width: 125px;
-}
-
+/*Action Col*/
 .Transactions_Wrapper table th:nth-child(8),
-.Transactions_Wrapper table td:nth-child(8) input,
-.Transactions_Wrapper table td:nth-child(8) div{
-    width: 80%;
-    overflow-wrap: normal;
-}
-
-.Transactions_Wrapper table th:nth-child(9){
-    width: 100px;
+.Transactions_Wrapper table td:nth-child(8){
+    width: 5rem;
+    padding: .25rem;
+    text-align: center;
 }
 
 .Transactions_Add_Form{
     display: grid;
-    grid-template-columns: 50px 172px 172px 100px 100px 100px 172px 250px;
+    grid-template-columns: 3rem 8.5rem 10rem 7rem 7rem 7.5rem auto;
     gap: 6px;
     margin-top: 20px;
+    width: var(--transaction-viewport-size);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 959px) {
     .BudgetMainWrapper {
         flex-direction: column;
         display: none; /*Tmeporary until build this */
@@ -197,15 +224,8 @@ main {
     }
 }
 
-@media (min-width: 600px) and (max-width: 1199px) {
-    .BudgetMainWrapper {
-        display: none; /* Temp until we build tablet mode */
-    }
-}
 
-@media(max-width: 1200px){
 
-}
 
 /*#endregion */
 

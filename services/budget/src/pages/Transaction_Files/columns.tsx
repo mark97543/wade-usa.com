@@ -1,8 +1,8 @@
 // columns.tsx
 import type { Transaction, Column, Category } from "./types";
 import { Checkbox } from "@/components/atoms/Checkbox/Checkbox";
+import { Input } from "@/components/atoms/Input/Input";
 import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown";
-
 
 interface ColumnProps {
     editingId: number | null;
@@ -21,7 +21,7 @@ interface ColumnProps {
 
 export const getColumns = ({ editingId, editFormData, categories, handlers }: ColumnProps): Column[] => {
     
-    // Helper to get value
+    // Helper to get value (Draft vs Real)
     const getValue = (row: Transaction, key: keyof Transaction) => {
         if (row.id === editingId && editFormData) return editFormData[key];
         return row[key];
@@ -29,7 +29,7 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
 
     return [
         {
-            key: 'paid', header: "Paid", render: (row) => (
+            key: 'paid', header: "Paid", rowType: 'both', render: (row) => (
                 <Checkbox
                     id={`paid-${row.id}`} label="" name={`paid-${row.id}`} value={String(row.id)}
                     checked={row.paid}
@@ -37,37 +37,129 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                 />
             )
         },
-        // ... (Paste your Date, Item, Deposit, Withdrawal columns here) ...
         {
-            key: 'balance', header: "Balance", render: (row) => 
+            key: 'date', header: "Date", rowType: 'both',render: (row) => (
+                row.id === editingId ? (
+                    <Input
+                        type="date"
+                        name="date"
+                        value={String(getValue(row, 'date'))}
+                        onChange={handlers.handleEditChange}
+                        style={{ maxWidth: '140px', padding: '0.25rem' }} 
+                    />
+                ) : (
+                    <div>{row.date}</div>
+                )
+            )
+        },
+        {
+            key: 'item', header: "Item", rowType:'main',render: (row) => (
+                row.id === editingId ? (
+                    <Input
+                        type="text"
+                        name="item"
+                        value={String(getValue(row, 'item'))}
+                        onChange={handlers.handleEditChange}
+                        style={{ maxWidth: '140px', padding: '0.25rem' }} 
+                    />
+                ) : (
+                    <div>{row.item}</div>
+                )
+            )
+        },
+        {
+            key: 'deposit', header: "Dep", rowType:'main', render: (row) => (
+                row.id === editingId ? (
+                    <Input
+                        type="number"
+                        name="deposit"
+                        value={String(getValue(row, 'deposit'))}
+                        onChange={handlers.handleEditChange}
+                        style={{ maxWidth: '100px', padding: '0.25rem' }} 
+                    />
+                ) : (
+                    <div>$ {Number(row.deposit).toFixed(2)}</div>
+                )
+            )
+        },
+        {
+            key: 'withdrawal', header: "With", rowType:'main', render: (row) => (
+                row.id === editingId ? (
+                    <Input
+                        type="number"
+                        name="withdrawal"
+                        value={String(getValue(row, 'withdrawal'))}
+                        onChange={handlers.handleEditChange}
+                        style={{ maxWidth: '100px', padding: '0.25rem' }} 
+                    />
+                ) : (
+                    <div>$ {Number(row.withdrawal).toFixed(2)}</div>
+                )
+            )
+        },
+        {
+            key: 'balance', header: "Balance", rowType:'main',render: (row) => 
                 <div>$ {Number(row.balance).toFixed(2)}</div>
         },
         {
-            key: 'category', header: "Category", render: (row) => (
+            key: 'category', header: "Category",rowType:'main', render: (row) => (
                 row.id === editingId ? (
-                    <Dropdown trigger={<span>{String(getValue(row, 'category')) || 'Select'}</span>}>
+                    <Dropdown 
+                        trigger={
+                            <span style={{ 
+                                cursor: 'pointer', 
+                                padding: '0.25rem 0.5rem', 
+                                border: '1px solid rgba(255,255,255,0.1)', 
+                                borderRadius: '4px',
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: '0.5rem',
+                                minWidth: '120px',
+                                justifyContent: 'space-between'
+                            }}>
+                                {String(getValue(row, 'category')) || 'Select'}
+                                <small>▼</small>
+                            </span>
+                        }
+                    >
                         {categories.map((cat) => (
                             <DropdownItem key={cat.id} onClick={() => handlers.handleCategoryChange(cat.item)}>
                                 {cat.item}
                             </DropdownItem>
                         ))}
                     </Dropdown>
-                ) : <div>{row.category}</div>
+                ) : (
+                    <div>{row.category}</div>
+                )
             )
         },
-        // ... (Paste Note and Actions columns here) ...
+        {
+            key: 'note', header: "Note", rowType:'sub', cellProps: () => ({colSpan: 5}),render: (row) => (
+                row.id === editingId ? (
+                    <Input
+                        type="text"
+                        name="note"
+                        value={String(getValue(row, 'note'))}
+                        onChange={handlers.handleEditChange}
+                        style={{ maxWidth: '140px', padding: '0.25rem' }} 
+                    />
+                ) : (
+                    <div>{row.note}</div>
+                )
+            )
+        },
          {
-            key:'actions', header:"Actions", render: (row: Transaction) => ( 
+            key:'actions', header:"Actions", rowType:'both',render: (row: Transaction) => ( 
                 <div className="Transactions_Actions">
                     {row.id === editingId ? (
                         <>
-                            <button onClick={handlers.saveEdit}><img src="./save.png" alt="Save" /></button>
-                            <button onClick={handlers.cancelEdit}><img src="./cancel.png" alt="Cancel" /></button>
+                            <button onClick={handlers.saveEdit} title="Save"><img src="./save.png" alt="Save" /></button>
+                            <button onClick={handlers.cancelEdit} title="Cancel"><img src="./cancel.png" alt="Cancel" /></button>
                         </>
                     ) : (
                         <>
-                            <button onClick={() => handlers.startEdit(row.id)}><img src="./pencil.png" alt="Edit" /></button> 
-                            <button onClick={() => handlers.deleteTransaction(row.id)}><img src="./delete.png" alt="Delete" /></button>
+                            <button onClick={() => handlers.startEdit(row.id)} title="Edit"><img src="./pencil.png" alt="Edit" /></button> 
+                            <button onClick={() => handlers.deleteTransaction(row.id)} title="Delete"><img src="./delete.png" alt="Delete" /></button>
                         </>
                     )}
                 </div>

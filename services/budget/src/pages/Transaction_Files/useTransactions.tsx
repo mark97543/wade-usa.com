@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import type { Transaction, Category, NewData, Column } from "./types";
-import { api } from "./api"; // Imported from File 1
-import { calculateBalances } from "./utils"; // Imported from File 2
-import { getColumns } from "./columns"; // Imported from File 3
+import { api } from "./api"; 
+import { calculateBalances } from "./utils"; 
+import { getColumns } from "./columns"; // Ensure spelling matches columns.tsx
 
 export function useTransactions() {
     // --- State ---
     const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [columns, setColumns] = useState<Column[]>([]); 
+    const [columns, setColumns] = useState<Column[]>([]);
+    
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editFormData, setEditFormData] = useState<Transaction | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -42,9 +43,9 @@ export function useTransactions() {
     };
 
     const updateTx = useCallback(async (id: number, paid: boolean) => {
-        setTransactions(prev => prev.map(t => t.id === id ? { ...t, paid: !t.paid } : t)); // Optimistic
+        setTransactions(prev => prev.map(t => t.id === id ? { ...t, paid: !t.paid } : t)); 
         try { await api.updateTransaction(id, { paid: !paid }); }
-        catch { setTransactions(prev => prev.map(t => t.id === id ? { ...t, paid: paid } : t)); } // Revert
+        catch { setTransactions(prev => prev.map(t => t.id === id ? { ...t, paid: paid } : t)); } 
     }, []);
 
     const saveEdit = async () => {
@@ -75,23 +76,37 @@ export function useTransactions() {
     useEffect(() => { loadData(); }, []);
 
     useEffect(() => {
-        // Generate columns using the helper file
-        const cols = getColumns({
+        // Collect all props needed for columns AND sub-rows
+        const columnProps = {
             editingId,
             editFormData,
             categories,
             handlers: {
                 updateTransaction: updateTx,
                 handleEditChange,
-                handleCategoryChange: (cat) => setEditFormData(prev => prev ? { ...prev, category: cat } : null),
+                handleCategoryChange: (cat: string) => setEditFormData(prev => prev ? { ...prev, category: cat } : null),
                 saveEdit,
                 cancelEdit: () => { setEditingId(null); setEditFormData(null); },
                 startEdit,
                 deleteTransaction: deleteTx
             }
-        });
-        setColumns(cols);
+        };
+
+        // 2. Generate Columns
+        setColumns(getColumns(columnProps));
+
+
     }, [transactions, editingId, editFormData, categories]);
 
-    return { columns, currentData, categories, page, totalPages, handlePageChange, saveNewItem, newItem, setNewItem };
+    return { 
+        columns, 
+        currentData, 
+        categories, 
+        page, 
+        totalPages, 
+        handlePageChange, 
+        saveNewItem, 
+        newItem, 
+        setNewItem
+    };
 }

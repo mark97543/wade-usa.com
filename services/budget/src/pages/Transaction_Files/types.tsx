@@ -13,9 +13,14 @@ export interface Transaction {
 }
 
 export interface Column {
-    key: string;
-    header: string;
-    render?: (row: Transaction) => ReactNode; 
+  key: string;
+  header: string;
+  // 'both' = spans vertical (ID/Actions)
+  // 'main' = top row only (Date, Item...)
+  // 'sub'  = bottom row only (Note)
+  rowType?: 'main' | 'sub' | 'both'; 
+  render?: (row: any) => React.ReactNode;
+  cellProps?: (row: any) => React.TdHTMLAttributes<HTMLTableCellElement>;
 }
 
 export interface Category{

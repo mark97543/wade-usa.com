@@ -1,4 +1,4 @@
-import { Table } from '@/components/molecules/Table/Table.tsx';
+import { Table } from "@/components/molecules/Table/Table";
 import { Input } from "@/components/atoms/Input/Input";
 import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown";
 import { Button } from "@/components/atoms/Button/Button";
@@ -64,7 +64,7 @@ export default function Transactions() {
                         })}>
                     </Input>
 
-                    <Input type="number" placeholder={"With"} value={newItem.withdrawal} onChange={(e)=>setNewItem(
+                    <Input type="number" placeholder={"Withdrawal"} value={newItem.withdrawal} onChange={(e)=>setNewItem(
                         prev => {;
                             return{
                                 ...prev, 
@@ -139,5 +139,6 @@ export default function Transactions() {
     //TODO: Need to Filter out the paid items. 
     //TODO: Need to reastablish security 
     //TODO: Befor Hiding Checke need note update so we could review Items or confirmation numbers. 
+
 
 }
