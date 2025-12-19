@@ -26,7 +26,7 @@ export default function Transactions() {
                 <Table columns={columns} data={currentData} />
             </div>
 
-            <div>
+            <div className="Transactions_Edit_Form_Div">
                 <Pagination
                     currentPage={page}
                     totalPages={totalPages}

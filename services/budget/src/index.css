@@ -116,10 +116,7 @@ main {
     flex-direction: column;
     margin: 1rem;
     width: var(--transaction-viewport-size);
-}
-
-.Transactions_table_container{
-    min-height: 635px;
+    height: 800px
 }
 
 .Transactions_Actions button {
@@ -157,7 +154,7 @@ main {
 /*Date Column*/
 .Transactions_Wrapper table th:nth-child(2),
 .Transactions_Wrapper table td:nth-child(2){
-    width: 5.5rem;
+    width: 7rem;
     padding: .25rem;
     text-align: center;
 }
@@ -185,7 +182,7 @@ main {
 /* Cat Column */
 .Transactions_Wrapper table th:nth-child(7),
 .Transactions_Wrapper table td:nth-child(7){
-    width: 5.5rem;
+    width: 6rem;
     padding: .25rem;
     text-align: center;
 }
@@ -198,12 +195,48 @@ main {
     text-align: center;
 }
 
+/*Edit Form */
 .Transactions_Add_Form{
     display: grid;
-    grid-template-columns: 3rem 8.5rem 10rem 7rem 7rem 7.5rem auto;
-    gap: 6px;
-    margin-top: 20px;
+    grid-template-rows: auto auto;
+    grid-template-columns: 3rem 9rem auto 7rem 7rem 7.5rem;
+    gap: 5px;
+    margin-top: 0px;
     width: var(--transaction-viewport-size);
+}
+
+.Transactions_Add_Form :nth-child(1){
+    grid-row-start: 1;
+    grid-row-end:4;
+}
+
+.Transactions_Add_Form :nth-child(7){
+    grid-column-start: 2;
+    grid-column-end: 7;
+
+}
+
+/*Editing Form */
+.Transactions_Edit_Form_Div nav{
+    padding: .25rem !important;
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+} 
+
+.Transactions_Edit_Form_Div :first-child button:first-child,
+.Transactions_Edit_Form_Div :first-child button:last-child{
+    width: 4rem;
+    height: 2rem;
+}
+
+.Transactions_Edit_Form_Div :first-child button:not(:first-child):not(:last-child) {
+    /* Styles for the middle buttons */
+    width: 2.5rem; 
+    height: 2rem;
+}
+
+.Transactions_Add_Form * {
+    height: 100%;
 }
 
 @media (max-width: 959px) {

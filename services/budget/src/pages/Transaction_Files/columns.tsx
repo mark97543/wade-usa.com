@@ -45,7 +45,6 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                         name="date"
                         value={String(getValue(row, 'date'))}
                         onChange={handlers.handleEditChange}
-                        style={{ maxWidth: '140px', padding: '0.25rem' }} 
                     />
                 ) : (
                     <div>{row.date}</div>
@@ -60,7 +59,6 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                         name="item"
                         value={String(getValue(row, 'item'))}
                         onChange={handlers.handleEditChange}
-                        style={{ maxWidth: '140px', padding: '0.25rem' }} 
                     />
                 ) : (
                     <div>{row.item}</div>
@@ -75,7 +73,6 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                         name="deposit"
                         value={String(getValue(row, 'deposit'))}
                         onChange={handlers.handleEditChange}
-                        style={{ maxWidth: '100px', padding: '0.25rem' }} 
                     />
                 ) : (
                     <div>$ {Number(row.deposit).toFixed(2)}</div>
@@ -90,7 +87,6 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                         name="withdrawal"
                         value={String(getValue(row, 'withdrawal'))}
                         onChange={handlers.handleEditChange}
-                        style={{ maxWidth: '100px', padding: '0.25rem' }} 
                     />
                 ) : (
                     <div>$ {Number(row.withdrawal).toFixed(2)}</div>
@@ -106,17 +102,7 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                 row.id === editingId ? (
                     <Dropdown 
                         trigger={
-                            <span style={{ 
-                                cursor: 'pointer', 
-                                padding: '0.25rem 0.5rem', 
-                                border: '1px solid rgba(255,255,255,0.1)', 
-                                borderRadius: '4px',
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                gap: '0.5rem',
-                                minWidth: '120px',
-                                justifyContent: 'space-between'
-                            }}>
+                            <span >
                                 {String(getValue(row, 'category')) || 'Select'}
                                 <small>▼</small>
                             </span>
@@ -141,10 +127,17 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                         name="note"
                         value={String(getValue(row, 'note'))}
                         onChange={handlers.handleEditChange}
-                        style={{ maxWidth: '140px', padding: '0.25rem' }} 
                     />
                 ) : (
-                    <div>{row.note}</div>
+                    <div>{row.note ? (
+                            <>
+                                <strong>Note: </strong> {row.note}
+                            </>
+                        ) : (
+                            <>
+                                <strong>Note: -</strong> 
+                            </>
+                    )}</div>
                 )
             )
         },
