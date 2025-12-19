@@ -8,6 +8,7 @@ export interface Transaction {
     withdrawal: number | string;
     paid: boolean;
     category: string;
+    balance: number | null;
     note: string;
 }
 

@@ -41,6 +41,31 @@ export function useTransactions() {
 
     //#endregion
 
+    /* #region ---------------------------- Helper Functions ---------------------------- */
+    const calculateBalances = (items: any[]): Transaction[] => {
+        let runningTotal = 0;
+        
+        // Sort by date first
+        const sorted = [...items].sort((a, b) => 
+            new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+
+        // Map and inject balance
+        return sorted.map((item) => {
+            const dep = Number(item.deposit) || 0;
+            const wth = Number(item.withdrawal) || 0;
+            runningTotal += (dep - wth);
+
+            return {
+                ...item,
+                // Ensure balance is set so it matches Transaction type
+                balance: Number(runningTotal.toFixed(2)) 
+            };
+        });
+    };
+
+    //#endregion
+
     // #region ------------------------------ API Functions ----------------------------- */
     // Checkbox updates immediately (often preferred for toggles)
     const updateTransaction = useCallback(async (transactionId: number, currentPaidStatus: boolean) => {
@@ -116,12 +141,12 @@ export function useTransactions() {
         }catch(error){
             console.error("Failed to update data: ", error);
         }
+
         
-        setTransactions(prevTransactions =>
-            prevTransactions.map(t =>
-                t.id === editFormData.id ? editFormData : t
-            )
-        );
+        setTransactions(prev => {
+            const updatedList = prev.map(t => t.id === editFormData.id ? editFormData : t);
+            return calculateBalances(updatedList);
+        });
         
         // Cleanup
         setEditingId(null); 
@@ -145,8 +170,10 @@ export function useTransactions() {
                     }
                 })
             )
-            console.log('data pulled: ', data)
-            setTransactions(data)
+
+            const processedData = calculateBalances(data);
+            setTransactions(processedData);
+            
         }catch(error){
             console.error("Failed to pull in Transactions: ", error)
         }
@@ -161,14 +188,13 @@ export function useTransactions() {
             const result = await client.request(
                 createItem('transactions', newItem)
             );
-            console.log('Transaction Added: ', result);
-
-            // 2. INSTANTLY update the table (Don't wait for fetch!)
+            
+            // 2. Update State: Add new item AND Recalculate all balances
             setTransactions(prev => {
-                // Add the new item to the existing list immediately
-                const updatedList = [...prev, result as Transaction];
-                // Sort it so it appears in the correct date order
-                return updatedList.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                // Combine existing list with new result
+                const updatedList = [...prev, result];
+                // Run the helper to Sort AND add 'balance' property
+                return calculateBalances(updatedList);
             });
 
             // 3. Clear Form
@@ -301,6 +327,11 @@ export function useTransactions() {
                 )
             },
             {
+                key:'balance', header:"Balance", render: (row: Transaction) => (
+                        <div>{row.balance}</div>
+                    )
+            },
+            {
                 key:'category', header:"Category", render: (row: Transaction) => (
                     row.id === editingId ? (
                         <Dropdown 
@@ -366,7 +397,6 @@ export function useTransactions() {
                 )
             }
         ]
-
         setColumns(TransactionsColumns);
     }, [transactions, editingId, updateTransaction, deleteTransaction, editFormData, category]); 
     

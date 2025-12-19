@@ -127,14 +127,16 @@ export default function Transactions() {
 
     //TODO: Need to Make Cell GUI
     //TODO: Need to Make Tablet Gui
+
     //TODO: Need to Add Ballance Column
-    //TODO: Need to Start Modularizing these components
-        //Move all useState, useEffect, and API functions (fetchTransactions, updateTransaction) into a hook like useTransactions.ts
-        //Move the "Add Transaction" form section into its own component (e.g., TransactionForm.ts
-    //TODO: Need to Sum the balance column
+        //-Added Cell But now need to reformat the whole table. 
+
+    //TODO: Need to shrink the useTransactions.tsx
     //TODO: Need to Center and format Title
     //TODO: Need to fit more items on a page (15-20)
     //TODO: Maybe conver the Edits to a modal to save some formating 
     //TODO: Need to Filter out the paid items. 
+    //TODO: Need to reastablish security 
+    //TODO: Befor Hiding Checke need note update so we could review Items or confirmation numbers. 
 
 }
