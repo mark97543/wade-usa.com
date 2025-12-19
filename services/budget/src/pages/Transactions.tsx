@@ -16,7 +16,7 @@ export default function Transactions() {
         saveNewItem,
         newItem,
         setNewItem,
-        category
+        categories
     } = useTransactions()
 
     return (
@@ -91,7 +91,7 @@ export default function Transactions() {
                         </span>
                     }>
 
-                        {category.map((cat)=>(
+                        {categories.map((cat)=>(
                             <DropdownItem 
                                 key={cat.id} 
                                 onClick={() => setNewItem(prev => {
@@ -129,7 +129,8 @@ export default function Transactions() {
     //TODO: Need to Make Tablet Gui
 
     //TODO: Need to Add Ballance Column
-        //-Added Cell But now need to reformat the whole table. 
+        //TODO: Added Cell But now need to reformat the whole table. 
+        //TODO: Need to make it so the function takes the completed transactions first then goes through remaining transactions. Filtering out paid Items should be 
 
     //TODO: Need to shrink the useTransactions.tsx
     //TODO: Need to Center and format Title
