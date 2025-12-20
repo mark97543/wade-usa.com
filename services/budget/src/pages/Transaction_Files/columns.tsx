@@ -130,13 +130,13 @@ export const getColumns = ({ editingId, editFormData, categories, handlers }: Co
                     />
                 ) : (
                     <div>{row.note ? (
-                            <>
+                            <div style={{ fontStyle: 'italic', color: 'rgba(255, 255, 255, 0.6)' }}>
                                 <strong>Note: </strong> {row.note}
-                            </>
+                            </div>
                         ) : (
-                            <>
+                            <div style={{ fontStyle: 'italic', color: 'rgba(255, 255, 255, 0.6)' }}>
                                 <strong>Note: -</strong> 
-                            </>
+                            </div>
                     )}</div>
                 )
             )

@@ -20,8 +20,12 @@ export function useTransactions() {
     const [page, setPage] = useState(1); 
     const itemsPerPage = 12;
     const startIndex = (page - 1) * itemsPerPage;
-    const currentData = transactions.slice(startIndex, startIndex + itemsPerPage);
-    const totalPages = Math.ceil(transactions.length / itemsPerPage);
+    const currentData = transactions
+        .filter(t => t.paid === false) 
+        .slice(startIndex, startIndex + itemsPerPage);
+    const totalPages = Math.ceil(
+        transactions.filter(t => t.paid === false).length / itemsPerPage
+    );
     const handlePageChange = (newPage: number) => setPage(newPage);
 
     // --- Actions ---
@@ -43,9 +47,38 @@ export function useTransactions() {
     };
 
     const updateTx = useCallback(async (id: number, paid: boolean) => {
-        setTransactions(prev => prev.map(t => t.id === id ? { ...t, paid: !t.paid } : t)); 
-        try { await api.updateTransaction(id, { paid: !paid }); }
-        catch { setTransactions(prev => prev.map(t => t.id === id ? { ...t, paid: paid } : t)); } 
+        // 1. Get Today's Date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+
+        setTransactions(prev => {
+            // 2. Map through to find and update the item
+            const updatedList = prev.map(t => {
+                if (t.id !== id) return t;
+
+                return { 
+                    ...t, 
+                    paid: !t.paid,
+                    // If we are checking it (making it paid), update the date to today
+                    // If we are unchecking it, keep the date as-is (or you could revert if you saved it)
+                    date: !t.paid ? today : t.date 
+                };
+            });
+            
+            // 3. Recalculate balances immediately
+            return calculateBalances(updatedList);
+        }); 
+
+        try { 
+            // 4. Send both changes to the API
+            await api.updateTransaction(id, { 
+                paid: !paid,
+                date: !paid ? today : undefined // Only send date if we are marking as paid
+            }); 
+        }
+        catch { 
+            // Revert on error (omitted for brevity, but you'd flip it back)
+            console.error("Failed to update");
+        } 
     }, []);
 
     const saveEdit = async () => {

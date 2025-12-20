@@ -124,21 +124,11 @@ export default function Transactions() {
         </div>
     );
 
-
-    //TODO: Need to Make Cell GUI
-    //TODO: Need to Make Tablet Gui
-
-    //TODO: Need to Add Ballance Column
-        //TODO: Added Cell But now need to reformat the whole table. 
-        //TODO: Need to make it so the function takes the completed transactions first then goes through remaining transactions. Filtering out paid Items should be 
-
-    //TODO: Need to shrink the useTransactions.tsx
     //TODO: Need to Center and format Title
-    //TODO: Need to fit more items on a page (15-20)
-    //TODO: Maybe conver the Edits to a modal to save some formating 
-    //TODO: Need to Filter out the paid items. 
+    //TODO: Maybe conver the Edits to a modal to save some formating (This may be more efficient)
     //TODO: Need to reastablish security 
     //TODO: Befor Hiding Checke need note update so we could review Items or confirmation numbers. 
-
+    //TODO: Need to make transitions between the pages smoother
+    //TODO: Need to fix the add buttun when pagnation goes away it seems to shrink. This may be how i am useing the first child property. Solution may be for the pagnation to always be visible. This may take editiing the pagnation item. 
 
 }
