@@ -124,11 +124,10 @@ export default function Transactions() {
         </div>
     );
 
-    //TODO: Need to Center and format Title
+    //TODO: Need to Center and format Title (May remove this though)
     //TODO: Maybe conver the Edits to a modal to save some formating (This may be more efficient)
     //TODO: Need to reastablish security 
     //TODO: Befor Hiding Checke need note update so we could review Items or confirmation numbers. 
     //TODO: Need to make transitions between the pages smoother
-    //TODO: Need to fix the add buttun when pagnation goes away it seems to shrink. This may be how i am useing the first child property. Solution may be for the pagnation to always be visible. This may take editiing the pagnation item. 
 
 }

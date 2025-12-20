@@ -58,10 +58,12 @@ const getPageNumbers = (currentPage: number, totalPages: number, range: number) 
  * A theme-aware pagination component for navigating multi-page content.
  */
 export const Pagination = ({ currentPage, totalPages, onPageChange, pageRange = 1 }: PaginationProps) => {
-  
-  if (totalPages <= 1) {
-    return null;
-  }
+
+  //This will make the pagenation disapear if pages less than one. In this case we are commenting out 
+  // There will never be less than one page in this app and its messing with the page themeing. 
+  // if (totalPages <= 1) {
+  //   return null;
+  // }
 
   const pages = getPageNumbers(currentPage, totalPages, pageRange);
 
