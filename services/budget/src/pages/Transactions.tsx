@@ -5,10 +5,10 @@ import { Button } from "@/components/atoms/Button/Button";
 import { Pagination } from "@/components/molecules/Pagination/Pagination";
 import { useTransactions } from "./Transaction_Files/useTransactions.tsx";
 import TransactionModal from "./Transaction_Files/Transaction_modal.tsx";
+import Transaction_Card from "./Transaction_Files/Transaction_Card.tsx";
 
 export default function Transactions() {
-
-    const{
+    const {
         columns,
         currentData,
         page,
@@ -23,15 +23,18 @@ export default function Transactions() {
         selectedItem,
         setSelectedItem,
         setTransactions
-    } = useTransactions()
-
-
+    } = useTransactions();
 
     return (
         <div className="Transactions_Wrapper">
             <h1>Transactions</h1>
+            
             <div className="Transactions_table_container">
                 <Table columns={columns} data={currentData} />
+            </div>
+
+            <div className="Transactions_Card_Container">
+                <Transaction_Card columns={columns} data={currentData}/>
             </div>
 
             <div className="Transactions_Edit_Form_Div">
@@ -41,91 +44,99 @@ export default function Transactions() {
                     onPageChange={handlePageChange}
                     pageRange={1}
                 />
+                
                 <div className="Transactions_Add_Form">
                     
-                    <Button onClick={()=>saveNewItem()}>+</Button>
+                    {/* 1. Add Button */}
+                    <Button onClick={() => saveNewItem()}>+</Button>
                     
-                    <Input type="date" value={newItem.date} onChange={(e)=>setNewItem(
-                        prev => {
-                            return{
-                                ...prev, 
-                                date:e.target.value
-                            }
-                        })}>
-                    </Input>
+                    {/* 2. Date */}
+                    <div className="form-item-wrapper">
+                        <Input 
+                            type="date" 
+                            value={newItem.date} 
+                            onChange={(e) => setNewItem(prev => ({ ...prev, date: e.target.value }))} 
+                        />
+                    </div>
 
-                    <Input type="text" placeholder={"Item"} value={newItem.item} onChange={(e)=>setNewItem(
-                        prev => {
-                            return{
-                                ...prev, 
-                                item:e.target.value
-                            }
-                        })}>
-                    </Input>
+                    {/* 3. Item Name */}
+                    <div className="form-item-wrapper">
+                        <Input 
+                            type="text" 
+                            placeholder="Item" 
+                            value={newItem.item} 
+                            onChange={(e) => setNewItem(prev => ({ ...prev, item: e.target.value }))} 
+                        />
+                    </div>
 
-                    <Input type="number" placeholder={"Deposit"} value={newItem.deposit} onChange={(e)=>setNewItem(
-                        prev => {
-                            return{
-                                ...prev, 
-                                deposit:e.target.value
-                            }
-                        })}>
-                    </Input>
+                    {/* 4. Deposit */}
+                    <div className="form-item-wrapper">
+                        <Input 
+                            type="number" 
+                            placeholder="Deposit" 
+                            value={newItem.deposit} 
+                            onChange={(e) => setNewItem(prev => ({ ...prev, deposit: e.target.value }))} 
+                        />
+                    </div>
 
-                    <Input type="number" placeholder={"Withdrawal"} value={newItem.withdrawal} onChange={(e)=>setNewItem(
-                        prev => {;
-                            return{
-                                ...prev, 
-                                withdrawal:e.target.value
-                            }
-                        })}>
-                    </Input>
+                    {/* 5. Withdrawal */}
+                    <div className="form-item-wrapper">
+                        <Input 
+                            type="number" 
+                            placeholder="Withdrawal" 
+                            value={newItem.withdrawal} 
+                            onChange={(e) => setNewItem(prev => ({ ...prev, withdrawal: e.target.value }))} 
+                        />
+                    </div>
 
-                    <Dropdown trigger={
-                        <span style={{ 
-                            cursor: 'pointer', 
-                            padding: '0.25rem 0.5rem', 
-                            border: '1px solid rgba(255,255,255,0.1)', 
-                            borderRadius: '4px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            minWidth: '120px',
-                            justifyContent: 'space-between',
-                            userSelect: 'none'
-                        }}> 
-                            {newItem?.category || 'Select...'}
-                            <small style={{ opacity: 0.5 }}>▼</small>
-                        </span>
-                    }>
+                    {/* 6. Category Dropdown */}
+                    <div className="form-item-wrapper">
+                        <Dropdown trigger={
+                            <span style={{ 
+                                cursor: 'pointer', 
+                                padding: '0.25rem 0.5rem', 
+                                border: '1px solid rgba(255,255,255,0.1)', 
+                                borderRadius: '4px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                width: '100%', 
+                                justifyContent: 'space-between',
+                                userSelect: 'none',
+                                background: 'var(--secondary-color)',
+                                height: '100%',
+                                minHeight: '38px',
+                                boxSizing: 'border-box'
+                            }}> 
+                                {newItem?.category || 'Select...'}
+                                <small style={{ opacity: 0.5 }}>▼</small>
+                            </span>
+                        }>
+                            {categories.map((cat) => (
+                                <DropdownItem 
+                                    key={cat.id} 
+                                    onClick={() => setNewItem(prev => {
+                                        const current = prev || { 
+                                            id: 0, date: '', item: '', deposit: 0, withdrawal: 0, paid: false, category: '', note: '' 
+                                        };
+                                        return { ...current, category: cat.item };
+                                    })}
+                                >
+                                    {cat.item}
+                                </DropdownItem>
+                            ))}
+                        </Dropdown>
+                    </div>
 
-                        {categories.map((cat)=>(
-                            <DropdownItem 
-                                key={cat.id} 
-                                onClick={() => setNewItem(prev => {
-                                    // 1. If 'prev' is null, create a blank default object
-                                    const current = prev || { 
-                                        id: 0, date: '', item: '', deposit: 0, withdrawal: 0, paid: false, category: '', note: '' 
-                                    };
-                                    
-                                    // 2. Now update the category
-                                    return { ...current, category: cat.item };
-                                })}
-                            >
-                                {cat.item}
-                            </DropdownItem>
-                        ))}
-
-                    </Dropdown>
-
-                    <Input type="text" placeholder={"Note"} value={newItem.note} onChange={(e)=>setNewItem(
-                        prev => {
-                            return{
-                                ...prev, 
-                                note:e.target.value
-                            }
-                        })}>
-                    </Input>
+                    {/* 7. Note */}
+                    <div className="form-item-wrapper">
+                        <Input 
+                            type="text" 
+                            placeholder="Note" 
+                            value={newItem.note} 
+                            onChange={(e) => setNewItem(prev => ({ ...prev, note: e.target.value }))} 
+                        />
+                    </div>
 
                 </div>
             </div>
@@ -137,14 +148,6 @@ export default function Transactions() {
                 setData={setSelectedItem}
                 setTransactions={setTransactions}
             />
-
-
         </div>
     );
-
-    //TODO: Need to Center and format Title (May remove this though)
-    //TODO: Need to reastablish security 
-    //TODO: Befor Hiding Checke need note update so we could review Items or confirmation numbers. 
-    //TODO: Need to make transitions between the pages smoother
-
 }
