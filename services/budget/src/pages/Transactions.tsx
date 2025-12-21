@@ -4,6 +4,7 @@ import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown
 import { Button } from "@/components/atoms/Button/Button";
 import { Pagination } from "@/components/molecules/Pagination/Pagination";
 import { useTransactions } from "./Transaction_Files/useTransactions.tsx";
+import TransactionModal from "./Transaction_Files/Transaction_modal.tsx";
 
 export default function Transactions() {
 
@@ -16,8 +17,15 @@ export default function Transactions() {
         saveNewItem,
         newItem,
         setNewItem,
-        categories
+        categories,
+        isOpen,
+        setIsOpen,
+        selectedItem,
+        setSelectedItem,
+        setTransactions
     } = useTransactions()
+
+
 
     return (
         <div className="Transactions_Wrapper">
@@ -121,11 +129,20 @@ export default function Transactions() {
 
                 </div>
             </div>
+
+            <TransactionModal 
+                isOpen={isOpen} 
+                setIsOpen={setIsOpen} 
+                data={selectedItem} 
+                setData={setSelectedItem}
+                setTransactions={setTransactions}
+            />
+
+
         </div>
     );
 
     //TODO: Need to Center and format Title (May remove this though)
-    //TODO: Maybe conver the Edits to a modal to save some formating (This may be more efficient)
     //TODO: Need to reastablish security 
     //TODO: Befor Hiding Checke need note update so we could review Items or confirmation numbers. 
     //TODO: Need to make transitions between the pages smoother
