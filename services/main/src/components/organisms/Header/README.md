@@ -214,4 +214,3 @@ const visibleMenu = filterMenuByRole(MASTER_MENU, ROLES.ADMIN);
 />
 // Note: The 'isAdmin: true' ensures the badge in the user dropdown is visible.
 ```
-

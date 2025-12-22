@@ -1,0 +1,9 @@
+/*  Reduce padding inside table cells  */
+.exported-note table td,
+.exported-note table th {
+  padding: 10px; /* Adjust this value as needed */
+}
+/*for the editor view*/
+.CodeMirror-scroll table td, .CodeMirror-scroll table th, #joplin-container-contentContainer table td, #joplin-container-contentContainer table th{
+     padding: 10px !important; /* Adjust this value as needed */
+}/* For styling the rendered Markdown */

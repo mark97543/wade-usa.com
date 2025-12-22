@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/atoms/Button/Button';
-import { Input } from '../components/atoms/Input/Input';
+import { Input } from '@/components/atoms/Input/Input';
 import { Spinner } from '@/components/atoms/Spinner/Spinner';
 import { Switch } from '@/components/atoms/Switch/Switch';
 import { Range } from '@/components/atoms/Range/Range';

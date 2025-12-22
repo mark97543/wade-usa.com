@@ -17,11 +17,13 @@ interface CarouselItem {
 const fetchAllItems = async (collectionName: string) => {
     try {
         const items = await client.request(
-            readItems(collectionName as 'main_landing_site', {  
+            // FIX: Cast to 'never' to bypass the SDK's strict schema check when no schema is provided
+            readItems(collectionName as never, {  
                 // Optional: filter: { status: { _eq: 'published' } },
             })
         );
-        return items;
+        // FIX: Double cast via unknown to resolve type overlap error
+        return items as unknown as CarouselItem[]; 
     } catch (error) {
         console.error(`Failed to fetch items from ${collectionName}:`, error);
         return [];

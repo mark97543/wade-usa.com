@@ -37,6 +37,9 @@
 			
 			//Sites
 			// "**/main": true,
+			//Joplin
+			"**/Joplin": true,
+			
 			
 			
 			

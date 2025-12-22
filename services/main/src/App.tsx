@@ -1,35 +1,34 @@
-//#region  --- IMPORTS ---
+//App.tsx
+// ===============================================================
+// Imports
+// ===============================================================
+//#region
 import { useMemo } from 'react';
-import { Routes, Route } from 'react-router-dom';
-
-// --- PAGES ---
-import  NotFound  from './pages/404';
-import Landing from './pages/Landing';
-import UnauthorizedPage from './pages/UnauthorizedPage';
-import Dash from './pages/Dash';
-
-// --- COMPONENTS ---
+import { Routes, Route, Link } from 'react-router-dom';
 import { Login } from '@/pages/Login';
+import Landing from './pages/Landing'; 
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Header } from '@/components/organisms/Header/Header';
+import { Button } from '@/components/atoms/Button/Button';
 import type { NavItem } from '@/components/organisms/Header/types';
 import {Showcase} from '@/pages/Showcase';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-
-// --- CONTEXT ---
 import { useAuth } from '@/context/AuthContext';
-//#endregion
+import Dashboard from '@/pages/Dashboard';
 
-//#region  --- CONFIGURATION ---
-// 1. Define Roles (Ensure these match your Directus UUIDs)
+// --- CONFIGURATION ---
+// Define Roles
 const ROLES = {
   ADMIN: import.meta.env.VITE_ROLE_ADMIN || 'admin-uuid-placeholder',
   BASIC: import.meta.env.VITE_ROLE_BASIC || 'basic-uuid-placeholder',
   PENDING: import.meta.env.VITE_ROLE_PENDING || 'pending-uuid-placeholder',
 };
+
 //#endregion
 
-//#region  --- HELPER FUNCTIONS (Logic Layer) ---
-
+// ===============================================================
+// HELPER FUNCTIONS 
+// ===============================================================
+//#region
 /**
  * Safely extracts the Role ID from a User object, 
  * handling cases where Directus returns a string OR an object.
@@ -72,39 +71,53 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 };
 //#endregion
 
+// ===============================================================
+// PLACEHOLDER PAGES (These will Get Deleted as They are built)
+// ===============================================================
+
+const UnauthorizedPage = () => (
+  <div style={{ padding: '4rem', textAlign: 'center' }}>
+    <h1>403 - Access Denied</h1>
+    <Link to="/"><Button>Go Home</Button></Link>
+  </div>
+);
+
 
 function App() {
-
-  //#region ---GUI and Secutity
   const { user, logout } = useAuth();
+
   // 1. Get the Safe Role ID
   const userRoleId = getRoleId(user);
-  // 2. Define the Master Menu (Contains ALL links for ALL users)
-  // We use useMemo so we don't recreate this array on every render
+
+  // --------------------------------------------------
+  // The menu for the header. (See Template for Format)
+  // --------------------------------------------------
+  //#region
   const masterMenu: NavItem[] = useMemo(() => [
 
   ], []);
-  // 3. Calculate the "Visible Menu"
-  // This runs whenever the user logs in/out or changes roles
+
+  //#endregion
+
+  // Calculate the "Visible Menu". This runs whenever the user logs in/out or changes roles
   const visibleMenu = useMemo(() => {
     return filterMenuByRole(masterMenu, userRoleId);
   }, [masterMenu, userRoleId]);
-  // 4. Prepare User object for Header
+
+  // Prepare User object for Header
   const headerUser = user ? {
     name: user.first_name || 'User',
     email: user.email,
     isAdmin: userRoleId === ROLES.ADMIN,
     roleId: userRoleId
   } : null;
-  //#endregion
-
 
   return (
     <>
       {/* Header receives the pre-filtered 'visibleMenu' */}
       <Header 
-        siteName="Wade USA"
-        // logoUrl="/assets/logo.png"
+        siteName="M&S"
+        //logoUrl="/assets/logo.png"
         mainNav={visibleMenu} 
         user={headerUser}
         onLogout={logout}
@@ -119,13 +132,23 @@ function App() {
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="/showcase" element={<Showcase />} />
 
-          {/* --- admin and basic --- */}
-          <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.BASIC]} />}>
-            <Route path="/dashboard" element={<Dash />} />
+          {/* --- LEVEL 1: ALL LOGGED IN (Including Pending) --- */}
+          <Route element={<ProtectedRoute />}> 
+
+          </Route>
+
+          {/* --- LEVEL 2: BASIC & ADMIN (Pending Blocked) --- */}
+          <Route element={<ProtectedRoute allowedRoles={[ROLES.BASIC, ROLES.ADMIN]} />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+
+          {/* --- LEVEL 3: ADMIN ONLY --- */}
+          <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
+
           </Route>
 
           {/* Catch-all */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<div className="p-8">404 - Page Not Found</div>} />
         </Routes>
       </main>
     </>

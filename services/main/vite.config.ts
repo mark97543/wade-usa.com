@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 
-
 // https://vitejs.dev/config/
 export default defineConfig({
   // "path.resolve" calculates the absolute path to the root 
@@ -19,10 +18,9 @@ export default defineConfig({
   },
 
   server: {
-    port: 3000,
+    port: 3000, //Change this to a port that is not used by other services
     strictPort: true,
     host: '127.0.0.1',   // Bind to local loopback
     allowedHosts: ['dev.wade-usa.com'] // Allow the spoofed domain
   },
-
 })

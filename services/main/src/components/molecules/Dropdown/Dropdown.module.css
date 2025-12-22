@@ -1,5 +1,5 @@
+/* Container is just for the button now */
 .container {
-  position: relative;
   display: inline-block;
 }
 
@@ -10,34 +10,32 @@
   padding: 0;
   display: flex;
   align-items: center;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .menu {
-  position: absolute;
-  top: 100%;
-  right: 0; /* Align to right edge of trigger */
-  margin-top: 0.5rem;
-  min-width: 200px;
+  /* Removed position: absolute/fixed (Handled by JS) */
   background-color: var(--surface-color);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.375rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  z-index: 100;
   overflow: hidden;
   
-  /* Animation setup */
+  /* Animation */
   opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  transition: all 0.2s ease;
+  transform: translateY(-5px);
+  transition: opacity 0.1s ease, transform 0.1s ease;
 }
 
 .menu.open {
   opacity: 1;
   transform: translateY(0);
-  pointer-events: auto;
+  /* Pointer events are handled naturally now */
 }
 
+/* Items */
 .item {
   display: block;
   width: 100%;

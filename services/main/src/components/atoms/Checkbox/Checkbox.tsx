@@ -1,6 +1,5 @@
 // services/main/src/components/atoms/Checkbox/Checkbox.tsx
 
-// import React from 'react';
 import type { InputHTMLAttributes } from 'react'; // Fix for verbatimModuleSyntax
 import styles from './Checkbox.module.css';
 

@@ -16,23 +16,39 @@ export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Redirect logic: Go back to where they tried to go, or Dashboard by default
   const from = location.state?.from?.pathname || "/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    console.log("📝 [Login Page] Submitting Form...");
-    console.log("   -> Email:", email);
+    // --- DEBUG LOGS ADDED HERE ---
+    console.log("--- Login Attempt ---");
+    console.log("State Email:", email);
+    console.log("State Password:", password);
+    console.log("Redirect target:", from);
+    // -----------------------------
     
     try {
       await login(email, password);
-      console.log("🚀 [Login Page] Login Resolved! Redirecting to:", from);
+      
+      // --- DEBUG LOG ---
+      console.log("Login successful! Redirecting...");
+      // ---------------
+      
+      // If successful, redirect
       navigate(from, { replace: true });
     } catch (err: any) {
-      console.error("💥 [Login Page] Error Caught:", err);
+      // --- ENHANCED DEBUG LOG ADDED HERE ---
+      console.error("Login failed:", err);
+      // Try to parse the actual Directus message from the error object
       const apiErrorMessage = err?.errors?.[0]?.message || 'Invalid email or password.';
-      setError(apiErrorMessage);
+      console.error("API Error Message:", apiErrorMessage);
+      // -------------------------------------
+      
+      // Directus errors usually come in a specific format, but we'll keep it simple
+      setError(apiErrorMessage); // Use the message from the API
     }
   };
 
@@ -40,6 +56,7 @@ export const Login = () => {
     <AuthLayout>
       <Card title="Wade-USA Portal">
         {error && <Alert type="error" message={error} />}
+        
         <form onSubmit={handleSubmit}>
           <FormGroup label="Email Address" id="email">
             <Input 
@@ -49,8 +66,6 @@ export const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@wade-usa.com" 
               autoFocus
-              // ADD THIS:
-              autoComplete="username"
             />
           </FormGroup>
 
@@ -61,11 +76,13 @@ export const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••" 
-              // ADD THIS:
-              autoComplete="current-password"
             />
           </FormGroup>
-          <Button style={{ width: '100%', marginTop: '1rem' }} isLoading={isLoading}>
+
+          <Button 
+            style={{ width: '100%', marginTop: '1rem' }} 
+            isLoading={isLoading}
+          >
             Sign In
           </Button>
         </form>

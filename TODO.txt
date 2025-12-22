@@ -1,0 +1,24 @@
+--- Main App ---
+
+TODO: Need to build 
+    TODO: Remove all template formating 
+    TODO: Build Welcome Page
+    TODO: Build 401 Page 
+    TODO: Build Unautherized page 
+    TODO: Build a Dashboard Page 
+        TODO: Add  Links to pages to test. 
+
+--- Budget App ---
+
+Need to Delete
+TODO: Need to build
+
+--- Widgets --- 
+TODO: Need to Build a TODO Widget
+TODO: Need to build a countdown Widget
+TODO: Scheduler Widget (To use in Travel Planner and Roadtrip Planner and Budget App Maybe)
+
+--- Future Projects --- 
+
+TODO: Travel Planner 
+TODO: Roadtrip Planner 
