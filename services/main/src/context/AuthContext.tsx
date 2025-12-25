@@ -104,20 +104,32 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   }
 
 
-  //Logout Function 
-  const logout = async () =>{
+  //Logout Function
+  const logout = async () => {
     setIsLoading(true);
-    try{
-      await client.logout(); //Clear Cookie
-    }catch(error){
-      console.warn("Logout failed (Session likely already expired).", error);
-    }finally{
-      client.setToken(null); //Clear Token
-      setIsLoading(false);
-      setUser(null); //Clear User
+    try {
+      // 1. Force a token refresh first. 
+      // This ensures we have a valid Access Token to perform the logout.
+      try {
+        await client.refresh();
+      } catch (e) {
+        // If refresh fails, the session is likely dead anyway, ignore it.
+      }
+
+      // 2. NOW call logout. The server should accept it and delete the cookie.
+      await client.logout();
+      
+    } catch (error) {
+      console.warn("Logout failed gracefully", error);
+    } finally {
+      // 3. Cleanup local state
+      client.setToken(null);
+      setUser(null);
+      
+      // 4. Force Redirect
       window.location.href = `${LOGIN_URL}?status=logout`;
     }
-  }
+  };
 
   //Register 
   const register = async (email: string, password: string, first: string, last: string) => {
