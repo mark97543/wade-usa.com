@@ -14,7 +14,7 @@ export const Login = () => {
   const [error, setError] = useState('');
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
+  
 
   // Redirect logic: Go back to where they tried to go, or Dashboard by default
   const from ="/dashboard";
@@ -90,4 +90,4 @@ export const Login = () => {
       </Card>
     </AuthLayout>
   );
-};
+};// Force update for deployment
