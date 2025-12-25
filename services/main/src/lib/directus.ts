@@ -27,10 +27,7 @@ const apiUrl = import.meta.env.VITE_API_URL || 'https://api.wade-usa.com';
 
 // 1. Create Client
 export const client = createDirectus<Schema>(apiUrl)
-    .with(rest({ 
-        // CRITICAL: This allows cookies to be sent/received across domains
-        credentials: 'include' 
-    })) 
+    .with(rest()) // Standard REST client (Uses Bearer Token from Auth)
     .with(authentication('cookie', { 
         // CRITICAL: This handles the silent refresh loop automatically
         autoRefresh: true,

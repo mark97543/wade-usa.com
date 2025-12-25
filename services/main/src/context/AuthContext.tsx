@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { 
   readMe, 
-  createUser,
+  createUser, 
 } from '@directus/sdk';
 import { client, ROLES } from '@/lib/directus'; 
 import type { User, AuthContextType } from '@/types/user';
@@ -12,64 +12,60 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // --- Helper: Get User Profile ---
-  // We extract this so we can call it after login WITHOUT forcing a refresh
-  const fetchUser = async () => {
-    const userData = await client.request(readMe({ 
-      fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role.id', 'role.name'] as any
-    }));
-    console.log("AUTH: User Data received:", userData.email);
-    setUser(userData as unknown as User);
-  };
-
-  // --- Helper: Role ID Extraction ---
+  // --- Safe Role Extraction Helper ---
   const getRoleId = (userObj: User | null): string | null => {
     if (!userObj || !userObj.role) return null;
-    // @ts-ignore
     return typeof userObj.role === 'object' ? userObj.role.id : userObj.role;
   };
-  
-  // 1. Check Session (Runs on Page Load)
-  useEffect(() => {
-    checkSession();
-  }, []);
 
-  const checkSession = async () => {
-    console.log("AUTH: Starting Session Check...");
+  // --- Shared: Fetch User Data ---
+  const fetchCurrentUser = async () => {
     try {
-      // Only try to refresh if we are checking an existing session
-      console.log("AUTH: Attempting to refresh token from cookie...");
-      await client.refresh();
+      // SIMPLIFIED REQUEST:
+      // We removed 'role.id' and 'role.name'.
+      // We now just ask for 'role' (which returns the UUID string).
+      // This avoids the permission error if the user can't read the "Roles" collection.
+      const userData = await client.request(readMe({ 
+        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role']
+      }));
       
-      // If refresh works, fetch the user
-      await fetchUser();
-
+      setUser(userData as unknown as User);
     } catch (error) {
-      console.warn("AUTH: Session check failed (User not logged in or cookie missing).");
+      console.warn("Auth: Fetch user failed", error);
       setUser(null);
-    } finally {
-      setIsLoading(false);
     }
   };
+  
+  // 1. Check Session on Load
+  useEffect(() => {
+    const initSession = async () => {
+      try {
+        // Try to refresh the session from the httpOnly cookie
+        await client.refresh();
+        await fetchCurrentUser();
+      } catch (error) {
+        // Not logged in
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    initSession();
+  }, []);
 
-  // 2. Login Action
   const login = async (email: string, password: string) => {
     try {
-      // A. Perform Login
-      const authResponse = await client.login({ email, password });
+      // 1. Clear any old state first
+      client.setToken(null);
+      setUser(null);
+
+      // 2. Perform Login
+      await client.login({ email, password });
       
-      // B. Manually set the token in memory (SDK needs this if not using cookies)
-      if (authResponse.access_token) {
-        client.setToken(authResponse.access_token);
-      }
-
-      // C. Fetch User DIRECTLY (Do not call checkSession/refresh here)
-      await fetchUser();
-
-      // Note: We do NOT setToken(null) here anymore. 
-      // We keep the token in memory so the session stays alive for this visit.
-
-    } catch (error: any) {
+      // 3. Fetch User details
+      await fetchCurrentUser();
+      
+    } catch (error) {
         console.error("AUTH: Login failed.", error);
         throw error; 
     }
@@ -86,16 +82,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    if (!user) return;
     try {
-      // @ts-ignore
-      await client.logout(); 
-      console.log("AUTH: Logout successful.");
+      await client.logout();
     } catch (error) {
       console.warn("AUTH: Logout error", error);
     } finally {
+      // Always clear local state to update UI
+      client.setToken(null);
       setUser(null);
-      client.setToken(null); // Clear memory token
     }
   };
 
@@ -103,7 +97,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return getRoleId(user) === roleId;
   };
 
-  const isAdmin = getRoleId(user) === ROLES.ADMIN;
+  const isAdmin = hasRole(ROLES.ADMIN);
 
   return (
     <AuthContext.Provider 

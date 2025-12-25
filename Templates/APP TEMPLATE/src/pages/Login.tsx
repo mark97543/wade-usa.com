@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { AuthLayout } from '@/components/templates/AuthLayout/AuthLayout';
+import { AuthLayout } from '@/components/auth/AuthLayout/AuthLayout';
 import { Card } from '@/components/molecules/Card/Card';
 import { FormGroup } from '@/components/molecules/FormGroup/FormGroup';
 import { Input } from '@/components/atoms/Input/Input';

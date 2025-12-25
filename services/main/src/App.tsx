@@ -3,7 +3,7 @@
 // Imports
 // ===============================================================
 //#region
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { Login } from '@/pages/Login';
 import Landing from './pages/Landing'; 
@@ -14,14 +14,22 @@ import type { NavItem } from '@/components/organisms/Header/types';
 import {Showcase} from '@/pages/Showcase';
 import { useAuth } from '@/context/AuthContext';
 import Dashboard from '@/pages/Dashboard';
+import Pending from '@/pages/Pending';
+import { useNavigate, useLocation } from 'react-router-dom';
+//#endregion
 
 // --- CONFIGURATION ---
 // Define Roles
-const ROLES = {
-  ADMIN: import.meta.env.VITE_ROLE_ADMIN || 'admin-uuid-placeholder',
-  BASIC: import.meta.env.VITE_ROLE_BASIC || 'basic-uuid-placeholder',
-  PENDING: import.meta.env.VITE_ROLE_PENDING || 'pending-uuid-placeholder',
-};
+// Remove the manual const ROLES definition.
+// Import ROLES from your centralized directus file instead:
+import { ROLES } from '@/lib/directus';
+console.log
+
+//#endregion
+
+// --- CONFIGURATION ---
+// Define Roles
+// Using imported ROLES from directus.ts
 
 //#endregion
 
@@ -85,9 +93,9 @@ const UnauthorizedPage = () => (
 
 function App() {
   const { user, logout } = useAuth();
-
-  // 1. Get the Safe Role ID
   const userRoleId = getRoleId(user);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // --------------------------------------------------
   // The menu for the header. (See Template for Format)
@@ -112,6 +120,20 @@ function App() {
     roleId: userRoleId
   } : null;
 
+  // --- THE PENDING JAIL ---
+  useEffect(() => {
+    // 1. If user is logged in
+    // 2. AND their role is PENDING
+    // 3. AND they are NOT already on the pending page (or login/logout)
+    if (userRoleId === ROLES.PENDING) {
+      const allowedPaths = ['/pending', '/login', '/logout'];
+      
+      if (!allowedPaths.includes(location.pathname)) {
+        navigate('/pending', { replace: true });
+      }
+    }
+  }, [userRoleId, location.pathname, navigate]);
+
   return (
     <>
       {/* Header receives the pre-filtered 'visibleMenu' */}
@@ -134,7 +156,7 @@ function App() {
 
           {/* --- LEVEL 1: ALL LOGGED IN (Including Pending) --- */}
           <Route element={<ProtectedRoute />}> 
-
+            <Route path="/pending" element={<Pending />} />
           </Route>
 
           {/* --- LEVEL 2: BASIC & ADMIN (Pending Blocked) --- */}
