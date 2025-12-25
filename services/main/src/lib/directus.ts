@@ -32,4 +32,4 @@ export const client = createDirectus<Schema>(apiUrl)
         // CRITICAL: This handles the silent refresh loop automatically
         autoRefresh: true,
         credentials: 'include'
-    }));
+}));

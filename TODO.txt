@@ -2,6 +2,9 @@
 
 TODO: Build a Dashboard Page 
 TODO: Need to build registration page
+TODO: Need to set up user for one level of autherization
+    TODO: Auth Context needs to Be rebuilt (Make sure to add to template)
+    TODO: Protected Route need to be rebuilt (make sure to add to template)
 
 --- Budget App ---
 
@@ -17,3 +20,7 @@ TODO: Scheduler Widget (To use in Travel Planner and Roadtrip Planner and Budget
 
 TODO: Travel Planner 
 TODO: Roadtrip Planner 
+
+-- Directus -- 
+
+TODO: Need to make one level of user 

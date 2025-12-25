@@ -1,41 +1,25 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import { Spinner } from '@/components/atoms/Spinner/Spinner';
+//ProtectedRoute.tsx
 
-interface ProtectedRouteProps {
-  allowedRoles?: string[]; // Array of Role IDs allowed to see this page
-}
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext.tsx";
+import { Spinner } from "../atoms/Spinner/Spinner";
 
-export const ProtectedRoute = ({ allowedRoles = [] }: ProtectedRouteProps) => {
-  const { user, isAuthenticated, isLoading } = useAuth();
+export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const {isAuthenticated, isLoading} = useAuth();
   const location = useLocation();
 
-  // 1. Loading State
-  if (isLoading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-        <Spinner />
-      </div>
-    );
+  //Still Checking show loading
+  if(isLoading){
+    return <div className="p-10 flex justify-center"><Spinner/></div>
+  };
+
+  //Not Logged in? Redirect user out
+  //Save the from Location so we can redirect them back after they log in 
+  if(!isAuthenticated){
+    return <Navigate to="/login" state={{from: location}} replace/>
   }
 
-  // 2. Auth Check
-  if (!isAuthenticated || !user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  // 3. Role Check
-  if (allowedRoles.length > 0) {
-    // Directus sometimes returns role as an object { id: "..." } or just a string "..."
-    const userRoleId = typeof user.role === 'object' && user.role !== null
-        ? user.role.id 
-        : user.role;
-
-    if (!userRoleId || !allowedRoles.includes(userRoleId)) {
-      return <Navigate to="/unauthorized" replace />;
-    }
-  }
-
-  // 4. Render the Child Route
-  return <Outlet />;
+  //Logged in? Let them through
+  return <>{children}</>;
 };
+

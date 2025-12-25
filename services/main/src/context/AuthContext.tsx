@@ -1,121 +1,133 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
-  readMe, 
-  createUser, 
-} from '@directus/sdk';
-import { client, ROLES } from '@/lib/directus'; 
-import type { User, AuthContextType } from '@/types/user';
+// AuthContext.tsx
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+import { createContext, useContext, useState, useEffect} from 'react';
+import type { ReactNode } from 'react';
+import { client } from '@/lib/directus';
+import {readMe, registerUser} from '@directus/sdk';
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+// Define Data Shape
+interface User{
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role?:string; //Needed for pending user
+}
+
+interface AuthContextType{
+  user: User | null; //user object 
+  isAuthenticated: boolean; //helper 
+  isLoading: boolean; //if still checking
+  login: (e: string, p: string) => Promise<void>;
+  logout: () => Promise<void>;
+  register: (e: string, p: string, f: string, l: string) => Promise<void>;
+}
+
+//Routing
+export const LOGIN_URL = import.meta.env.PROD 
+  ? 'https://wade-usa.com/login'   // Production: Always force Main Domain
+  : 'https://localhost:3000/login'; // Localhost: Stay on local (Port 5173 is Vite default)
+
+
+//Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+//The provider (Holds Logic)
+export const AuthProvider = ({children}: {children: ReactNode}) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // --- Safe Role Extraction Helper ---
-  const getRoleId = (userObj: User | null): string | null => {
-    if (!userObj || !userObj.role) return null;
-    return typeof userObj.role === 'object' ? userObj.role.id : userObj.role;
-  };
-
-  // --- Shared: Fetch User Data ---
-  const fetchCurrentUser = async () => {
-    try {
-      // SIMPLIFIED REQUEST:
-      // We removed 'role.id' and 'role.name'.
-      // We now just ask for 'role' (which returns the UUID string).
-      // This avoids the permission error if the user can't read the "Roles" collection.
-      const userData = await client.request(readMe({ 
-        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role']
-      }));
-      
-      setUser(userData as unknown as User);
-    } catch (error) {
-      console.warn("Auth: Fetch user failed", error);
-      setUser(null);
+  //Ensures the role is aleays a string ID
+  const normalizeUser = (userData:any): User =>{
+    return{
+      ...userData,
+      role: typeof userData.role === 'object' && userData.role !== null
+        ? userData.role.id
+        : userData.role
     }
-  };
-  
-  // 1. Check Session on Load
+  }
+
+  //Check Auth on load
   useEffect(() => {
-    const initSession = async () => {
-      try {
-        // Try to refresh the session from the httpOnly cookie
-        await client.refresh();
-        await fetchCurrentUser();
-      } catch (error) {
-        // Not logged in
-        setUser(null);
-      } finally {
-        setIsLoading(false);
+    const checkAuth = async () => {
+      try{
+        const currentUser = await client.request(readMe({
+          fields:['id', 'first_name', 'last_name', 'email', 'role'] as any
+        }));
+        setUser(normalizeUser(currentUser));      
+      }catch(error){
+        setUser(null); //no or invalid cookie
+      }finally{
+        setIsLoading(false); //Completed Checking
       }
-    };
-    initSession();
+    }
+    checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    try {
-      // 1. Clear any old state first
-      client.setToken(null);
-      setUser(null);
-
-      // 2. Perform Login
-      await client.login({ email, password });
-      
-      // 3. Fetch User details
-      await fetchCurrentUser();
-      
-    } catch (error) {
-        console.error("AUTH: Login failed.", error);
-        throw error; 
+  //Login Function
+  const login = async (email: string, password:string)=>{
+    setIsLoading(true);
+    try{
+      await client.login({email, password}); //Exchange password for cookie
+      const currentUser = await client.request(readMe({
+        fields:['id', 'first_name', 'last_name', 'email', 'role'] as any
+      }));
+      setUser(normalizeUser(currentUser));
+    }catch(error){
+      throw error; //Let the login page handle the error message
+    }finally{
+      setIsLoading(false);
     }
-  };
+  }
 
-  const register = async (email: string, password: string, first_name: string, last_name: string) => {
-    await client.request(createUser({
-      email,
-      password,
-      first_name,
-      last_name,
-      role: ROLES.PENDING,
-    }));
-  };
-
-  const logout = async () => {
-    try {
-      await client.logout();
-    } catch (error) {
-      console.warn("AUTH: Logout error", error);
-    } finally {
-      // Always clear local state to update UI
-      client.setToken(null);
-      setUser(null);
+  //Logout Function 
+  const logout = async () =>{
+    setIsLoading(true);
+    try{
+      await client.logout(); //Clear Cookie
+    }catch(error){
+      console.warn("Logout failed (Session likely already expired).", error);
+    }finally{
+      client.setToken(null); //Clear Token
+      setIsLoading(false);
+      setUser(null); //Clear User
+      window.location.href = LOGIN_URL; 
     }
-  };
+  }
 
-  const hasRole = (roleId: string) => {
-    return getRoleId(user) === roleId;
-  };
-
-  const isAdmin = hasRole(ROLES.ADMIN);
-
-  return (
-    <AuthContext.Provider 
-      value={{ 
-        user, 
-        token: null,
-        isLoading, 
-        isAuthenticated: !!user,
-        login, 
-        register, 
-        logout,
-        hasRole,
-        isAdmin
-      }}
-    >
+  //Register 
+  const register = async (email: string, password: string, first: string, last: string) => {
+    setIsLoading(true);
+    try{
+      await client.request(registerUser(email, password, {
+        first_name: first,
+        last_name: last 
+      }));
+    }catch(error){
+      throw error;
+    }finally{
+      setIsLoading(false);
+    }
+  }
+  
+  //Expose the Data
+  return(
+    <AuthContext.Provider value ={{
+      user, 
+      isAuthenticated: !!user, //Converts user object to true/false
+      isLoading,
+      login,
+      logout,
+      register
+    }}>
       {children}
     </AuthContext.Provider>
-  );
+  )
 };
 
-export const useAuth = () => useContext(AuthContext);
+//The hook (how components use it)
+export const useAuth = ()=>{
+  const context = useContext(AuthContext);
+  if(context === undefined) throw new Error('useAuth must be used within an AuthProvider');
+  return context;
+}
