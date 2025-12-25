@@ -18,7 +18,7 @@ interface AuthContextType{
   user: User | null; //user object 
   isAuthenticated: boolean; //helper 
   isLoading: boolean; //if still checking
-  login: (e: string, p: string) => Promise<void>;
+  login: (e: string, p: string) => Promise<User>;
   logout: () => Promise<void>;
   register: (e: string, p: string, f: string, l: string) => Promise<void>;
 }
@@ -71,9 +71,8 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   }, []);
 
   //Login Function
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     setIsLoading(true);
-    //start with a clean slate
     client.setToken(null); 
 
     try {
@@ -85,28 +84,25 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       
       const normalized = normalizeUser(currentUser);
 
-      // Check if the user we got back matches the email we just typed.
+      // Sanity Check (Zombie Killer)
       if (normalized.email.toLowerCase() !== email.toLowerCase()) {
-        console.warn("Ghost session detected (Browser Cache or Zombie Cookie). Forcing cleanup.");
-        
-        // Kill the session immediately
         client.setToken(null);
         setUser(null);
-        
-        // Force a hard reload to clear the browser cache
         window.location.href = `${LOGIN_URL}?status=logout`;
-        return;
+        throw new Error("Session mismatch");
       }
 
       setUser(normalized);
+      return normalized; // <--- RETURN THE USER HERE
+
     } catch (error) {
-      // If login failed, clear any partial state
       client.setToken(null);
       throw error;
     } finally {
       setIsLoading(false);
     }
-  };
+  }
+
 
   //Logout Function 
   const logout = async () =>{

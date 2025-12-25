@@ -7,6 +7,7 @@ import { FormGroup } from '@/components/molecules/FormGroup/FormGroup';
 import { Input } from '@/components/atoms/Input/Input';
 import { Button } from '@/components/atoms/Button/Button';
 import { Alert } from '@/components/molecules/Alert/Alert';
+import { ROLES } from '@/lib/directus';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,27 +33,21 @@ export const Login = () => {
     // -----------------------------
 
     
-    try {
-      await login(email, password);
-      
-      // --- DEBUG LOG ---
-      console.log("Login successful! Redirecting...");
-      // ---------------
-      
-      // If successful, redirect
-      navigate(from, { replace: true });
-    } catch (err: any) {
-      // --- ENHANCED DEBUG LOG ADDED HERE ---
-      console.error("Login failed:", err);
-      // Try to parse the actual Directus message from the error object
-      const apiErrorMessage = err?.errors?.[0]?.message || 'Invalid email or password.';
-      console.error("API Error Message:", apiErrorMessage);
-      // -------------------------------------
-      
-      // Directus errors usually come in a specific format, but we'll keep it simple
-      setError(apiErrorMessage); // Use the message from the API
+  try {
+    // 1. Capture the user returned by login
+    const loggedInUser = await login(email, password);
+
+    // 2. Check Role and Redirect accordingly
+    if (loggedInUser.role === ROLES.PENDING) {
+      navigate('/pending'); // Send Pending users here
+    } else {
+      navigate('/dashboard'); // Send everyone else here
     }
-  };
+
+  } catch (err) {
+    setError('Invalid email or password');
+  }
+};
 
   return (
     <AuthLayout>
