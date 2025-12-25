@@ -29,7 +29,7 @@
 			// "**/auth": true,
 
 			//Templates Library
-			"**/Templates": true,
+			//"**/Templates": true,
 			
 			//Horse Blinders (this is after website has been establish Pre Production)
 			"**/Bash": true,

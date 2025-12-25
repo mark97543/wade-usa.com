@@ -54,13 +54,6 @@ const getRoleId = (user: any): string | null => {
  */
 const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[] => {
   return items.reduce((acc: NavItem[], item) => {
-    // A. Check Permission for this specific item
-    // If allowedRoles exists AND user's ID isn't in it -> Skip this item
-    if (item.allowedRoles && item.allowedRoles.length > 0) {
-      if (!userRoleId || !item.allowedRoles.includes(userRoleId)) {
-        return acc; // User not allowed, skip.
-      }
-    }
 
     // B. Create a Shallow Copy (So we don't mutate the original master menu)
     const newItem = { ...item };
@@ -143,21 +136,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/showcase" element={<Showcase />} />
-
-          {/* --- LEVEL 1: ALL LOGGED IN (Including Pending) --- */}
-          <Route element={<ProtectedRoute />}> 
-            <Route path="/pending" element={<Pending />} />
-          </Route>
-
-          {/* --- LEVEL 2: BASIC & ADMIN (Pending Blocked) --- */}
-          <Route element={<ProtectedRoute allowedRoles={[ROLES.BASIC, ROLES.ADMIN]} />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Route>
-
-          {/* --- LEVEL 3: ADMIN ONLY --- */}
-          <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]} />}>
-
-          </Route>
+          
+          {/* --- PROTECTED --- */} 
+          <Route path="/pending" element={<ProtectedRoute><Pending /></ProtectedRoute>}/>
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
 
           {/* Catch-all */}
           <Route path="*" element={<Page404 />} />
