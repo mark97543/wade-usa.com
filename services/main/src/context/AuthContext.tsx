@@ -1,76 +1,79 @@
-// AuthContext.tsx
+// services/main/src/context/AuthContext.tsx
 
-import { createContext, useContext, useState, useEffect} from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { client } from '@/lib/directus';
-import {readMe, registerUser} from '@directus/sdk';
+import { readMe, registerUser } from '@directus/sdk';
 
 // Define Data Shape
-interface User{
+interface User {
   id: string;
   email: string;
   first_name: string;
   last_name: string;
-  role?:string; //Needed for pending user
+  role?: string; 
 }
 
-interface AuthContextType{
-  user: User | null; //user object 
-  isAuthenticated: boolean; //helper 
-  isLoading: boolean; //if still checking
-  login: (e: string, p: string) => Promise<User>;
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (e: string, p: string) => Promise<User>; // Returns User object
   logout: () => Promise<void>;
   register: (e: string, p: string, f: string, l: string) => Promise<void>;
 }
 
-//Routing
+// Routing
 export const LOGIN_URL = import.meta.env.PROD 
-  ? 'https://wade-usa.com/login'   // Production: Always force Main Domain
-  : 'https://localhost:3000/login'; // Localhost: Stay on local (Port 5173 is Vite default)
+  ? 'https://wade-usa.com/login'
+  : 'https://localhost:3000/login'; 
 
 
-//Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-//The provider (Holds Logic)
-export const AuthProvider = ({children}: {children: ReactNode}) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  //Ensures the role is aleays a string ID
-  const normalizeUser = (userData:any): User =>{
-    return{
+  const normalizeUser = (userData: any): User => {
+    return {
       ...userData,
       role: typeof userData.role === 'object' && userData.role !== null
         ? userData.role.id
         : userData.role
-    }
-  }
+    };
+  };
 
-  //Check Auth on load
+  // 1. CHECK AUTH ON LOAD
   useEffect(() => {
     const checkAuth = async () => {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('status') === 'logout') {
-        // If yes, STOP here. Do not ask Directus for the user.
+      // --- THE LOCK: Check if user manually logged out ---
+      const authStatus = localStorage.getItem('wade_auth_status');
+      
+      // If the lock is ON, do not check the server. User must login manually.
+      if (authStatus === 'logged_out') {
         setIsLoading(false);
         return; 
       }
-      try{
+
+      try {
+        // Try to refresh the session automatically
         const currentUser = await client.request(readMe({
-          fields:['id', 'first_name', 'last_name', 'email', 'role.id'] as any
+          fields: ['id', 'first_name', 'last_name', 'email', 'role.id'] as any
         }));
         setUser(normalizeUser(currentUser));      
-      }catch(error){
-        setUser(null); //no or invalid cookie
-      }finally{
-        setIsLoading(false); //Completed Checking
+      } catch (error) {
+        // If auto-login fails, ensure we are clean
+        setUser(null);
+        localStorage.setItem('wade_auth_status', 'logged_out'); 
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
     checkAuth();
   }, []);
 
-  //Login Function
+  // 2. LOGIN FUNCTION
   const login = async (email: string, password: string): Promise<User> => {
     setIsLoading(true);
     client.setToken(null); 
@@ -84,16 +87,20 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       
       const normalized = normalizeUser(currentUser);
 
-      // Sanity Check (Zombie Killer)
+      // Zombie Killer Sanity Check
       if (normalized.email.toLowerCase() !== email.toLowerCase()) {
         client.setToken(null);
         setUser(null);
+        localStorage.setItem('wade_auth_status', 'logged_out'); // Set Lock
         window.location.href = `${LOGIN_URL}?status=logout`;
         throw new Error("Session mismatch");
       }
 
+      // SUCCESS: Remove the Lock so future refreshes work
+      localStorage.removeItem('wade_auth_status'); 
+
       setUser(normalized);
-      return normalized; // <--- RETURN THE USER HERE
+      return normalized;
 
     } catch (error) {
       client.setToken(null);
@@ -101,56 +108,53 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
-
-  //Logout Function
+  // 3. LOGOUT FUNCTION
   const logout = async () => {
     setIsLoading(true);
-    try {
-      // 1. Force a token refresh first. 
-      // This ensures we have a valid Access Token to perform the logout.
-      try {
-        await client.refresh();
-      } catch (e) {
-        // If refresh fails, the session is likely dead anyway, ignore it.
-      }
+    
+    // A. ENABLE THE LOCK IMMEDIATELY
+    // This prevents /dashboard from auto-reloading the user
+    localStorage.setItem('wade_auth_status', 'logged_out');
 
-      // 2. NOW call logout. The server should accept it and delete the cookie.
+    try {
+      // B. Try to refresh token first to ensure we have permission to logout
+      await client.refresh();
+      // C. Tell server to kill cookie
       await client.logout();
-      
     } catch (error) {
-      console.warn("Logout failed gracefully", error);
+      console.warn("Logout failed (Session likely already expired).", error);
     } finally {
-      // 3. Cleanup local state
-      client.setToken(null);
+      // D. Cleanup Local State
+      client.setToken(null); 
       setUser(null);
       
-      // 4. Force Redirect
-      window.location.href = `${LOGIN_URL}?status=logout`;
+      // E. Redirect
+      setIsLoading(false);
+      window.location.href = LOGIN_URL;
     }
   };
 
-  //Register 
+  // Register 
   const register = async (email: string, password: string, first: string, last: string) => {
     setIsLoading(true);
-    try{
+    try {
       await client.request(registerUser(email, password, {
         first_name: first,
         last_name: last 
       }));
-    }catch(error){
+    } catch (error) {
       throw error;
-    }finally{
+    } finally {
       setIsLoading(false);
     }
-  }
+  };
   
-  //Expose the Data
-  return(
-    <AuthContext.Provider value ={{
+  return (
+    <AuthContext.Provider value={{
       user, 
-      isAuthenticated: !!user, //Converts user object to true/false
+      isAuthenticated: !!user,
       isLoading,
       login,
       logout,
@@ -158,12 +162,11 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 };
 
-//The hook (how components use it)
-export const useAuth = ()=>{
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if(context === undefined) throw new Error('useAuth must be used within an AuthProvider');
+  if (context === undefined) throw new Error('useAuth must be used within an AuthProvider');
   return context;
-}
+};
