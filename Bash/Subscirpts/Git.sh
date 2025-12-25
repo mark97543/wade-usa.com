@@ -28,7 +28,7 @@ do
     echo "1. Local Commit"
     echo "2. Push to GitHub (Option 1 Needs to be done 1st)"
     echo "3. Git Log"
-    echo "q. Quit"
+    echo "4. Quit"
     echo ""
 
     read -p "Enter your choice: " OPTION
@@ -49,17 +49,18 @@ do
                 echo "Error: GIT_TOKEN is not set. Make sure it is defined in your .env file."
             else
                 echo "Preparing to push to GitHub..."
-                # Get the current remote URL for 'origin'.
                 REMOTE_URL=$(git remote get-url origin)
-
-                # Remove the 'https://' part from the URL.
                 URL_WITHOUT_PROTOCOL=${REMOTE_URL#https://}
-
-                # Construct the new URL with the token for authentication.
                 AUTH_URL="https://${GIT_TOKEN}@${URL_WITHOUT_PROTOCOL}"
 
-                # Push to the authenticated URL.
+                # 1. Push to the URL
                 git push "${AUTH_URL}" main
+                
+                # 2. FIX: Force Git to update local tracking references
+                # This tells your computer: "Go check origin and see where it is now."
+                git fetch origin
+                
+                echo "Sync complete."
             fi
             read -p "Press [Enter] to continue..."
             ;;
@@ -67,7 +68,7 @@ do
             git log
             read -p "Press [Enter] to continue..."
             ;;
-        q)
+        4)
             break
             ;;
         *)
