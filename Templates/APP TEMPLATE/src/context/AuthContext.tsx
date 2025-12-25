@@ -1,121 +1,180 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
-  readMe, 
-  createUser, 
-} from '@directus/sdk';
-import { client, ROLES } from '@/lib/directus'; 
-import type { User, AuthContextType } from '@/types/user';
+// services/main/src/context/AuthContext.tsx
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import { client } from '@/lib/directus';
+import { readMe, registerUser } from '@directus/sdk';
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+// Define Data Shape
+interface User {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role?: string; 
+}
+
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (e: string, p: string) => Promise<User>; // Returns User object
+  logout: () => Promise<void>;
+  register: (e: string, p: string, f: string, l: string) => Promise<void>;
+}
+
+// Routing
+export const LOGIN_URL = import.meta.env.PROD 
+  ? 'https://wade-usa.com/login'
+  : 'https://localhost:3000/login'; 
+
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // --- Safe Role Extraction Helper ---
-  const getRoleId = (userObj: User | null): string | null => {
-    if (!userObj || !userObj.role) return null;
-    return typeof userObj.role === 'object' ? userObj.role.id : userObj.role;
+  const normalizeUser = (userData: any): User => {
+    return {
+      ...userData,
+      role: typeof userData.role === 'object' && userData.role !== null
+        ? userData.role.id
+        : userData.role
+    };
   };
 
-  // --- Shared: Fetch User Data ---
-  const fetchCurrentUser = async () => {
-    try {
-      // SIMPLIFIED REQUEST:
-      // We removed 'role.id' and 'role.name'.
-      // We now just ask for 'role' (which returns the UUID string).
-      // This avoids the permission error if the user can't read the "Roles" collection.
-      const userData = await client.request(readMe({ 
-        fields: ['id', 'first_name', 'last_name', 'email', 'avatar', 'role']
-      }));
-      
-      setUser(userData as unknown as User);
-    } catch (error) {
-      console.warn("Auth: Fetch user failed", error);
-      setUser(null);
-    }
-  };
-  
-  // 1. Check Session on Load
+  // 1. CHECK AUTH ON LOAD
   useEffect(() => {
-    const initSession = async () => {
+    const checkAuth = async () => {
+      // --- THE LOCK: Check if user manually logged out ---
+      const authStatus = localStorage.getItem('wade_auth_status');
+      
+      // If the lock is ON, do not check the server. User must login manually.
+      if (authStatus === 'logged_out') {
+        setIsLoading(false);
+        return; 
+      }
+
       try {
-        // Try to refresh the session from the httpOnly cookie
-        await client.refresh();
-        await fetchCurrentUser();
+        // Try to refresh the session automatically
+        const currentUser = await client.request(readMe({
+          fields: ['id', 'first_name', 'last_name', 'email', 'role'] as any
+        }));
+        setUser(normalizeUser(currentUser));      
       } catch (error) {
-        // Not logged in
+        // If auto-login fails, ensure we are clean
         setUser(null);
+        localStorage.setItem('wade_auth_status', 'logged_out'); 
       } finally {
         setIsLoading(false);
       }
     };
-    initSession();
+    checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    try {
-      // 1. Clear any old state first
-      client.setToken(null);
-      setUser(null);
+  // 2. LOGIN FUNCTION
+  const login = async (email: string, password: string): Promise<User> => {
+    setIsLoading(true);
+    client.setToken(null); 
 
-      // 2. Perform Login
+    try {
+      // 1. Perform the Login
       await client.login({ email, password });
       
-      // 3. Fetch User details
-      await fetchCurrentUser();
+      // 2. Fetch User with CACHE BUSTING
+      // We manually construct the request to add '?t=...' which forces a network fetch
+      const currentUser = await client.request(() => ({
+        path: '/users/me',
+        method: 'GET',
+        params: {
+          fields: ['id', 'first_name', 'last_name', 'email', 'role'], // Request Raw Role ID
+          t: Date.now() // <--- THE KEY: Unique timestamp prevents caching
+        }
+      }));
       
+      const normalized = normalizeUser(currentUser);
+
+      // 3. Sanity Check
+      if (normalized.email.toLowerCase() !== email.toLowerCase()) {
+        console.warn("Session Mismatch detected. Cleaning up.");
+        client.setToken(null);
+        setUser(null);
+        localStorage.setItem('wade_auth_status', 'logged_out');
+        window.location.href = `${LOGIN_URL}?status=logout`;
+        throw new Error("Session mismatch");
+      }
+
+      // 4. Success
+      localStorage.removeItem('wade_auth_status'); 
+      setUser(normalized);
+      return normalized;
+
     } catch (error) {
-        console.error("AUTH: Login failed.", error);
-        throw error; 
+      client.setToken(null);
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
-  };
+  };;
 
-  const register = async (email: string, password: string, first_name: string, last_name: string) => {
-    await client.request(createUser({
-      email,
-      password,
-      first_name,
-      last_name,
-      role: ROLES.PENDING,
-    }));
-  };
-
+  // 3. LOGOUT FUNCTION
   const logout = async () => {
+    setIsLoading(true);
+    
+    // A. ENABLE THE LOCK IMMEDIATELY
+    // This prevents /dashboard from auto-reloading the user
+    localStorage.setItem('wade_auth_status', 'logged_out');
+
     try {
+      // B. Try to refresh token first to ensure we have permission to logout
+      await client.refresh();
+      // C. Tell server to kill cookie
       await client.logout();
     } catch (error) {
-      console.warn("AUTH: Logout error", error);
+      console.warn("Logout failed (Session likely already expired).", error);
     } finally {
-      // Always clear local state to update UI
-      client.setToken(null);
+      // D. Cleanup Local State
+      client.setToken(null); 
       setUser(null);
+      
+      // E. Redirect
+      setIsLoading(false);
+      window.location.href = LOGIN_URL;
     }
   };
 
-  const hasRole = (roleId: string) => {
-    return getRoleId(user) === roleId;
+  // Register 
+  const register = async (email: string, password: string, first: string, last: string) => {
+    setIsLoading(true);
+    try {
+      await client.request(registerUser(email, password, {
+        first_name: first,
+        last_name: last 
+      }));
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  const isAdmin = hasRole(ROLES.ADMIN);
-
+  
   return (
-    <AuthContext.Provider 
-      value={{ 
-        user, 
-        token: null,
-        isLoading, 
-        isAuthenticated: !!user,
-        login, 
-        register, 
-        logout,
-        hasRole,
-        isAdmin
-      }}
-    >
+    <AuthContext.Provider value={{
+      user, 
+      isAuthenticated: !!user,
+      isLoading,
+      login,
+      logout,
+      register
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) throw new Error('useAuth must be used within an AuthProvider');
+  return context;
+};

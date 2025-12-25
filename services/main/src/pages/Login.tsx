@@ -23,30 +23,20 @@ export const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError('');    
+    try {
+      const loggedInUser = await login(email, password);
 
-    // --- DEBUG LOGS ADDED HERE ---
-    console.log("--- Login Attempt ---");
-    console.log("State Email:", email);
-    console.log("State Password:", password?.replace(/./g, '*'));
-    console.log("Redirect target:", from);
-    // -----------------------------
+      // Check against the REAL Production ID you pasted in directus.ts
+      if (loggedInUser.role === ROLES.PENDING) {
+        navigate('/pending');
+      } else {
+        navigate('/dashboard');
+      }
 
-    
-  try {
-    // 1. Capture the user returned by login
-    const loggedInUser = await login(email, password);
-
-    // 2. Check Role and Redirect accordingly
-    if (loggedInUser.role === ROLES.PENDING) {
-      navigate('/pending'); // Send Pending users here
-    } else {
-      navigate('/dashboard'); // Send everyone else here
+    } catch (err) {
+      setError('Invalid email or password');
     }
-
-  } catch (err) {
-    setError('Invalid email or password');
-  }
 };
 
   return (

@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         // Try to refresh the session automatically
         const currentUser = await client.request(readMe({
-          fields: ['id', 'first_name', 'last_name', 'email', 'role.id'] as any
+          fields: ['id', 'first_name', 'last_name', 'email', 'role'] as any
         }));
         setUser(normalizeUser(currentUser));      
       } catch (error) {
@@ -79,26 +79,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     client.setToken(null); 
 
     try {
+      // 1. Perform the Login
       await client.login({ email, password });
       
-      const currentUser = await client.request(readMe({
-        fields: ['id', 'first_name', 'last_name', 'email', 'role.id'] as any
+      // 2. Fetch User with CACHE BUSTING
+      // We manually construct the request to add '?t=...' which forces a network fetch
+      const currentUser = await client.request(() => ({
+        path: '/users/me',
+        method: 'GET',
+        params: {
+          fields: ['id', 'first_name', 'last_name', 'email', 'role'], // Request Raw Role ID
+          t: Date.now() // <--- THE KEY: Unique timestamp prevents caching
+        }
       }));
       
       const normalized = normalizeUser(currentUser);
 
-      // Zombie Killer Sanity Check
+      // 3. Sanity Check
       if (normalized.email.toLowerCase() !== email.toLowerCase()) {
+        console.warn("Session Mismatch detected. Cleaning up.");
         client.setToken(null);
         setUser(null);
-        localStorage.setItem('wade_auth_status', 'logged_out'); // Set Lock
+        localStorage.setItem('wade_auth_status', 'logged_out');
         window.location.href = `${LOGIN_URL}?status=logout`;
         throw new Error("Session mismatch");
       }
 
-      // SUCCESS: Remove the Lock so future refreshes work
+      // 4. Success
       localStorage.removeItem('wade_auth_status'); 
-
       setUser(normalized);
       return normalized;
 
@@ -108,7 +116,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  };;
 
   // 3. LOGOUT FUNCTION
   const logout = async () => {

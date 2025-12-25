@@ -7,6 +7,7 @@ import { FormGroup } from '@/components/molecules/FormGroup/FormGroup';
 import { Input } from '@/components/atoms/Input/Input';
 import { Button } from '@/components/atoms/Button/Button';
 import { Alert } from '@/components/molecules/Alert/Alert';
+import { ROLES } from '@/lib/directus';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ export const Login = () => {
   const [error, setError] = useState('');
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
+  
   const location = useLocation();
 
   // Redirect logic: Go back to where they tried to go, or Dashboard by default
@@ -21,36 +23,21 @@ export const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    // --- DEBUG LOGS ADDED HERE ---
-    console.log("--- Login Attempt ---");
-    console.log("State Email:", email);
-    console.log("State Password:", password);
-    console.log("Redirect target:", from);
-    // -----------------------------
-    
+    setError('');    
     try {
-      await login(email, password);
-      
-      // --- DEBUG LOG ---
-      console.log("Login successful! Redirecting...");
-      // ---------------
-      
-      // If successful, redirect
-      navigate(from, { replace: true });
-    } catch (err: any) {
-      // --- ENHANCED DEBUG LOG ADDED HERE ---
-      console.error("Login failed:", err);
-      // Try to parse the actual Directus message from the error object
-      const apiErrorMessage = err?.errors?.[0]?.message || 'Invalid email or password.';
-      console.error("API Error Message:", apiErrorMessage);
-      // -------------------------------------
-      
-      // Directus errors usually come in a specific format, but we'll keep it simple
-      setError(apiErrorMessage); // Use the message from the API
+      const loggedInUser = await login(email, password);
+
+      // Check against the REAL Production ID you pasted in directus.ts
+      if (loggedInUser.role === ROLES.PENDING) {
+        navigate('/pending');
+      } else {
+        navigate('/dashboard');
+      }
+
+    } catch (err) {
+      setError('Invalid email or password');
     }
-  };
+};
 
   return (
     <AuthLayout>
@@ -89,4 +76,4 @@ export const Login = () => {
       </Card>
     </AuthLayout>
   );
-};
+};// Force update for deployment
