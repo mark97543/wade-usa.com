@@ -71,20 +71,42 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   }, []);
 
   //Login Function
-  const login = async (email: string, password:string)=>{
+  const login = async (email: string, password: string) => {
     setIsLoading(true);
-    try{
-      await client.login({email, password}); //Exchange password for cookie
+    //start with a clean slate
+    client.setToken(null); 
+
+    try {
+      await client.login({ email, password });
+      
       const currentUser = await client.request(readMe({
-        fields:['id', 'first_name', 'last_name', 'email', 'role.id'] as any
+        fields: ['id', 'first_name', 'last_name', 'email', 'role.id'] as any
       }));
-      setUser(normalizeUser(currentUser));
-    }catch(error){
-      throw error; //Let the login page handle the error message
-    }finally{
+      
+      const normalized = normalizeUser(currentUser);
+
+      // Check if the user we got back matches the email we just typed.
+      if (normalized.email.toLowerCase() !== email.toLowerCase()) {
+        console.warn("Ghost session detected (Browser Cache or Zombie Cookie). Forcing cleanup.");
+        
+        // Kill the session immediately
+        client.setToken(null);
+        setUser(null);
+        
+        // Force a hard reload to clear the browser cache
+        window.location.href = `${LOGIN_URL}?status=logout`;
+        return;
+      }
+
+      setUser(normalized);
+    } catch (error) {
+      // If login failed, clear any partial state
+      client.setToken(null);
+      throw error;
+    } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   //Logout Function 
   const logout = async () =>{
