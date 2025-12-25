@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { AuthLayout } from '@/components/auth/AuthLayout/AuthLayout';
 import { Card } from '@/components/molecules/Card/Card';
@@ -15,9 +15,10 @@ export const Login = () => {
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
   
+  const location = useLocation();
 
   // Redirect logic: Go back to where they tried to go, or Dashboard by default
-  const from ="/dashboard";
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
