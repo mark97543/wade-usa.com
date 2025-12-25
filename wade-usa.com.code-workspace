@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "Joplin"
 		}
 	],
 	"settings": {
@@ -26,10 +29,10 @@
 			// "**/auth": true,
 
 			//Templates Library
-			// "**/Templates": true,
+			"**/Templates": true,
 			
 			//Horse Blinders (this is after website has been establish Pre Production)
-			// "**/Bash": true,
+			"**/Bash": true,
 			// "**/Caddyfile": true,
 			// "**/docker-compose.yml": true,
 			// "**/.gitignore": true,

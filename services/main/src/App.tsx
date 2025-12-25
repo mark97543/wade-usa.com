@@ -4,18 +4,18 @@
 // ===============================================================
 //#region
 import { useMemo, useEffect } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import { Login } from '@/pages/Login';
 import Landing from './pages/Landing'; 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Header } from '@/components/organisms/Header/Header';
-import { Button } from '@/components/atoms/Button/Button';
 import type { NavItem } from '@/components/organisms/Header/types';
 import {Showcase} from '@/pages/Showcase';
 import { useAuth } from '@/context/AuthContext';
 import Dashboard from '@/pages/Dashboard';
 import Pending from '@/pages/Pending';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Unauthorized from '@/pages/Unauthorized';
 //#endregion
 
 // --- CONFIGURATION ---
@@ -79,17 +79,6 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 };
 //#endregion
 
-// ===============================================================
-// PLACEHOLDER PAGES (These will Get Deleted as They are built)
-// ===============================================================
-
-const UnauthorizedPage = () => (
-  <div style={{ padding: '4rem', textAlign: 'center' }}>
-    <h1>403 - Access Denied</h1>
-    <Link to="/"><Button>Go Home</Button></Link>
-  </div>
-);
-
 
 function App() {
   const { user, logout } = useAuth();
@@ -151,7 +140,7 @@ function App() {
           {/* --- PUBLIC --- */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/showcase" element={<Showcase />} />
 
           {/* --- LEVEL 1: ALL LOGGED IN (Including Pending) --- */}

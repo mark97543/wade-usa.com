@@ -1,8 +1,6 @@
 --- Main App ---
 
 TODO: Need to build 
-    TODO: Remove all template formating 
-    TODO: Build Welcome Page
     TODO: Build 401 Page 
     TODO: Build Unautherized page 
     TODO: Build a Dashboard Page 
