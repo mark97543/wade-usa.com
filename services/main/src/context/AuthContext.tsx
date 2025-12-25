@@ -58,7 +58,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       }
       try{
         const currentUser = await client.request(readMe({
-          fields:['id', 'first_name', 'last_name', 'email', 'role'] as any
+          fields:['id', 'first_name', 'last_name', 'email', 'role.id'] as any
         }));
         setUser(normalizeUser(currentUser));      
       }catch(error){
@@ -76,7 +76,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     try{
       await client.login({email, password}); //Exchange password for cookie
       const currentUser = await client.request(readMe({
-        fields:['id', 'first_name', 'last_name', 'email', 'role'] as any
+        fields:['id', 'first_name', 'last_name', 'email', 'role.id'] as any
       }));
       setUser(normalizeUser(currentUser));
     }catch(error){
