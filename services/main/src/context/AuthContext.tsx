@@ -50,6 +50,12 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
   //Check Auth on load
   useEffect(() => {
     const checkAuth = async () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('status') === 'logout') {
+        // If yes, STOP here. Do not ask Directus for the user.
+        setIsLoading(false);
+        return; 
+      }
       try{
         const currentUser = await client.request(readMe({
           fields:['id', 'first_name', 'last_name', 'email', 'role'] as any
@@ -91,7 +97,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       client.setToken(null); //Clear Token
       setIsLoading(false);
       setUser(null); //Clear User
-      window.location.href = LOGIN_URL; 
+      window.location.href = `${LOGIN_URL}?status=logout`;
     }
   }
 
