@@ -16,6 +16,7 @@ import Dashboard from '@/pages/Dashboard';
 import Pending from '@/pages/Pending';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Unauthorized from '@/pages/Unauthorized';
+import Page404 from './pages/404Page';
 //#endregion
 
 // --- CONFIGURATION ---
@@ -159,7 +160,7 @@ function App() {
           </Route>
 
           {/* Catch-all */}
-          <Route path="*" element={<div className="p-8">404 - Page Not Found</div>} />
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </main>
     </>

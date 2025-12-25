@@ -11,7 +11,8 @@ const imageStyle: CSSProperties = {
     maxWidth: '1200px',
     marginLeft: 'auto',
     marginRight: 'auto',
-    borderRadius: '10px'
+    borderRadius: '10px',
+    width: '100%'
 }
 
 

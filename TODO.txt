@@ -1,13 +1,7 @@
 --- Main App ---
 
-TODO: Need to build 
-    TODO: Build 401 Page 
-    TODO: Build Unautherized page 
-    TODO: Build a Dashboard Page 
-        TODO: Add  Links to pages to test. 
-    TODO: Need to build pending site 
-    TODO: Need to build registration page
-TODO: Need to fix pending page . A pending user goes to the dashboard in lieu of the pending page. 
+TODO: Build a Dashboard Page 
+TODO: Need to build registration page
 
 --- Budget App ---
 
