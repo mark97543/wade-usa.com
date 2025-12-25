@@ -114,6 +114,7 @@ export const Header = ({
             <div className={styles.desktopNav}>
               {user ? (
                 <Dropdown 
+                  align="right"
                   trigger={
                     <span className={styles.userTrigger}>
                       {user.name} <small>▼</small>

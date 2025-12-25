@@ -16,27 +16,17 @@
 			"**/data": true,
 
 			//Components Library
-			// "**/atoms": true,
-			// "**/molecules": true,
-			// "**/organisms": true,
-			// "**/templates": true,
 			// "**/components": true,
-
-			//Context Library
-			// "**/context": true,
-			// "**/lib": true,
-			// "**/types": true,
-			// "**/auth": true,
 
 			//Templates Library
 			//"**/Templates": true,
 			
 			//Horse Blinders (this is after website has been establish Pre Production)
-			//"**/Bash": true,
-			// "**/Caddyfile": true,
-			// "**/docker-compose.yml": true,
-			// "**/.gitignore": true,
-			// "**/docker-compose.override.yml": true,
+			"**/Bash": true,
+			"**/Caddyfile": true,
+			"**/docker-compose.yml": true,
+			"**/.gitignore": true,
+			"**/docker-compose.override.yml": true,
 			
 			//Sites
 			// "**/main": true,

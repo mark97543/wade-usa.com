@@ -2,10 +2,6 @@
 
 TODO: Build a Dashboard Page 
 TODO: Need to build registration page
-TODO: Need to set up user for one level of autherization
-    TODO: Auth Context needs to Be rebuilt (Make sure to add to template)
-    TODO: Protected Route need to be rebuilt (make sure to add to template)
-    TODO: APP.TSX needs to be updated to accomodate the new protected route. 
 
 --- Budget App ---
 
@@ -24,4 +20,5 @@ TODO: Roadtrip Planner
 
 -- Directus -- 
 
-TODO: Need to make one level of user 
+-- Components --
+
