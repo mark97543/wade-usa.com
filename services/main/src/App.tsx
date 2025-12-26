@@ -88,7 +88,7 @@ function App() {
   // --------------------------------------------------
   //#region
   const masterMenu: NavItem[] = useMemo(() => [
-    { label: 'Budget', path:BUDGET_URL, allowedRoles: [ROLES.ADMIN]}
+    { label: 'Budget', path:BUDGET_URL, allowedRoles: [ROLES.ADMIN, ROLES.BASIC]}
   ], []);
 
   //#endregion
