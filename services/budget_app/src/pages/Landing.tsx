@@ -6,10 +6,12 @@
     import { BudgetDesktop } from "@/context/Templates/Desktop";
     import { BudgetMobile } from "@/context/Templates/Mobil";
 
+
 //#endregion
 
 
 export default function Landing() {
+
     return (
         <>
             <BudgetDesktop
