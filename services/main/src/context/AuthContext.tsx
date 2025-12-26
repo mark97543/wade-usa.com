@@ -47,14 +47,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // 1. CHECK AUTH ON LOAD
   useEffect(() => {
     const checkAuth = async () => {
-      // --- THE LOCK: Check if user manually logged out ---
-      const authStatus = localStorage.getItem('wade_auth_status');
-      
-      // If the lock is ON, do not check the server. User must login manually.
-      if (authStatus === 'logged_out') {
-        setIsLoading(false);
-        return; 
-      }
 
       try {
         await client.refresh();
