@@ -4,7 +4,7 @@
 //#region
     import React, { use } from "react";
     import styles from "./Template.module.css"
-    import { StatesProvider, useStatess } from "../StateContext";
+    import { useStatess } from "../StateContext";
 
 //#endregion
 

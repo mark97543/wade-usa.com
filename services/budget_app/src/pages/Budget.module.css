@@ -1,0 +1,69 @@
+/* ---------------------------- Global Variables ---------------------------- */
+
+.Budget_Landing_Wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    --top-margin:0.5rem;
+    --sidebar-base-width: 3rem;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              Sidebar Formation                             */
+/* -------------------------------------------------------------------------- */
+
+.Budget_Sidebar_Buttons{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-top: var(--top-margin);
+    transition: all 0.2s ease; 
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: var(--sidebar-base-width);
+    padding: 0;
+    overflow: hidden;
+}
+
+.Icon_Container {
+    width: var(--sidebar-base-width);
+    height: var(--sidebar-base-width);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Prevents the icon from squishing */
+}
+
+.Budget_Sidebar_Label {
+    white-space: nowrap; /* Prevents text from jumping to next line */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.Budget_Sidebar_Label.collapsed{
+    opacity: 0;
+    transform: translateX(-10px); /* Slight slide out */
+    pointer-events: none;
+}
+
+.Budget_Sidebar_Label.expanded{
+    opacity: 1;
+    transform: translateX(0); /* Slide into place */
+}
+
+.Budget_Sidebar_Buttons:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px); /* Subtle lift */
+}
+
+.Budget_Sidebar_Buttons:active {
+    transform: scale(0.75); /* Shrinks slightly when pressed */
+    filter: brightness(0.8);
+}
+
+
+

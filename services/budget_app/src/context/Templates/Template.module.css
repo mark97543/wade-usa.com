@@ -4,6 +4,7 @@
 
 .Budget_Desktop_Wrapper {
     --sidebar-base-width: 3rem;
+    --sidebar-expanded-width: 12rem;
     --top-margin: 0.5rem;
     --border-radius: 0.75rem;
 }
@@ -68,7 +69,7 @@
 }
 
 .Budget_Desktop_Sidebar.expanded{
-    width: 10rem;
+    width: var(--sidebar-expanded-width);
     transition: width 0.3s ease;
 }
 
@@ -81,7 +82,7 @@
     height: 89vh;
 }
 
-.Budget_Mobile_Sidebar{
+.Budget_Mobile_Sidebar div{
     display: flex;
     flex-direction: row;
     background-color:var(--surface-color);

@@ -26,12 +26,9 @@ Need to Delete
 
     TODO: Need to make the 404 page revert back to the home page one. 
     TODO: Start the Transaction Layout
-        - Add Icon for dashboard and for Transactions 
-        - Add State for sidebar size
-        - Make text disapear if some class
         - Highlight selection
         - State for Page selection 
-    TODO: Need make Global State
-        - Add state for collapsable sidebar 
+        - Need to build base pages 
+
 
 
