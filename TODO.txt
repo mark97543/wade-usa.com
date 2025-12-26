@@ -22,3 +22,8 @@ TODO: Roadtrip Planner
 
 -- Components --
 
+-- Budget App --
+TODO: Link to main site
+TODO: Ensure the login brings back to proper site 
+    - May need to do env variable trick to link properly 
+

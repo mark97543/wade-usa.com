@@ -1,9 +1,10 @@
 //App.tsx
+
 // ===============================================================
 // Imports
 // ===============================================================
 //#region
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { Routes, Route} from 'react-router-dom';
 import { Login } from '@/pages/Login';
 import Landing from './pages/Landing'; 
@@ -14,24 +15,19 @@ import {Showcase} from '@/pages/Showcase';
 import { useAuth } from '@/context/AuthContext';
 import Dashboard from '@/pages/Dashboard';
 import Pending from '@/pages/Pending';
-import { useNavigate, useLocation } from 'react-router-dom';
 import Unauthorized from '@/pages/Unauthorized';
 import Page404 from './pages/404Page';
 import { Register } from './pages/Registration';
-//#endregion
 
 // --- CONFIGURATION ---
 // Define Roles
 // Remove the manual const ROLES definition.
 // Import ROLES from your centralized directus file instead:
 import { ROLES } from '@/lib/directus';
-console.log
 
-//#endregion
-
-// --- CONFIGURATION ---
-// Define Roles
-// Using imported ROLES from directus.ts
+export const BUDGET_URL = import.meta.env.PROD 
+  ? 'https://budget.wade-usa.com/'
+  : 'https://localhost:3001/';
 
 //#endregion
 
@@ -39,6 +35,7 @@ console.log
 // HELPER FUNCTIONS 
 // ===============================================================
 //#region
+
 /**
  * Safely extracts the Role ID from a User object, 
  * handling cases where Directus returns a string OR an object.
@@ -55,16 +52,23 @@ const getRoleId = (user: any): string | null => {
  */
 const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[] => {
   return items.reduce((acc: NavItem[], item) => {
+    
+    // --- RESTORED LOGIC START ---
+    // A. Check Permission for this specific item
+    // If allowedRoles exists AND user's ID isn't in it -> Skip this item
+    if (item.allowedRoles && item.allowedRoles.length > 0) {
+      if (!userRoleId || !item.allowedRoles.includes(userRoleId)) {
+        return acc; // User not allowed, skip.
+      }
+    }
+    // --- RESTORED LOGIC END ---
 
-    // B. Create a Shallow Copy (So we don't mutate the original master menu)
+    // B. Create a Shallow Copy
     const newItem = { ...item };
 
     // C. Filter Children (Recursion)
     if (newItem.children && newItem.children.length > 0) {
       newItem.children = filterMenuByRole(newItem.children, userRoleId);
-      
-      // Optional: If a dropdown becomes empty after filtering, you might want to hide it?
-      // if (newItem.children.length === 0) return acc; 
     }
 
     // D. Add to result
@@ -78,15 +82,13 @@ const filterMenuByRole = (items: NavItem[], userRoleId: string | null): NavItem[
 function App() {
   const { user, logout } = useAuth();
   const userRoleId = getRoleId(user);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   // --------------------------------------------------
   // The menu for the header. (See Template for Format)
   // --------------------------------------------------
   //#region
   const masterMenu: NavItem[] = useMemo(() => [
-
+    { label: 'Budget', path:BUDGET_URL, allowedRoles: [ROLES.ADMIN]}
   ], []);
 
   //#endregion
@@ -103,20 +105,6 @@ function App() {
     isAdmin: userRoleId === ROLES.ADMIN,
     roleId: userRoleId
   } : null;
-
-  // --- THE PENDING JAIL ---
-  useEffect(() => {
-    // 1. If user is logged in
-    // 2. AND their role is PENDING
-    // 3. AND they are NOT already on the pending page (or login/logout)
-    if (userRoleId === ROLES.PENDING) {
-      const allowedPaths = ['/pending', '/login', '/logout'];
-      
-      if (!allowedPaths.includes(location.pathname)) {
-        navigate('/pending', { replace: true });
-      }
-    }
-  }, [userRoleId, location.pathname, navigate]);
 
   return (
     <>

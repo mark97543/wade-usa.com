@@ -1,0 +1,41 @@
+// services/main/src/components/molecules/Dropdown/Dropdown.tsx
+
+import { useState } from 'react';
+import type { ReactNode } from 'react';
+import styles from './Dropdown.module.css';
+
+interface DropdownProps {
+  trigger: ReactNode;
+  children: ReactNode;
+  align?: 'left' | 'right';
+}
+
+export const Dropdown = ({ trigger, children, align = 'left' }: DropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <div 
+      className={styles.container} 
+      onMouseEnter={() => setIsOpen(true)} 
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      {trigger}
+      
+      <div 
+        className={`
+          ${styles.menu} 
+          ${isOpen ? styles.open : ''} 
+          ${align === 'right' ? styles.alignRight : ''} 
+        `}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export const DropdownItem = ({ children, onClick, style }: { children: ReactNode, onClick?: () => void, style?: React.CSSProperties }) => (
+  <div className={styles.item} onClick={onClick} style={style}>
+    {children}
+  </div>
+);

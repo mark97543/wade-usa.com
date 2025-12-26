@@ -13,6 +13,10 @@ import type { NavItem } from '@/components/organisms/Header/types';
 import { useAuth } from '@/context/AuthContext';
 import { ROLES } from '@/lib/directus'; 
 
+export const LOGIN_URL = import.meta.env.PROD 
+  ? 'https://wade-usa.com/login'
+  : 'https://localhost:3000/login';
+
 // ==========================================
 // HELPER: UI MENU FILTER
 // (This hides links in the visual menu, but doesn't block the route)
@@ -86,7 +90,7 @@ function App() {
         mainNav={visibleMenu} 
         user={headerUser}
         onLogout={logout}
-        onLogin={() => window.location.href = '/login'}
+        onLogin={() => window.location.href = LOGIN_URL}
       />
 
       <main style={{ minHeight: '80vh' }}>

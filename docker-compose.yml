@@ -92,6 +92,24 @@ services:
       resources:
         limits:
           memory: 256M # Keep the Nginx server small
+  budget-main:
+    container_name: main_wade_budget
+    build:
+      context: ./services/budget_app  # Path to the Dockerfile
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
+    restart: always  
+    networks:
+      - internal_net
+    expose:
+      - 80
+    depends_on:
+      - directus
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 networks:
   internal_net:
     driver: bridge

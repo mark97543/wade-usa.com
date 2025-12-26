@@ -13,9 +13,9 @@ api.wade-usa.com {
 }
 
 # # 3. Buget Domain
-# budget.wade-usa.com {
-#     reverse_proxy budget_wade_usa:80
-# }
+budget.wade-usa.com {
+    reverse_proxy budget_wade_usa:80
+}
 
 
 

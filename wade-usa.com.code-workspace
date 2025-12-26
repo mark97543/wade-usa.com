@@ -23,8 +23,8 @@
 			
 			//Horse Blinders (this is after website has been establish Pre Production)
 			"**/Bash": true,
-			"**/Caddyfile": true,
-			"**/docker-compose.yml": true,
+			//"**/Caddyfile": true,
+			//"**/docker-compose.yml": true,
 			"**/.gitignore": true,
 			"**/docker-compose.override.yml": true,
 			
