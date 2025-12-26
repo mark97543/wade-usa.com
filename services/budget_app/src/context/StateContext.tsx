@@ -7,16 +7,19 @@ import type { ReactNode } from 'react';
 
 interface StatesState {
   isSidebarCollapsed: boolean;
+  selectedView: string;
 }
 
 interface StatesActions {
   toggleSidebar: () => void;
+  toggleView: (view: string) => void;
 }
 
 type StatesContextType = StatesState & StatesActions;
 
 const initialState: StatesState = {
   isSidebarCollapsed: false,
+  selectedView: 'dashboard'
 };
 
 // ----------------------------------------------------------------------
@@ -35,11 +38,20 @@ export const StatesProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  const toggleView = (view: string) => {
+    setState((prev) => ({ 
+        ...prev, 
+        selectedView: view 
+    }));
+  };
+
+
   return (
     <StatesContext.Provider 
       value={{ 
         ...state,      // Correctly spreads isSidebarCollapsed
-        toggleSidebar //Sidebar Toggle. 
+        toggleSidebar, //Sidebar Toggle. 
+        toggleView    //View Toggle.
       }}
     >
       {children}

@@ -26,6 +26,7 @@
     height: var(--sidebar-base-width);
     padding: 0;
     overflow: hidden;
+    border-radius: 0.5rem;
 }
 
 .Icon_Container {
@@ -64,6 +65,12 @@
     transform: scale(0.75); /* Shrinks slightly when pressed */
     filter: brightness(0.8);
 }
+
+.Budget_Sidebar_Buttons.selected{
+    background-color: var(--accent-color);
+    height: 100%;;
+}
+
 
 
 

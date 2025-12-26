@@ -25,9 +25,10 @@
 
         return(
             <div className={styles.Budget_Mobile_Wrapper}> 
-                <aside className={styles.Budget_Mobile_Sidebar} >
+                
+                <div className={styles.Budget_Mobile_Sidebar} >
                     {sidebar}
-                </aside>
+                </div>
 
                 <div className={styles.Budget_Mobile_Viewport} >
                     {viewport}

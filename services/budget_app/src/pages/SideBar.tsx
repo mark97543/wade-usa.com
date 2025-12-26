@@ -3,12 +3,12 @@ import style from "./Budget.module.css"
 import { useStatess } from "@/context/StateContext"
 
 export default function Sidebar(){
-    const {isSidebarCollapsed} = useStatess();
+    const {isSidebarCollapsed, toggleView, selectedView} = useStatess();
 
     return(
         <div>
             <div>
-                <button className={style.Budget_Sidebar_Buttons}>
+                <button className={`${style.Budget_Sidebar_Buttons} ${selectedView === 'dashboard' ? style.selected : ''}`} onClick={()=>toggleView('dashboard')}>
                     <div className={style.Icon_Container}>
                         <img src="./dashboard.png" alt="Dashboard Icon" />
                     </div>
@@ -17,7 +17,7 @@ export default function Sidebar(){
             </div>
             
             <div>
-                <button className={style.Budget_Sidebar_Buttons}>
+                <button className={`${style.Budget_Sidebar_Buttons} ${selectedView === 'transactions' ? style.selected : ''}`} onClick={()=>toggleView('transactions')}>
                     <div className={style.Icon_Container}>
                         <img src="./transactions.png" alt="Transactions Icon" />
                     </div>
