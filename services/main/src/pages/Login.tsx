@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { AuthLayout } from '@/components/auth/AuthLayout/AuthLayout';
 import { Card } from '@/components/molecules/Card/Card';
@@ -69,6 +69,7 @@ export const Login = () => {
             Sign In
           </Button>
         </form>
+        <p style={{textAlign:'center',marginLeft:'auto',  marginRight:'auto', marginTop:'1rem'}}>Not a Member {<Link to="/register">Register Here</Link>}</p>
       </Card>
     </AuthLayout>
   );

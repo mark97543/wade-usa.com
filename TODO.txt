@@ -1,8 +1,7 @@
 --- Main App ---
 
-TODO: Build a Dashboard Page 
+TODO: Build a Dashboard Page (Just a placeholder for now)
 TODO: Need to build registration page
-TODO: When page is refreshed the user is logged out in production. 
 
 --- Budget App ---
 

@@ -17,6 +17,7 @@ import Pending from '@/pages/Pending';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Unauthorized from '@/pages/Unauthorized';
 import Page404 from './pages/404Page';
+import { Register } from './pages/Registration';
 //#endregion
 
 // --- CONFIGURATION ---
@@ -136,7 +137,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/showcase" element={<Showcase />} />
-          
+          <Route path='/register' element={<Register />} />
+
           {/* --- PROTECTED --- */} 
           <Route path="/pending" element={<ProtectedRoute><Pending /></ProtectedRoute>}/>
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
