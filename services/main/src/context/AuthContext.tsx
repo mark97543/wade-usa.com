@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
+        await client.refresh();
         // Try to refresh the session automatically
         const currentUser = await client.request(readMe({
           fields: ['id', 'first_name', 'last_name', 'email', 'role'] as any
