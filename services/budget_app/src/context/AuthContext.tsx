@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         await client.refresh();
         // Try to refresh the session automatically
         const currentUser = await client.request(readMe({
-          fields: ['id', 'first_name', 'last_name', 'email', 'role.id'] as any
+          fields: ['id', 'first_name', 'last_name', 'email', 'role'] as any
         }));
         setUser(normalizeUser(currentUser));      
       } catch (error) {
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         path: '/users/me',
         method: 'GET',
         params: {
-          fields: ['id', 'first_name', 'last_name', 'email', 'role.id'], // Request Raw Role ID
+          fields: ['id', 'first_name', 'last_name', 'email', 'role'], // Request Raw Role ID
           t: Date.now() // <--- THE KEY: Unique timestamp prevents caching
         }
       }));
