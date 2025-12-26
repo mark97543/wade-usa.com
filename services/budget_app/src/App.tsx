@@ -79,8 +79,11 @@ function App() {
 
       <main style={{ minHeight: '80vh' }}>
         <Routes>
-          {/* --- PUBLIC ROUTES --- */}
-          <Route path="/" element={<ProtectedRoute><Landing /></ProtectedRoute>} />
+
+          {/* TODO: UNCOMMENT FOR PRODUCTION */}
+          {/* <Route path="/" element={<ProtectedRoute><Landing /></ProtectedRoute>} /> */} 
+          {/* Development only Comment for production */}
+          <Route path="/" element={<Landing />} /> 
 
           {/* --- FALLBACK --- */}
           <Route path="*" element={<div className="p-8">404 - Page Not Found</div>} />

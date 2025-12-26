@@ -24,5 +24,8 @@ Need to Delete
 
 -- Budget App --
 
-    TODO: Needs investigate why the basic user cannot log in . 
+    TODO: Need to make the 404 page revert back to the home page one. 
+    TODO: Desktop Layout
+    TODO: Mobile Layout
+
 
