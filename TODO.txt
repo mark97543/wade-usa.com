@@ -1,29 +1,28 @@
 --- Main App ---
 
-TODO: Build a Dashboard Page (Just a placeholder for now)
-TODO: Need to build registration page
+    TODO: Build a Dashboard Page (Just a placeholder for now)
+    TODO: Need to build registration page
 
 --- Budget App ---
 
 Need to Delete
-TODO: Need to build
+    TODO: Need to build
 
 --- Widgets --- 
-TODO: Need to Build a TODO Widget
-TODO: Need to build a countdown Widget
-TODO: Scheduler Widget (To use in Travel Planner and Roadtrip Planner and Budget App Maybe)
+    TODO: Need to Build a TODO Widget
+    TODO: Need to build a countdown Widget
+    TODO: Scheduler Widget (To use in Travel Planner and Roadtrip Planner and Budget App Maybe)
 
 --- Future Projects --- 
 
-TODO: Travel Planner 
-TODO: Roadtrip Planner 
+    TODO: Travel Planner 
+    TODO: Roadtrip Planner 
 
 -- Directus -- 
 
 -- Components --
 
 -- Budget App --
-TODO: Link to main site
-TODO: Ensure the login brings back to proper site 
-    - May need to do env variable trick to link properly 
+
+    TODO: Needs investigate why the basic user cannot log in . 
 
