@@ -93,7 +93,7 @@ services:
         limits:
           memory: 256M # Keep the Nginx server small
   budget-main:
-    container_name: main_wade_budget
+    container_name: budget_wade_usa
     build:
       context: ./services/budget_app  # Path to the Dockerfile
       dockerfile: Dockerfile
