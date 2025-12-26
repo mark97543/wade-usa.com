@@ -1,10 +1,9 @@
-import React from 'react';
-
+//Landing.tsx
 
 export default function Landing() {
     return (
         <div>
-            <h1>Landing</h1>
+            <h1> Budget Landing Landing</h1>
         </div>
     );
 }

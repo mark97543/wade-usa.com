@@ -1,4 +1,5 @@
-import React from 'react';
+//Landing.tsx
+
 
 
 export default function Landing() {
