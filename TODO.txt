@@ -2,6 +2,7 @@
 
 TODO: Build a Dashboard Page 
 TODO: Need to build registration page
+TODO: When page is refreshed the user is logged out in production. 
 
 --- Budget App ---
 
