@@ -2,10 +2,16 @@
 
 .container {
   position: relative;
-  display: inline-block;
-  height: 100%;
   display: flex;
   align-items: center;
+  height: 100%;
+}
+
+.triggerWrapper {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .menu {
@@ -13,7 +19,7 @@
   top: 100%;
   left: 0;
   min-width: 200px;
-  background-color: var(--surface-color);
+  background-color: var(--surface-color); /* Matches your modular monolith theme */
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   border-radius: 6px;
@@ -27,20 +33,18 @@
   padding: 0.5rem 0;
 }
 
-/* --- THE MISSING PIECE: Visible State --- */
+/* Visible State triggered by React */
 .open {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* --- Alignment Logic --- */
 .alignRight {
   left: auto;
   right: 0;
 }
 
-/* --- Items --- */
 .item {
   padding: 0.75rem 1rem;
   font-size: 0.95rem;

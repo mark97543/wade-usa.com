@@ -26,9 +26,10 @@ Need to Delete
 
     TODO: Need to make the 404 page revert back to the home page one. 
     TODO: Start the Transaction Layout
-        - Highlight selection
-        - State for Page selection 
-        - Need to build base pages 
+    TODO: COmplete Category View (Desktop)
+    TODO: Complete Categoryview (mobile)
+        - This needs to go to cards 
+
 
 
 

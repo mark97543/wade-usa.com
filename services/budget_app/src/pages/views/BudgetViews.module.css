@@ -1,0 +1,106 @@
+/* BudgetViews.module.css */
+
+/* -------------------------------------------------------------------------- */
+/*                                 Categories                                 */
+/* -------------------------------------------------------------------------- */
+
+.Budget_Categories_Wrapper{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    /* overflow: hidden; */
+}
+
+.Budget_Categories_Wrapper table td,
+.Budget_Categories_Wrapper table th{
+    text-align: center;
+}
+
+.Budget_Categories_Wrapper button{
+    width:100%;
+}
+
+.Cat_Action_Buttons{
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Cat_Action_Buttons:hover{
+    filter: brightness(1.2);
+    transform: translateY(-3px);
+}
+
+.Cat_Action_Buttons:active {
+    transform: scale(0.75); /* Shrinks slightly when pressed */
+    filter: brightness(0.8);
+}
+
+.Cat_Action_Container{
+    display:flex; 
+    gap:0.5rem;
+}
+
+.Budget_Categories_Wrapper table td{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.Add_Item_Wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+
+    /* Starting state (Collapsed) */
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    transform: translateY(-20px); /* Starts slightly higher */
+    
+    /* Crucial: transition must be on the base class for the 'up' animation */
+    transition: 
+        max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+        opacity 0.3s ease-out,
+        transform 0.4s ease-out,
+        margin-top 0.4s ease;
+}
+
+.Add_Item_Wrapper_Visible {
+    display: flex;
+    margin-top: 1rem;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    max-height: 500px; /* Large enough to fit content */
+    margin-top: 1rem;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.Add_Item_Wrapper_Visible div{
+    width: 100%;
+}
+
+.Budget_Categories_AddMenu{
+    margin-bottom: 1rem;
+}
+
+.Budget_Categories_Dropdowns{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: end;
+}
+
+.Budget_Categories_Dropdowns button{
+    height: 46px;
+}

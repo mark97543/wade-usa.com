@@ -9,6 +9,8 @@
     import { useStatess } from "@/context/StateContext";
     import Dashboard from "./views/Dashboard";
     import Transactions from "./views/Transactions";
+    import Categories from "./views/Categories";
+
     // import styles from "./Budget.module.css"
 
 
@@ -34,6 +36,7 @@ export default function Landing() {
                     <div>
                         {selectedView === 'dashboard' && <Dashboard />}
                         {selectedView === 'transactions' && <Transactions />}
+                        {selectedView === 'categories' && <Categories />}
                     </div>
                 }
             />
@@ -50,6 +53,7 @@ export default function Landing() {
                     <div>
                         {selectedView === 'dashboard' && <Dashboard />}
                         {selectedView === 'transactions' && <Transactions />}
+                        {selectedView === 'categories' && <Categories />}
                     </div>
                 }
             />
@@ -57,3 +61,12 @@ export default function Landing() {
         </div>
     );
 }
+
+//For transaction import
+// const loadData = async () => {
+//     const response = await fetchRecentTransactions(0);
+//     if (response.data) {
+//         setTransactions(response.data);
+//         console.log("Total matches in DB:", response.meta.filter_count);
+//     }
+// };

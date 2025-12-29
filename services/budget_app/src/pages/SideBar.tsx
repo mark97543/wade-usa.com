@@ -25,6 +25,15 @@ export default function Sidebar(){
                 </button>
             </div>
 
+            <div>
+                <button className={`${style.Budget_Sidebar_Buttons} ${selectedView === 'categories' ? style.selected : ''}`} onClick={()=>toggleView('categories')}>
+                    <div className={style.Icon_Container}>
+                        <img src="./categories.png" alt="Categories Icon" />
+                    </div>
+                    <span className={`${style.Budget_Sidebar_Label} ${isSidebarCollapsed ? style.expanded : style.collapsed }`}>Budget Items</span>
+                </button>
+            </div>
+
         </div>
     )
 }
