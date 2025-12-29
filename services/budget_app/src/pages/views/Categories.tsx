@@ -1,6 +1,6 @@
 //Categories.tsx
 
-import {fetchCategories, saveCategory} from "../../services/categoryServices.ts"
+import {fetchCategories, saveCategory, deleteItem} from "../../services/categoryServices.ts"
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/atoms/Spinner/Spinner.tsx";
 import { Table } from "@/components/molecules/Table/Table.tsx";
@@ -58,7 +58,7 @@ export default function Categories(){
             render:(row:Category)=>(
                 <div className={style.Cat_Action_Container} >
                     <button className={style.Cat_Action_Buttons}><img src="./edit.png"/></button>
-                    <button className={style.Cat_Action_Buttons}><img src="./delete.png"/></button>
+                    <button className={style.Cat_Action_Buttons} onClick={()=>deleteCategory(row.id)}><img src="./delete.png"/></button>
                 </div>
             )}
     ]
@@ -74,7 +74,6 @@ export default function Categories(){
         })
         .catch((error) => console.error(error))
         .finally(() => setIsLoading(false));
-        console.log("Data Refreshed")
     }, [refreshCount]);
 
     if (isLoading) {
@@ -144,7 +143,19 @@ export default function Categories(){
         }
         
     }    
-    console.log(categories)
+
+    const deleteCategory = async (id:number)=>{
+        try{
+            const response = await deleteItem(id);
+            if(response){
+                console.log("Success");
+                setRefreshCount(prev=>prev+1);
+            }
+        }catch(error){
+            console.error("Error Deleting item: ",error);
+        }
+    }
+
 
     return(
         <div className={style.Budget_Categories_Wrapper}>

@@ -1,8 +1,8 @@
 //api.ts
-import { createItem, updateItem, readItems } from '@directus/sdk';
+import { createItem, updateItem, readItems, deleteItem } from '@directus/sdk';
 import { client } from './directus';
 
-const BASE_URL = 'https://api.wade-usa.com';
+//const BASE_URL = 'https://api.wade-usa.com';
 
 
 /**
@@ -59,5 +59,22 @@ export const saveItem = async (collection: string, data: any, id?: string | numb
     } catch (error) {
         console.error(`[Saver] Error saving to collection '${collection}':`, error);
         throw error;
+    }
+};
+
+/**
+ * Generic Delete item 
+ * @param collection 
+ * @param id 
+ * @returns 
+ */
+
+export const deleteDirectusItem = async (collection: string, id: string | number) => {
+    try {
+        await client.request(deleteItem(collection as any, id));
+        return { success: true };
+    } catch (error: any) {
+        console.error(`[deleteDirectusItem] Error:`, error);
+        return { success: false, error: error.message };
     }
 };
