@@ -1,7 +1,7 @@
 //Categories.tsx
 
 import {fetchCategories, saveCategory, deleteItem} from "../../services/categoryServices.ts"
-import { useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useCallback } from "react";
 import { Spinner } from "@/components/atoms/Spinner/Spinner.tsx";
 import { Table } from "@/components/molecules/Table/Table.tsx";
 import type { Column } from "@/components/molecules/Table/Table.tsx";
@@ -11,6 +11,7 @@ import { Button } from "@/components/atoms/Button/Button.tsx";
 // import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown.tsx";
 import { CATEGORY_COLORS, BUCKETS, FREQUENCY } from "@/constants/constants.ts";
 import AddItem from "./Categories Tools/AddItems.tsx";
+import ItemModal from "./Categories Tools/ItemModal.tsx";
 
 
 
@@ -37,31 +38,43 @@ export default function Categories(){
     const [newDueDate, setNewDueDate]=useState<Date>(new Date());
     const [newBudget, setNewBudget]=useState<number>(0);
     const [refreshCount, setRefreshCount]= useState(0)
+    const [isModalOpen, setIsModalOpen]=useState(false);
+    const [editRow, setEditRow]=useState<Category | null>(null);
 
+    //The use callback makes so items dont change every rendor (Lose focus on typeing)
+    const editItem = useCallback((row: Category) => {
+        setEditRow(row);
+        setIsModalOpen(true);
+    }, []);
 
-    const columns:Column[]=[
+    //Wrapping in a useMemo prevents the lose focus condition 
+    const columns = useMemo((): Column[] => [
         {key:'item', header:'Budget Item'},
         {key:'bucket', header:'Bucket'},
         {key:'frequency', header:'Frequency'},
-        {key:'budget',
+        {
+            key:'budget',
             header:'Budget',
-            render:(row:Category)=>{
-                return new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                }).format(row.budget ||0);
-            }},
+            render:(row:Category)=> new Intl.NumberFormat('en-US', {
+                style: 'currency', currency: 'USD'
+            }).format(row.budget || 0)
+        },
         {key:'color', header:'Color'},
-        {key:'actions', header:'Actions',
+        {
+            key:'actions', 
+            header:'Actions',
             render:(row:Category)=>(
                 <div className={style.Cat_Action_Container} >
-                    <button className={style.Cat_Action_Buttons}><img src="./edit.png"/></button>
-                    <button className={style.Cat_Action_Buttons} onClick={()=>deleteCategory(row.id)}><img src="./delete.png"/></button>
+                    <button className={style.Cat_Action_Buttons} onClick={()=>editItem(row)}>
+                        <img src="./edit.png"/>
+                    </button>
+                    <button className={style.Cat_Action_Buttons} onClick={()=>deleteCategory(row.id)}>
+                        <img src="./delete.png"/>
+                    </button>
                 </div>
-            )}
-    ]
+            )
+        }
+    ], [editItem]); // categories removed from here
 
     useEffect(() => {
         fetchCategories()
@@ -156,9 +169,17 @@ export default function Categories(){
         }
     }
 
-
     return(
         <div className={style.Budget_Categories_Wrapper}>
+
+           {isModalOpen && editRow && (
+                <ItemModal 
+                    isModalOpen={isModalOpen} 
+                    setIsModalOpen={setIsModalOpen} 
+                    row={editRow} 
+                />
+            )}
+
 
             <div className={`${style.Add_Item_Wrapper} ${addItemMenu ? style.Add_Item_Wrapper_Visible : ''}`}>
             
@@ -195,19 +216,14 @@ export default function Categories(){
 }
 
 
-
-
-//Need to add action items column 
-// Need API calls for Save
-// Need api call for delete
-//Need Api call for update 
-//Need to add color (for dropdown) 
-//Need to add inputs for items when editing
-//Need function for add button 
-//Build modal for edit 
-// In mobile view after selectrion the dropdowns are not disapearing. I need to confirm with actuall cell phone. 
-
 //Next Steps :
 
+//Need to add action items column 
+//Need Api call for update 
+// Need to build mobile view. Desktop view does not translate well into mobile view. 
 //1a). Add modal tool tips. 
-//2). Create functionality to the save button to the add new item
+
+//Add States to modal for editing
+//Incorperate staving the modal changes. 
+
+

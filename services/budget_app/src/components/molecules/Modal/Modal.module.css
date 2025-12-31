@@ -31,11 +31,17 @@
   color: var(--primary-color);
   border-radius: 0.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  max-width: 90%;
-  max-height: 90%;
-  width: 450px; /* Standard width for medium-sized modals */
+  
+  /* --- CHANGED SECTION START --- */
+  max-width: 90vw;      /* Prevent it from being wider than the screen */
+  max-height: 90vh;     /* Prevent it from being taller than the screen */
+  
+  width: fit-content;   /* Auto-expand to fit the children inside */
+  min-width: 450px;     /* Keep a standard minimum width */
+  /* --- CHANGED SECTION END --- */
+
   padding: 1.5rem;
-  overflow-y: auto; /* Scrollable content inside the modal */
+  overflow-y: visible;     /* Scroll if content is too tall */
   
   /* Animation entry/exit */
   transform: translateY(-50px);
@@ -47,7 +53,7 @@
 }
 
 /* --- 3. Header/Close Button --- */
-.header {
+.modal_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,6 +76,7 @@
   cursor: pointer;
   opacity: 0.6;
   transition: opacity 0.2s;
+  max-width: 1rem;
 }
 
 .closeButton:hover {

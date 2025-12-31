@@ -29,7 +29,7 @@
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.2s ease;
-  z-index: 100;
+  z-index: 1000;
   padding: 0.5rem 0;
 }
 

@@ -1,5 +1,3 @@
-// services/main/src/components/molecules/Modal/Modal.tsx
-
 import React, { useEffect, useRef } from 'react';
 import styles from './Modal.module.css';
 
@@ -10,14 +8,9 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-/**
- * An accessible, theme-aware modal dialog component.
- * Handles backdrop clicks and Escape key presses.
- */
 export const Modal = ({ isOpen, title, onClose, children }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Effect for closing on Escape key press and managing body scroll
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -25,13 +18,13 @@ export const Modal = ({ isOpen, title, onClose, children }: ModalProps) => {
       }
     };
     
-    // Manage body scrolling (prevents background content from scrolling)
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleKeyDown);
       
-      // Focus the modal content for better accessibility (optional, depends on content)
-      if (modalRef.current) {
+      // FIX: Only focus the container if focus isn't already inside the modal.
+      // This prevents stealing focus from Inputs when the component re-renders.
+      if (modalRef.current && !modalRef.current.contains(document.activeElement)) {
         modalRef.current.focus(); 
       }
     } else {
@@ -40,22 +33,16 @@ export const Modal = ({ isOpen, title, onClose, children }: ModalProps) => {
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      // Ensure scrolling is restored if component unmounts while open
-      if (!isOpen) { 
-        document.body.style.overflow = '';
-      }
+      // Clean up body scroll
+      document.body.style.overflow = '';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]); // Removed onClose to prevent unnecessary re-runs if parent is unstable
 
-
-  // If not open, don't render anything
   if (!isOpen) {
     return null;
   }
   
-  // Handle click on the backdrop (outer area)
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    // Only close if the click occurred on the backdrop itself, not the modal content
     if (event.target === event.currentTarget) {
       onClose();
     }
@@ -72,9 +59,9 @@ export const Modal = ({ isOpen, title, onClose, children }: ModalProps) => {
       <div 
         ref={modalRef}
         className={styles.modalContainer}
-        tabIndex={-1} // Makes the modal container focusable
+        tabIndex={-1} 
       >
-        <div className={styles.header}>
+        <div className={styles.modal_header}>
           <h2 id="modal-title" className={styles.title}>{title}</h2>
           <button 
             onClick={onClose} 

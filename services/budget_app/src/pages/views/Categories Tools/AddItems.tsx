@@ -59,6 +59,7 @@ export default function AddItem({newColor, setNewColor, newCat, setNewCat, newBu
                 >
                     {FREQUENCY.map((freq) => (
                         <DropdownItem
+                            key={freq.id}
                             onClick={()=>setNewFrequency(freq.id)}>
                                 {freq.label}
                         </DropdownItem>)
