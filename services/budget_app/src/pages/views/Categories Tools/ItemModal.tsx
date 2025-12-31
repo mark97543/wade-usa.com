@@ -5,14 +5,17 @@ import { Input } from "@/components/atoms/Input/Input";
 import style from "../BudgetViews.module.css";
 import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown";
 import { FREQUENCY, BUCKETS, CATEGORY_COLORS} from "@/constants/constants";
+import { saveCategory } from "@/services/categoryServices";
 
 interface ItemModalProps {
     isModalOpen: boolean;
     setIsModalOpen: (isOpen: boolean) => void;
     row: any;
+    setRefreshCount: (count: number) => void;
+    refreshCount: number;
 }
 
-export default function ItemModal({ isModalOpen, setIsModalOpen, row }: ItemModalProps) {
+export default function ItemModal({ isModalOpen, setIsModalOpen, row, setRefreshCount, refreshCount}: ItemModalProps) {
     const [item, setItem] = useState(row?.item || "");
     const [budget, setBudget] = useState(row?.budget || 0);
     const [dueDate, setDueDate] = useState(row?.due_date || new Date());
@@ -22,6 +25,33 @@ export default function ItemModal({ isModalOpen, setIsModalOpen, row }: ItemModa
     const [newBucket, setNewBucket]=useState(row?.bucket || "None");
     // const [bucketId, setBucketId]=useState(0);
     
+    const SaveNewItem= async ()=>{
+        //Prepackaged Data
+        const dataToSend = {
+            item: item,
+            color: CATEGORY_COLORS[colorId].value,
+            contrast: CATEGORY_COLORS[colorId].contrast,
+            color_label: CATEGORY_COLORS[colorId].label,
+            bucket:newBucket,
+            frequency:newFrequency,
+            due_date:dueDate,
+            budget:budget
+        }
+
+        try{
+            const response = await saveCategory(dataToSend, row?.id);
+            if(response){
+                console.log("Success");
+                setIsModalOpen(false);
+            }
+        }catch(error){
+            console.error("Error Adding New item: ",error); 
+        }finally{
+            setRefreshCount(refreshCount+1)
+        }
+    }
+
+
 
     useEffect(() => {
         if (row) {
@@ -128,7 +158,9 @@ export default function ItemModal({ isModalOpen, setIsModalOpen, row }: ItemModa
 
                 <div className={style.Item_Modal_Buttons_Wrapper}>
                     <Button variant="danger" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                    <Button>Save</Button>
+                    <Button onClick={()=>{
+                        SaveNewItem()}}>
+                            Save</Button>
                 </div>
             </div>
         </Modal>

@@ -177,6 +177,8 @@ export default function Categories(){
                     isModalOpen={isModalOpen} 
                     setIsModalOpen={setIsModalOpen} 
                     row={editRow} 
+                    setRefreshCount={setRefreshCount}
+                    refreshCount={refreshCount}
                 />
             )}
 
