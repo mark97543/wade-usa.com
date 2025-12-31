@@ -9,7 +9,7 @@
     import { useStatess } from "@/context/StateContext";
     import Dashboard from "./views/Dashboard";
     import Transactions from "./views/Transactions";
-    import Categories from "./views/Categories";
+    import Categories from "./views/Budget_Items";
 
     // import styles from "./Budget.module.css"
 

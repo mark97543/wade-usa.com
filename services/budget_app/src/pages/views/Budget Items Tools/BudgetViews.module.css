@@ -1,7 +1,7 @@
 /* BudgetViews.module.css */
 
 /* -------------------------------------------------------------------------- */
-/*                                 Categories                                 */
+/*                                 Desktop View                               */
 /* -------------------------------------------------------------------------- */
 
 .Budget_Categories_Wrapper{
@@ -145,6 +145,59 @@
     margin-top: auto;
 }
 
+.Budget_Items_Desktop_View{
+    display: flex;
+}
+
+.Budget_Items_Mobile_View{
+    display: none;
+}
+
+.Budget_Items_Cards{
+    width: 375px;
+    margin-top: 0.5rem;
+}
+
+.Budget_Item_Cards_Ledger{
+    width: 375px;
+    margin-top: 0.5rem;
+}
+
+.Ledger_Row {
+    display: flex;
+    align-items: flex-end; /* Aligns the dots with the bottom of the text */
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+/* The dotted line filler */
+.Ledger_Dots {
+    flex-grow: 1; /* Takes up all available empty space */
+    border-bottom: 2px dotted #aaa; /* Creates the dots */
+    margin: 0 5px 5px 5px; /* Adjusts spacing so dots sit on the text baseline */
+    opacity: 0.5; /* Makes dots slightly lighter than text */
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                 Mobile View                                */
+/* -------------------------------------------------------------------------- */
+
+
+/* -------------------------------------------------------------------------- */
+/*                                 Screen Size                                */
+/* -------------------------------------------------------------------------- */
+
+@media (max-width: 799px){
+    .Budget_Items_Desktop_View{
+        display: none;
+    }
+
+    .Budget_Items_Mobile_View{
+        display: flex;
+    }
+}
 
 
 

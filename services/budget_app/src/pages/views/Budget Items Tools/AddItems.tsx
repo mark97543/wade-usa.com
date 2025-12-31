@@ -1,27 +1,26 @@
 //import React, {useState} from "react";
 import { Input } from "@/components/atoms/Input/Input.tsx";
 import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown.tsx";
-import style from "../BudgetViews.module.css";
+import style from "./BudgetViews.module.css";
 import { Button } from "@/components/atoms/Button/Button.tsx";
 import { CATEGORY_COLORS, BUCKETS, FREQUENCY } from "@/constants/constants";
 
-interface AddItemProps {
-    newColor: number;
-    setNewColor: (id: number) => void;
-    newCat: string;
-    setNewCat: (cat: string) => void;
-    newBucket: number;
-    setNewBucket: (bucket: number) => void;
-    newFrequency: number;
-    setNewFrequency: (frequency: number) => void;
-    newDueDate: Date; 
-    setNewDueDate: (date: Date) => void;
-    newBudget: number; 
-    setNewBudget: (amount: number) => void;
-}
 
-export default function AddItem({newColor, setNewColor, newCat, setNewCat, newBucket, setNewBucket, newFrequency, setNewFrequency, newDueDate, setNewDueDate, newBudget, setNewBudget}:AddItemProps){
-
+export default function AddItem({logic}:{logic:any}){
+    const {
+        newCat,
+        setNewCat,
+        newBudget,
+        setNewBudget,
+        newDueDate,
+        setNewDueDate,
+        newFrequency,
+        setNewFrequency,
+        newColor,
+        setNewColor,
+        newBucket,
+        setNewBucket
+    }= logic;
 
 
     return(

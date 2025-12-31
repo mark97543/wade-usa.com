@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Modal } from "@/components/molecules/Modal/Modal";
 import { Button } from "@/components/atoms/Button/Button";
 import { Input } from "@/components/atoms/Input/Input";
-import style from "../BudgetViews.module.css";
+import style from "./BudgetViews.module.css";
 import { Dropdown, DropdownItem } from "@/components/molecules/Dropdown/Dropdown";
 import { FREQUENCY, BUCKETS, CATEGORY_COLORS} from "@/constants/constants";
 import { saveCategory } from "@/services/categoryServices";
