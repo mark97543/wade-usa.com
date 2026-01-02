@@ -14,6 +14,7 @@ export interface Category {
     frequency:string;
     due_date:Date | string;
     budget:number;
+    contrast:string;
 }
 
 

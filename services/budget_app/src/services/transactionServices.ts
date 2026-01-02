@@ -1,14 +1,52 @@
-//transactionServices.ts
-
+// services/main/src/services/transactionServices.ts
 import { getDirectusItems } from '../api/api';
 
-export const fetchRecentTransactions = async (pageOffset = 0 )=>{
-    return await getDirectusItems('transactions',{
-        limit:50,
-        offset: pageOffset,
-        sort:'-date',
-        // Directus Dynamic Filter: Greater than or equal to 3 months ago
-        'filter[date][_gte]': '$NOW(-3 months)',
-        'meta': 'filter_count' // Useful for infinite scroll to know when to stop
-    })
+/**
+ * Fetch transactions from the Last Rebalance up to X months in the future.
+ * @param rebalanceDate - The ISO string from your last checkpoint (e.g. "2023-10-01")
+ * @param monthsForward - How far into the future to look (e.g. 3)
+ */
+export const fetchTransactionsByRange = async (
+    rebalanceDate: string | null, 
+    monthsForward: number
+) => {
+    //Safety Fallback: If no rebalance exists, start from "Beginning of Time" (or 1 year ago)
+    const startDate = rebalanceDate || '$NOW(-1 year)';
+
+    return await getDirectusItems('transactions', {
+        limit: 2000, //Limits pull to 2000 items
+        sort: ['date'], 
+        
+        filter: {
+            _and: [
+                // 1. START: After the Rebalance
+                {
+                    date: { _gte: startDate }
+                },
+                // 2. END: Before the Future Limit
+                {
+                    date: { _lte: `$NOW(+${monthsForward} months)` }
+                },
+                // 3. CLEANUP: Ignore the 'Rebalance' entry itself
+                {
+                    category: { _neq: 'Rebalance' }
+                }
+            ]
+        }
+    });
+};
+
+
+
+
+/**
+ * Fetch strictly the last Rebalance/Checkpoint
+ */
+export const fetchLastRebalance = async () => {
+    const response = await getDirectusItems('transactions', {
+        filter: { category: { _eq: 'Rebalance' } },
+        sort: ['-date'], 
+        limit: 1
+    });
+    return response.data?.[0] || null;
 }

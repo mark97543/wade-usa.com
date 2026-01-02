@@ -2,7 +2,7 @@
 
 export const CATEGORY_COLORS = [
   { id: 0, label: 'Color: None',   value: 'transparent', contrast: 'var(--primary-color)' }, 
-  { id: 1, label: 'Recomend: Income',  value: '#22c55e', contrast: '#ffffff' }, // Income/Growth
+  { id: 1, label: 'Recomend: Income',  value: '#22c55e', contrast: '#000000ff' }, // Income/Growth
   { id: 2, label: 'Recomend: Debt',    value: '#dc2626', contrast: '#ffffff' }, // Debt/Urgent
   { id: 3, label: 'Recomend: Savings',   value: '#0ea5e9', contrast: '#ffffff' }, // Savings/Safety
   { id: 4, label: 'Recomend: Utilities', value: '#eab308', contrast: '#000000' }, // Utilities/Bills

@@ -1,0 +1,43 @@
+/*Transaction.module.css */
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                Desktop View                                */
+/* -------------------------------------------------------------------------- */
+.Transaction_Desktop_View{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                 Mobile View                                */
+/* -------------------------------------------------------------------------- */
+.Transaction_Mobile_View{
+    display: none;
+}
+
+.Transaction_Desktop_Wrapper table td,
+.Transaction_Desktop_Wrapper table th{
+    padding: 0.5rem;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                              Media Transition                              */
+/* -------------------------------------------------------------------------- */
+@media (max-width: 799px){
+    .Transaction_Mobile_View{
+        display: flex;
+    }
+    .Transaction_Desktop_View{
+        display: none;
+    }
+
+}

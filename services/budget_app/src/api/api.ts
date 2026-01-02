@@ -13,24 +13,27 @@ import { client } from './directus';
 
 export const getDirectusItems = async <T = any>(collection: string, options: any = {}) => {
     try {
-        // The SDK's readItems options object is the ONLY argument for client.request
         const result = await client.request(
             readItems(collection as any, {
                 ...options,
-                // These parameters are serialized into the URL
                 params: {
                     _t: Date.now(), // Cache-buster
                 }
             })
         );
         
-        // If you absolutely need 'no-store' headers, they are usually set 
-        // during the initial client creation in directus.ts, not per-request.
-        
-        return { data: result as T[] };
+        // FIX: Check the shape of the result
+        if (Array.isArray(result)) {
+            // Standard response (just the list)
+            return { data: result as T[], meta: null };
+        } else {
+            // Meta response (data + meta)
+            // @ts-ignore - Runtime check covers the types here
+            return { data: result.data as T[], meta: result.meta };
+        }
     } catch (error: any) {
         console.error(`[getDirectusItems] Error:`, error);
-        return { data: [] as T[] };
+        return { data: [] as T[], meta: null };
     }
 };
 
