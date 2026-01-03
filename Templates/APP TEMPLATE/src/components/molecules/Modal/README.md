@@ -14,6 +14,8 @@ A reusable, accessible, and theme-aware modal dialog component. This component d
     
 - **Theme Aware**: Uses CSS modules for styling, compatible with the application's theming strategy.
     
+- **Centered Layout**: Automatically centers content vertically and horizontally on all screen sizes.
+    
 
 ## Usage
 
@@ -21,8 +23,8 @@ TypeScript
 
 ```
 import { useState } from 'react';
-import { Modal } from './components/molecules/Modal/Modal';
-import { Button } from './components/atoms/Button/Button';
+import { Modal } from '@/components/molecules/Modal/Modal';
+import { Button } from '@/components/atoms/Button/Button';
 
 const ExampleComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +44,7 @@ const ExampleComponent = () => {
           <p>Are you sure you want to proceed with this action?</p>
           <div className="modal-actions">
             <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={handleConfirm}>Confirm</Button>
+            <Button variant="danger" onClick={() => alert('Confirmed')}>Confirm</Button>
           </div>
         </div>
       </Modal>
@@ -55,21 +57,25 @@ const ExampleComponent = () => {
 
 | **Prop Name** | **Type** | **Required** | **Description** |
 | --- | --- | --- | --- |
-| `isOpen` | `boolean` | Yes | Controls the visibility of the modal. |
-| `title` | `string` | Yes | The text displayed in the modal header. |
-| `onClose` | `() => void` | Yes | Function called when the user requests to close the modal (via backdrop click, close button, or Escape key). |
-| `children` | `React.ReactNode` | Yes | The content to render inside the modal body. |
+| `isOpen` | `boolean` | **Yes** | Controls the visibility of the modal. |
+| `title` | `string` | **Yes** | The text displayed in the modal header. |
+| `onClose` | `() => void` | **Yes** | Function called when the user requests to close the modal (via backdrop click, close button, or Escape key). |
+| `children` | `React.ReactNode` | **Yes** | The content to render inside the modal body. |
 
 ## Styling
 
 The component utilizes `Modal.module.css` for encapsulation.
 
-- **Backdrop**: Covers the entire screen with a semi-transparent overlay.
+- **Backdrop**: Covers the entire screen with a semi-transparent overlay (`rgba(0,0,0,0.6)`).
     
-- **Container**: Centered vertically and horizontally.
+- **Container**: The modal box itself is centered using Flexbox. It has a default responsiveness (max 90vw or 500px) and scales nicely.
     
-- **Animation**: Logic for open states is handled via the `isOpen` prop, toggling the `styles.open` class on the backdrop.
+- **Animation**:
     
+    - **Fade**: The backdrop fades in/out.
+        
+    - **Zoom**: The modal container scales up (`0.95` -> `1.0`) when opening, avoiding the previous "slide-down" effect.
+        
 
 ## Accessibility Notes
 

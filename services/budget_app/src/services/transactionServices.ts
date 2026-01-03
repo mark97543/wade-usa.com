@@ -1,5 +1,5 @@
 // services/main/src/services/transactionServices.ts
-import { getDirectusItems } from '../api/api';
+import { getDirectusItems, deleteDirectusItem, saveItem } from '../api/api';
 
 /**
  * Fetch transactions from the Last Rebalance up to X months in the future.
@@ -49,4 +49,19 @@ export const fetchLastRebalance = async () => {
         limit: 1
     });
     return response.data?.[0] || null;
+}
+
+/**
+ * Delete transaction
+ */
+export const deleteTransaction = async (id: string | number) => {
+    return await deleteDirectusItem('transactions', id);
+}
+
+
+/**
+ * Update Transaction
+ */
+export const updateTransaction = async (id: string | number, data: any) => {
+    return await saveItem('transactions', data, id);
 }

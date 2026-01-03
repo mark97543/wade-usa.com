@@ -22,8 +22,7 @@ export const Modal = ({ isOpen, title, onClose, children }: ModalProps) => {
       document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleKeyDown);
       
-      // FIX: Only focus the container if focus isn't already inside the modal.
-      // This prevents stealing focus from Inputs when the component re-renders.
+      // Focus management
       if (modalRef.current && !modalRef.current.contains(document.activeElement)) {
         modalRef.current.focus(); 
       }
@@ -33,10 +32,9 @@ export const Modal = ({ isOpen, title, onClose, children }: ModalProps) => {
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      // Clean up body scroll
       document.body.style.overflow = '';
     };
-  }, [isOpen]); // Removed onClose to prevent unnecessary re-runs if parent is unstable
+  }, [isOpen]);
 
   if (!isOpen) {
     return null;

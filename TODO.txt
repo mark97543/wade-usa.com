@@ -35,15 +35,9 @@ Need to Delete
             - SEE INFINATE SCROLL
         - Build Directus table.
             - Incorperate logic for paid date and Rebalencing 
-        - Need to make function for rolling balance of checking.
         - Add item with a modal
             - Need dropdown that include other 
             - Buckets that are blank will default to running talley.  
-        - Need to set up infinate scroll 
-            -Track position
-            - Append the Data
-            - Trigger t opull more data 
-        -Implement Pagination
         - Need a Warning if when making item id its older than rebalance (do not allow it)
         - For filtering to work a category is needed. Need to make this required or default to other 
 

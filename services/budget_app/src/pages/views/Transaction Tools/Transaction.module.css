@@ -6,13 +6,128 @@
 /*                                Desktop View                                */
 /* -------------------------------------------------------------------------- */
 .Transaction_Desktop_View{
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
-    align-items: center;
+    display: block;
     margin: 1rem;
 }
+
+.Transaction_Desktop_View table{
+    overflow: hidden;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.Transaction_Desktop_Wrapper table td,
+.Transaction_Desktop_Wrapper table th{
+    padding: 0.5rem;
+}
+
+.Transaction_Desktop_Wrapper table th:nth-child(1),
+.Transaction_Desktop_Wrapper table td:nth-child(1){ /* Paid Column */
+    width: 2rem;
+    text-align: center;
+    padding: .25rem;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.Transaction_Desktop_Wrapper table th:nth-child(2),
+.Transaction_Desktop_Wrapper table td:nth-child(2){ /* Date Column */
+    width: 6rem;
+    text-align: center;
+}
+
+.Transaction_Desktop_Wrapper table th:nth-child(3),
+.Transaction_Desktop_Wrapper table td:nth-child(3){ /* Item Column */
+    width: 8rem;
+    text-align: center;
+}
+
+.Transaction_Desktop_Wrapper table th:nth-child(4), /* Price Column */
+.Transaction_Desktop_Wrapper table td:nth-child(4),
+.Transaction_Desktop_Wrapper table th:nth-child(5),
+.Transaction_Desktop_Wrapper table td:nth-child(5),
+.Transaction_Desktop_Wrapper table th:nth-child(6),
+.Transaction_Desktop_Wrapper table td:nth-child(6){
+    width: 5rem;
+    text-align: center;
+}
+
+.Transaction_Desktop_Wrapper table th:nth-child(7),
+.Transaction_Desktop_Wrapper table td:nth-child(7){ /*Note Section */
+    min-width: 10rem; 
+}
+
+
+.Transaction_Edit_Button{
+    background-color: transparent;
+    border: none;
+}
+
+.Transaction_Edit_Button:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px); /* Subtle lift */
+}
+
+.Transaction_Edit_Button:active {
+    transform: scale(0.75); /* Shrinks slightly when pressed */
+    filter: brightness(0.8);
+}
+
+
+
+.Transaction_Modal_Desktop_Row1{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+}
+
+.Transaction_Modal_Desktop_Row1 button{
+    margin-bottom: 0px;
+    margin-top: auto;
+    height: 45px;
+    width: 200px;
+}
+
+.Transaction_Modal_Desktop_Row2{
+    margin-top:1rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+}
+
+.Transaction_Modal_Desktop_Row2 input{
+    
+    width: 100%;
+}
+
+.Transaction_Modal_Desktop_Row3{
+    margin-top:1rem;
+    display:grid;
+    grid-template-columns: 100px auto;
+    gap: 1rem;
+    align-items: center;
+}
+
+.Transaction_Modal_Desktop_Row4{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+
+}
+
+.Transaction_Modal_Desktop_Row5{
+    margin-top: 1rem;
+}
+
+.Transaction_Modal_Desktop_Row6{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 1rem;
+}
+
 
 
 
@@ -23,10 +138,8 @@
     display: none;
 }
 
-.Transaction_Desktop_Wrapper table td,
-.Transaction_Desktop_Wrapper table th{
-    padding: 0.5rem;
-}
+
+
 
 
 /* -------------------------------------------------------------------------- */

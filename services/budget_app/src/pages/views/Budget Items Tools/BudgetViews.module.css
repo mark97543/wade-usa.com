@@ -138,9 +138,10 @@
     align-items: end;
 }
 
-.Budget_Categories_Edit_Dropdowns button{
+.Budget_Categories_Edit_Dropdowns button,
+.Budget_Categories_Edit_Dropdowns input{
     height: 46px;
-    width: 193px;
+    width: 200px;
     margin-bottom: 0;
     margin-top: auto;
 }
@@ -178,6 +179,9 @@
     opacity: 0.5; /* Makes dots slightly lighter than text */
 }
 
+.Budget_Item_Modal_Child_Wrapper label{
+    margin-top: 0.5rem;
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -196,6 +200,17 @@
 
     .Budget_Items_Mobile_View{
         display: flex;
+    }
+
+    .Budget_Categories_Edit_Dropdowns input,
+    .Budget_Categories_Edit_Dropdowns button{
+        width:150px!important;
+    }
+
+    .Budget_Categories_Edit_Dropdowns{
+        grid-template-rows: 1fr auto;
+        gap: 0.5rem;
+        align-items: end;
     }
 }
 

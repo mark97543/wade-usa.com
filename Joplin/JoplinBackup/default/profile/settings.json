@@ -1,6 +1,6 @@
 {
 	"$schema": "https://joplinapp.org/schema/settings.json",
-	"editor.codeView": false,
+	"editor.codeView": true,
 	"sync.target": 0,
 	"sync.2.path": "",
 	"richTextBannerDismissed": true,

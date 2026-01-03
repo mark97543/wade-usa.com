@@ -1,23 +1,26 @@
-/* services/main/src/components/molecules/Modal/Modal.module.css */
-
-/* --- 1. Backdrop (Fixed Position) --- */
+/* --- 1. Backdrop (Fixed Full Screen) --- */
 .backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker for focus */
   backdrop-filter: blur(4px);
-  z-index: 1000; /* High Z-index to cover everything */
+  z-index: 9999;
+
+  /* Enable scrolling for the entire page overlay */
+  overflow-y: auto;
+  
+  /* Flexbox Centering - This fixes the positioning */
   display: flex;
   justify-content: center;
   align-items: center;
   
-  /* Animation entry/exit */
+  /* Animation: Fade In */
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
 .backdrop.open {
@@ -27,59 +30,62 @@
 
 /* --- 2. Modal Content Container --- */
 .modalContainer {
-  background-color: var(--surface-color);
-  color: var(--primary-color);
+  background-color: var(--surface-color, #1a1a1a);
+  color: var(--primary-color, #fff);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   
-  /* --- CHANGED SECTION START --- */
-  max-width: 90vw;      /* Prevent it from being wider than the screen */
-  max-height: 90vh;     /* Prevent it from being taller than the screen */
-  
-  width: fit-content;   /* Auto-expand to fit the children inside */
-  min-width: 450px;     /* Keep a standard minimum width */
-  /* --- CHANGED SECTION END --- */
-
+  /* Sizing */
+  width: min(90vw, 500px); /*Responsive width, max 500px */
+  /* max-height: 90vh; */
+  overflow-y:visible;
   padding: 1.5rem;
-  overflow-y: visible;     /* Scroll if content is too tall */
   
-  /* Animation entry/exit */
-  transform: translateY(-50px);
-  transition: transform 0.3s ease-out;
+  /* Animation: Scale (Zoom) instead of Slide Down */
+  transform: scale(0.95);
+  opacity: 0;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
 }
 
+/* When Open: Full Size & Opacity */
 .backdrop.open .modalContainer {
-  transform: translateY(0);
+  transform: scale(1);
+  opacity: 1;
 }
 
-/* --- 3. Header/Close Button --- */
+/* --- 3. Header & Close Button --- */
 .modal_header {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 2rem;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--accent-color);
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent-color, #fff);
 }
 
 .closeButton {
-  background: none;
+  background: transparent;
   border: none;
-  color: var(--primary-color);
+  color: var(--primary-color, #fff);
   font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.25rem;
   cursor: pointer;
   opacity: 0.6;
   transition: opacity 0.2s;
-  max-width: 1rem;
+  border-radius: 4px;
 }
 
 .closeButton:hover {
   opacity: 1;
-  color: var(--danger-color);
+  background-color: rgba(255, 255, 255, 0.1);
 }
