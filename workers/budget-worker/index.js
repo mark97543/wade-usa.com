@@ -125,7 +125,7 @@ async function runReconciliation() {
     return { purged: purgeIds.length, created: toCreate.length };
 }
 
-app.post('/reconcile', async (req, res) => {
+app.all('/reconcile', async (req, res) => {
     try {
         const results = await runReconciliation();
         res.json({ success: true, ...results });
