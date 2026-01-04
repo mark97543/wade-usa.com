@@ -5,6 +5,14 @@ interface SpinnerProps {
   className?: string;
 }
 
-export const Spinner = ({ className }: SpinnerProps) => {
-  return <div className={`${styles.spinner} ${className || ''}`} />;
+export const Spinner = ({ size = 'md', className }: SpinnerProps) => {
+  // Grab the specific class for the size (e.g., styles.sm, styles.md)
+  const sizeClass = styles[size];
+
+  return (
+    <div 
+      className={`${styles.spinner} ${sizeClass} ${className || ''}`} 
+      role="status"
+    />
+  );
 };

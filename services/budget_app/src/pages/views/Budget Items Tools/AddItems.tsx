@@ -53,7 +53,7 @@ export default function AddItem({logic}:{logic:any}){
 
                 <Dropdown trigger={
                     <Button className={style.Budget_Categories_Frequency_Button}>
-                        {FREQUENCY[Number(newFrequency)].label}
+                        {FREQUENCY.find((f) => Number(f.id) === Number(newFrequency))?.label || "Select Frequency"}
                     </Button>}
                 >
                     {FREQUENCY.map((freq) => (

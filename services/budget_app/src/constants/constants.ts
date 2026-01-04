@@ -15,19 +15,19 @@ export const CATEGORY_COLORS = [
 ];
 
 export const BUCKETS = [
-    {id:0, label:'None'},
+    {id:0, label:'Other'}, //Will be the default. In table this will fall under discretionary for overall budgeting
     {id:1, label:'Income'},
-    {id:2, label:'Essentials'},
-    {id:3, label:'Debt'},
+    {id:2, label:'Essentials'}, //50%
+    {id:3, label:'Debt'}, //Split with savings 20%
     {id:4, label:'Savings'},
-    {id:5, label:'Discretionary'}
+    {id:5, label:'Discretionary'} //30%
 ]
 
 export const FREQUENCY = [
     {id:0, label:'Select Frequency'},
     {id:1, label:'Weekly'},
     {id:2, label:'Bi-Weekly'},
-    {id:1, label:'Monthly'},
-    {id:2, label:'Quarterly'},
-    {id:3, label:'Yearly'}
+    {id:3, label:'Monthly'},
+    {id:4, label:'Quarterly'},
+    {id:5, label:'Yearly'}
 ]

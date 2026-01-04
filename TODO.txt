@@ -25,21 +25,28 @@ Need to Delete
 -- Budget App --
 
     TODO: Need to make the 404 page revert back to the home page one. 
-    TODO: Start the Transaction Layout
-        - Make Desktop Page
-            - Includes a Table
+    TODO: Transaction Layout
+        -Desktop View
+            - Need Add item
+            - Need to add timeframe edit. 
+            - Need to Work on paginantion
+            - Lets Add Some TOasts to the program. For Successfull Api Calls 
         - Make mobile page
-            - Includes Truncated Table 
-        - Make Api's 
-            - On load need to review categories and make sure they have 3 monnths in future on load, 
-            - SEE INFINATE SCROLL
-        - Build Directus table.
-            - Incorperate logic for paid date and Rebalencing 
+            - Need to build
         - Add item with a modal
             - Need dropdown that include other 
             - Buckets that are blank will default to running talley.  
         - Need a Warning if when making item id its older than rebalance (do not allow it)
         - For filtering to work a category is needed. Need to make this required or default to other 
+        - Need a mass delete option (Command and control center)
+        - Need a filter 
+    TODO: 
+        - Credit Card Liabilites Layout
+            - This we will need to have a CC paid option and a different view on how its paid. Maybe a reconciled checkbox. 
+            - Will need A CC reconcile along with the Checking one. We will need to filter for this in each DB
+    TODO: DB FLOWS
+        - Need a flow for changing budget categoryu name 
+        - Automate flows
 
 
 

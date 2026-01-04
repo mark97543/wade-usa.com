@@ -2,91 +2,57 @@
 
 import { Table } from "@/components/molecules/Table/Table"
 import style from "./Transaction.module.css"
-import { Modal} from "@/components/molecules/Modal/Modal"
-import { Input } from "@/components/atoms/Input/Input";
-import {BUCKETS} from "@/constants/constants";
-import { Dropdown } from "@/components/molecules/Dropdown/Dropdown";
-import { DropdownItem } from "@/components/molecules/Dropdown/Dropdown";
+import Transaction_Edit_Modal_Desktop from "./Transaction_Edit_Modal_Desktop";
+import { Range } from "@/components/atoms/Range/Range";
+import { Spinner } from "@/components/atoms/Spinner/Spinner";
 import { Button } from "@/components/atoms/Button/Button";
-import { Checkbox } from "@/components/atoms/Checkbox/Checkbox";
+
 
 
 
 
 export default function Transactions_Desktop({logic}:{logic:any}){
 
-
-
-
     const {
         desktop_columns,
         packagedData,
-        isModalOpen,
-        setIsModalOpen,
-        editRow,
-        setEditRow,
-        DeleteItems,
-        UpdateItem
+        timeRange,
+        setTimeRange,
+        isLoading
     } = logic;
+
+
     
+
+
     return(
         <div className={style.Transaction_Desktop_Wrapper}>
-            <Table columns={desktop_columns} data={packagedData} />
 
-            <Modal isOpen={isModalOpen} title="Edit Transaction" onClose={() => setIsModalOpen(false)}>
-                <div>
+            <div className={style.Transaction_Command_Center}>
+                <Range
+                    id="time_step"
+                    label="Time Range"
+                    min={3}
+                    max={12}
+                    step={3}
+                    initialValue={timeRange}
+                    onChange={setTimeRange}
+                />
 
-                    <div className={style.Transaction_Modal_Desktop_Row1}>
-                        <Input label="Item" value={editRow?.item || ""} onChange={(e)=>setEditRow((prev:any)=>({...prev,item:e.target.value}))}/> 
-                        <Dropdown trigger={
-                            <Button>
-                                {editRow?.category || "None"}
-                            </Button>
-                        }>
-                            {BUCKETS.map((bucket) => (
-                                <DropdownItem
-                                    key={bucket.id}
-                                    onClick={() => setEditRow((prev:any)=>({...prev,category:bucket.label}))}
-                                >
-                                    {bucket.label}
-                                </DropdownItem>
-                            ))}
-                        </Dropdown>
-                    </div>
-                    
-                    <div className={style.Transaction_Modal_Desktop_Row2}>
-                        <Input type="number" label="Withdrawal" value={ editRow?.withdrawal || 0} onChange={(e)=>setEditRow((prev:any)=>({...prev,withdrawal:parseFloat(e.target.value) || 0}))}/> 
-                        <Input type="number" label="Deposit" value={editRow?.deposit || 0} onChange={(e)=>setEditRow((prev:any)=>({...prev,deposit:parseFloat(e.target.value) || 0}))}/> 
-                    </div>
+                <Button>Add Item</Button>             
 
-                    <div className={style.Transaction_Modal_Desktop_Row3}>
-                        <Checkbox
-                            label="Item Paid"
-                            id="item_paid"
-                            name="item_paid"
-                            value={editRow?.paid || false}
-                            onChange={(e)=>setEditRow((prev:any)=>({...prev,paid:e.target.checked}))}
-                            checked={editRow?.paid || false}
-                        />
-                    </div>
+            </div>
 
-                    <div className={style.Transaction_Modal_Desktop_Row4}>
-                        <Input disabled={!editRow?.item_paid} type="date" label="Date Paid" value={editRow?.paid_date} onChange={(e)=>setEditRow((prev:any)=>({...prev,paid_date:e.target.value}))}/> 
-                        <Input type="date" label="Transaction Planned Date" value={editRow?.date} onChange={(e)=>setEditRow((prev:any)=>({...prev,date:e.target.value}))}/> 
-                    </div>
-
-                    <div className={style.Transaction_Modal_Desktop_Row5}>
-                        <Input label="Notes" value={editRow?.note || ""} onChange={(e)=>setEditRow((prev:any)=>({...prev,note:e.target.value}))}/> 
-                    </div>
-
-                    <div className={style.Transaction_Modal_Desktop_Row6}>
-                        <Button variant="outline" onClick={()=>setIsModalOpen(false)}>Cancel</Button>
-                        <Button variant="primary" onClick={()=>UpdateItem(editRow?.id, editRow)}>Save</Button>
-                        <Button variant="danger" onClick={()=>DeleteItems(editRow?.id)}>Delete</Button>
-                    </div>
-
+            {isLoading ? 
+                <div className={style.Transactions_Desktop_Spinner_Wrapper}>
+                    <Spinner size="md"/> 
                 </div>
-            </Modal>
+                : <Table columns={desktop_columns} data={packagedData} 
+            />}
+            
+
+            <Transaction_Edit_Modal_Desktop logic={logic}/>
+
 
         </div>
     )

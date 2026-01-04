@@ -31,8 +31,18 @@ export const useTransactions = ()=>{
 
 
     // --- USER CONTROLS ---
-    const [timeRange, setTimeRange] = useState<3 | 6 | 9 | 12>(3); // Default 3 months
-    //const [showPaid, setShowPaid] = useState(false);
+    const [timeRange, setTimeRange] = useState<number>(() => {
+        // 1. Check if we have a saved value in browser storage
+        const saved = localStorage.getItem("time_range_preference");
+        
+        // 2. If found, parse it. If not, return default (3)
+        return saved ? Number(saved) : 3;
+    });
+
+    // 3. Whenever timeRange changes, update the storage
+    useEffect(() => {
+        localStorage.setItem("time_range_preference", String(timeRange));
+    }, [timeRange]);
 
     /* -------------------------------- Functions ------------------------------- */
     const itemEdit = (row:Transaction) =>{
@@ -47,7 +57,8 @@ export const useTransactions = ()=>{
         setReload(prev=>prev+1);
     }
 
-    const UpdateItem = async (id:string | number, data:any )=>{
+    const UpdateItem = async (id:string | number, data:any )=>{     
+        
         //Packageding Items for Directus to read (Striping Calculated Coloumns)
         const dataPackage={
             id:data.id,
@@ -99,7 +110,7 @@ export const useTransactions = ()=>{
         }
 
         loadData();
-    }, [reload]);
+    }, [reload, timeRange]);
 
     /* -------------------------- Desktop Table Columns ------------------------- */
 
@@ -217,18 +228,17 @@ export const useTransactions = ()=>{
 
 
     return{
-    isLoading,
-    setIsLoading,
-    desktop_columns,
-    packagedData,
-    isModalOpen,
-    setIsModalOpen,
-    editRow,
-    setEditRow,
-    DeleteItems,
-    UpdateItem
-
-
-    
+        isLoading,
+        setIsLoading,
+        desktop_columns,
+        packagedData,
+        isModalOpen,
+        setIsModalOpen,
+        editRow,
+        setEditRow,
+        DeleteItems,
+        UpdateItem,
+        timeRange,
+        setTimeRange
     }
 }

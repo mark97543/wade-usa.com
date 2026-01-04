@@ -1,12 +1,32 @@
 .spinner {
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top: 2px solid currentColor; /* Uses the text color of parent */
-  width: 1em;
-  height: 1em;
-  animation: spin 1s linear infinite;
+  /* Base Defaults (fallback) */
   display: inline-block;
-  margin-right: 0.5rem;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  
+  /* Color Logic */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: currentColor; /* Matches text color */
+}
+
+/* --- Sizes --- */
+
+.sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 2px;
+}
+
+.md {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 2px;
+}
+
+.lg {
+  width: 3rem;
+  height: 3rem;
+  border-width: 3px; /* Thicker border for large spinner */
 }
 
 @keyframes spin {

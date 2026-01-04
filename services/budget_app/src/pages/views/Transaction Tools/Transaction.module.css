@@ -128,7 +128,20 @@
     gap: 1rem;
 }
 
+.Transactions_Desktop_Spinner_Wrapper{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-top: 3rem;
 
+}
+
+.Transaction_Command_Center{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+    margin-bottom: 1rem;;
+}
 
 
 /* -------------------------------------------------------------------------- */
