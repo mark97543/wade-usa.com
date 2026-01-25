@@ -1,0 +1,86 @@
+.MENU_WRAPPER {
+    position: relative;
+    display: inline-block;
+}
+
+.MENU_BUTTON {
+    background-color: transparent;
+    border: none;
+    color: var(--c-text);
+    font-size: var(--font-md);
+    cursor: pointer;
+    padding: var(--gap-md);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.MENU_BUTTON.ACTIVE, 
+.MENU_BUTTON:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.CHEVRON {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: var(--text-md);
+    opacity: 0.7;
+    margin-left: 4px;
+}
+
+.CHEVRON_UP {
+    transform: rotate(180deg);
+}
+
+.MENU_DROPDOWN {
+    position: absolute;
+    top: 110%; 
+    left: 0;
+    min-width: 220px;
+    background-color: var(--c-surface);
+    border-radius: var(--radius-md);
+    z-index: 1000;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    
+    /* INITIAL STATE FOR ANIMATION */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px); 
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.SHOW {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.MENU_ITEM {
+    display: flex;         /* FORCES ICON AND TEXT INTO A ROW */
+    align-items: center;   /* VERTICAL CENTERING */
+    gap: var(--gap-md);
+    padding: var(--gap-md);
+    color: var(--c-text);
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.MENU_ITEM:hover {
+    background-color: var(--primary-color);
+    color: #000000 !important; 
+}
+
+.ICON {
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    font-style: normal;
+}
+
+.LABEL {
+    flex: 1;
+    white-space: nowrap;
+}

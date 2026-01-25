@@ -1,0 +1,102 @@
+/*==============================================*/
+/*------------------Color Showcase -------------*/
+/*==============================================*/
+.COLOR_SCHEME_WRAPPER{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: var(--font-base);
+}
+
+.COLOR_SCHEME_WRAPPER h1, 
+.COLOR_SCHEME_WRAPPER p{
+    margin-bottom: var(--gap-sm);
+    margin-top: var(--gap-sm);
+    padding: 0px;
+}
+
+.COLOR_DARK_THEME_DIV{
+    width: 100%;
+    border: 1px solid white;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: var(--radius-md);
+}
+
+.COLOR_PRIMARY_COLOR{
+    margin-top: var(--gap-sm);
+    background-color: var(--primary-color);
+    padding: var(--gap-sm);
+    border-radius: var(--radius-lg);
+    color: white;
+    text-align: center;
+}
+
+.COLOR_SECONDARY_COLOR{
+    margin-top: var(--gap-sm);
+    background-color: var(--secondary-color);
+    padding: var(--gap-sm);
+    border-radius: var(--radius-lg);
+    color: white;
+    text-align: center;
+}
+
+.COLOR_BG_COLOR{
+    margin-top: var(--gap-sm);
+    background-color: var(--c-bg);
+    padding: var(--gap-sm);
+    border-radius: var(--radius-lg);
+    color: var(--c-text);
+    text-align: center;
+}
+
+.COLOR_SURFACE_COLOR{
+    margin-top: var(--gap-sm);
+    background-color: var(--c-surface);
+    padding: var(--gap-sm);
+    border-radius: var(--radius-lg);
+    color: var(--c-text);
+    text-align: center;
+}
+
+/*==============================================*/
+/*-----------------Button Showcase -------------*/
+/*==============================================*/
+
+.BUTTONSHOWCASE_WRAPPER{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: var(--font-base);
+
+}
+
+.BUTTONSHOWCASE_WRAPPER p{
+    margin-bottom: var(--gap-sm);
+    margin-top: var(--gap-sm);
+    padding: 0px;
+}
+
+.BUTTONSHOWCASE_WRAPPER h1{
+    margin-bottom: var(--gap-sm);
+    padding: 0px;
+}
+
+.BUTTONSHOWCASE_WRAPPER_BUTTONS{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid white;
+    padding: 10px;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    justify-content: center;
+}
