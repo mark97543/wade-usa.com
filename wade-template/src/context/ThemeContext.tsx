@@ -115,24 +115,24 @@ export const useTheme = () => useContext(ThemeContext);
 //=========================================================
 
 const debugColors = (themeData: any, currentTheme: string) => {
-  console.groupCollapsed(`🎨 Theme Debugger [Mode: ${currentTheme.toUpperCase()}]`);
+  //console.groupCollapsed(`🎨 Theme Debugger [Mode: ${currentTheme.toUpperCase()}]`);
 
   const dynamicKeys = ['bg', 'surface', 'text']; // The flipping colors
   
   // 1. SHOW DYNAMIC VARIABLES (The ones currently in use)
-  console.log('%c DYNAMIC THEME VARIABLES ', 'background: #333; color: #fff; font-weight: bold;');
+  //console.log('%c DYNAMIC THEME VARIABLES ', 'background: #333; color: #fff; font-weight: bold;');
   dynamicKeys.forEach(key => {
     const activeHex = themeData[`${currentTheme}_${key}`];
-    console.log(
-      `%c    %c --c-${key.padEnd(10)} %c ${activeHex}`,
-      `background: ${activeHex}; border: 1px solid #777; border-radius: 3px; padding: 0 8px;`,
-      'font-weight: bold; font-family: monospace;',
-      'color: #888;'
-    );
+    // console.log(
+    //   `%c    %c --c-${key.padEnd(10)} %c ${activeHex}`,
+    //   `background: ${activeHex}; border: 1px solid #777; border-radius: 3px; padding: 0 8px;`,
+    //   'font-weight: bold; font-family: monospace;',
+    //   'color: #888;'
+    // );
   });
 
   // 2. SHOW STATIC VARIABLES (Brand colors, Radii, etc.)
-  console.log('%c STATIC SYSTEM VARIABLES ', 'background: #333; color: #fff; font-weight: bold; margin-top: 10px;');
+  //console.log('%c STATIC SYSTEM VARIABLES ', 'background: #333; color: #fff; font-weight: bold; margin-top: 10px;');
   Object.keys(themeData).forEach(key => {
     // Skip the dynamic keys so we don't double-count
     if (key.startsWith('dark_') || key.startsWith('light_')) return;
@@ -141,12 +141,12 @@ const debugColors = (themeData: any, currentTheme: string) => {
     const cssVar = `--${key.replace(/_/g, '-')}`;
     const isColor = val?.toString().startsWith('#');
 
-    console.log(
-      `%c ${isColor ? '  ' : '📏'} %c ${cssVar.padEnd(20)} %c ${val}`,
-      isColor ? `background: ${val}; border: 1px solid #777; border-radius: 3px;` : '',
-      'font-weight: bold; font-family: monospace;',
-      'color: #888;'
-    );
+    // console.log(
+    //   `%c ${isColor ? '  ' : '📏'} %c ${cssVar.padEnd(20)} %c ${val}`,
+    //   isColor ? `background: ${val}; border: 1px solid #777; border-radius: 3px;` : '',
+    //   'font-weight: bold; font-family: monospace;',
+    //   'color: #888;'
+    // );
   });
 
   console.groupEnd();

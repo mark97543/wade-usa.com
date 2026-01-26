@@ -16,5 +16,6 @@ export const LAYOUT = {
  */
 
 export const CONFIG ={
-  TOP_PAGE: '/login' //This is the default page user is directed to if not logged in
+  TOP_PAGE: '/login', //This is the default page user is directed to if not logged in
+  DASH_PAGE: '/' //This is the page you will navigate to when you log in
 }

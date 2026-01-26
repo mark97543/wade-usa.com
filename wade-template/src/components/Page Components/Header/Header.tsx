@@ -8,18 +8,17 @@ import style from './Header.module.css'
 import { LAYOUT } from '../../../config/layout'
 import Button from '../../BaseComponents/Button'
 import { useAuth } from '../../../context/AuthContext'
-import { logoutUser } from '../../../services/auth'
 import { useNavigate } from 'react-router-dom'
 import { CONFIG } from '../../../config/layout'
 
 
 function Header() {
-    const {user, checkSession} = useAuth();
+    const {user, logout} = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await logoutUser();
-        await checkSession();
+        await logout();
+     
         navigate(CONFIG.TOP_PAGE); 
       };
 

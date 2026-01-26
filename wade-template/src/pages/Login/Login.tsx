@@ -1,22 +1,22 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // <--- The Navigator
-import { loginUser } from '../../services/auth';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/BaseComponents/Button';
 import Input from '../../components/BaseComponents/Input/Input';
+import { CONFIG } from '../../config/layout';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
-  const { checkSession } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate(); 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await loginUser(email, pass); // 1. Get Token
-      await checkSession();         // 2. Update Context
-      navigate('/');                // 3. Redirect to Dashboard
+      await login(email, pass); // 1. Get Token
+      console.log("Successfull Log In")
+      navigate(CONFIG.DASH_PAGE);// Redirect to Dashboard Change this if you have dashboard page later on <-------------------------------
     } catch (err) {
       alert('Login failed! Check console.');
     }
