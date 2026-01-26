@@ -15,10 +15,12 @@ import './index.css'
 import App from './App.tsx'
 import { Providers } from './context/Provider.tsx'
 
+import { AuthProvider } from './context/AuthContext.tsx'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Providers>
+    <AuthProvider>
       <App />
-    </Providers>
+    </AuthProvider>
   </StrictMode>,
 )

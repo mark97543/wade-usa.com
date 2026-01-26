@@ -20,14 +20,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   // 1. Check if user is already logged in when the app starts
-  useEffect(() => {
-    async function initAuth() {
+useEffect(() => {
+  async function initAuth() {
+    try {
+      // Try to get the user
       const currentUser = await authService.getCurrentUser();
       setUser(currentUser);
-      setLoading(false);
+    } catch (error) {
+      console.error("Auth initialization failed:", error);
+      setUser(null);
+    } finally {
+      setLoading(false); 
     }
-    initAuth();
-  }, []);
+  }
+  initAuth();
+}, []);
 
   // 2. Real Login Logic
   const login = async (email: string, pass: string) => {
@@ -36,8 +43,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // 3. Logout Logic
-  const logout = () => {
-    authService.logout();
+  const logout = async () => {
+    await authService.logout();
     setUser(null);
   };
 
