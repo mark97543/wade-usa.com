@@ -46,6 +46,8 @@ function ButtonShowcase() {
             <li><code>type</code>: 'default' | 'danger' | 'neutral'</li>
             <li><code>onClick</code>: Optional function for click events.</li>
             <li><code>style</code>:Optional In Line Styles</li>
+            <li><code>disabled</code>:Optional boolean</li>
+            <li><code>loading</code>:Optional boolean</li>
         </ul>
 
 

@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import MainLayout from './Templates/MainLayout'; 
 import { CONFIG } from './config/layout';
+import Register from './pages/Register/Register';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           
           {/* Public Page (Now includes Header) */}
           <Route path="/login" element={<Login />} />
+          <Route path='/register' element={<Register/>}/>
 
           {/* 🛡️ Protected Pages */}
           <Route element={<ProtectedRoute />}>

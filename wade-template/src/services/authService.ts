@@ -5,7 +5,7 @@
  */
 
 import client from "./directus";
-import { readMe } from "@directus/sdk";
+import { readMe, registerUser } from "@directus/sdk";
 
 export const authService ={
     //1.Standard login
@@ -36,5 +36,17 @@ export const authService ={
     async logout(){
         await client.logout();
         //window.location.href = '/login'; //Redirect to the clear app state 
+    },
+    //4. New User Registration
+    async register(email:string, pass:string, firstName:string){
+        try{
+            await client.request(registerUser(email, pass, {
+                first_name:firstName,
+            }));
+            return {success:true};
+        }catch(error:any){
+          console.error("Registration Error: ", error);
+          throw new Error(error.errors?.[0]?.message || "Registration Failed");
+        }
     }
 }

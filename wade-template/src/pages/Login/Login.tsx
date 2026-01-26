@@ -23,8 +23,8 @@ export default function Login() {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-      <div style={{ padding: '30px', border: '1px solid #ccc', borderRadius: '8px' }}>
+    <div style={{ display: 'flex', flexDirection:'column' ,justifyContent: 'center', marginTop: '50px',  textAlign:'center'}}>
+      <div style={{ padding: '30px', border: '1px solid var(--secondary-color)', borderRadius: '8px', width:'350px', marginLeft:'auto', marginRight:'auto' }}>
         <h2>🔐 Login Required</h2>
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <Input
@@ -42,6 +42,8 @@ export default function Login() {
           <Button type='default' style={{marginLeft:'-2px' ,width:'100%'}} >Enter</Button>
         </form>
       </div>
+      <a href='/register' style={{marginTop:'20px'}}>Not A Member? Register Here.</a>
+      <p style={{width:'350px', marginLeft:'auto', marginRight:'auto'}}>If you Registered and cannot log in. It is because you have not been autherized yet. Contact The Amazing Mr. Wade to expadite. </p>
     </div>
   );
 }
