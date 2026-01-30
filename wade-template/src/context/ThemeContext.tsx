@@ -12,7 +12,7 @@
 import { createContext, useContext, useState, useEffect} from 'react';
 import type { ReactNode } from 'react';
 import { readSingleton } from '@directus/sdk';
-import client from '../services/directus';
+import client from '../lib/directus';
 
 type ThemeMode = 'light' | 'dark';
 

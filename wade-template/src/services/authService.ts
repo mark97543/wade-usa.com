@@ -4,7 +4,7 @@
  * /src/services/authService.ts
  */
 
-import client from "./directus";
+import client from "../lib/directus";
 import { readMe, registerUser } from "@directus/sdk";
 
 export const authService ={

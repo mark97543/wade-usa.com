@@ -8,7 +8,7 @@
  */
 
 import { readMe, login, logout } from '@directus/sdk';
-import { client } from '../lib/directus';
+import  client  from '../lib/directus';
 
 const TOKEN_KEY = 'wade_directus_token';
 
