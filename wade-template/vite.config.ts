@@ -1,17 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // 1. Force absolute paths for assets so the server doesn't get confused
+  // This ensures that all built assets are referenced from the root
   base: '/', 
   build: {
-    // 2. Ensure the output directory is 'dist' (Easypanel/Nixpacks looks for this)
+    // Explicitly set the output to 'dist'
     outDir: 'dist',
-    // 3. Clear the old build so no ghost files remain
+    // Helps with pathing in monorepos
     emptyOutDir: true,
-    // 4. Ensure assets are nested correctly
-    assetsDir: 'assets',
-  },
+  }
 })
