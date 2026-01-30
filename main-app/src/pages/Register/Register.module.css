@@ -1,0 +1,16 @@
+
+.REGISTER_WRAPPER{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.REGISTER_BOX{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--radius-md);
+    width: 350px;
+    padding: var(--gap-lg);
+}

@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pinyon+Script&family=Tangerine:wght@400;700&display=swap');
+
+
+.HEADER_WRAPPER{
+    display: grid;
+    grid-template-columns: 100px auto 100px; /*Edit this for header grouping spacing */
+    background-color: var(--c-surface);
+    padding: var(--gap-md);
+    color: var(--c-text);
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    z-index: 1000;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.HEADER_WRAPPER h1 {
+    margin: 0px;
+    padding: 0px;
+}
+
+.LOGO_WRAPPER{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.LOGO{
+  font-family: "Pinyon Script", cursive;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--c-text);
+  filter: brightness(2);
+}
+
+.LINK_WRAPPER{
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap-md);
+    justify-content: start;
+}
+
+.RIGHT_WRAPPER{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

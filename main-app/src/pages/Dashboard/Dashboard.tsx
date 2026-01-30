@@ -13,11 +13,8 @@
 
 import { useEffect } from 'react';
 import { useGlobal } from '../../context/GlobalContext';
-import Colors from './Parts/Colors'
-import ButtonShowcase from './Parts/ButtonShowcase';
-import MenuShowcase from './Parts/MenuShowcase';
-import InputShowcase from './Parts/InputShowcase';
 import { CONFIG } from '../../config/layout';
+
 
 export default function Dashboard() {
 
@@ -26,16 +23,13 @@ export default function Dashboard() {
 
   // 1. Prove we can set the title globally on mount
   useEffect(() => {
-    setPageTitle(CONFIG.APP_TITLE);
+    setPageTitle(CONFIG.APP_NAME);
   }, []);
 
 
   return (
     <>
-      <Colors/>
-      <ButtonShowcase/>
-      <MenuShowcase/>
-      <InputShowcase/>
+      <div>Dashboard</div>
 
     </>
   );

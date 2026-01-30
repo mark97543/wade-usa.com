@@ -1,0 +1,30 @@
+/**
+ * GLOBAL RESET
+ * ---------------------------------------------------------------------
+ */
+
+/* 1. The "Safety Net": Fixes the Box Model so padding doesn't break widths */
+* {
+  box-sizing: border-box;
+}
+
+/* 2. Fix the Header Gap: Remove browser default margins and padding */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--c-bg); /* Fills the screen with your theme color */
+  font-family: sans-serif; /* Or your preferred font */
+}
+
+/* 3. Smooth scrolling for a premium feel */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 4. Ensure images don't overflow containers */
+img {
+  max-width: 100%;
+  display: block;
+}
