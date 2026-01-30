@@ -15,7 +15,7 @@ export default function Login() {
     e.preventDefault();
     try {
       await login(email, pass); // 1. Get Token
-      console.log("Successfull Log In")
+      //console.log("Successfull Log In")
       navigate(CONFIG.DASH_PAGE);// Redirect to Dashboard Change this if you have dashboard page later on <-------------------------------
     } catch (err) {
       alert('Login failed! Check console.');
