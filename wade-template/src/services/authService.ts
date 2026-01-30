@@ -12,9 +12,9 @@ export const authService ={
     async login(email:string, pass:string){
         try{
             const authData = await client.login({ email, password: pass });
-            console.log("1. Login Success, Token Received:", authData);
+            //console.log("1. Login Success, Token Received:", authData);
             const user = await this.getCurrentUser();
-            console.log("2. User Profile Fetched:", user);
+            //console.log("2. User Profile Fetched:", user);
             return user;
         }catch(error){
             throw new Error("Login Fails. Check your credentials.");
