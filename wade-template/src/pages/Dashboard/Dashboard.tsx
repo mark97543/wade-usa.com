@@ -16,6 +16,7 @@ import { useGlobal } from '../../context/GlobalContext';
 import Colors from './Parts/Colors'
 import ButtonShowcase from './Parts/ButtonShowcase';
 import MenuShowcase from './Parts/MenuShowcase';
+import InputShowcase from './Parts/InputShowcase';
 
 export default function Dashboard() {
 
@@ -33,7 +34,7 @@ export default function Dashboard() {
       <Colors/>
       <ButtonShowcase/>
       <MenuShowcase/>
-
+      <InputShowcase/>
 
     </>
   );

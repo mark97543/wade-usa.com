@@ -100,3 +100,62 @@
     width: 100%;
     justify-content: center;
 }
+
+/*==============================================*/
+/*-----------------Input Showcase --------------*/
+/*==============================================*/
+
+.INPUTSHOWCASE_WRAPPER {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: var(--font-base);
+}
+
+.INPUTSHOWCASE_WRAPPER h1,
+.INPUTSHOWCASE_WRAPPER p {
+    margin-bottom: var(--gap-sm);
+    margin-top: var(--gap-sm);
+    padding: 0px;
+}
+
+/* We use a column layout for inputs so they have room to breathe */
+.INPUTSHOWCASE_FIELDS_CONTAINER {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+    width: 100%;
+    border: 1px solid white;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    background-color: rgba(255, 255, 255, 0.03); /* Slight tint to show depth */
+}
+
+/* Container for each input + its label/description */
+.INPUT_GROUP {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.INPUT_LABEL {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Syntax highlighting look for the code blocks */
+.INPUTSHOWCASE_WRAPPER code {
+    background-color: #1e1e1e;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #dcdcdc;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
