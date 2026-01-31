@@ -63,3 +63,19 @@
   cursor: pointer !important;
   z-index: 10 !important;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                               Modal Formating                              */
+/* -------------------------------------------------------------------------- */
+
+.CAL_EDIT_MODAL_BUTTONS{
+  display: grid;
+  grid-template-columns: auto auto 30px;
+  gap: var(--gap-sm);
+}
+
+.CAL_NEW_MODAL_BUTTONS{
+  display: grid;
+  grid-template-columns: auto auto;
+  gap:var(--gap-sm)
+}

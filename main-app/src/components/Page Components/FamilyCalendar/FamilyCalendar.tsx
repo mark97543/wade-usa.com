@@ -17,6 +17,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import styles from './FamilyCalendar.module.css'
+import FamilyCalenderModal from './FamilyCalenderModal';
 
 interface CalendarEvent {
   id: string;
@@ -32,6 +33,10 @@ const FamilyCalendar: React.FC = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedDate, setSelectedDate]=useState('')
+  const [isModalOpen, setIsModalOpen]=useState(false)
+  const [modalTitle, setModalTitle]=useState('')
+  const [modalType, setModalType]=useState<'edit' | 'new'>('new');
+  const [selectedItem, setSelectedItem]=useState({})
 
   useEffect(() => {
     fetchEvents();
@@ -87,16 +92,21 @@ const FamilyCalendar: React.FC = () => {
   if (loading) return <div className="p-4">Syncing Family Calendar...</div>;
 
   const handleEventClick = (info: any) => {
-    console.log("🚀 Event Clicked!");
-    console.log("Title:", info.event.title);
-    console.log("ID:", info.event.id);
-    
-    // Just to be sure it's working
-    alert(`You clicked: ${info.event.title}`);
+
+    setModalTitle('Edit Event');
+    setModalType('edit')
+    setSelectedItem({title:info.event.title, start:info.event.start})
+    setIsModalOpen(true)
+    console.log(selectedItem)
   };
 
   const handleDateClick = (info:any)=>{
-    alert(`You clicked: ${info.dateStr}`);
+
+    setModalTitle('Add Event')
+    setModalType('new')
+    setSelectedItem({title:'',start:info.dateStr})
+    setIsModalOpen(true)
+    //console.log(info.dateStr)
   }
 
   return (
@@ -120,6 +130,15 @@ const FamilyCalendar: React.FC = () => {
         dateClick={handleDateClick}   
         eventClick={handleEventClick}
       />
+
+      <FamilyCalenderModal 
+        item={selectedItem} 
+        isOpen={isModalOpen} 
+        onClose={()=>setIsModalOpen(false)} 
+        title={modalTitle} 
+        modalType={modalType}
+      />
+
     </div>
   );
 };
