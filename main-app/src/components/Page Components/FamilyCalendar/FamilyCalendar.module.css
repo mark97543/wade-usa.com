@@ -1,0 +1,48 @@
+/* FamilyCalendar.module.css */
+
+.calendarContainer {
+  /* Use your global variables directly */
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg); /* Using your variable here too */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.calendarContainer :global(.fc) {
+  /* Wire FullCalendar to your theme variables */
+  --fc-border-color: var(--c-surface);
+  --fc-button-bg-color: var(--primary-color);
+  --fc-button-border-color: var(--primary-color);
+  --fc-button-hover-bg-color: var(--secondary-color);
+  --fc-button-active-bg-color: var(--secondary-color);
+  --fc-today-bg-color: var(--c-surface);
+  
+  /* Make sure the internal text inherits your theme text color */
+  --fc-page-bg-color: var(--c-bg);
+  --fc-neutral-bg-color: var(--c-bg);
+  --fc-list-event-hover-bg-color: var(--c-surface);
+}
+
+/* Ensure headers and numbers use your theme text color */
+.calendarContainer :global(.fc-toolbar-title),
+.calendarContainer :global(.fc-col-header-cell-cushion),
+.calendarContainer :global(.fc-daygrid-day-number) {
+  color: var(--c-text) !important;
+  text-decoration: none;
+}
+
+/* Event Styling */
+.calendarContainer :global(.fc-event) {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff; /* Keep event text white for contrast */
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Grid lines should use your surface/border color */
+.calendarContainer :global(.fc-theme-standard td), 
+.calendarContainer :global(.fc-theme-standard th) {
+  border-color: var(--c-surface);
+}

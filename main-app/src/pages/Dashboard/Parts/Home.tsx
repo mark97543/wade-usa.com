@@ -1,4 +1,5 @@
 import React from 'react'
+import FamilyCalendar from '../../../components/Page Components/FamilyCalendar/FamilyCalendar'
 
 
 function LoggedIn() {
@@ -8,6 +9,7 @@ function LoggedIn() {
     return (
         <div>
             Logged In Page
+            <FamilyCalendar/>
         </div>
     )
 }
