@@ -31,6 +31,7 @@ interface CalendarEvent {
 const FamilyCalendar: React.FC = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedDate, setSelectedDate]=useState('')
 
   useEffect(() => {
     fetchEvents();
@@ -74,7 +75,7 @@ const FamilyCalendar: React.FC = () => {
         borderColor: item.color || '#3788d8',
       }));
 
-      console.log("✅ Success! Events loaded:", formattedEvents);
+      //console.log("✅ Success! Events loaded:", formattedEvents);
       setEvents(formattedEvents);
     } catch (error) {
       console.error("Calendar Error:", error);
@@ -85,6 +86,19 @@ const FamilyCalendar: React.FC = () => {
 
   if (loading) return <div className="p-4">Syncing Family Calendar...</div>;
 
+  const handleEventClick = (info: any) => {
+    console.log("🚀 Event Clicked!");
+    console.log("Title:", info.event.title);
+    console.log("ID:", info.event.id);
+    
+    // Just to be sure it's working
+    alert(`You clicked: ${info.event.title}`);
+  };
+
+  const handleDateClick = (info:any)=>{
+    alert(`You clicked: ${info.dateStr}`);
+  }
+
   return (
     <div className={styles.calendarContainer}>
       <FullCalendar
@@ -93,7 +107,7 @@ const FamilyCalendar: React.FC = () => {
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek'
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
         }}
         events={events}
         height="auto"
@@ -103,6 +117,8 @@ const FamilyCalendar: React.FC = () => {
           month: 'Month',
           week: 'Week'
         }}
+        dateClick={handleDateClick}   
+        eventClick={handleEventClick}
       />
     </div>
   );
@@ -112,18 +128,3 @@ export default FamilyCalendar;
 
 
 
-const calendarStyles = `
-  .fc { 
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-  }
-  .fc .fc-button-primary {
-    background-color: #4f46e5;
-    border-color: #4f46e5;
-  }
-  .dark .fc {
-    background: #1e293b;
-    color: white;
-  }
-`;

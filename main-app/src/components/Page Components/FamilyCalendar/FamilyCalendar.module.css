@@ -46,3 +46,20 @@
 .calendarContainer :global(.fc-theme-standard th) {
   border-color: var(--c-surface);
 }
+
+/* Force the toolbar buttons to be Capitalized */
+.calendarContainer :global(.fc-button) {
+  text-transform: capitalize !important;
+  font-weight: 600;
+}
+
+/* Specifically target the inner text if the button class isn't enough */
+.calendarContainer :global(.fc-button-primary) {
+  text-transform: capitalize;
+}
+
+.calendarContainer :global(.fc-event) {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 10 !important;
+}

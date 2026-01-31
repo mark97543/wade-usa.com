@@ -1,0 +1,82 @@
+/* Modal.module.css */
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* Darken the background based on your theme color but with transparency */
+  background-color: rgba(0, 0, 0, 0.7); 
+  backdrop-filter: blur(6px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modalContainer {
+  /* Using your Global Theme Variables */
+  background-color: var(--c-bg, #ffffff);
+  color: var(--c-text, #000000);
+  border: 1px solid var(--c-surface);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  
+  width: min(90vw, 500px);
+  padding: 1.5rem;
+  
+  transform: scale(0.95);
+  opacity: 0;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
+}
+
+.backdrop.open .modalContainer {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--c-surface);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color); /* Title highlights in your primary color */
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: var(--c-text);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.closeButton:hover {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
+.modal_content {
+    /* Ensures inputs/children inside have proper spacing */
+    width: 100%;
+}
