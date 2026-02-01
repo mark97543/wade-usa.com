@@ -3,6 +3,7 @@ import { Modal } from '../../BaseComponents/Modal/Modal'
 import Button from '../../BaseComponents/Button';
 import styles from './FamilyCalendar.module.css'
 import Input from '../../BaseComponents/Input/Input';
+import { Checkbox } from '../../BaseComponents/Checkbox/Checkbox';
 
 interface ModalEdit{
     isOpen:boolean;
@@ -15,6 +16,8 @@ interface ModalEdit{
 function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit) {
     const [eventTitle, setEventTitle]=useState('')
     const [startDate, setStartDate]=useState('')
+    const [endDate, setEndDate]=useState('')
+    const [eventColor, setEventColor]=useState("#3788d8")
 
 
     useEffect(() => {
@@ -25,6 +28,9 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
             // Sync date too while we are at it
             const rawDate = item.start;
             setStartDate(rawDate ? formatToDateTimeLocal(rawDate) : "");
+            const rawEnd = item.end;
+            setEndDate(rawEnd? formatToDateTimeLocal(rawEnd):'');
+            setEventColor(item.color || "#3788d8");
         }
     }, [isOpen, item]);
     
@@ -46,7 +52,34 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
                                     value={startDate}
                                     placeholder='Start Date'
                                     onChange={(e)=>setStartDate(e.target.value)}
+                                    label='Start Date'
                                 />
+                                <Input
+                                    type='datetime-local'
+                                    placeholder='End Date'
+                                    label='End Date'
+                                    value={endDate}
+                                    onChange={(e)=>setEndDate(e.target.value)}
+                                />
+                                <Input
+                                    type='color'
+                                    value={eventColor}
+                                    onChange={(e)=>setEventColor(e.target.value)}
+                                    placeholder='Event Color'
+                                    style={{ 
+                                        height: '45px',    // Ensure it's tall enough
+                                        padding: '2px',    // Padding often "hides" the color swatch
+                                        cursor: 'pointer'
+                                    }}
+                                />
+                                <Checkbox
+                                    label='All Day'
+                                    id='all_day'
+                                    style={{
+                                        marginBottom:'20px'
+                                    }}
+                                />
+
                             </div>
                             <div className={styles.CAL_EDIT_MODAL_BUTTONS}>
                                 <Button style={{width:'100%'}}>Save</Button>
@@ -67,6 +100,14 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
                                     value={startDate}
                                     placeholder='Start Date'
                                     onChange={(e)=>setStartDate(e.target.value)}
+                                    label='Start Date'
+                                />
+                                <Input
+                                    type='datetime-local'
+                                    placeholder='End Date'
+                                    label='End Date'
+                                    value={endDate}
+                                    onChange={(e)=>setEndDate(e.target.value)}
                                 />
                             </div>
                             <div className={styles.CAL_NEW_MODAL_BUTTONS}>

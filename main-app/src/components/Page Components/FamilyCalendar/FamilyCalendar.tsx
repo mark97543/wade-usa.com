@@ -95,9 +95,9 @@ const FamilyCalendar: React.FC = () => {
 
     setModalTitle('Edit Event');
     setModalType('edit')
-    setSelectedItem({title:info.event.title, start:info.event.start})
+    setSelectedItem({title:info.event.title, start:info.event.start, end:info.event.end, color:info.event.backgroundColor})
     setIsModalOpen(true)
-    console.log(selectedItem)
+    console.log(info.event.backgroundColor)
   };
 
   const handleDateClick = (info:any)=>{

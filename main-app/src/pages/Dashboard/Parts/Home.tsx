@@ -8,7 +8,6 @@ function LoggedIn() {
 
     return (
         <div>
-            Logged In Page
             <FamilyCalendar/>
         </div>
     )
