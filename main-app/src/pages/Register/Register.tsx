@@ -54,7 +54,7 @@ function Register() {
 
     },[password, checkPass, email, firstName]);
 
-    //TODO: Logic to register user 
+  
 
 
   return (

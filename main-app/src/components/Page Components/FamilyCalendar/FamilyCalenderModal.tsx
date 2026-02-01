@@ -18,6 +18,7 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
     const [startDate, setStartDate]=useState('')
     const [endDate, setEndDate]=useState('')
     const [eventColor, setEventColor]=useState("#3788d8")
+    const [description,setDescription]=useState('')
 
 
     useEffect(() => {
@@ -31,6 +32,7 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
             const rawEnd = item.end;
             setEndDate(rawEnd? formatToDateTimeLocal(rawEnd):'');
             setEventColor(item.color || "#3788d8");
+            setDescription(item.description || "");
         }
     }, [isOpen, item]);
     
@@ -78,8 +80,18 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
                                     style={{
                                         marginBottom:'20px'
                                     }}
+                                    
                                 />
-
+                                { /*TODO: Add value and change Event to this  */}
+                                <Input
+                                    renderAs='textarea'
+                                    style={{
+                                        resize:'none',
+                                        minHeight:'6rem'
+                                    }}
+                                    value={description}
+                                    onChange={(e)=>setDescription(e.target.value)}
+                                />
                             </div>
                             <div className={styles.CAL_EDIT_MODAL_BUTTONS}>
                                 <Button style={{width:'100%'}}>Save</Button>
@@ -109,6 +121,7 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
                                     value={endDate}
                                     onChange={(e)=>setEndDate(e.target.value)}
                                 />
+                                {/*TODO: Add Color, and Checkbox to this  */}
                             </div>
                             <div className={styles.CAL_NEW_MODAL_BUTTONS}>
                                 <Button style={{width:'100%'}}>Save</Button>

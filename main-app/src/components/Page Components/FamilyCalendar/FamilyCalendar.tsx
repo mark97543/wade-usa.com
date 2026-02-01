@@ -78,6 +78,9 @@ const FamilyCalendar: React.FC = () => {
         allDay: item.all_day,
         backgroundColor: item.color || '#3788d8',
         borderColor: item.color || '#3788d8',
+        extendedProps: {
+          description: item.descritpion 
+        }
       }));
 
       //console.log("✅ Success! Events loaded:", formattedEvents);
@@ -95,9 +98,15 @@ const FamilyCalendar: React.FC = () => {
 
     setModalTitle('Edit Event');
     setModalType('edit')
-    setSelectedItem({title:info.event.title, start:info.event.start, end:info.event.end, color:info.event.backgroundColor})
+    setSelectedItem({
+      title:info.event.title, 
+      start:info.event.start, 
+      end:info.event.end, 
+      color:info.event.backgroundColor,
+      description:info.event.extendedProps.description
+    })
     setIsModalOpen(true)
-    console.log(info.event.backgroundColor)
+    console.log(info.event.extendedProps.description)
   };
 
   const handleDateClick = (info:any)=>{
