@@ -95,7 +95,7 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
                             </div>
                             <div className={styles.CAL_EDIT_MODAL_BUTTONS}>
                                 <Button style={{width:'100%'}}>Save</Button>
-                                <Button style={{width:'100%'}} type='neutral'>Cancel</Button> 
+                                <Button style={{width:'100%'}} type='neutral' onClick={onClose}>Cancel</Button> 
                                 <Button style={{width:'100%'}} type='danger'>🗑️</Button>
                             </div>
                         </div>
@@ -125,7 +125,7 @@ function FamilyCalenderModal({isOpen, onClose, title, modalType, item}:ModalEdit
                             </div>
                             <div className={styles.CAL_NEW_MODAL_BUTTONS}>
                                 <Button style={{width:'100%'}}>Save</Button>
-                                <Button style={{width:'100%'}} type='neutral'>Cancel</Button>
+                                <Button style={{width:'100%'}} type='neutral' onClick={onClose}>Cancel</Button>
                             </div>
                         </div>
                     )}
