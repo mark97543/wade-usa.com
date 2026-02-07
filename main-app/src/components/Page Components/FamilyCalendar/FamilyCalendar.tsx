@@ -18,6 +18,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import styles from './FamilyCalendar.module.css'
 import FamilyCalenderModal from './FamilyCalenderModal';
+import { refresh } from '@directus/sdk';
 
 interface CalendarEvent {
   id: string;
@@ -37,10 +38,11 @@ const FamilyCalendar: React.FC = () => {
   const [modalTitle, setModalTitle]=useState('')
   const [modalType, setModalType]=useState<'edit' | 'new'>('new');
   const [selectedItem, setSelectedItem]=useState({})
+  const [refreshSignal, setRefreshSignal]=useState(true)
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [refreshSignal]);
 
   const fetchEvents = async () => {
     try {
@@ -75,11 +77,11 @@ const FamilyCalendar: React.FC = () => {
         title: item.title,
         start: item.start,
         end: item.end,
-        allDay: item.all_day,
+        allDay: item.allDay,
         backgroundColor: item.color || '#3788d8',
         borderColor: item.color || '#3788d8',
         extendedProps: {
-          description: item.descritpion 
+          description: item.description 
         }
       }));
 
@@ -103,10 +105,12 @@ const FamilyCalendar: React.FC = () => {
       start:info.event.start, 
       end:info.event.end, 
       color:info.event.backgroundColor,
-      description:info.event.extendedProps.description
+      description:info.event.extendedProps.description,
+      allDay:info.event.allDay,
+      id:info.event.id
     })
     setIsModalOpen(true)
-    console.log(info.event.extendedProps.description)
+    console.log(info.event.id)
   };
 
   const handleDateClick = (info:any)=>{
@@ -146,6 +150,7 @@ const FamilyCalendar: React.FC = () => {
         onClose={()=>setIsModalOpen(false)} 
         title={modalTitle} 
         modalType={modalType}
+        setRefresh={setRefreshSignal}
       />
 
     </div>
